@@ -1,56 +1,80 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
 
     <meta name="theme-color" content="#050505">
 
     <title>Nova Family AI</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
+
 
 <body>
 
 <div class="background"></div>
 
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header class="topbar">
 
     <div class="logo">
+
         <div class="logo-orb"></div>
 
         <div>
             <strong>NOVA</strong>
             <span>Family AI</span>
         </div>
+
     </div>
+
 
     <div class="account">
 
-        <img id="userPhoto"
-             class="user-photo"
-             alt=""
-             hidden>
+        <img
+            id="userPhoto"
+            class="user-photo"
+            alt="Profilbild"
+            hidden
+        >
 
-        <div id="userInfo"
-             class="user-info"
-             hidden>
+        <div
+            id="userInfo"
+            class="user-info"
+            hidden
+        >
 
             <strong id="userName"></strong>
+
             <span id="userEmail"></span>
 
         </div>
 
-        <button id="loginButton"
-                class="login-button">
+
+        <button
+            id="loginButton"
+            class="login-button"
+        >
             Mit Google anmelden
         </button>
 
-        <button id="logoutButton"
-                class="small-button"
-                hidden>
+
+        <button
+            id="logoutButton"
+            class="small-button"
+            hidden
+        >
             Abmelden
         </button>
 
@@ -59,54 +83,80 @@
 </header>
 
 
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
 <main>
+
+
+    <!-- ASSISTANT -->
 
     <section class="assistant">
 
-        <div id="orb"
-             class="orb">
+
+        <div
+            id="orb"
+            class="orb"
+        >
 
             <div class="orb-inner"></div>
 
             <div class="orb-ring ring1"></div>
+
             <div class="orb-ring ring2"></div>
+
             <div class="orb-ring ring3"></div>
 
         </div>
 
 
-        <div id="status"
-             class="status">
+
+        <div
+            id="status"
+            class="status"
+        >
 
             <strong id="statusText">
-                Bitte anmelden
+                Nova startet...
             </strong>
 
             <span id="statusSub">
-                Nova wartet
+                Initialisiere System
             </span>
 
         </div>
 
 
-        <button id="microphone"
-                class="microphone"
-                disabled>
+
+        <button
+            id="microphone"
+            class="microphone"
+            disabled
+            aria-label="Mikrofon"
+        >
 
             <span>🎙</span>
 
         </button>
 
 
+
         <div class="mode-buttons">
 
-            <button id="voiceMode"
-                    class="mode active">
+            <button
+                id="voiceMode"
+                class="mode active"
+            >
                 Sprache
             </button>
 
-            <button id="textMode"
-                    class="mode">
+
+            <button
+                id="textMode"
+                class="mode"
+            >
                 Text
             </button>
 
@@ -115,25 +165,38 @@
     </section>
 
 
-    <section id="textChat"
-             class="chat"
-             hidden>
 
-        <div id="messages"
-             class="messages">
+    <!-- =================================================
+         TEXT CHAT
+    ================================================= -->
 
-        </div>
+    <section
+        id="textChat"
+        class="chat"
+        hidden
+    >
+
+        <div
+            id="messages"
+            class="messages"
+        ></div>
+
 
         <div class="input-area">
 
-            <input id="textInput"
-                   type="text"
-                   autocomplete="off"
-                   placeholder="Schreibe Nova etwas..."
-                   disabled>
+            <input
+                id="textInput"
+                type="text"
+                autocomplete="off"
+                placeholder="Schreibe Nova etwas..."
+                disabled
+            >
 
-            <button id="sendText"
-                    disabled>
+
+            <button
+                id="sendText"
+                disabled
+            >
                 Senden
             </button>
 
@@ -142,22 +205,35 @@
     </section>
 
 
+
+    <!-- =================================================
+         QUICK ACTIONS
+    ================================================= -->
+
     <section class="actions">
 
-        <button id="youtubeButton"
-                class="action-button"
-                disabled>
+        <button
+            id="youtubeButton"
+            class="action-button"
+            disabled
+        >
             YouTube
         </button>
 
-        <button id="googleButton"
-                class="action-button"
-                disabled>
+
+        <button
+            id="googleButton"
+            class="action-button"
+            disabled
+        >
             Google
         </button>
 
-        <button id="settingsButton"
-                class="action-button">
+
+        <button
+            id="settingsButton"
+            class="action-button"
+        >
             Einstellungen
         </button>
 
@@ -166,44 +242,77 @@
 </main>
 
 
-<!-- SETTINGS -->
 
-<div id="settingsOverlay"
-     class="overlay"
-     hidden>
+<!-- =====================================================
+     SETTINGS
+
+     WICHTIG:
+     hidden = Einstellungen beim Start geschlossen
+===================================================== -->
+
+<div
+    id="settingsOverlay"
+    class="overlay"
+    hidden
+>
+
 
     <div class="settings">
+
 
         <div class="settings-header">
 
             <div>
-                <h2>Nova Einstellungen</h2>
-                <p>Deine persönlichen Einstellungen</p>
+
+                <h2>
+                    Nova Einstellungen
+                </h2>
+
+                <p>
+                    Deine persönlichen Einstellungen
+                </p>
+
             </div>
 
-            <button id="closeSettings"
-                    class="close-button">
+
+            <button
+                id="closeSettings"
+                class="close-button"
+                aria-label="Einstellungen schließen"
+            >
                 ×
             </button>
 
         </div>
 
 
+
+        <!-- STIMME -->
+
         <div class="setting">
 
-            <label>
+            <label for="voiceSelect">
                 Stimme
             </label>
 
-            <select id="voiceSelect"></select>
+
+            <select
+                id="voiceSelect"
+            ></select>
 
         </div>
 
 
+
+        <!-- GESCHWINDIGKEIT -->
+
         <div class="setting">
 
-            <label>
-                Sprechgeschwindigkeit
+            <label for="rateSlider">
+
+                <span>
+                    Sprechgeschwindigkeit
+                </span>
 
                 <span id="rateValue">
                     1.0
@@ -211,20 +320,29 @@
 
             </label>
 
-            <input id="rateSlider"
-                   type="range"
-                   min="0.6"
-                   max="1.5"
-                   step="0.1"
-                   value="1">
+
+            <input
+                id="rateSlider"
+                type="range"
+                min="0.6"
+                max="1.5"
+                step="0.1"
+                value="1"
+            >
 
         </div>
 
 
+
+        <!-- LAUTSTÄRKE -->
+
         <div class="setting">
 
-            <label>
-                Lautstärke
+            <label for="volumeSlider">
+
+                <span>
+                    Lautstärke
+                </span>
 
                 <span id="volumeValue">
                     100%
@@ -232,95 +350,155 @@
 
             </label>
 
-            <input id="volumeSlider"
-                   type="range"
-                   min="0"
-                   max="1"
-                   step="0.05"
-                   value="1">
+
+            <input
+                id="volumeSlider"
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value="1"
+            >
 
         </div>
 
 
+
+        <!-- MEMORY -->
+
         <div class="setting toggle-row">
 
-            <label>
+            <label for="memoryToggle">
                 Erinnerungen
             </label>
 
-            <input id="memoryToggle"
-                   type="checkbox"
-                   checked>
+
+            <input
+                id="memoryToggle"
+                type="checkbox"
+                checked
+            >
 
         </div>
 
+
+
+        <!-- ANIMATION -->
 
         <div class="setting toggle-row">
 
-            <label>
+            <label for="animationToggle">
                 Animationen
             </label>
 
-            <input id="animationToggle"
-                   type="checkbox"
-                   checked>
+
+            <input
+                id="animationToggle"
+                type="checkbox"
+                checked
+            >
 
         </div>
 
 
-        <button id="testVoice"
-                class="primary-button">
+
+        <!-- STIMME TESTEN -->
+
+        <button
+            id="testVoice"
+            class="primary-button"
+        >
             Stimme testen
         </button>
+
 
 
         <hr>
 
 
+
+        <!-- =================================================
+             FAMILY
+        ================================================= -->
+
         <div class="family">
 
-            <h3>Familie</h3>
+            <h3>
+                Familie
+            </h3>
+
 
             <p id="familyStatus">
                 Keine Familie verbunden
             </p>
 
+
             <div class="family-actions">
 
-                <button id="createFamily"
-                        class="secondary-button">
+
+                <button
+                    id="createFamily"
+                    class="secondary-button"
+                >
                     Familie erstellen
                 </button>
 
-                <input id="familyCode"
-                       placeholder="Familiencode">
 
-                <button id="joinFamily"
-                        class="secondary-button">
+                <input
+                    id="familyCode"
+                    type="text"
+                    placeholder="Familiencode"
+                    autocomplete="off"
+                >
+
+
+                <button
+                    id="joinFamily"
+                    class="secondary-button"
+                >
                     Beitreten
                 </button>
+
 
             </div>
 
         </div>
 
 
-        <div id="memoryStatus"
-             class="memory-status">
 
-        </div>
+        <div
+            id="memoryStatus"
+            class="memory-status"
+        ></div>
+
 
     </div>
 
 </div>
 
 
-<div id="toast"
-     class="toast">
-</div>
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
 
 
-<script type="module" src="./app.js"></script>
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    type="module"
+    src="./app.js"
+></script>
+
 
 </body>
+
 </html>
