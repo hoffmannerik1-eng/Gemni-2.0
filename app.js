@@ -1,5 +1,5 @@
 // ============================================================
-// NOVA FAMILY AI
+// NOVA FAMILY AI — FIXED VOICE + THINKING + LISTENING
 // ============================================================
 
 import {
@@ -43,138 +43,78 @@ import {
 // FIREBASE
 // ============================================================
 
-const app =
-    initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const auth =
-    getAuth(app);
+const auth = getAuth(app);
 
-const db =
-    getFirestore(app);
+const db = getFirestore(app);
 
-const ai =
-    getAI(app, {
-        backend:
-            new GoogleAIBackend()
-    });
+const ai = getAI(app, {
+    backend: new GoogleAIBackend()
+});
 
-const model =
-    getGenerativeModel(ai, {
-        model:
-            "gemini-3.7-flash"
-    });
+const model = getGenerativeModel(ai, {
+    model: "gemini-3.7-flash"
+});
 
 
 // ============================================================
 // HELPER
 // ============================================================
 
-const $ =
-    id => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 
 // ============================================================
 // ELEMENTS
 // ============================================================
 
-const loginButton =
-    $("loginButton");
+const loginButton = $("loginButton");
+const logoutButton = $("logoutButton");
 
-const logoutButton =
-    $("logoutButton");
+const userInfo = $("userInfo");
+const userPhoto = $("userPhoto");
+const userName = $("userName");
+const userEmail = $("userEmail");
 
-const userInfo =
-    $("userInfo");
+const settingsButton = $("settingsButton");
+const settingsOverlay = $("settingsOverlay");
+const closeSettings = $("closeSettings");
 
-const userPhoto =
-    $("userPhoto");
+const microphone = $("microphone");
 
-const userName =
-    $("userName");
+const status = $("status");
+const statusText = $("statusText");
 
-const userEmail =
-    $("userEmail");
+const voiceMode = $("voiceMode");
+const textMode = $("textMode");
 
-const settingsButton =
-    $("settingsButton");
+const textChat = $("textChat");
+const messages = $("messages");
+const textInput = $("textInput");
+const sendText = $("sendText");
 
-const settingsOverlay =
-    $("settingsOverlay");
+const privateMode = $("privateMode");
+const familyMode = $("familyMode");
 
-const closeSettings =
-    $("closeSettings");
+const createFamily = $("createFamily");
+const joinFamily = $("joinFamily");
+const familyCode = $("familyCode");
 
-const microphone =
-    $("microphone");
+const memoryList = $("memoryList");
+const memoryStatus = $("memoryStatus");
 
-const status =
-    $("status");
+const voiceSelect = $("voiceSelect");
+const rateSlider = $("rateSlider");
+const rateValue = $("rateValue");
 
-const statusText =
-    $("statusText");
+const volumeSlider = $("volumeSlider");
+const volumeValue = $("volumeValue");
 
-const voiceMode =
-    $("voiceMode");
+const memoryToggle = $("memoryToggle");
+const animationToggle = $("animationToggle");
 
-const textMode =
-    $("textMode");
-
-const textChat =
-    $("textChat");
-
-const messages =
-    $("messages");
-
-const textInput =
-    $("textInput");
-
-const sendText =
-    $("sendText");
-
-const privateMode =
-    $("privateMode");
-
-const familyMode =
-    $("familyMode");
-
-const createFamily =
-    $("createFamily");
-
-const joinFamily =
-    $("joinFamily");
-
-const familyCode =
-    $("familyCode");
-
-const memoryList =
-    $("memoryList");
-
-const memoryStatus =
-    $("memoryStatus");
-
-const voiceSelect =
-    $("voiceSelect");
-
-const rateSlider =
-    $("rateSlider");
-
-const rateValue =
-    $("rateValue");
-
-const volumeSlider =
-    $("volumeSlider");
-
-const volumeValue =
-    $("volumeValue");
-
-const memoryToggle =
-    $("memoryToggle");
-
-const animationToggle =
-    $("animationToggle");
-
-const testVoice =
-    $("testVoice");
+const testVoice = $("testVoice");
 
 
 // ============================================================
@@ -182,27 +122,29 @@ const testVoice =
 // ============================================================
 
 let currentUser = null;
-
 let currentFamilyId = null;
 
 let currentMode = "private";
-
 let chatMode = "voice";
 
 let recognition = null;
 
 let listening = false;
+let speaking = false;
+let thinking = false;
 
 let availableVoices = [];
 
+let autoListenTimer = null;
+
 
 // ============================================================
-// LOCAL SETTINGS
+// SETTINGS
 // ============================================================
 
 let settings = {
     voiceName: "",
-    rate: 0.95,
+    rate: 0.92,
     volume: 1,
     memory: true,
     animations: true
@@ -214,9 +156,7 @@ function loadSettings() {
     try {
 
         const saved =
-            localStorage.getItem(
-                "novaSettings"
-            );
+            localStorage.getItem("novaSettings");
 
         if (saved) {
 
@@ -228,35 +168,38 @@ function loadSettings() {
 
     } catch (error) {
 
-        console.error(error);
-    }
-
-    rateSlider.value =
-        settings.rate;
-
-    volumeSlider.value =
-        settings.volume;
-
-    rateValue.textContent =
-        settings.rate;
-
-    volumeValue.textContent =
-        Math.round(
-            settings.volume * 100
-        ) + "%";
-
-    memoryToggle.checked =
-        settings.memory;
-
-    animationToggle.checked =
-        settings.animations;
-
-    if (!settings.animations) {
-
-        document.body.classList.add(
-            "no-animation"
+        console.error(
+            "SETTINGS LOAD:",
+            error
         );
     }
+
+
+    if (rateSlider)
+        rateSlider.value = settings.rate;
+
+    if (volumeSlider)
+        volumeSlider.value = settings.volume;
+
+    if (rateValue)
+        rateValue.textContent =
+            Number(settings.rate).toFixed(2);
+
+    if (volumeValue)
+        volumeValue.textContent =
+            Math.round(settings.volume * 100) + "%";
+
+    if (memoryToggle)
+        memoryToggle.checked = settings.memory;
+
+    if (animationToggle)
+        animationToggle.checked =
+            settings.animations;
+
+    document.body.classList.toggle(
+        "no-animation",
+        !settings.animations
+    );
 }
 
 
@@ -268,14 +211,15 @@ function saveSettings() {
     );
 }
 
+
 loadSettings();
 
 
 // ============================================================
-// SETTINGS UI
+// SETTINGS PANEL
 // ============================================================
 
-settingsButton.addEventListener(
+settingsButton?.addEventListener(
     "click",
     () => {
 
@@ -286,7 +230,7 @@ settingsButton.addEventListener(
 );
 
 
-closeSettings.addEventListener(
+closeSettings?.addEventListener(
     "click",
     () => {
 
@@ -297,7 +241,7 @@ closeSettings.addEventListener(
 );
 
 
-settingsOverlay.addEventListener(
+settingsOverlay?.addEventListener(
     "click",
     event => {
 
@@ -315,8 +259,61 @@ settingsOverlay.addEventListener(
 
 
 // ============================================================
-// VOICES
+// NATURAL BROWSER VOICE SELECTION
 // ============================================================
+
+function voiceScore(voice) {
+
+    const name =
+        (voice.name || "").toLowerCase();
+
+    const lang =
+        (voice.lang || "").toLowerCase();
+
+    let score = 0;
+
+
+    if (lang === "de-de")
+        score += 100;
+
+    else if (lang.startsWith("de"))
+        score += 80;
+
+
+    // Stimmen, die häufig natürlicher klingen
+    if (name.includes("google"))
+        score += 40;
+
+    if (name.includes("microsoft"))
+        score += 40;
+
+    if (name.includes("premium"))
+        score += 35;
+
+    if (name.includes("enhanced"))
+        score += 35;
+
+    if (name.includes("neural"))
+        score += 35;
+
+    if (name.includes("natural"))
+        score += 35;
+
+    if (name.includes("siri"))
+        score += 25;
+
+
+    // Schlechtere generische Stimmen etwas nach hinten
+    if (name.includes("compact"))
+        score -= 10;
+
+    if (name.includes("espeak"))
+        score -= 20;
+
+
+    return score;
+}
+
 
 function loadVoices() {
 
@@ -326,16 +323,16 @@ function loadVoices() {
         return;
     }
 
+
     availableVoices =
-        window.speechSynthesis
-            .getVoices();
+        window.speechSynthesis.getVoices();
+
 
     voiceSelect.innerHTML = "";
 
+
     const automatic =
-        document.createElement(
-            "option"
-        );
+        document.createElement("option");
 
     automatic.value = "";
 
@@ -358,9 +355,8 @@ function loadVoices() {
             )
             .sort(
                 (a, b) =>
-                    a.name.localeCompare(
-                        b.name
-                    )
+                    voiceScore(b) -
+                    voiceScore(a)
             );
 
 
@@ -368,9 +364,7 @@ function loadVoices() {
         voice => {
 
             const option =
-                document.createElement(
-                    "option"
-                );
+                document.createElement("option");
 
             option.value =
                 voice.name;
@@ -393,9 +387,7 @@ function loadVoices() {
 loadVoices();
 
 
-if (
-    "speechSynthesis" in window
-) {
+if ("speechSynthesis" in window) {
 
     window.speechSynthesis.onvoiceschanged =
         loadVoices;
@@ -406,14 +398,12 @@ if (
 // SETTINGS EVENTS
 // ============================================================
 
-rateSlider.addEventListener(
+rateSlider?.addEventListener(
     "input",
     () => {
 
         settings.rate =
-            Number(
-                rateSlider.value
-            );
+            Number(rateSlider.value);
 
         rateValue.textContent =
             settings.rate.toFixed(2);
@@ -423,14 +413,12 @@ rateSlider.addEventListener(
 );
 
 
-volumeSlider.addEventListener(
+volumeSlider?.addEventListener(
     "input",
     () => {
 
         settings.volume =
-            Number(
-                volumeSlider.value
-            );
+            Number(volumeSlider.value);
 
         volumeValue.textContent =
             Math.round(
@@ -442,7 +430,7 @@ volumeSlider.addEventListener(
 );
 
 
-voiceSelect.addEventListener(
+voiceSelect?.addEventListener(
     "change",
     () => {
 
@@ -454,24 +442,29 @@ voiceSelect.addEventListener(
 );
 
 
-memoryToggle.addEventListener(
+memoryToggle?.addEventListener(
     "change",
-    () => {
+    async () => {
 
         settings.memory =
             memoryToggle.checked;
 
-        memoryStatus.textContent =
-            settings.memory
-                ? "AKTIV"
-                : "AUS";
+        if (memoryStatus) {
+
+            memoryStatus.textContent =
+                settings.memory
+                    ? "AKTIV"
+                    : "AUS";
+        }
 
         saveSettings();
+
+        await loadMemories();
     }
 );
 
 
-animationToggle.addEventListener(
+animationToggle?.addEventListener(
     "change",
     () => {
 
@@ -489,23 +482,63 @@ animationToggle.addEventListener(
 
 
 // ============================================================
-// NOVA VOICE
+// STOP EVERYTHING
 // ============================================================
 
-function speak(text) {
+function stopAllVoice() {
 
-    if (!text) return;
+    clearTimeout(autoListenTimer);
 
-    if (
-        !("speechSynthesis" in window)
-    ) {
+    autoListenTimer = null;
+
+
+    if (recognition) {
+
+        try {
+            recognition.stop();
+        } catch {}
+    }
+
+
+    listening = false;
+
+
+    if ("speechSynthesis" in window) {
+
+        window.speechSynthesis.cancel();
+    }
+
+
+    speaking = false;
+}
+
+
+// ============================================================
+// SPEAK
+// ============================================================
+
+function speak(text, autoListenAfter = true) {
+
+    if (!text)
+        return;
+
+
+    if (!("speechSynthesis" in window)) {
 
         console.error(
-            "Sprachausgabe nicht verfügbar."
+            "SpeechSynthesis wird nicht unterstützt."
+        );
+
+        setState(
+            "BEREIT",
+            "Nova wartet"
         );
 
         return;
     }
+
+
+    clearTimeout(autoListenTimer);
 
 
     window.speechSynthesis.cancel();
@@ -517,22 +550,21 @@ function speak(text) {
         );
 
 
-    utterance.lang =
-        "de-DE";
+    utterance.lang = "de-DE";
 
     utterance.rate =
-        settings.rate;
+        Number(settings.rate);
 
     utterance.volume =
-        settings.volume;
+        Number(settings.volume);
 
-    utterance.pitch =
-        1;
+    utterance.pitch = 1;
 
 
     let voice = null;
 
 
+    // Manuell gewählte Stimme
     if (settings.voiceName) {
 
         voice =
@@ -544,26 +576,23 @@ function speak(text) {
     }
 
 
+    // Beste automatische deutsche Stimme
     if (!voice) {
 
         voice =
-            availableVoices.find(
-                v =>
-                    v.lang ===
-                    "de-DE"
-            );
-    }
-
-
-    if (!voice) {
-
-        voice =
-            availableVoices.find(
-                v =>
-                    v.lang
-                        ?.toLowerCase()
-                        .startsWith("de")
-            );
+            availableVoices
+                .filter(
+                    v =>
+                        v.lang &&
+                        v.lang
+                            .toLowerCase()
+                            .startsWith("de")
+                )
+                .sort(
+                    (a, b) =>
+                        voiceScore(b) -
+                        voiceScore(a)
+                )[0];
     }
 
 
@@ -577,8 +606,11 @@ function speak(text) {
     utterance.onstart =
         () => {
 
+            speaking = true;
+            thinking = false;
+
             setState(
-                "SPEAKEN",
+                "SPRECHEN",
                 "Nova spricht..."
             );
         };
@@ -587,10 +619,34 @@ function speak(text) {
     utterance.onend =
         () => {
 
+            speaking = false;
+
+
             setState(
                 "BEREIT",
                 "Nova wartet"
             );
+
+
+            // Nach der Antwort kurz warten
+            // und dann wieder zuhören.
+            if (
+                autoListenAfter &&
+                chatMode === "voice" &&
+                currentUser &&
+                recognition
+            ) {
+
+                autoListenTimer =
+                    setTimeout(
+                        () => {
+
+                            startListening();
+
+                        },
+                        700
+                    );
+            }
         };
 
 
@@ -601,6 +657,8 @@ function speak(text) {
                 "VOICE ERROR:",
                 error
             );
+
+            speaking = false;
 
             setState(
                 "FEHLER",
@@ -619,19 +677,20 @@ function speak(text) {
 // VOICE TEST
 // ============================================================
 
-testVoice.addEventListener(
+testVoice?.addEventListener(
     "click",
     () => {
 
         speak(
-            "Hallo. Ich bin Nova. Deine Sprachausgabe funktioniert."
+            "Hallo. Ich bin Nova. Ich kann jetzt natürlicher sprechen.",
+            false
         );
     }
 );
 
 
 // ============================================================
-// STATUS
+// STATE
 // ============================================================
 
 function setState(
@@ -639,45 +698,39 @@ function setState(
     text
 ) {
 
-    status.textContent =
-        state;
+    if (status)
+        status.textContent = state;
 
-    statusText.textContent =
-        text;
+    if (statusText)
+        statusText.textContent = text;
 
 
-    microphone.classList.remove(
+    microphone?.classList.remove(
         "listening",
         "thinking",
         "speaking"
     );
 
 
-    if (
-        state === "ZUHÖREN"
-    ) {
+    if (state === "ZUHÖREN") {
 
-        microphone.classList.add(
+        microphone?.classList.add(
             "listening"
         );
     }
 
 
-    if (
-        state === "DENKEN"
-    ) {
+    if (state === "DENKEN") {
 
-        microphone.classList.add(
+        microphone?.classList.add(
             "thinking"
         );
     }
 
 
-    if (
-        state === "SPRECHEN"
-    ) {
+    if (state === "SPRECHEN") {
 
-        microphone.classList.add(
+        microphone?.classList.add(
             "speaking"
         );
     }
@@ -693,12 +746,17 @@ function toast(text) {
     const element =
         $("toast");
 
+    if (!element)
+        return;
+
+
     element.textContent =
         text;
 
     element.classList.add(
         "show"
     );
+
 
     setTimeout(
         () => {
@@ -723,6 +781,7 @@ async function login() {
 
         const provider =
             new GoogleAuthProvider();
+
 
         provider.setCustomParameters({
             prompt:
@@ -756,9 +815,8 @@ async function login() {
 try {
 
     const result =
-        await getRedirectResult(
-            auth
-        );
+        await getRedirectResult(auth);
+
 
     if (result?.user) {
 
@@ -782,40 +840,38 @@ try {
 
 
 // ============================================================
-// AUTH STATE
+// AUTH
 // ============================================================
 
 onAuthStateChanged(
     auth,
     async user => {
 
-        console.log(
-            "AUTH:",
-            user
-        );
-
-
         if (!user) {
 
-            currentUser =
-                null;
+            currentUser = null;
 
-            userInfo.classList.add(
+            userInfo?.classList.add(
                 "hidden"
             );
 
-            loginButton.classList.remove(
+            loginButton?.classList.remove(
                 "hidden"
             );
 
-            logoutButton.classList.add(
+            logoutButton?.classList.add(
                 "hidden"
             );
+
+
+            stopAllVoice();
+
 
             setState(
                 "BEREIT",
                 "Bitte anmelden"
             );
+
 
             return;
         }
@@ -825,15 +881,15 @@ onAuthStateChanged(
             user;
 
 
-        userInfo.classList.remove(
+        userInfo?.classList.remove(
             "hidden"
         );
 
-        loginButton.classList.add(
+        loginButton?.classList.add(
             "hidden"
         );
 
-        logoutButton.classList.remove(
+        logoutButton?.classList.remove(
             "hidden"
         );
 
@@ -841,6 +897,7 @@ onAuthStateChanged(
         userName.textContent =
             user.displayName ||
             "Benutzer";
+
 
         userEmail.textContent =
             user.email ||
@@ -874,15 +931,15 @@ onAuthStateChanged(
 // LOGOUT
 // ============================================================
 
-logoutButton.addEventListener(
+logoutButton?.addEventListener(
     "click",
     async () => {
 
         try {
 
-            await signOut(
-                auth
-            );
+            stopAllVoice();
+
+            await signOut(auth);
 
             toast(
                 "Abgemeldet."
@@ -902,7 +959,8 @@ logoutButton.addEventListener(
 
 async function loadUser() {
 
-    if (!currentUser) return;
+    if (!currentUser)
+        return;
 
 
     try {
@@ -916,21 +974,23 @@ async function loadUser() {
 
 
         const snapshot =
-            await getDoc(
-                reference
-            );
+            await getDoc(reference);
 
 
-        if (
-            snapshot.exists()
-        ) {
+        if (snapshot.exists()) {
 
             const data =
                 snapshot.data();
 
             currentFamilyId =
-                data.familyId ||
-                null;
+                data.familyId || null;
+
+
+            if (currentFamilyId) {
+
+                familyCode.textContent =
+                    `Familiencode: ${currentFamilyId}`;
+            }
         }
 
 
@@ -980,8 +1040,12 @@ if (SpeechRecognition) {
     recognition.onstart =
         () => {
 
-            listening =
-                true;
+            listening = true;
+
+            speaking = false;
+
+            thinking = false;
+
 
             setState(
                 "ZUHÖREN",
@@ -1000,8 +1064,11 @@ if (SpeechRecognition) {
                     .trim();
 
 
-            listening =
-                false;
+            listening = false;
+
+
+            if (!text)
+                return;
 
 
             console.log(
@@ -1010,23 +1077,42 @@ if (SpeechRecognition) {
             );
 
 
-            await sendToNova(
-                text
-            );
+            await sendToNova(text);
         };
 
 
     recognition.onerror =
         event => {
 
-            listening =
-                false;
+            listening = false;
 
 
             console.error(
                 "MIC:",
                 event.error
             );
+
+
+            if (
+                event.error ===
+                "aborted"
+            ) {
+                return;
+            }
+
+
+            if (
+                event.error ===
+                "no-speech"
+            ) {
+
+                setState(
+                    "BEREIT",
+                    "Nova wartet"
+                );
+
+                return;
+            }
 
 
             setState(
@@ -1041,7 +1127,8 @@ if (SpeechRecognition) {
             ) {
 
                 speak(
-                    "Bitte erlaube Nova den Zugriff auf dein Mikrofon."
+                    "Bitte erlaube Nova den Zugriff auf dein Mikrofon.",
+                    false
                 );
             }
         };
@@ -1050,9 +1137,48 @@ if (SpeechRecognition) {
     recognition.onend =
         () => {
 
-            listening =
-                false;
+            listening = false;
         };
+}
+
+
+// ============================================================
+// START LISTENING
+// ============================================================
+
+function startListening() {
+
+    if (!recognition)
+        return;
+
+
+    if (!currentUser)
+        return;
+
+
+    if (speaking)
+        return;
+
+
+    if (thinking)
+        return;
+
+
+    if (listening)
+        return;
+
+
+    try {
+
+        recognition.start();
+
+    } catch (error) {
+
+        console.log(
+            "LISTEN START:",
+            error
+        );
+    }
 }
 
 
@@ -1060,14 +1186,14 @@ if (SpeechRecognition) {
 // MICROPHONE
 // ============================================================
 
-microphone.addEventListener(
+microphone?.addEventListener(
     "click",
     () => {
 
         if (!currentUser) {
 
-            speak(
-                "Bitte melde dich zuerst mit Google an."
+            toast(
+                "Bitte zuerst mit Google anmelden."
             );
 
             return;
@@ -1077,31 +1203,56 @@ microphone.addEventListener(
         if (!recognition) {
 
             speak(
-                "Dein Browser unterstützt keine Spracheingabe."
+                "Dein Browser unterstützt keine Spracheingabe.",
+                false
             );
 
             return;
         }
 
 
+        // Wenn Nova gerade spricht:
+        // sofort stoppen und zuhören.
+        if (speaking) {
+
+            window.speechSynthesis.cancel();
+
+            speaking = false;
+
+            setTimeout(
+                startListening,
+                150
+            );
+
+            return;
+        }
+
+
+        // Wenn Nova denkt:
+        // nichts doppelt starten.
+        if (thinking) {
+
+            toast(
+                "Nova verarbeitet gerade deine Anfrage."
+            );
+
+            return;
+        }
+
+
+        // Wenn bereits zugehört wird:
+        // Aufnahme beenden.
         if (listening) {
 
-            recognition.stop();
+            try {
+                recognition.stop();
+            } catch {}
 
             return;
         }
 
 
-        try {
-
-            recognition.start();
-
-        } catch (error) {
-
-            console.error(
-                error
-            );
-        }
+        startListening();
     }
 );
 
@@ -1110,12 +1261,12 @@ microphone.addEventListener(
 // CHAT MODE
 // ============================================================
 
-voiceMode.addEventListener(
+voiceMode?.addEventListener(
     "click",
     () => {
 
-        chatMode =
-            "voice";
+        chatMode = "voice";
+
 
         voiceMode.classList.add(
             "active"
@@ -1125,6 +1276,7 @@ voiceMode.addEventListener(
             "active"
         );
 
+
         textChat.classList.add(
             "hidden"
         );
@@ -1132,12 +1284,12 @@ voiceMode.addEventListener(
 );
 
 
-textMode.addEventListener(
+textMode?.addEventListener(
     "click",
     () => {
 
-        chatMode =
-            "text";
+        chatMode = "text";
+
 
         textMode.classList.add(
             "active"
@@ -1147,9 +1299,22 @@ textMode.addEventListener(
             "active"
         );
 
+
         textChat.classList.remove(
             "hidden"
         );
+
+
+        clearTimeout(autoListenTimer);
+
+
+        if (recognition && listening) {
+
+            try {
+                recognition.stop();
+            } catch {}
+        }
+
 
         textInput.focus();
     }
@@ -1157,16 +1322,16 @@ textMode.addEventListener(
 
 
 // ============================================================
-// TEXT SENDEN
+// TEXT SEND
 // ============================================================
 
-sendText.addEventListener(
+sendText?.addEventListener(
     "click",
     sendTextMessage
 );
 
 
-textInput.addEventListener(
+textInput?.addEventListener(
     "keydown",
     event => {
 
@@ -1187,7 +1352,8 @@ async function sendTextMessage() {
         textInput.value.trim();
 
 
-    if (!text) return;
+    if (!text)
+        return;
 
 
     if (!currentUser) {
@@ -1209,9 +1375,7 @@ async function sendTextMessage() {
     );
 
 
-    await sendToNova(
-        text
-    );
+    await sendToNova(text);
 }
 
 
@@ -1249,6 +1413,41 @@ function addMessage(
 
 
 // ============================================================
+// TIMEOUT HELPER
+// ============================================================
+
+function withTimeout(
+    promise,
+    milliseconds,
+    message
+) {
+
+    return Promise.race([
+
+        promise,
+
+        new Promise(
+            (_, reject) => {
+
+                setTimeout(
+                    () => {
+
+                        reject(
+                            new Error(
+                                message
+                            )
+                        );
+
+                    },
+                    milliseconds
+                );
+            }
+        )
+    ]);
+}
+
+
+// ============================================================
 // GEMINI
 // ============================================================
 
@@ -1256,6 +1455,21 @@ async function sendToNova(text) {
 
     if (!currentUser)
         return;
+
+
+    clearTimeout(autoListenTimer);
+
+
+    if (recognition && listening) {
+
+        try {
+            recognition.stop();
+        } catch {}
+    }
+
+
+    thinking = true;
+    speaking = false;
 
 
     setState(
@@ -1268,7 +1482,11 @@ async function sendToNova(text) {
 
         const memories =
             settings.memory
-                ? await getMemoryContext()
+                ? await withTimeout(
+                    getMemoryContext(),
+                    10000,
+                    "Memory timeout"
+                )
                 : "";
 
 
@@ -1277,6 +1495,10 @@ async function sendToNova(text) {
 Du bist Nova, eine moderne persönliche KI.
 
 Antworte auf Deutsch.
+
+Sei natürlich, freundlich und kurz.
+Klinge wie ein echter persönlicher Assistent.
+Keine unnötigen langen Erklärungen.
 
 Benutzer:
 "${text}"
@@ -1288,7 +1510,7 @@ Wenn der Benutzer etwas über sich erzählt,
 das langfristig nützlich ist:
 saveMemory = true.
 
-Wenn er YouTube öffnen möchte:
+Wenn der Benutzer YouTube öffnen möchte:
 YOUTUBE_HOME
 
 Wenn er auf YouTube etwas suchen möchte:
@@ -1317,9 +1539,14 @@ GOOGLE_SEARCH
 `;
 
 
+        // WICHTIG:
+        // Falls Gemini hängt, wird nach 25 Sekunden
+        // automatisch ein Fehler ausgelöst.
         const result =
-            await model.generateContent(
-                prompt
+            await withTimeout(
+                model.generateContent(prompt),
+                25000,
+                "Gemini Timeout"
             );
 
 
@@ -1334,9 +1561,7 @@ GOOGLE_SEARCH
 
 
         const data =
-            parseJSON(
-                raw
-            );
+            parseJSON(raw);
 
 
         if (
@@ -1358,13 +1583,24 @@ GOOGLE_SEARCH
 
 
         const reply =
-            data.reply ||
-            "Okay.";
+            cleanReply(
+                data.reply ||
+                "Okay."
+            );
+
+
+        thinking = false;
 
 
         if (
             chatMode === "text"
         ) {
+
+            setState(
+                "BEREIT",
+                "Nova wartet"
+            );
+
 
             addMessage(
                 "nova",
@@ -1374,12 +1610,16 @@ GOOGLE_SEARCH
         } else {
 
             speak(
-                reply
+                reply,
+                true
             );
         }
 
 
     } catch (error) {
+
+        thinking = false;
+
 
         console.error(
             "GEMINI ERROR:",
@@ -1395,6 +1635,21 @@ GOOGLE_SEARCH
 
 
 // ============================================================
+// CLEAN REPLY
+// ============================================================
+
+function cleanReply(text) {
+
+    return String(text)
+        .replace(
+            /^["']|["']$/g,
+            ""
+        )
+        .trim();
+}
+
+
+// ============================================================
 // JSON
 // ============================================================
 
@@ -1406,47 +1661,65 @@ function parseJSON(text) {
             text
         );
 
-    } catch {
+    } catch {}
 
-        const cleaned =
-            text
-                .replace(
-                    /```json/gi,
-                    ""
-                )
-                .replace(
-                    /```/g,
-                    ""
-                )
-                .trim();
 
+    const cleaned =
+        String(text)
+            .replace(
+                /```json/gi,
+                ""
+            )
+            .replace(
+                /```/g,
+                ""
+            )
+            .trim();
+
+
+    try {
+
+        return JSON.parse(
+            cleaned
+        );
+
+    } catch {}
+
+
+    // JSON innerhalb von anderem Text suchen
+    const start =
+        cleaned.indexOf("{");
+
+    const end =
+        cleaned.lastIndexOf("}");
+
+
+    if (
+        start !== -1 &&
+        end !== -1 &&
+        end > start
+    ) {
 
         try {
 
             return JSON.parse(
-                cleaned
+                cleaned.substring(
+                    start,
+                    end + 1
+                )
             );
 
-        } catch {
-
-            return {
-                action:
-                    "NONE",
-
-                query:
-                    "",
-
-                reply:
-                    text,
-
-                saveMemory:
-                    false,
-
-                memory:
-                    ""
-            };
-        }
+        } catch {}
     }
+
+
+    return {
+        action: "NONE",
+        query: "",
+        reply: cleaned,
+        saveMemory: false,
+        memory: ""
+    };
 }
 
 
@@ -1484,9 +1757,7 @@ async function executeAction(
 
         window.open(
             "https://www.youtube.com/results?search_query=" +
-            encodeURIComponent(
-                query
-            ),
+            encodeURIComponent(query),
             "_blank"
         );
 
@@ -1505,9 +1776,7 @@ async function executeAction(
 
         window.open(
             "https://www.google.com/search?q=" +
-            encodeURIComponent(
-                query
-            ),
+            encodeURIComponent(query),
             "_blank"
         );
     }
@@ -1527,8 +1796,7 @@ async function saveMemory(memory) {
     try {
 
         if (
-            currentMode ===
-                "family" &&
+            currentMode === "family" &&
             currentFamilyId
         ) {
 
@@ -1601,8 +1869,7 @@ async function getMemoryContext() {
 
 
         if (
-            currentMode ===
-                "family" &&
+            currentMode === "family" &&
             currentFamilyId
         ) {
 
@@ -1628,10 +1895,11 @@ async function getMemoryContext() {
             snapshot.forEach(
                 item => {
 
-                    result.push(
-                        item.data()
-                            .memory
-                    );
+                    const memory =
+                        item.data().memory;
+
+                    if (memory)
+                        result.push(memory);
                 }
             );
 
@@ -1659,10 +1927,11 @@ async function getMemoryContext() {
             snapshot.forEach(
                 item => {
 
-                    result.push(
-                        item.data()
-                            .memory
-                    );
+                    const memory =
+                        item.data().memory;
+
+                    if (memory)
+                        result.push(memory);
                 }
             );
         }
@@ -1675,6 +1944,7 @@ async function getMemoryContext() {
     } catch (error) {
 
         console.error(
+            "MEMORY CONTEXT:",
             error
         );
 
@@ -1764,12 +2034,11 @@ async function loadMemories() {
 // PRIVATE MODE
 // ============================================================
 
-privateMode.addEventListener(
+privateMode?.addEventListener(
     "click",
     async () => {
 
-        currentMode =
-            "private";
+        currentMode = "private";
 
 
         privateMode.classList.add(
@@ -1795,22 +2064,22 @@ privateMode.addEventListener(
 // FAMILY MODE
 // ============================================================
 
-familyMode.addEventListener(
+familyMode?.addEventListener(
     "click",
     async () => {
 
         if (!currentFamilyId) {
 
             speak(
-                "Du bist noch keiner Familie beigetreten."
+                "Du bist noch keiner Familie beigetreten.",
+                false
             );
 
             return;
         }
 
 
-        currentMode =
-            "family";
+        currentMode = "family";
 
 
         familyMode.classList.add(
@@ -1836,14 +2105,15 @@ familyMode.addEventListener(
 // CREATE FAMILY
 // ============================================================
 
-createFamily.addEventListener(
+createFamily?.addEventListener(
     "click",
     async () => {
 
         if (!currentUser) {
 
             speak(
-                "Bitte melde dich zuerst an."
+                "Bitte melde dich zuerst an.",
+                false
             );
 
             return;
@@ -1855,14 +2125,8 @@ createFamily.addEventListener(
             const code =
                 crypto
                     .randomUUID()
-                    .replaceAll(
-                        "-",
-                        ""
-                    )
-                    .substring(
-                        0,
-                        8
-                    )
+                    .replaceAll("-", "")
+                    .substring(0, 8)
                     .toUpperCase();
 
 
@@ -1915,8 +2179,7 @@ createFamily.addEventListener(
                         code
                 },
                 {
-                    merge:
-                        true
+                    merge: true
                 }
             );
 
@@ -1930,17 +2193,21 @@ createFamily.addEventListener(
 
 
             speak(
-                `Familie erstellt. Dein Familiencode ist ${code}.`
+                `Familie erstellt. Dein Familiencode ist ${code}.`,
+                false
             );
 
         } catch (error) {
 
             console.error(
+                "CREATE FAMILY:",
                 error
             );
 
+
             speak(
-                "Die Familie konnte nicht erstellt werden."
+                "Die Familie konnte nicht erstellt werden.",
+                false
             );
         }
     }
@@ -1951,14 +2218,15 @@ createFamily.addEventListener(
 // JOIN FAMILY
 // ============================================================
 
-joinFamily.addEventListener(
+joinFamily?.addEventListener(
     "click",
     async () => {
 
         if (!currentUser) {
 
             speak(
-                "Bitte melde dich zuerst an."
+                "Bitte melde dich zuerst an.",
+                false
             );
 
             return;
@@ -1996,7 +2264,8 @@ joinFamily.addEventListener(
             if (!family.exists()) {
 
                 speak(
-                    "Diese Familie wurde nicht gefunden."
+                    "Diese Familie wurde nicht gefunden.",
+                    false
                 );
 
                 return;
@@ -2036,8 +2305,7 @@ joinFamily.addEventListener(
                         id
                 },
                 {
-                    merge:
-                        true
+                    merge: true
                 }
             );
 
@@ -2051,17 +2319,21 @@ joinFamily.addEventListener(
 
 
             speak(
-                "Du bist der Familie beigetreten."
+                "Du bist der Familie beigetreten.",
+                false
             );
 
         } catch (error) {
 
             console.error(
+                "JOIN FAMILY:",
                 error
             );
 
+
             speak(
-                "Der Beitritt zur Familie ist fehlgeschlagen."
+                "Der Beitritt zur Familie ist fehlgeschlagen.",
+                false
             );
         }
     }
@@ -2072,7 +2344,7 @@ joinFamily.addEventListener(
 // LOGIN
 // ============================================================
 
-loginButton.addEventListener(
+loginButton?.addEventListener(
     "click",
     login
 );
@@ -2093,7 +2365,7 @@ function handleAIError(error) {
 
 
     console.error(
-        "AI:",
+        "AI ERROR:",
         message
     );
 
@@ -2110,7 +2382,28 @@ function handleAIError(error) {
 
 
         speak(
-            "Das Gemini Limit ist momentan erreicht. Bitte versuche es später erneut."
+            "Das Gemini Limit ist momentan erreicht. Bitte versuche es später erneut.",
+            false
+        );
+
+
+        return;
+    }
+
+
+    if (
+        /timeout/i.test(message)
+    ) {
+
+        setState(
+            "FEHLER",
+            "Gemini antwortet zu langsam"
+        );
+
+
+        speak(
+            "Die KI antwortet gerade zu langsam. Bitte versuche es noch einmal.",
+            false
         );
 
 
@@ -2140,7 +2433,8 @@ function handleAIError(error) {
     } else {
 
         speak(
-            reply
+            reply,
+            false
         );
     }
 }
@@ -2155,6 +2449,7 @@ setState(
     "Nova wartet"
 );
 
+
 console.log(
-    "NOVA FAMILY AI ONLINE"
+    "NOVA FAMILY AI ONLINE — VOICE FIXED"
 );
