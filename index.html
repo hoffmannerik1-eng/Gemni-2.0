@@ -1,501 +1,444 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nova Family AI</title>
 
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+* {
+    box-sizing: border-box;
 }
 
-body{
-    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:#000;
-    color:#fff;
-    min-height:100vh;
-    overflow:hidden;
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
 }
 
-.app{
-    height:100vh;
-    display:flex;
-    flex-direction:column;
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app {
+    width: 100%;
+    height: 100%;
+    position: relative;
     background:
-        radial-gradient(circle at 50% 35%,#202020 0%,#080808 45%,#000 100%);
+        radial-gradient(circle at 50% 40%, #1d1d1d 0%, #090909 35%, #000 75%);
+    display: flex;
+    flex-direction: column;
 }
 
-header{
-    height:74px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 28px;
-    border-bottom:1px solid #252525;
-    background:rgba(0,0,0,.78);
-    backdrop-filter:blur(20px);
-    z-index:5;
+/* HEADER */
+
+header {
+    height: 70px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    border-bottom: 1px solid #242424;
+    background: rgba(0,0,0,.75);
+    backdrop-filter: blur(15px);
+    z-index: 5;
 }
 
-.logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-size:20px;
-    font-weight:700;
-    letter-spacing:-.5px;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
 }
 
-.logoDot{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:#fff;
-    position:relative;
-    box-shadow:0 0 25px rgba(255,255,255,.2);
+.logoDot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 25px rgba(255,255,255,.5);
 }
 
-.logoDot:after{
-    content:"";
-    position:absolute;
-    width:9px;
-    height:9px;
-    background:#000;
-    border-radius:50%;
-    top:12px;
-    left:12px;
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.headerRight{
-    display:flex;
-    align-items:center;
-    gap:10px;
+.quota {
+    min-width: 155px;
+    padding: 8px 12px;
+    border: 1px solid #292929;
+    border-radius: 12px;
+    background: #0d0d0d;
 }
 
-button{
-    font-family:inherit;
-    cursor:pointer;
-    border:none;
+.quotaTop {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 6px;
 }
 
-.headerBtn{
-    padding:10px 16px;
-    border-radius:12px;
-    background:#fff;
-    color:#000;
-    font-weight:600;
-    transition:.2s;
+.quotaBar {
+    height: 4px;
+    background: #292929;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.headerBtn:hover{
-    transform:translateY(-1px);
-    background:#ddd;
+.quotaFill {
+    height: 100%;
+    width: 0%;
+    background: #fff;
+    transition: width .3s ease;
 }
 
-.headerBtn.light{
-    background:#111;
-    color:#fff;
-    border:1px solid #333;
+.logoutBtn {
+    border: 1px solid #333;
+    background: #111;
+    color: white;
+    border-radius: 10px;
+    padding: 9px 13px;
 }
 
-/* QUOTA */
-
-.quotaBox{
-    position:fixed;
-    top:88px;
-    left:18px;
-    width:235px;
-    padding:14px 16px;
-    background:rgba(12,12,12,.94);
-    border:1px solid #292929;
-    border-radius:16px;
-    box-shadow:0 10px 35px rgba(0,0,0,.5);
-    backdrop-filter:blur(18px);
-    z-index:20;
-}
-
-.quotaTop{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    color:#fff;
-    font-size:13px;
-    margin-bottom:9px;
-}
-
-.quotaTitle{
-    font-weight:650;
-}
-
-#quotaText{
-    font-weight:800;
-    font-size:13px;
-}
-
-.quotaBar{
-    width:100%;
-    height:8px;
-    background:#292929;
-    border-radius:20px;
-    overflow:hidden;
-}
-
-#quotaFill{
-    width:100%;
-    height:100%;
-    background:#fff;
-    border-radius:20px;
-    transition:width .35s ease;
-}
-
-#quotaStatus{
-    margin-top:7px;
-    color:#888;
-    font-size:11px;
-}
-
-#quotaReset{
-    margin-top:9px;
-    display:none;
-    width:100%;
-    padding:7px 10px;
-    border-radius:9px;
-    background:#fff;
-    color:#000;
-    font-size:11px;
-    font-weight:600;
+.logoutBtn:hover {
+    background: #1d1d1d;
 }
 
 /* MAIN */
 
-main{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    min-height:0;
+main {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
 }
 
-.coreArea{
-    flex:0 0 43%;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    position:relative;
+.hero {
+    flex: 1;
+    width: min(900px, 100%);
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.core{
-    width:180px;
-    height:180px;
-    border-radius:50%;
+/* ORB */
+
+.orb {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    position: relative;
     background:
-        radial-gradient(
-            circle at 35% 28%,
-            #ffffff 0%,
-            #ffffff 38%,
-            #eeeeee 62%,
-            #cfcfcf 82%,
-            #999 100%
-        );
+        radial-gradient(circle at 35% 30%, #fff 0%, #dedede 18%, #888 43%, #292929 68%, #050505 100%);
     box-shadow:
-        0 0 35px rgba(255,255,255,.18),
-        0 25px 70px rgba(0,0,0,.8),
-        inset 0 0 30px rgba(255,255,255,.9);
-    position:relative;
-    transition:.35s;
+        0 0 25px rgba(255,255,255,.15),
+        0 0 80px rgba(255,255,255,.08),
+        inset -25px -25px 45px rgba(0,0,0,.65),
+        inset 15px 15px 25px rgba(255,255,255,.25);
+    transition: transform .3s ease, box-shadow .3s ease;
 }
 
-.core:before{
-    content:"";
-    position:absolute;
-    inset:-18px;
-    border-radius:50%;
-    border:1px solid rgba(255,255,255,.18);
+.orb::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.08);
 }
 
-.core:after{
-    content:"";
-    position:absolute;
-    inset:-35px;
-    border-radius:50%;
-    border:1px solid rgba(255,255,255,.07);
-}
-
-.core.listening{
-    transform:scale(1.07);
+.orb.listening {
+    animation: listenPulse 1.1s infinite alternate;
     box-shadow:
-        0 0 55px rgba(255,255,255,.35),
-        0 25px 70px rgba(0,0,0,.8),
-        inset 0 0 30px rgba(255,255,255,1);
+        0 0 35px rgba(255,255,255,.3),
+        0 0 100px rgba(255,255,255,.12);
 }
 
-.core.thinking{
-    animation:pulse 1.1s infinite;
+.orb.thinking {
+    animation: thinkingPulse .8s infinite alternate;
 }
 
-.core.speaking{
-    animation:speakPulse .75s infinite alternate;
+.orb.speaking {
+    animation: speakingPulse .35s infinite alternate;
 }
 
-@keyframes pulse{
-    0%,100%{
-        transform:scale(1);
+@keyframes listenPulse {
+    from {
+        transform: scale(1);
     }
-
-    50%{
-        transform:scale(1.06);
+    to {
+        transform: scale(1.07);
     }
 }
 
-@keyframes speakPulse{
-    from{
-        transform:scale(1);
+@keyframes thinkingPulse {
+    from {
+        transform: scale(.97) rotate(0deg);
     }
-
-    to{
-        transform:scale(1.055);
+    to {
+        transform: scale(1.04) rotate(8deg);
     }
 }
 
-.coreCenter{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:31px;
-    font-weight:800;
-    color:#000;
-    letter-spacing:-2px;
+@keyframes speakingPulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.08);
+    }
 }
 
-.status{
-    margin-top:30px;
-    font-size:13px;
-    color:#777;
-    letter-spacing:.8px;
-    text-transform:uppercase;
+.novaTitle {
+    margin-top: 25px;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 3px;
 }
 
-.title{
-    margin-top:8px;
-    font-size:30px;
-    font-weight:750;
-    letter-spacing:-1.5px;
+.status {
+    margin-top: 8px;
+    color: #888;
+    font-size: 14px;
 }
 
-.chat{
-    width:min(900px,calc(100% - 32px));
-    flex:1;
-    min-height:150px;
-    overflow-y:auto;
-    padding:10px 0 20px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
+/* CHAT */
+
+.chat {
+    width: min(850px, calc(100% - 30px));
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 5px 5px 15px;
+    scrollbar-width: thin;
 }
 
-.message{
-    max-width:75%;
-    padding:13px 16px;
-    border-radius:18px;
-    line-height:1.45;
-    font-size:15px;
-    white-space:pre-wrap;
+.message {
+    display: flex;
+    margin: 9px 0;
 }
 
-.message.user{
-    align-self:flex-end;
-    background:#fff;
-    color:#000;
-    border-bottom-right-radius:5px;
+.message.user {
+    justify-content: flex-end;
 }
 
-.message.nova{
-    align-self:flex-start;
-    background:#111;
-    color:#fff;
-    border:1px solid #292929;
-    border-bottom-left-radius:5px;
-    box-shadow:0 5px 20px rgba(0,0,0,.35);
+.bubble {
+    max-width: 75%;
+    padding: 11px 15px;
+    border-radius: 16px;
+    line-height: 1.4;
+    font-size: 14px;
 }
 
-.bottom{
-    width:min(900px,calc(100% - 32px));
-    margin:0 auto 22px;
+.message.nova .bubble {
+    background: #151515;
+    border: 1px solid #292929;
 }
 
-.inputBox{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:#0d0d0d;
-    border:1px solid #303030;
-    border-radius:20px;
-    padding:8px;
-    box-shadow:0 10px 35px rgba(0,0,0,.5);
+.message.user .bubble {
+    background: #fff;
+    color: #000;
 }
 
-#input{
-    flex:1;
-    border:none;
-    outline:none;
-    background:transparent;
-    padding:13px;
-    font-size:15px;
-    color:#fff;
+/* CONTROLS */
+
+.bottom {
+    width: min(900px, calc(100% - 24px));
+    padding: 10px 0 18px;
 }
 
-#input::placeholder{
-    color:#777;
+.inputRow {
+    display: flex;
+    gap: 8px;
+    background: #101010;
+    border: 1px solid #292929;
+    padding: 7px;
+    border-radius: 17px;
 }
 
-.iconBtn{
-    width:45px;
-    height:45px;
-    border-radius:14px;
-    background:#1d1d1d;
-    color:#fff;
-    font-size:18px;
+#promptInput {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #fff;
+    padding: 10px;
 }
 
-.iconBtn.active{
-    background:#fff;
-    color:#000;
+#promptInput::placeholder {
+    color: #666;
 }
 
-.sendBtn{
-    width:45px;
-    height:45px;
-    border-radius:14px;
-    background:#fff;
-    color:#000;
-    font-size:18px;
+.sendBtn {
+    width: 45px;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    background: #fff;
+    color: #000;
+    font-weight: bold;
 }
 
-.tools{
-    display:flex;
-    justify-content:center;
-    gap:8px;
-    margin-top:10px;
+.tools {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 9px;
 }
 
-.toolBtn{
-    background:#111;
-    border:1px solid #292929;
-    padding:8px 12px;
-    border-radius:10px;
-    color:#aaa;
-    font-size:12px;
+.toolBtn {
+    background: #0d0d0d;
+    color: #fff;
+    border: 1px solid #292929;
+    border-radius: 11px;
+    padding: 9px 15px;
 }
 
-.toolBtn:hover{
-    background:#1c1c1c;
-    color:#fff;
+.toolBtn:hover {
+    background: #1b1b1b;
+}
+
+.micActive {
+    background: #fff !important;
+    color: #000 !important;
 }
 
 /* LOGIN */
 
-.loginOverlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.97);
-    backdrop-filter:blur(20px);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:50;
+.loginOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background:
+        radial-gradient(circle at center, #171717 0%, #050505 40%, #000 80%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
-.loginCard{
-    width:min(420px,calc(100% - 40px));
-    background:#0c0c0c;
-    border:1px solid #292929;
-    border-radius:25px;
-    padding:38px;
-    text-align:center;
-    box-shadow:0 30px 90px rgba(0,0,0,.8);
+.loginOverlay.hidden {
+    display: none;
 }
 
-.loginCard h1{
-    font-size:32px;
-    margin-bottom:10px;
+.loginCard {
+    width: min(420px, 100%);
+    padding: 42px 32px;
+    background: rgba(10,10,10,.95);
+    border: 1px solid #303030;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 20px 80px rgba(0,0,0,.8);
 }
 
-.loginCard p{
-    color:#777;
-    margin-bottom:25px;
+.loginOrb {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    background:
+        radial-gradient(circle at 30% 25%, #fff, #aaa 35%, #222 75%, #000);
+    box-shadow: 0 0 40px rgba(255,255,255,.15);
 }
 
-.googleLogin{
-    width:100%;
-    padding:14px;
-    border-radius:14px;
-    background:#fff;
-    color:#000;
-    font-size:15px;
-    font-weight:650;
+.loginCard h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 4px;
 }
 
-.googleLogin:disabled{
-    opacity:.55;
-    cursor:wait;
+.loginCard p {
+    color: #888;
+    margin: 12px 0 28px;
+    line-height: 1.5;
 }
 
-.loginError{
-    margin-top:14px;
-    color:#ff7777;
-    font-size:12px;
-    line-height:1.4;
-    display:none;
+.googleBtn {
+    width: 100%;
+    height: 50px;
+    border-radius: 13px;
+    border: none;
+    background: #fff;
+    color: #000;
+    font-weight: 700;
 }
 
-/* MOBILE */
+.googleBtn:hover {
+    background: #ddd;
+}
 
-@media(max-width:600px){
+.loginError {
+    color: #ff7777;
+    font-size: 13px;
+    margin-top: 15px;
+    line-height: 1.5;
+}
 
-    header{
-        padding:0 16px;
-        height:64px;
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+
+    header {
+        height: 60px;
+        padding: 0 13px;
     }
 
-    .logo{
-        font-size:17px;
+    .logo {
+        font-size: 15px;
     }
 
-    .headerBtn{
-        padding:8px 11px;
-        font-size:12px;
+    .logoDot {
+        width: 25px;
+        height: 25px;
     }
 
-    .quotaBox{
-        top:74px;
-        left:10px;
-        width:185px;
-        padding:11px 12px;
+    .quota {
+        min-width: 110px;
     }
 
-    .core{
-        width:135px;
-        height:135px;
+    .logoutBtn {
+        display: none;
     }
 
-    .coreCenter{
-        font-size:25px;
+    .orb {
+        width: 140px;
+        height: 140px;
     }
 
-    .title{
-        font-size:25px;
+    .novaTitle {
+        font-size: 24px;
     }
 
-    .message{
-        max-width:88%;
+    .chat {
+        max-height: 230px;
+    }
+
+    .bubble {
+        max-width: 88%;
+    }
+
+    .tools {
+        flex-wrap: wrap;
     }
 }
 </style>
@@ -506,7 +449,6 @@ main{
 <div class="app">
 
 <header>
-
     <div class="logo">
         <div class="logoDot"></div>
         NOVA
@@ -514,184 +456,113 @@ main{
 
     <div class="headerRight">
 
-        <button
-            class="headerBtn light"
-            id="voiceModeButton">
-            Sprache
-        </button>
+        <div class="quota">
+            <div class="quotaTop">
+                <span>Fragen</span>
+                <span id="quotaText">0 / 20</span>
+            </div>
 
-        <button
-            class="headerBtn"
-            id="loginButton">
-            Anmelden
-        </button>
+            <div class="quotaBar">
+                <div class="quotaFill" id="quotaFill"></div>
+            </div>
+        </div>
 
-        <button
-            class="headerBtn light"
-            id="logoutButton"
-            style="display:none">
+        <button class="logoutBtn" id="logoutBtn">
             Abmelden
         </button>
 
     </div>
-
 </header>
-
-<div class="quotaBox">
-
-    <div class="quotaTop">
-
-        <span class="quotaTitle">
-            Fragen übrig
-        </span>
-
-        <strong id="quotaText">
-            20 / 20
-        </strong>
-
-    </div>
-
-    <div class="quotaBar">
-        <div id="quotaFill"></div>
-    </div>
-
-    <div id="quotaStatus">
-        Bereit
-    </div>
-
-    <button id="quotaReset">
-        Zähler zurücksetzen
-    </button>
-
-</div>
 
 <main>
 
-<section class="coreArea">
+    <section class="hero">
 
-    <div
-        class="core"
-        id="core">
+        <div class="orb" id="orb"></div>
 
-        <div class="coreCenter">
-            N
+        <div class="novaTitle">
+            Nova
         </div>
 
-    </div>
+        <div class="status" id="status">
+            Bereit
+        </div>
 
-    <div
-        class="status"
-        id="state">
-        System bereit
-    </div>
+        <div class="chat" id="chat"></div>
 
-    <div class="title">
-        Nova
-    </div>
+    </section>
 
-</section>
+    <section class="bottom">
 
-<section
-    class="chat"
-    id="chat">
-</section>
+        <div class="inputRow">
 
-<section class="bottom">
+            <input
+                id="promptInput"
+                type="text"
+                autocomplete="off"
+                placeholder="Sprich mit Nova..."
+            >
 
-    <div class="inputBox">
+            <button class="sendBtn" id="sendBtn">
+                ➤
+            </button>
 
-        <button
-            class="iconBtn"
-            id="micButton">
-            🎙
-        </button>
+        </div>
 
-        <input
-            id="input"
-            type="text"
-            autocomplete="off"
-            placeholder="Sprich mit Nova...">
+        <div class="tools">
 
-        <button
-            class="sendBtn"
-            id="sendButton">
-            ↑
-        </button>
+            <button class="toolBtn" id="micBtn">
+                🎙 Mikrofon
+            </button>
 
-    </div>
+            <button class="toolBtn" id="youtubeBtn">
+                YouTube
+            </button>
 
-    <div class="tools">
+            <button class="toolBtn" id="googleBtn">
+                Google
+            </button>
 
-        <button
-            class="toolBtn"
-            id="youtubeButton">
-            YouTube
-        </button>
+        </div>
 
-        <button
-            class="toolBtn"
-            id="googleButton">
-            Google
-        </button>
-
-        <button
-            class="toolBtn"
-            id="testVoiceButton">
-            Stimme testen
-        </button>
-
-    </div>
-
-</section>
+    </section>
 
 </main>
+
 </div>
+
 
 <!-- LOGIN -->
 
-<div
-    class="loginOverlay"
-    id="loginOverlay">
+<div class="loginOverlay" id="loginOverlay">
 
     <div class="loginCard">
 
-        <div
-            class="logo"
-            style="justify-content:center;margin-bottom:20px">
+        <div class="loginOrb"></div>
 
-            <div class="logoDot"></div>
-            NOVA
-
-        </div>
-
-        <h1>
-            Nova Family AI
-        </h1>
+        <h1>NOVA</h1>
 
         <p>
-            Deine persönliche KI.
+            Deine persönliche KI für Fragen,
+            Gespräche und Aufgaben.
         </p>
 
-        <button
-            class="googleLogin"
-            id="googleLogin">
+        <button class="googleBtn" id="googleLoginBtn">
             Mit Google anmelden
         </button>
 
-        <div
-            class="loginError"
-            id="loginError">
-        </div>
+        <div class="loginError" id="loginError"></div>
 
     </div>
 
 </div>
 
+
 <script type="module">
 
-/* =====================================================
+/* =========================================================
    FIREBASE
-===================================================== */
+========================================================= */
 
 import {
     initializeApp
@@ -714,98 +585,86 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 
-/* =====================================================
-   FIREBASE CONFIG
-===================================================== */
+/* =========================================================
+   DEINE NEUE FIREBASE KONFIGURATION
+========================================================= */
 
 const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIgC9EtrE",
-
-    authDomain:
-        "nova-68fc1.firebaseapp.com",
-
-    projectId:
-        "nova-68fc1",
-
-    storageBucket:
-        "nova-68fc1.firebasestorage.app",
-
-    messagingSenderId:
-        "1020069093020",
-
-    appId:
-        "1:1020069093020:web:9be72af9e60af659475759"
-
+    apiKey: "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIg9C9EtrE",
+    authDomain: "nova-68fc1.firebaseapp.com",
+    projectId: "nova-68fc1",
+    storageBucket: "nova-68fc1.firebasestorage.app",
+    messagingSenderId: "1020069093020",
+    appId: "1:1020069093020:web:9be72af9e60af659475759"
 };
 
 
-/* =====================================================
+/* =========================================================
    FIREBASE START
-===================================================== */
+========================================================= */
 
-const app =
-    initializeApp(firebaseConfig);
+let app;
+let auth;
+let db;
 
-const auth =
-    getAuth(app);
+try {
 
-const db =
-    getFirestore(app);
+    app = initializeApp(firebaseConfig);
 
-const provider =
-    new GoogleAuthProvider();
+    auth = getAuth(app);
+
+    db = getFirestore(app);
+
+} catch(error) {
+
+    console.error(error);
+
+    document.getElementById("loginError").textContent =
+        "Firebase konnte nicht gestartet werden: " +
+        error.message;
+
+}
 
 
-/* =====================================================
-   DOM
-===================================================== */
-
-const chat =
-    document.getElementById("chat");
-
-const input =
-    document.getElementById("input");
-
-const state =
-    document.getElementById("state");
-
-const core =
-    document.getElementById("core");
-
-const micButton =
-    document.getElementById("micButton");
-
-const sendButton =
-    document.getElementById("sendButton");
-
-const loginButton =
-    document.getElementById("loginButton");
-
-const logoutButton =
-    document.getElementById("logoutButton");
-
-const googleLogin =
-    document.getElementById("googleLogin");
+/* =========================================================
+   ELEMENTE
+========================================================= */
 
 const loginOverlay =
     document.getElementById("loginOverlay");
 
+const googleLoginBtn =
+    document.getElementById("googleLoginBtn");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
 const loginError =
     document.getElementById("loginError");
 
-const voiceModeButton =
-    document.getElementById("voiceModeButton");
+const promptInput =
+    document.getElementById("promptInput");
 
-const youtubeButton =
-    document.getElementById("youtubeButton");
+const sendBtn =
+    document.getElementById("sendBtn");
 
-const googleButton =
-    document.getElementById("googleButton");
+const micBtn =
+    document.getElementById("micBtn");
 
-const testVoiceButton =
-    document.getElementById("testVoiceButton");
+const youtubeBtn =
+    document.getElementById("youtubeBtn");
+
+const googleBtn =
+    document.getElementById("googleBtn");
+
+const chat =
+    document.getElementById("chat");
+
+const status =
+    document.getElementById("status");
+
+const orb =
+    document.getElementById("orb");
 
 const quotaText =
     document.getElementById("quotaText");
@@ -813,16 +672,192 @@ const quotaText =
 const quotaFill =
     document.getElementById("quotaFill");
 
-const quotaStatus =
-    document.getElementById("quotaStatus");
 
-const quotaReset =
-    document.getElementById("quotaReset");
+/* =========================================================
+   GOOGLE LOGIN
+========================================================= */
+
+const provider =
+    new GoogleAuthProvider();
+
+provider.setCustomParameters({
+    prompt: "select_account"
+});
 
 
-/* =====================================================
-   FRAGENLIMIT
-===================================================== */
+googleLoginBtn.addEventListener("click", async () => {
+
+    if (!auth) {
+        loginError.textContent =
+            "Firebase ist nicht korrekt eingerichtet.";
+        return;
+    }
+
+    loginError.textContent = "";
+
+    googleLoginBtn.disabled = true;
+    googleLoginBtn.textContent = "Anmeldung läuft...";
+
+    try {
+
+        await signInWithRedirect(
+            auth,
+            provider
+        );
+
+    } catch(error) {
+
+        console.error(error);
+
+        loginError.textContent =
+            "Anmeldung fehlgeschlagen: " +
+            error.code +
+            " – " +
+            error.message;
+
+        googleLoginBtn.disabled = false;
+        googleLoginBtn.textContent =
+            "Mit Google anmelden";
+    }
+
+});
+
+
+/* =========================================================
+   REDIRECT RESULT
+========================================================= */
+
+if (auth) {
+
+    try {
+
+        const result =
+            await getRedirectResult(auth);
+
+        if (result && result.user) {
+
+            console.log(
+                "Google Login erfolgreich:",
+                result.user.email
+            );
+
+        }
+
+    } catch(error) {
+
+        console.error(
+            "Redirect Login Fehler:",
+            error
+        );
+
+        loginError.textContent =
+            "Anmeldung fehlgeschlagen: " +
+            error.code +
+            " – " +
+            error.message;
+
+    }
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+if (auth) {
+
+    onAuthStateChanged(
+        auth,
+        async (user) => {
+
+            if (user) {
+
+                loginOverlay.classList.add("hidden");
+
+                await createUserDocument(user);
+
+                addNovaMessage(
+                    "Hallo! Ich bin Nova. Wie kann ich dir helfen?"
+                );
+
+            } else {
+
+                loginOverlay.classList.remove("hidden");
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FIRESTORE USER
+========================================================= */
+
+async function createUserDocument(user) {
+
+    if (!db) return;
+
+    try {
+
+        const userRef =
+            doc(db, "users", user.uid);
+
+        const snapshot =
+            await getDoc(userRef);
+
+        if (!snapshot.exists()) {
+
+            await setDoc(
+                userRef,
+                {
+                    name: user.displayName || "",
+                    email: user.email || "",
+                    createdAt: new Date().toISOString()
+                }
+            );
+
+        }
+
+    } catch(error) {
+
+        console.error(
+            "Firestore Fehler:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+logoutBtn.addEventListener("click", async () => {
+
+    if (!auth) return;
+
+    try {
+
+        await signOut(auth);
+
+    } catch(error) {
+
+        console.error(error);
+
+    }
+
+});
+
+
+/* =========================================================
+   QUOTA
+========================================================= */
 
 const MAX_QUESTIONS = 20;
 
@@ -833,67 +868,37 @@ let questionsUsed =
         ) || 0
     );
 
+function updateQuota() {
 
-function updateQuota(){
-
-    const remaining =
-        Math.max(
-            0,
-            MAX_QUESTIONS - questionsUsed
-        );
+    if (questionsUsed > MAX_QUESTIONS) {
+        questionsUsed = MAX_QUESTIONS;
+    }
 
     quotaText.textContent =
-        `${remaining} / ${MAX_QUESTIONS}`;
-
-    const percentage =
-        (remaining / MAX_QUESTIONS) * 100;
+        questionsUsed +
+        " / " +
+        MAX_QUESTIONS;
 
     quotaFill.style.width =
-        percentage + "%";
-
-
-    if(remaining <= 0){
-
-        quotaStatus.textContent =
-            "Limit erreicht";
-
-        quotaReset.style.display =
-            "block";
-
-    }
-
-    else if(remaining <= 5){
-
-        quotaStatus.textContent =
-            "Nur noch wenige Fragen";
-
-        quotaReset.style.display =
-            "none";
-
-    }
-
-    else{
-
-        quotaStatus.textContent =
-            "Bereit";
-
-        quotaReset.style.display =
-            "none";
-
-    }
-
+        (
+            questionsUsed /
+            MAX_QUESTIONS *
+            100
+        ) + "%";
 }
 
+updateQuota();
 
-function useQuestion(){
 
-    if(
-        questionsUsed >=
-        MAX_QUESTIONS
-    ){
+function useQuestion() {
+
+    if (questionsUsed >= MAX_QUESTIONS) {
+
+        addNovaMessage(
+            "Das lokale Fragenlimit von 20 Fragen ist erreicht."
+        );
 
         return false;
-
     }
 
     questionsUsed++;
@@ -906,280 +911,373 @@ function useQuestion(){
     updateQuota();
 
     return true;
-
 }
 
 
-quotaReset.onclick =
-    () => {
+/* =========================================================
+   CHAT
+========================================================= */
 
-        questionsUsed = 0;
+function addUserMessage(text) {
 
-        localStorage.setItem(
-            "nova_questions_used",
-            "0"
-        );
+    const row =
+        document.createElement("div");
 
-        updateQuota();
+    row.className =
+        "message user";
 
-        setState(
-            "Fragenzähler zurückgesetzt"
-        );
+    const bubble =
+        document.createElement("div");
 
-    };
+    bubble.className =
+        "bubble";
 
-
-updateQuota();
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-function setState(text){
-
-    state.textContent =
+    bubble.textContent =
         text;
 
+    row.appendChild(bubble);
+
+    chat.appendChild(row);
+
+    chat.scrollTop =
+        chat.scrollHeight;
 }
 
 
-/* =====================================================
-   VARIABLEN
-===================================================== */
+function addNovaMessage(text) {
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "message nova";
+
+    const bubble =
+        document.createElement("div");
+
+    bubble.className =
+        "bubble";
+
+    bubble.textContent =
+        text;
+
+    row.appendChild(bubble);
+
+    chat.appendChild(row);
+
+    chat.scrollTop =
+        chat.scrollHeight;
+}
+
+
+/* =========================================================
+   GEMINI
+========================================================= */
 
 let model = null;
 
-let currentUser = null;
+async function setupGemini() {
 
-let isListening = false;
+    try {
 
-let isSpeaking = false;
+        const aiModule =
+            await import(
+                "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
+            );
 
-let isThinking = false;
+        const {
+            getAI,
+            getGenerativeModel,
+            GoogleAIBackend
+        } = aiModule;
 
-let voiceMode = true;
+        const ai =
+            getAI(
+                app,
+                {
+                    backend:
+                        new GoogleAIBackend()
+                }
+            );
+
+        model =
+            getGenerativeModel(
+                ai,
+                {
+                    model:
+                        "gemini-3.7-flash"
+                }
+            );
+
+        console.log(
+            "Gemini erfolgreich geladen."
+        );
+
+    } catch(error) {
+
+        console.error(
+            "Gemini Fehler:",
+            error
+        );
+
+    }
+
+}
+
+setupGemini();
+
+
+/* =========================================================
+   NOVA PROMPT
+========================================================= */
+
+const systemInstruction = `
+Du bist Nova, eine moderne persönliche KI.
+
+Antworte auf Deutsch, außer der Benutzer bittet ausdrücklich
+um eine andere Sprache.
+
+Sei freundlich, direkt und hilfreich.
+
+Antworte nicht unnötig lang.
+
+Wenn der Benutzer YouTube öffnen möchte,
+füge exakt am Anfang oder Ende deiner Antwort ein:
+
+[ACTION:YOUTUBE]
+
+Wenn der Benutzer Google öffnen möchte,
+füge exakt ein:
+
+[ACTION:GOOGLE]
+
+Beispiele:
+
+"Öffne YouTube"
+=> [ACTION:YOUTUBE]
+
+"Suche das im Internet"
+=> [ACTION:GOOGLE]
+
+Du kannst normale Fragen beantworten.
+`;
+
+
+/* =========================================================
+   GEMINI ANFRAGE
+========================================================= */
+
+async function askNova(text) {
+
+    if (!model) {
+
+        addNovaMessage(
+            "Das KI-Modell konnte noch nicht geladen werden."
+        );
+
+        return;
+
+    }
+
+    if (!useQuestion()) {
+        return;
+    }
+
+    setThinking(true);
+
+    try {
+
+        const result =
+            await model.generateContent(
+                systemInstruction +
+                "\n\nBenutzer:\n" +
+                text
+            );
+
+        let answer =
+            result.response.text();
+
+        handleActions(answer);
+
+        answer =
+            answer
+                .replace("[ACTION:YOUTUBE]", "")
+                .replace("[ACTION:GOOGLE]", "")
+                .trim();
+
+        if (!answer) {
+            answer = "Erledigt.";
+        }
+
+        addNovaMessage(answer);
+
+        speak(answer);
+
+    } catch(error) {
+
+        console.error(
+            "Gemini Fehler:",
+            error
+        );
+
+        if (
+            error.message &&
+            (
+                error.message.includes("429") ||
+                error.message.includes("Quota") ||
+                error.message.includes("quota")
+            )
+        ) {
+
+            addNovaMessage(
+                "Das Gemini-Fragenlimit ist momentan erreicht. Bitte versuche es später erneut."
+            );
+
+        } else {
+
+            addNovaMessage(
+                "Es ist ein Fehler bei der KI aufgetreten."
+            );
+
+        }
+
+    } finally {
+
+        setThinking(false);
+
+    }
+
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+function handleActions(answer) {
+
+    if (
+        answer.includes(
+            "[ACTION:YOUTUBE]"
+        )
+    ) {
+
+        window.open(
+            "https://www.youtube.com/",
+            "_blank"
+        );
+
+    }
+
+    if (
+        answer.includes(
+            "[ACTION:GOOGLE]"
+        )
+    ) {
+
+        window.open(
+            "https://www.google.com/",
+            "_blank"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SEND
+========================================================= */
+
+async function sendMessage() {
+
+    const text =
+        promptInput.value.trim();
+
+    if (!text) return;
+
+    promptInput.value = "";
+
+    addUserMessage(text);
+
+    await askNova(text);
+
+}
+
+
+sendBtn.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+promptInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DIRECT BUTTONS
+========================================================= */
+
+youtubeBtn.addEventListener(
+    "click",
+    () => {
+
+        window.open(
+            "https://www.youtube.com/",
+            "_blank"
+        );
+
+    }
+);
+
+
+googleBtn.addEventListener(
+    "click",
+    () => {
+
+        window.open(
+            "https://www.google.com/",
+            "_blank"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   VOICE RECOGNITION
+========================================================= */
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
 let recognition = null;
 
-let retryTimer = null;
+let isListening = false;
+let isSpeaking = false;
+let isThinking = false;
+let voiceMode = false;
 
 let micTimeout = null;
 
 const MIC_MAX_TIME = 8000;
 
 
-/* =====================================================
-   NACHRICHT
-===================================================== */
-
-function addMessage(
-    text,
-    type
-){
-
-    const message =
-        document.createElement("div");
-
-    message.className =
-        "message " + type;
-
-    message.textContent =
-        text;
-
-    chat.appendChild(
-        message
-    );
-
-    chat.scrollTop =
-        chat.scrollHeight;
-
-}
-
-
-/* =====================================================
-   STOP LISTENING
-===================================================== */
-
-function stopListening(){
-
-    clearTimeout(
-        micTimeout
-    );
-
-    micTimeout = null;
-
-    if(!recognition){
-
-        isListening = false;
-
-        return;
-
-    }
-
-    try{
-
-        recognition.stop();
-
-    }
-
-    catch(error){
-
-    }
-
-    isListening = false;
-
-    micButton.classList.remove(
-        "active"
-    );
-
-    core.classList.remove(
-        "listening"
-    );
-
-}
-
-
-/* =====================================================
-   SPRACH-AUSGABE
-===================================================== */
-
-function speak(text){
-
-    if(
-        !("speechSynthesis" in window)
-    ){
-
-        return;
-
-    }
-
-    stopListening();
-
-    speechSynthesis.cancel();
-
-    isSpeaking = true;
-
-    core.classList.remove(
-        "listening"
-    );
-
-    core.classList.remove(
-        "thinking"
-    );
-
-    core.classList.add(
-        "speaking"
-    );
-
-    setState(
-        "Nova spricht"
-    );
-
-
-    const utterance =
-        new SpeechSynthesisUtterance(
-            text
-        );
-
-    utterance.lang =
-        "de-DE";
-
-    utterance.rate =
-        0.95;
-
-    utterance.pitch =
-        1;
-
-    utterance.volume =
-        1;
-
-
-    const voices =
-        speechSynthesis.getVoices();
-
-    const germanVoice =
-        voices.find(
-            voice =>
-                voice.lang &&
-                voice.lang
-                    .toLowerCase()
-                    .startsWith("de")
-        );
-
-
-    if(germanVoice){
-
-        utterance.voice =
-            germanVoice;
-
-    }
-
-
-    utterance.onend =
-        () => {
-
-            isSpeaking = false;
-
-            core.classList.remove(
-                "speaking"
-            );
-
-            setState(
-                voiceMode
-                    ? "Bereit"
-                    : "Textmodus"
-            );
-
-
-            if(
-                voiceMode &&
-                !isThinking
-            ){
-
-                setTimeout(
-                    startListening,
-                    700
-                );
-
-            }
-
-        };
-
-
-    utterance.onerror =
-        () => {
-
-            isSpeaking = false;
-
-            core.classList.remove(
-                "speaking"
-            );
-
-            setState(
-                "Bereit"
-            );
-
-        };
-
-
-    speechSynthesis.speak(
-        utterance
-    );
-
-}
-
-
-/* =====================================================
-   SPEECH RECOGNITION
-===================================================== */
-
-const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-
-if(SpeechRecognition){
+if (SpeechRecognition) {
 
     recognition =
         new SpeechRecognition();
@@ -1193,218 +1291,127 @@ if(SpeechRecognition){
     recognition.interimResults =
         false;
 
+    recognition.maxAlternatives =
+        1;
 
-    recognition.onstart =
-        () => {
 
-            if(
-                isSpeaking ||
-                isThinking
-            ){
+    recognition.onstart = () => {
 
-                stopListening();
-
-                return;
-
-            }
-
-
-            isListening = true;
-
-            core.classList.add(
-                "listening"
-            );
-
-            micButton.classList.add(
-                "active"
-            );
-
-            setState(
-                "Ich höre zu"
-            );
-
-
-            clearTimeout(
-                micTimeout
-            );
-
-
-            micTimeout =
-                setTimeout(
-                    () => {
-
-                        if(isListening){
-
-                            stopListening();
-
-                            setState(
-                                "Mikrofon automatisch beendet"
-                            );
-
-                        }
-
-                    },
-                    MIC_MAX_TIME
-                );
-
-        };
-
-
-    recognition.onend =
-        () => {
-
-            clearTimeout(
-                micTimeout
-            );
-
-            micTimeout = null;
-
-            isListening = false;
-
-            micButton.classList.remove(
-                "active"
-            );
-
-            core.classList.remove(
-                "listening"
-            );
-
-
-            if(
-                !isSpeaking &&
-                !isThinking
-            ){
-
-                setState(
-                    voiceMode
-                        ? "Bereit"
-                        : "Textmodus"
-                );
-
-            }
-
-        };
-
-
-    recognition.onerror =
-        event => {
-
-            clearTimeout(
-                micTimeout
-            );
-
-            micTimeout = null;
-
-            console.log(
-                "Speech error:",
-                event.error
-            );
-
-            isListening = false;
-
-            micButton.classList.remove(
-                "active"
-            );
-
-            core.classList.remove(
-                "listening"
-            );
-
-        };
-
-
-    recognition.onresult =
-        event => {
-
-            if(
-                isSpeaking ||
-                isThinking
-            ){
-
-                return;
-
-            }
-
-
-            clearTimeout(
-                micTimeout
-            );
-
-            micTimeout = null;
-
-
-            const text =
-                event
-                    .results[0][0]
-                    .transcript;
-
-
-            input.value =
-                text;
-
-
-            sendMessage();
-
-        };
-
-}
-
-
-/* =====================================================
-   MIKROFON START
-===================================================== */
-
-function startListening(){
-
-    if(!voiceMode)
-        return;
-
-    if(isSpeaking)
-        return;
-
-    if(isThinking)
-        return;
-
-
-    if(
-        questionsUsed >=
-        MAX_QUESTIONS
-    ){
-
-        setState(
-            "Fragenlimit erreicht"
-        );
-
-        return;
-
-    }
-
-
-    if(!recognition){
-
-        setState(
-            "Sprache nicht unterstützt"
-        );
-
-        return;
-
-    }
-
-
-    try{
+        isListening = true;
 
         clearTimeout(
             micTimeout
         );
 
+        micTimeout =
+            setTimeout(
+                () => {
+
+                    stopListening();
+
+                },
+                MIC_MAX_TIME
+            );
+
+        updateVisualState();
+
+    };
+
+
+    recognition.onresult = async event => {
+
+        clearTimeout(
+            micTimeout
+        );
+
+        const transcript =
+            event.results[0][0].transcript;
+
+        if (!transcript.trim()) {
+            return;
+        }
+
+        addUserMessage(
+            transcript
+        );
+
+        await askNova(
+            transcript
+        );
+
+    };
+
+
+    recognition.onend = () => {
+
+        isListening = false;
+
+        clearTimeout(
+            micTimeout
+        );
+
+        micTimeout = null;
+
+        updateVisualState();
+
+    };
+
+
+    recognition.onerror = event => {
+
+        console.error(
+            "Speech Recognition:",
+            event.error
+        );
+
+        isListening = false;
+
+        clearTimeout(
+            micTimeout
+        );
+
+        updateVisualState();
+
+    };
+
+} else {
+
+    micBtn.disabled = true;
+
+    micBtn.textContent =
+        "Mikrofon nicht unterstützt";
+
+}
+
+
+/* =========================================================
+   START LISTENING
+========================================================= */
+
+function startListening() {
+
+    if (!recognition) {
+
+        addNovaMessage(
+            "Dein Browser unterstützt keine Spracherkennung."
+        );
+
+        return;
+
+    }
+
+    if (isSpeaking || isThinking) {
+        return;
+    }
+
+    try {
+
         recognition.start();
 
-    }
-
-    catch(error){
+    } catch(error) {
 
         console.log(
-            "Mic start:",
+            "Recognition konnte nicht gestartet werden.",
             error
         );
 
@@ -1413,1080 +1420,291 @@ function startListening(){
 }
 
 
-/* =====================================================
-   FIREBASE AI
-===================================================== */
+/* =========================================================
+   STOP LISTENING
+========================================================= */
 
-async function setupAI(){
+function stopListening() {
 
-    try{
-
-        setState(
-            "KI wird geladen"
-        );
-
-
-        const aiModule =
-            await import(
-                "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
-            );
-
-
-        const {
-            getAI,
-            getGenerativeModel,
-            GoogleAIBackend
-        } = aiModule;
-
-
-        const ai =
-            getAI(
-                app,
-                {
-                    backend:
-                        new GoogleAIBackend()
-                }
-            );
-
-
-        model =
-            getGenerativeModel(
-                ai,
-                {
-                    model:
-                        "gemini-3.7-flash"
-                }
-            );
-
-
-        setState(
-            "System bereit"
-        );
-
-    }
-
-    catch(error){
-
-        console.error(
-            "AI Setup:",
-            error
-        );
-
-        setState(
-            "KI konnte nicht geladen werden"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   QUOTA FEHLER
-===================================================== */
-
-function handleQuotaError(){
-
-    isThinking = false;
-
-    core.classList.remove(
-        "thinking"
-    );
-
-
-    questionsUsed =
-        MAX_QUESTIONS;
-
-
-    localStorage.setItem(
-        "nova_questions_used",
-        questionsUsed
-    );
-
-
-    updateQuota();
-
-
-    const message =
-        "Mein aktuelles KI-Kontingent ist gerade aufgebraucht. Bitte versuche es später erneut.";
-
-
-    addMessage(
-        message,
-        "nova"
-    );
-
-
-    setState(
-        "Kontingent erreicht"
-    );
-
-
-    if(voiceMode){
-
-        speak(
-            message
-        );
-
-    }
-
+    if (!recognition) return;
 
     clearTimeout(
-        retryTimer
+        micTimeout
     );
 
+    micTimeout = null;
 
-    retryTimer =
-        setTimeout(
-            async () => {
+    try {
 
-                if(!model)
-                    return;
+        recognition.stop();
 
+    } catch(error) {
 
-                try{
-
-                    await model.generateContent(
-                        "Antworte nur mit OK."
-                    );
-
-
-                    setState(
-                        "KI wieder verfügbar"
-                    );
-
-                }
-
-                catch(error){
-
-                    if(
-                        String(error)
-                            .includes("429")
-                    ){
-
-                        handleQuotaRetryOnly();
-
-                    }
-
-                }
-
-            },
-            60000
-        );
-
-}
-
-
-function handleQuotaRetryOnly(){
-
-    clearTimeout(
-        retryTimer
-    );
-
-
-    retryTimer =
-        setTimeout(
-            async () => {
-
-                if(!model)
-                    return;
-
-
-                try{
-
-                    await model.generateContent(
-                        "Antworte nur mit OK."
-                    );
-
-
-                    setState(
-                        "KI wieder verfügbar"
-                    );
-
-                }
-
-                catch(error){
-
-                    if(
-                        String(error)
-                            .includes("429")
-                    ){
-
-                        handleQuotaRetryOnly();
-
-                    }
-
-                }
-
-            },
-            60000
-        );
-
-}
-
-
-/* =====================================================
-   NACHRICHT SENDEN
-===================================================== */
-
-async function sendMessage(){
-
-    const text =
-        input.value.trim();
-
-
-    if(!text)
-        return;
-
-
-    if(isThinking)
-        return;
-
-
-    if(
-        questionsUsed >=
-        MAX_QUESTIONS
-    ){
-
-        const message =
-            "Du hast momentan keine Fragen mehr übrig.";
-
-
-        addMessage(
-            message,
-            "nova"
-        );
-
-
-        setState(
-            "Fragenlimit erreicht"
-        );
-
-
-        if(voiceMode)
-            speak(message);
-
-
-        return;
-
-    }
-
-
-    if(
-        !useQuestion()
-    ){
-
-        return;
-
-    }
-
-
-    input.value =
-        "";
-
-
-    stopListening();
-
-
-    addMessage(
-        text,
-        "user"
-    );
-
-
-    if(!model){
-
-        const message =
-            "Die KI ist noch nicht bereit.";
-
-
-        addMessage(
-            message,
-            "nova"
-        );
-
-
-        if(voiceMode)
-            speak(message);
-
-
-        return;
-
-    }
-
-
-    isThinking =
-        true;
-
-
-    core.classList.add(
-        "thinking"
-    );
-
-
-    setState(
-        "Nova denkt"
-    );
-
-
-    const prompt = `
-
-Du bist Nova, eine moderne persönliche KI.
-
-Antworte immer auf Deutsch.
-
-Sei freundlich, natürlich und intelligent.
-
-Normalerweise kurz antworten.
-
-Wenn der Benutzer ausdrücklich mehr Details möchte,
-darfst du ausführlicher antworten.
-
-Wenn YouTube geöffnet werden soll:
-[ACTION:YOUTUBE]
-
-Wenn Google geöffnet werden soll:
-[ACTION:GOOGLE]
-
-Benutzer:
-${text}
-
-`;
-
-
-    try{
-
-        const result =
-            await model.generateContent(
-                prompt
-            );
-
-
-        let answer =
-            result.response.text();
-
-
-        let action =
-            null;
-
-
-        if(
-            answer.includes(
-                "[ACTION:YOUTUBE]"
-            )
-        ){
-
-            action =
-                "youtube";
-
-
-            answer =
-                answer.replace(
-                    "[ACTION:YOUTUBE]",
-                    ""
-                )
-                .trim();
-
-        }
-
-
-        if(
-            answer.includes(
-                "[ACTION:GOOGLE]"
-            )
-        ){
-
-            action =
-                "google";
-
-
-            answer =
-                answer.replace(
-                    "[ACTION:GOOGLE]",
-                    ""
-                )
-                .trim();
-
-        }
-
-
-        if(!answer){
-
-            answer =
-                "Natürlich.";
-
-        }
-
-
-        addMessage(
-            answer,
-            "nova"
-        );
-
-
-        /*
-           Aktionen öffnen.
-        */
-
-        if(
-            action ===
-            "youtube"
-        ){
-
-            window.open(
-                "https://www.youtube.com/",
-                "_blank"
-            );
-
-        }
-
-
-        if(
-            action ===
-            "google"
-        ){
-
-            window.open(
-                "https://www.google.com/",
-                "_blank"
-            );
-
-        }
-
-
-        isThinking =
-            false;
-
-
-        core.classList.remove(
-            "thinking"
-        );
-
-
-        if(voiceMode){
-
-            speak(
-                answer
-            );
-
-        }
-
-        else{
-
-            setState(
-                "Textmodus"
-            );
-
-        }
-
-    }
-
-    catch(error){
-
-        console.error(
-            "AI:",
-            error
-        );
-
-
-        const errorString =
-            String(error);
-
-
-        if(
-            errorString.includes("429") ||
-            errorString.includes("quota") ||
-            errorString.includes("Quota")
-        ){
-
-            handleQuotaError();
-
-            return;
-
-        }
-
-
-        isThinking =
-            false;
-
-
-        core.classList.remove(
-            "thinking"
-        );
-
-
-        const message =
-            "Ich konnte die KI gerade nicht erreichen.";
-
-
-        addMessage(
-            message,
-            "nova"
-        );
-
-
-        setState(
-            "Verbindungsfehler"
-        );
-
-
-        if(voiceMode){
-
-            speak(
-                message
-            );
-
-        }
+        console.log(error);
 
     }
 
 }
 
 
-/* =====================================================
-   GOOGLE LOGIN
-   REDIRECT STATT POPUP
-===================================================== */
-
-async function login(){
-
-    loginError.style.display =
-        "none";
-
-    googleLogin.disabled =
-        true;
-
-    googleLogin.textContent =
-        "Google wird geöffnet...";
-
-
-    try{
-
-        setState(
-            "Google-Anmeldung wird geöffnet"
-        );
-
-
-        /*
-           Google Login per Redirect.
-           Dadurch wird kein Popup benötigt.
-        */
-
-        await signInWithRedirect(
-            auth,
-            provider
-        );
-
-    }
-
-    catch(error){
-
-        console.error(
-            "Login:",
-            error
-        );
-
-
-        googleLogin.disabled =
-            false;
-
-        googleLogin.textContent =
-            "Mit Google anmelden";
-
-
-        loginError.style.display =
-            "block";
-
-
-        loginError.textContent =
-            "Anmeldung fehlgeschlagen: " +
-            error.code;
-
-
-        setState(
-            "Anmeldung fehlgeschlagen"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   REDIRECT ERGEBNIS
-===================================================== */
-
-async function checkRedirectLogin(){
-
-    try{
-
-        const result =
-            await getRedirectResult(
-                auth
-            );
-
-
-        if(result && result.user){
-
-            console.log(
-                "Google Login erfolgreich:",
-                result.user.email
-            );
-
-        }
-
-    }
-
-    catch(error){
-
-        console.error(
-            "Google Redirect:",
-            error
-        );
-
-
-        if(
-            error.code ===
-            "auth/unauthorized-domain"
-        ){
-
-            loginError.style.display =
-                "block";
-
-
-            loginError.textContent =
-                "Diese Website ist in Firebase noch nicht als erlaubte Domain eingetragen.";
-
-        }
-
-        else if(
-            error.code ===
-            "auth/operation-not-allowed"
-        ){
-
-            loginError.style.display =
-                "block";
-
-
-            loginError.textContent =
-                "Google-Anmeldung ist in Firebase noch nicht aktiviert.";
-
-        }
-
-        else{
-
-            loginError.style.display =
-                "block";
-
-
-            loginError.textContent =
-                "Google-Anmeldung konnte nicht abgeschlossen werden.";
-
-        }
-
-
-        googleLogin.disabled =
-            false;
-
-
-        googleLogin.textContent =
-            "Mit Google anmelden";
-
-    }
-
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-async function logout(){
-
-    try{
-
-        await signOut(
-            auth
-        );
-
-    }
-
-    catch(error){
-
-        console.error(
-            "Logout:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   AUTH STATE
-===================================================== */
-
-onAuthStateChanged(
-    auth,
-    async user => {
-
-        currentUser =
-            user;
-
-
-        if(user){
-
-            loginOverlay.style.display =
-                "none";
-
-
-            loginButton.style.display =
-                "none";
-
-
-            logoutButton.style.display =
-                "block";
-
-
-            googleLogin.disabled =
-                false;
-
-
-            googleLogin.textContent =
-                "Mit Google anmelden";
-
-
-            loginError.style.display =
-                "none";
-
-
-            /*
-               Firestore Benutzer speichern.
-            */
-
-            try{
-
-                const reference =
-                    doc(
-                        db,
-                        "users",
-                        user.uid
-                    );
-
-
-                const snapshot =
-                    await getDoc(
-                        reference
-                    );
-
-
-                if(
-                    !snapshot.exists()
-                ){
-
-                    await setDoc(
-                        reference,
-                        {
-
-                            name:
-                                user.displayName ||
-                                "",
-
-                            email:
-                                user.email ||
-                                "",
-
-                            created:
-                                Date.now()
-
-                        }
-                    );
-
-                }
-
-            }
-
-            catch(error){
-
-                console.log(
-                    "Firestore:",
-                    error
-                );
-
-            }
-
-
-            if(
-                chat.children.length ===
-                0
-            ){
-
-                addMessage(
-                    "Hallo! Ich bin Nova. Wie kann ich dir helfen?",
-                    "nova"
-                );
-
-            }
-
-
-            await setupAI();
-
-        }
-
-        else{
-
-            loginOverlay.style.display =
-                "flex";
-
-
-            loginButton.style.display =
-                "block";
-
-
-            logoutButton.style.display =
-                "none";
-
-
-            googleLogin.disabled =
-                false;
-
-
-            googleLogin.textContent =
-                "Mit Google anmelden";
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-googleLogin.onclick =
-    login;
-
-
-loginButton.onclick =
-    login;
-
-
-logoutButton.onclick =
-    logout;
-
-
-sendButton.onclick =
-    sendMessage;
-
-
-input.addEventListener(
-    "keydown",
-    event => {
-
-        if(
-            event.key ===
-            "Enter"
-        ){
-
-            event.preventDefault();
-
-            sendMessage();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
+/* =========================================================
    MIKROFON BUTTON
-===================================================== */
+========================================================= */
 
-micButton.onclick =
+micBtn.addEventListener(
+    "click",
     () => {
 
-        if(!recognition){
+        voiceMode = true;
 
-            alert(
-                "Dein Browser unterstützt keine Spracherkennung."
-            );
-
-            return;
-
-        }
-
-
-        if(
-            questionsUsed >=
-            MAX_QUESTIONS
-        ){
-
-            setState(
-                "Fragenlimit erreicht"
-            );
-
-            return;
-
-        }
-
-
-        if(isSpeaking)
-            return;
-
-
-        if(isListening){
+        if (isListening) {
 
             stopListening();
 
-            setState(
-                "Mikrofon ausgeschaltet"
-            );
-
-        }
-
-        else{
-
-            voiceMode =
-                true;
-
-
-            voiceModeButton.textContent =
-                "Sprache";
-
+        } else {
 
             startListening();
 
         }
 
-    };
+    }
+);
 
 
-/* =====================================================
-   SPRACHMODUS
-===================================================== */
+/* =========================================================
+   SPEECH SYNTHESIS
+========================================================= */
 
-voiceModeButton.onclick =
-    () => {
+function speak(text) {
 
-        voiceMode =
-            !voiceMode;
+    if (
+        !window.speechSynthesis
+    ) {
+        return;
+    }
+
+    stopListening();
+
+    window.speechSynthesis.cancel();
+
+    isSpeaking = true;
+
+    updateVisualState();
+
+    const utterance =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+    utterance.lang =
+        "de-DE";
+
+    utterance.rate =
+        1;
+
+    utterance.pitch =
+        1;
+
+    utterance.volume =
+        1;
 
 
-        if(!voiceMode){
+    const voices =
+        window.speechSynthesis
+            .getVoices();
 
-            stopListening();
+    const germanVoice =
+        voices.find(
+            voice =>
+                voice.lang
+                    .toLowerCase()
+                    .startsWith("de")
+        );
 
-            speechSynthesis.cancel();
+    if (germanVoice) {
 
-            isSpeaking =
-                false;
+        utterance.voice =
+            germanVoice;
 
-
-            voiceModeButton.textContent =
-                "Text";
+    }
 
 
-            setState(
-                "Textmodus"
+    utterance.onend = () => {
+
+        isSpeaking = false;
+
+        updateVisualState();
+
+        if (voiceMode) {
+
+            setTimeout(
+                () => {
+
+                    if (
+                        !isSpeaking &&
+                        !isThinking &&
+                        voiceMode
+                    ) {
+
+                        startListening();
+
+                    }
+
+                },
+                700
             );
 
         }
 
-        else{
-
-            voiceModeButton.textContent =
-                "Sprache";
+    };
 
 
-            setState(
-                "Bereit"
-            );
+    utterance.onerror = () => {
 
-        }
+        isSpeaking = false;
+
+        updateVisualState();
 
     };
 
 
-/* =====================================================
-   STIMME TESTEN
-===================================================== */
+    window.speechSynthesis.speak(
+        utterance
+    );
 
-testVoiceButton.onclick =
-    () => {
+}
 
-        speak(
-            "Hallo. Ich bin Nova. Meine deutsche Stimme funktioniert."
+
+/* =========================================================
+   THINKING
+========================================================= */
+
+function setThinking(value) {
+
+    isThinking =
+        value;
+
+    updateVisualState();
+
+}
+
+
+/* =========================================================
+   VISUAL STATE
+========================================================= */
+
+function updateVisualState() {
+
+    orb.classList.remove(
+        "listening",
+        "thinking",
+        "speaking"
+    );
+
+    micBtn.classList.remove(
+        "micActive"
+    );
+
+
+    if (isSpeaking) {
+
+        orb.classList.add(
+            "speaking"
         );
 
-    };
+        status.textContent =
+            "Nova spricht...";
+
+        return;
+
+    }
 
 
-/* =====================================================
-   YOUTUBE
-===================================================== */
+    if (isThinking) {
 
-youtubeButton.onclick =
-    () => {
-
-        window.open(
-            "https://www.youtube.com/",
-            "_blank"
+        orb.classList.add(
+            "thinking"
         );
 
-    };
+        status.textContent =
+            "Nova denkt...";
+
+        return;
+
+    }
 
 
-/* =====================================================
-   GOOGLE
-===================================================== */
+    if (isListening) {
 
-googleButton.onclick =
-    () => {
-
-        window.open(
-            "https://www.google.com/",
-            "_blank"
+        orb.classList.add(
+            "listening"
         );
 
-    };
+        micBtn.classList.add(
+            "micActive"
+        );
+
+        status.textContent =
+            "Ich höre zu...";
+
+        return;
+
+    }
 
 
-/* =====================================================
-   VOICES
-===================================================== */
+    status.textContent =
+        "Bereit";
 
-if(
-    "speechSynthesis" in window
-){
+}
 
-    speechSynthesis.onvoiceschanged =
+
+/* =========================================================
+   INITIAL STATUS
+========================================================= */
+
+updateVisualState();
+
+
+/* =========================================================
+   SPEECH VOICES RELOAD
+========================================================= */
+
+if (
+    window.speechSynthesis
+) {
+
+    window.speechSynthesis.onvoiceschanged =
         () => {
 
-            speechSynthesis.getVoices();
+            window.speechSynthesis
+                .getVoices();
 
         };
 
 }
 
 
-/* =====================================================
-   START
-===================================================== */
+/* =========================================================
+   DEBUG INFO
+========================================================= */
 
-setState(
-    "System wird gestartet"
+console.log(
+    "Nova Family AI gestartet."
 );
 
+console.log(
+    "Firebase Projekt:",
+    firebaseConfig.projectId
+);
 
-/*
-   Redirect-Ergebnis prüfen.
-*/
-
-checkRedirectLogin();
+console.log(
+    "Mikrofon-Limit:",
+    MIC_MAX_TIME / 1000,
+    "Sekunden"
+);
 
 </script>
 
 </body>
 </html>
+```
