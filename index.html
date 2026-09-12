@@ -9,448 +9,493 @@
 <style>
 * {
     box-sizing: border-box;
-}
-
-html, body {
     margin: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
 }
 
 body {
-    overflow: hidden;
+    min-height: 100vh;
+    background: #050505;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
 }
 
-.app {
-    width: 100%;
-    height: 100%;
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 35%, rgba(255,255,255,.08), transparent 25%),
+        radial-gradient(circle at 50% 100%, rgba(255,255,255,.035), transparent 35%);
+    pointer-events: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+#app {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background:
-        radial-gradient(circle at 50% 35%, #202020 0%, #090909 38%, #000 78%);
 }
 
-/* ================= HEADER ================= */
+/* =========================
+   HEADER
+========================= */
 
 header {
-    height: 68px;
-    flex-shrink: 0;
+    height: 72px;
+    padding: 0 25px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 22px;
     border-bottom: 1px solid #222;
-    background: rgba(0,0,0,.75);
-    backdrop-filter: blur(18px);
+    background: rgba(5,5,5,.88);
+    backdrop-filter: blur(15px);
+    position: relative;
     z-index: 10;
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 800;
     letter-spacing: 3px;
 }
 
-.logoDot {
-    width: 29px;
-    height: 29px;
-    border-radius: 50%;
-    background: white;
-    box-shadow: 0 0 25px rgba(255,255,255,.45);
+.logo span {
+    color: #aaa;
 }
 
-.headerRight {
+.header-right {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.quota {
-    width: 155px;
-    padding: 8px 11px;
-    border: 1px solid #292929;
-    border-radius: 11px;
-    background: #0d0d0d;
-}
-
-.quotaTop {
-    display: flex;
-    justify-content: space-between;
+.user-name {
     color: #aaa;
-    font-size: 11px;
-    margin-bottom: 6px;
+    font-size: 13px;
 }
 
-.quotaBar {
-    height: 4px;
-    background: #282828;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.quotaFill {
-    height: 100%;
-    width: 0%;
-    background: white;
-    transition: width .3s;
-}
-
-.logoutBtn {
-    padding: 9px 13px;
-    border-radius: 10px;
+.top-btn {
     border: 1px solid #333;
     background: #111;
     color: white;
-    cursor: pointer;
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: .2s;
 }
 
-.logoutBtn:hover {
-    background: #1d1d1d;
+.top-btn:hover {
+    background: #1c1c1c;
+    border-color: #666;
 }
 
-/* ================= MAIN ================= */
+/* =========================
+   LOGIN
+========================= */
 
-main {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.hero {
-    flex: 1;
-    min-height: 0;
-    width: min(900px, 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* ================= ORB ================= */
-
-.orb {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
+#loginScreen {
+    position: fixed;
+    inset: 0;
     background:
-        radial-gradient(
-            circle at 32% 27%,
-            #fff 0%,
-            #ddd 18%,
-            #888 43%,
-            #292929 68%,
-            #000 100%
-        );
+        radial-gradient(circle at center, #161616 0%, #080808 35%, #030303 75%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
 
+.login-box {
+    width: min(430px, calc(100% - 30px));
+    padding: 42px 32px;
+    border: 1px solid #292929;
+    background: rgba(10,10,10,.9);
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 0 70px rgba(255,255,255,.04);
+}
+
+.login-orb {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 28px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff, #888 20%, #222 60%, #050505 75%);
     box-shadow:
-        0 0 25px rgba(255,255,255,.16),
-        0 0 90px rgba(255,255,255,.08),
-        inset -25px -25px 45px rgba(0,0,0,.7),
-        inset 15px 15px 25px rgba(255,255,255,.25);
-
-    transition: .3s;
+        0 0 25px rgba(255,255,255,.15),
+        inset 0 0 30px rgba(255,255,255,.15);
+    animation: breathe 3s infinite ease-in-out;
 }
 
-.orb.listening {
-    animation: listening 1s infinite alternate;
-}
-
-.orb.thinking {
-    animation: thinking .8s infinite alternate;
-}
-
-.orb.speaking {
-    animation: speaking .32s infinite alternate;
-}
-
-@keyframes listening {
-    from {
+@keyframes breathe {
+    0%,100% {
         transform: scale(1);
+        box-shadow: 0 0 25px rgba(255,255,255,.12);
     }
-    to {
-        transform: scale(1.07);
-    }
-}
-
-@keyframes thinking {
-    from {
-        transform: scale(.97) rotate(0deg);
-    }
-    to {
-        transform: scale(1.04) rotate(7deg);
+    50% {
+        transform: scale(1.06);
+        box-shadow: 0 0 45px rgba(255,255,255,.24);
     }
 }
 
-@keyframes speaking {
-    from {
-        transform: scale(1);
-    }
-    to {
-        transform: scale(1.08);
-    }
+.login-box h1 {
+    font-size: 31px;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
 }
 
-.novaTitle {
-    margin-top: 23px;
-    font-size: 28px;
-    letter-spacing: 4px;
-}
-
-.status {
-    margin-top: 8px;
+.login-box p {
     color: #888;
-    font-size: 14px;
+    margin-bottom: 28px;
+    line-height: 1.5;
 }
 
-/* ================= CHAT ================= */
-
-.chat {
-    width: min(850px, calc(100% - 25px));
-    max-height: 240px;
-    overflow-y: auto;
-    margin-top: 12px;
-    padding: 5px;
-}
-
-.message {
-    display: flex;
-    margin: 8px 0;
-}
-
-.message.user {
-    justify-content: flex-end;
-}
-
-.bubble {
-    max-width: 75%;
-    padding: 11px 15px;
-    border-radius: 16px;
-    font-size: 14px;
-    line-height: 1.45;
-}
-
-.message.nova .bubble {
-    background: #151515;
-    border: 1px solid #292929;
-}
-
-.message.user .bubble {
-    background: white;
-    color: black;
-}
-
-/* ================= BOTTOM ================= */
-
-.bottom {
-    width: min(900px, calc(100% - 24px));
-    padding: 10px 0 17px;
-}
-
-.inputRow {
-    display: flex;
-    gap: 7px;
-    padding: 7px;
-    border-radius: 17px;
-    background: #101010;
-    border: 1px solid #292929;
-}
-
-#promptInput {
-    flex: 1;
-    min-width: 0;
-    padding: 10px;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: white;
-}
-
-#promptInput::placeholder {
-    color: #666;
-}
-
-.sendBtn {
-    width: 45px;
-    height: 42px;
-    border: none;
+.google-btn {
+    width: 100%;
+    padding: 15px;
+    border: 0;
     border-radius: 12px;
     background: white;
     color: black;
     font-weight: bold;
-    cursor: pointer;
+    font-size: 15px;
+    transition: .2s;
 }
 
-.tools {
+.google-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255,255,255,.12);
+}
+
+.login-error {
+    margin-top: 15px;
+    color: #ff6b6b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+main {
+    flex: 1;
+    width: min(1100px, 100%);
+    margin: auto;
+    padding: 30px 20px 50px;
     display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 9px;
-}
-
-.toolBtn {
-    padding: 9px 15px;
-    border-radius: 11px;
-    border: 1px solid #292929;
-    background: #0d0d0d;
-    color: white;
-    cursor: pointer;
-}
-
-.toolBtn:hover {
-    background: #1b1b1b;
-}
-
-.micActive {
-    background: white !important;
-    color: black !important;
-}
-
-/* ================= LOGIN ================= */
-
-.loginOverlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #181818 0%,
-            #050505 45%,
-            #000 85%
-        );
 }
 
-.loginOverlay.hidden {
-    display: none;
-}
+/* =========================
+   STATUS
+========================= */
 
-.loginCard {
-    width: min(420px, 100%);
-    padding: 42px 32px;
-    border-radius: 25px;
-    border: 1px solid #303030;
-    background: rgba(9,9,9,.97);
-    box-shadow: 0 25px 100px rgba(0,0,0,.9);
+.status {
+    color: #777;
+    font-size: 13px;
+    min-height: 20px;
+    margin-bottom: 18px;
     text-align: center;
 }
 
-.loginOrb {
-    width: 85px;
-    height: 85px;
-    margin: 0 auto 24px;
-    border-radius: 50%;
-    background:
-        radial-gradient(
-            circle at 30% 25%,
-            white,
-            #aaa 35%,
-            #222 75%,
-            #000
-        );
-    box-shadow: 0 0 40px rgba(255,255,255,.15);
+.status.active {
+    color: #ddd;
 }
 
-.loginCard h1 {
-    margin: 0;
-    font-size: 32px;
-    letter-spacing: 5px;
-}
+/* =========================
+   ORB
+========================= */
 
-.loginCard p {
-    color: #888;
-    line-height: 1.5;
-    margin: 12px 0 28px;
-}
-
-.googleBtn {
+.orb-area {
     width: 100%;
-    height: 52px;
-    border: none;
-    border-radius: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 390px;
+    position: relative;
+}
+
+.orb {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    position: relative;
+    background:
+        radial-gradient(circle at 35% 28%, white 0%, #ddd 8%, #777 25%, #252525 55%, #070707 75%);
+    box-shadow:
+        0 0 40px rgba(255,255,255,.12),
+        0 0 100px rgba(255,255,255,.06),
+        inset 0 0 45px rgba(255,255,255,.15);
+    transition: .35s;
+}
+
+.orb::before,
+.orb::after {
+    content: "";
+    position: absolute;
+    inset: -18px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 50%;
+    animation: rotateOrb 10s linear infinite;
+}
+
+.orb::after {
+    inset: -32px;
+    border-color: rgba(255,255,255,.05);
+    animation-direction: reverse;
+    animation-duration: 14s;
+}
+
+@keyframes rotateOrb {
+    from { transform: rotate(0deg) scaleX(1); }
+    to { transform: rotate(360deg) scaleX(1); }
+}
+
+.orb.listening {
+    transform: scale(1.1);
+    box-shadow:
+        0 0 55px rgba(255,255,255,.3),
+        0 0 130px rgba(255,255,255,.12);
+}
+
+.orb.thinking {
+    animation: thinking 1s infinite ease-in-out;
+}
+
+@keyframes thinking {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+.orb.speaking {
+    animation: speaking .55s infinite ease-in-out;
+}
+
+@keyframes speaking {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+/* =========================
+   CHAT
+========================= */
+
+.chat {
+    width: min(850px, 100%);
+    min-height: 150px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 18px;
+}
+
+.message {
+    padding: 14px 17px;
+    border-radius: 16px;
+    margin: 8px 0;
+    max-width: 85%;
+    line-height: 1.5;
+    font-size: 15px;
+}
+
+.message.user {
+    margin-left: auto;
+    background: #171717;
+    border: 1px solid #2c2c2c;
+}
+
+.message.nova {
+    margin-right: auto;
+    background: #0c0c0c;
+    border: 1px solid #222;
+    color: #ddd;
+}
+
+/* =========================
+   INPUT
+========================= */
+
+.input-area {
+    width: min(850px, 100%);
+    display: flex;
+    gap: 10px;
+}
+
+#userInput {
+    flex: 1;
+    min-width: 0;
+    background: #101010;
+    color: white;
+    border: 1px solid #292929;
+    border-radius: 14px;
+    outline: none;
+    padding: 15px;
+    font-size: 15px;
+}
+
+#userInput:focus {
+    border-color: #666;
+}
+
+.action-btn {
+    border: 1px solid #333;
+    background: #111;
+    color: white;
+    border-radius: 14px;
+    min-width: 50px;
+    padding: 0 15px;
+    transition: .2s;
+}
+
+.action-btn:hover {
+    background: #1d1d1d;
+    border-color: #666;
+}
+
+.send-btn {
     background: white;
     color: black;
+    border-color: white;
     font-weight: bold;
-    cursor: pointer;
 }
 
-.googleBtn:hover {
-    background: #ddd;
-}
+/* =========================
+   CONTROLS
+========================= */
 
-.googleBtn:disabled {
-    opacity: .6;
-    cursor: wait;
-}
-
-.loginStatus {
-    margin-top: 15px;
-    color: #888;
-    font-size: 13px;
-}
-
-.loginError {
+.controls {
+    width: min(850px, 100%);
+    display: flex;
+    gap: 10px;
     margin-top: 12px;
-    color: #ff7777;
-    font-size: 13px;
-    line-height: 1.5;
 }
 
-/* ================= MOBILE ================= */
+.control {
+    flex: 1;
+    padding: 11px;
+    background: #0e0e0e;
+    color: #ccc;
+    border: 1px solid #242424;
+    border-radius: 11px;
+}
 
-@media (max-width: 650px) {
+.control:hover {
+    background: #171717;
+}
+
+.control.active {
+    border-color: #aaa;
+    color: white;
+}
+
+/* =========================
+   QUOTA
+========================= */
+
+.quota {
+    width: min(850px, 100%);
+    margin-top: 20px;
+}
+
+.quota-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 7px;
+}
+
+.quota-bar {
+    height: 5px;
+    background: #181818;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#quotaFill {
+    width: 0%;
+    height: 100%;
+    background: white;
+    transition: width .3s;
+}
+
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px) {
 
     header {
-        height: 60px;
-        padding: 0 12px;
+        padding: 0 14px;
     }
 
     .logo {
-        font-size: 15px;
+        font-size: 17px;
     }
 
-    .logoDot {
-        width: 25px;
-        height: 25px;
-    }
-
-    .quota {
-        width: 110px;
-    }
-
-    .logoutBtn {
+    .user-name {
         display: none;
     }
 
+    main {
+        padding: 15px 12px 35px;
+    }
+
+    .orb-area {
+        height: 300px;
+    }
+
     .orb {
-        width: 140px;
-        height: 140px;
+        width: 170px;
+        height: 170px;
     }
 
-    .novaTitle {
-        font-size: 24px;
+    .message {
+        max-width: 92%;
+        font-size: 14px;
     }
 
-    .bubble {
-        max-width: 88%;
+    .input-area {
+        gap: 6px;
     }
 
-    .tools {
+    #userInput {
+        padding: 13px;
+    }
+
+    .action-btn {
+        min-width: 44px;
+        padding: 0 10px;
+    }
+
+    .controls {
         flex-wrap: wrap;
+    }
+
+    .control {
+        min-width: 30%;
     }
 }
 </style>
@@ -458,34 +503,50 @@ main {
 
 <body>
 
-<div class="app">
+<!-- =========================
+     LOGIN
+========================= -->
+
+<div id="loginScreen">
+
+    <div class="login-box">
+
+        <div class="login-orb"></div>
+
+        <h1>NOVA</h1>
+
+        <p>
+            Deine persönliche Family AI.<br>
+            Melde dich mit deinem Google-Konto an.
+        </p>
+
+        <button id="googleLogin" class="google-btn">
+            Mit Google anmelden
+        </button>
+
+        <div id="loginError" class="login-error"></div>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     APP
+========================= -->
+
+<div id="app" class="hidden">
 
 <header>
 
     <div class="logo">
-        <div class="logoDot"></div>
-        NOVA
+        NOVA <span>FAMILY AI</span>
     </div>
 
-    <div class="headerRight">
+    <div class="header-right">
 
-        <div class="quota">
-            <div class="quotaTop">
-                <span>Fragen</span>
-                <span id="quotaText">0 / 20</span>
-            </div>
+        <span id="userName" class="user-name"></span>
 
-            <div class="quotaBar">
-                <div
-                    class="quotaFill"
-                    id="quotaFill">
-                </div>
-            </div>
-        </div>
-
-        <button
-            class="logoutBtn"
-            id="logoutBtn">
+        <button id="logoutBtn" class="top-btn">
             Abmelden
         </button>
 
@@ -493,127 +554,87 @@ main {
 
 </header>
 
-
 <main>
 
-    <section class="hero">
+    <div id="status" class="status">
+        Nova ist bereit.
+    </div>
 
-        <div
-            class="orb"
-            id="orb">
+    <div class="orb-area">
+
+        <div id="orb" class="orb"></div>
+
+    </div>
+
+    <div id="chat" class="chat">
+
+        <div class="message nova">
+            Hallo. Ich bin Nova. Wie kann ich dir helfen?
         </div>
 
-        <div class="novaTitle">
-            Nova
-        </div>
+    </div>
 
-        <div
-            class="status"
-            id="status">
-            Bereit
-        </div>
+    <div class="input-area">
 
-        <div
-            class="chat"
-            id="chat">
-        </div>
+        <button id="micBtn" class="action-btn" title="Mikrofon">
+            🎙
+        </button>
 
-    </section>
+        <input
+            id="userInput"
+            type="text"
+            placeholder="Schreibe etwas..."
+            autocomplete="off"
+        >
 
+        <button id="sendBtn" class="action-btn send-btn">
+            →
+        </button>
 
-    <section class="bottom">
+    </div>
 
-        <div class="inputRow">
+    <div class="controls">
 
-            <input
-                id="promptInput"
-                type="text"
-                autocomplete="off"
-                placeholder="Sprich mit Nova..."
-            >
+        <button id="voiceBtn" class="control">
+            Stimme: AN
+        </button>
 
-            <button
-                class="sendBtn"
-                id="sendBtn">
-                ➤
-            </button>
+        <button id="youtubeBtn" class="control">
+            YouTube
+        </button>
 
-        </div>
+        <button id="googleBtn" class="control">
+            Google
+        </button>
 
+    </div>
 
-        <div class="tools">
+    <div class="quota">
 
-            <button
-                class="toolBtn"
-                id="micBtn">
-                🎙 Mikrofon
-            </button>
+        <div class="quota-top">
 
-            <button
-                class="toolBtn"
-                id="youtubeBtn">
-                YouTube
-            </button>
+            <span>Fragen</span>
 
-            <button
-                class="toolBtn"
-                id="googleBtn">
-                Google
-            </button>
+            <span id="quotaText">
+                0 / 20
+            </span>
 
         </div>
 
-    </section>
+        <div class="quota-bar">
+            <div id="quotaFill"></div>
+        </div>
+
+    </div>
 
 </main>
 
 </div>
 
-
-<!-- LOGIN -->
-
-<div
-    class="loginOverlay"
-    id="loginOverlay">
-
-    <div class="loginCard">
-
-        <div class="loginOrb"></div>
-
-        <h1>NOVA</h1>
-
-        <p>
-            Deine persönliche KI für Fragen,
-            Gespräche und Aufgaben.
-        </p>
-
-        <button
-            class="googleBtn"
-            id="googleLoginBtn">
-
-            Mit Google anmelden
-
-        </button>
-
-        <div
-            class="loginStatus"
-            id="loginStatus">
-        </div>
-
-        <div
-            class="loginError"
-            id="loginError">
-        </div>
-
-    </div>
-
-</div>
-
-
 <script type="module">
 
 /* =========================================================
-   FIREBASE IMPORTS
+   FIREBASE
 ========================================================= */
 
 import {
@@ -641,48 +662,75 @@ import {
 ========================================================= */
 
 const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIgC9E9EtrE",
-
-    authDomain:
-        "nova-68fc1.firebaseapp.com",
-
-    projectId:
-        "nova-68fc1",
-
-    storageBucket:
-        "nova-68fc1.firebasestorage.app",
-
-    messagingSenderId:
-        "1020069093020",
-
-    appId:
-        "1:1020069093020:web:9be72af9e60af659475759"
+    apiKey: "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIg9C9EtrE",
+    authDomain: "nova-68fc1.firebaseapp.com",
+    projectId: "nova-68fc1",
+    storageBucket: "nova-68fc1.firebasestorage.app",
+    messagingSenderId: "1020069093020",
+    appId: "1:1020069093020:web:9be72af9e60af659475759"
 };
+
+
+/* =========================================================
+   FIREBASE START
+========================================================= */
+
+let app;
+let auth;
+let db;
+let model = null;
+
+try {
+
+    app = initializeApp(firebaseConfig);
+
+    auth = getAuth(app);
+
+    db = getFirestore(app);
+
+} catch(error) {
+
+    console.error(error);
+
+    document.getElementById("loginError").textContent =
+        "Firebase konnte nicht gestartet werden: " + error.message;
+
+}
 
 
 /* =========================================================
    ELEMENTE
 ========================================================= */
 
-const loginOverlay =
-    document.getElementById("loginOverlay");
+const loginScreen =
+    document.getElementById("loginScreen");
 
-const googleLoginBtn =
-    document.getElementById("googleLoginBtn");
+const appScreen =
+    document.getElementById("app");
 
-const loginStatus =
-    document.getElementById("loginStatus");
-
-const loginError =
-    document.getElementById("loginError");
+const googleLogin =
+    document.getElementById("googleLogin");
 
 const logoutBtn =
     document.getElementById("logoutBtn");
 
-const promptInput =
-    document.getElementById("promptInput");
+const loginError =
+    document.getElementById("loginError");
+
+const userName =
+    document.getElementById("userName");
+
+const status =
+    document.getElementById("status");
+
+const orb =
+    document.getElementById("orb");
+
+const chat =
+    document.getElementById("chat");
+
+const userInput =
+    document.getElementById("userInput");
 
 const sendBtn =
     document.getElementById("sendBtn");
@@ -690,20 +738,14 @@ const sendBtn =
 const micBtn =
     document.getElementById("micBtn");
 
+const voiceBtn =
+    document.getElementById("voiceBtn");
+
 const youtubeBtn =
     document.getElementById("youtubeBtn");
 
 const googleBtn =
     document.getElementById("googleBtn");
-
-const chat =
-    document.getElementById("chat");
-
-const status =
-    document.getElementById("status");
-
-const orb =
-    document.getElementById("orb");
 
 const quotaText =
     document.getElementById("quotaText");
@@ -713,61 +755,7 @@ const quotaFill =
 
 
 /* =========================================================
-   FIREBASE INITIALISIEREN
-========================================================= */
-
-let app = null;
-let auth = null;
-let db = null;
-
-try {
-
-    app =
-        initializeApp(
-            firebaseConfig
-        );
-
-    auth =
-        getAuth(app);
-
-    db =
-        getFirestore(app);
-
-    console.log(
-        "Firebase gestartet."
-    );
-
-} catch (error) {
-
-    console.error(
-        "Firebase Startfehler:",
-        error
-    );
-
-    showLoginError(
-        error
-    );
-}
-
-
-/* =========================================================
-   LOGIN ERROR
-========================================================= */
-
-function showLoginError(error) {
-
-    let message =
-        error?.message ||
-        String(error);
-
-    loginError.textContent =
-        "Fehler: " + message;
-
-}
-
-
-/* =========================================================
-   GOOGLE PROVIDER
+   GOOGLE LOGIN
 ========================================================= */
 
 const provider =
@@ -778,114 +766,64 @@ provider.setCustomParameters({
 });
 
 
-/* =========================================================
-   GOOGLE LOGIN
-========================================================= */
+googleLogin.addEventListener("click", async () => {
 
-googleLoginBtn.addEventListener(
-    "click",
-    async () => {
+    if (!auth) return;
 
-        if (!auth) {
+    loginError.textContent = "";
 
-            loginError.textContent =
-                "Firebase wurde nicht korrekt gestartet.";
+    googleLogin.disabled = true;
+    googleLogin.textContent = "Anmeldung...";
 
-            return;
-        }
+    try {
 
-        loginError.textContent = "";
+        await signInWithPopup(auth, provider);
 
-        loginStatus.textContent =
-            "Google-Anmeldung wird geöffnet...";
+    } catch(error) {
 
-        googleLoginBtn.disabled =
-            true;
+        console.error(error);
 
-        googleLoginBtn.textContent =
-            "Anmeldung läuft...";
+        let message =
+            "Anmeldung fehlgeschlagen: " + error.message;
 
+        if (error.code === "auth/api-key-not-valid") {
 
-        try {
-
-            const result =
-                await signInWithPopup(
-                    auth,
-                    provider
-                );
-
-            console.log(
-                "Login erfolgreich:",
-                result.user.email
-            );
-
-            loginStatus.textContent =
-                "Anmeldung erfolgreich.";
-
-        } catch (error) {
-
-            console.error(
-                "Google Login Fehler:",
-                error
-            );
-
-            loginStatus.textContent = "";
-
-            let errorText =
-                error.code ||
-                error.message ||
-                "Unbekannter Fehler";
-
-
-            if (
-                error.code ===
-                "auth/api-key-not-valid"
-            ) {
-
-                errorText =
-                    "Der Firebase API-Key ist ungültig. Bitte in Firebase Console den aktuellen Web-API-Key prüfen.";
-
-            } else if (
-                error.code ===
-                "auth/unauthorized-domain"
-            ) {
-
-                errorText =
-                    "Diese GitHub-Pages-Domain ist in Firebase noch nicht als autorisierte Domain eingetragen.";
-
-            } else if (
-                error.code ===
-                "auth/popup-blocked"
-            ) {
-
-                errorText =
-                    "Der Browser hat das Google-Anmeldefenster blockiert. Bitte Popups für diese Seite erlauben.";
-
-            } else if (
-                error.code ===
-                "auth/popup-closed-by-user"
-            ) {
-
-                errorText =
-                    "Das Google-Anmeldefenster wurde geschlossen.";
-
-            }
-
-            loginError.textContent =
-                errorText;
-
-        } finally {
-
-            googleLoginBtn.disabled =
-                false;
-
-            googleLoginBtn.textContent =
-                "Mit Google anmelden";
+            message =
+                "Firebase lehnt den API-Key ab. Bitte überprüfe den aktuellen Web-API-Key in den Firebase-Projekteinstellungen.";
 
         }
+
+        if (error.code === "auth/unauthorized-domain") {
+
+            message =
+                "Diese GitHub-Pages-Domain ist in Firebase noch nicht autorisiert.";
+
+        }
+
+        if (error.code === "auth/popup-blocked") {
+
+            message =
+                "Der Browser hat das Google-Anmeldefenster blockiert.";
+
+        }
+
+        if (error.code === "auth/popup-closed-by-user") {
+
+            message =
+                "Das Anmeldefenster wurde geschlossen.";
+
+        }
+
+        loginError.textContent = message;
+
+    } finally {
+
+        googleLogin.disabled = false;
+        googleLogin.textContent = "Mit Google anmelden";
 
     }
-);
+
+});
 
 
 /* =========================================================
@@ -894,55 +832,32 @@ googleLoginBtn.addEventListener(
 
 if (auth) {
 
-    onAuthStateChanged(
-        auth,
-        async (user) => {
+    onAuthStateChanged(auth, async (user) => {
 
-            console.log(
-                "Auth State:",
-                user
-            );
+        if (user) {
 
+            loginScreen.classList.add("hidden");
+            appScreen.classList.remove("hidden");
 
-            if (user) {
+            userName.textContent =
+                user.displayName ||
+                user.email ||
+                "Benutzer";
 
-                /* LOGIN ERFOLGREICH */
+            await createUserDocument(user);
 
-                loginOverlay.classList.add(
-                    "hidden"
-                );
+            updateQuota();
 
-                loginError.textContent = "";
+        } else {
 
-                loginStatus.textContent = "";
+            loginScreen.classList.remove("hidden");
+            appScreen.classList.add("hidden");
 
-                await createUserDocument(
-                    user
-                );
-
-                chat.innerHTML = "";
-
-                addNovaMessage(
-                    "Hallo " +
-                    (
-                        user.displayName ||
-                        ""
-                    ) +
-                    "! Ich bin Nova. Wie kann ich dir helfen?"
-                );
-
-            } else {
-
-                /* NICHT ANGEMELDET */
-
-                loginOverlay.classList.remove(
-                    "hidden"
-                );
-
-            }
+            userName.textContent = "";
 
         }
-    );
+
+    });
 
 }
 
@@ -951,45 +866,31 @@ if (auth) {
    FIRESTORE USER
 ========================================================= */
 
-async function createUserDocument(
-    user
-) {
+async function createUserDocument(user) {
 
     if (!db) return;
 
     try {
 
         const userRef =
-            doc(
-                db,
-                "users",
-                user.uid
-            );
+            doc(db, "users", user.uid);
 
-        const snapshot =
-            await getDoc(
-                userRef
-            );
+        const existing =
+            await getDoc(userRef);
 
-        if (!snapshot.exists()) {
+        if (!existing.exists()) {
 
-            await setDoc(
-                userRef,
-                {
-                    name:
-                        user.displayName || "",
+            await setDoc(userRef, {
 
-                    email:
-                        user.email || "",
+                name: user.displayName || "",
+                email: user.email || "",
+                createdAt: new Date().toISOString()
 
-                    createdAt:
-                        new Date().toISOString()
-                }
-            );
+            });
 
         }
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Firestore Fehler:",
@@ -1005,26 +906,19 @@ async function createUserDocument(
    LOGOUT
 ========================================================= */
 
-logoutBtn.addEventListener(
-    "click",
-    async () => {
+logoutBtn.addEventListener("click", async () => {
 
-        if (!auth) return;
+    try {
 
-        try {
+        await signOut(auth);
 
-            await signOut(auth);
+    } catch(error) {
 
-        } catch (error) {
-
-            console.error(
-                error
-            );
-
-        }
+        console.error(error);
 
     }
-);
+
+});
 
 
 /* =========================================================
@@ -1043,46 +937,30 @@ let questionsUsed =
 
 function updateQuota() {
 
-    if (
-        questionsUsed >
-        MAX_QUESTIONS
-    ) {
-
-        questionsUsed =
-            MAX_QUESTIONS;
-
-    }
+    questionsUsed =
+        Math.max(
+            0,
+            Math.min(
+                MAX_QUESTIONS,
+                questionsUsed
+            )
+        );
 
     quotaText.textContent =
-        questionsUsed +
-        " / " +
-        MAX_QUESTIONS;
+        questionsUsed + " / " + MAX_QUESTIONS;
 
     quotaFill.style.width =
-        (
-            questionsUsed /
-            MAX_QUESTIONS *
-            100
-        ) + "%";
+        ((questionsUsed / MAX_QUESTIONS) * 100) + "%";
 
 }
 
 
-updateQuota();
-
-
 function useQuestion() {
 
-    if (
-        questionsUsed >=
-        MAX_QUESTIONS
-    ) {
-
-        addNovaMessage(
-            "Das lokale Limit von 20 Fragen wurde erreicht."
-        );
+    if (questionsUsed >= MAX_QUESTIONS) {
 
         return false;
+
     }
 
     questionsUsed++;
@@ -1095,95 +973,20 @@ function useQuestion() {
     updateQuota();
 
     return true;
-}
-
-
-/* =========================================================
-   CHAT
-========================================================= */
-
-function addUserMessage(
-    text
-) {
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-    row.className =
-        "message user";
-
-    const bubble =
-        document.createElement(
-            "div"
-        );
-
-    bubble.className =
-        "bubble";
-
-    bubble.textContent =
-        text;
-
-    row.appendChild(
-        bubble
-    );
-
-    chat.appendChild(
-        row
-    );
-
-    chat.scrollTop =
-        chat.scrollHeight;
 
 }
 
 
-function addNovaMessage(
-    text
-) {
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-    row.className =
-        "message nova";
-
-    const bubble =
-        document.createElement(
-            "div"
-        );
-
-    bubble.className =
-        "bubble";
-
-    bubble.textContent =
-        text;
-
-    row.appendChild(
-        bubble
-    );
-
-    chat.appendChild(
-        row
-    );
-
-    chat.scrollTop =
-        chat.scrollHeight;
-
-}
+updateQuota();
 
 
 /* =========================================================
    GEMINI
 ========================================================= */
 
-let model = null;
+async function initializeAI() {
 
-
-async function setupGemini() {
+    if (model) return true;
 
     try {
 
@@ -1192,13 +995,11 @@ async function setupGemini() {
                 "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
             );
 
-
         const {
             getAI,
             getGenerativeModel,
             GoogleAIBackend
         } = aiModule;
-
 
         const ai =
             getAI(
@@ -1209,212 +1010,317 @@ async function setupGemini() {
                 }
             );
 
-
         model =
             getGenerativeModel(
                 ai,
                 {
-                    model:
-                        "gemini-3.7-flash"
+                    model: "gemini-3.7-flash"
                 }
             );
 
+        return true;
 
-        console.log(
-            "Gemini geladen."
-        );
-
-    } catch (error) {
+    } catch(error) {
 
         console.error(
-            "Gemini Fehler:",
+            "AI Initialisierung:",
             error
         );
+
+        return false;
 
     }
 
 }
 
 
-setupGemini();
+/* =========================================================
+   CHAT UI
+========================================================= */
+
+function addMessage(text, type) {
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "message " + type;
+
+    div.textContent = text;
+
+    chat.appendChild(div);
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+}
 
 
 /* =========================================================
-   NOVA PROMPT
+   STATUS
 ========================================================= */
 
-const systemInstruction = `
+function setStatus(text) {
 
-Du bist Nova, eine moderne persönliche KI.
+    status.textContent = text;
 
-Sprich Deutsch, außer der Benutzer verlangt eine andere Sprache.
-
-Sei freundlich, direkt und hilfreich.
-
-Antworte möglichst verständlich und nicht unnötig lang.
-
-Wenn der Benutzer YouTube öffnen möchte,
-füge [ACTION:YOUTUBE] ein.
-
-Wenn der Benutzer Google öffnen möchte,
-füge [ACTION:GOOGLE] ein.
-
-`;
+}
 
 
 /* =========================================================
-   GEMINI ANFRAGE
+   ORB
 ========================================================= */
 
-async function askNova(
-    text
-) {
+function setOrb(mode) {
 
-    if (!model) {
+    orb.classList.remove(
+        "listening",
+        "thinking",
+        "speaking"
+    );
 
-        addNovaMessage(
-            "Die KI wird noch geladen. Bitte versuche es gleich noch einmal."
+    if (mode) {
+
+        orb.classList.add(mode);
+
+    }
+
+}
+
+
+/* =========================================================
+   GEMINI REQUEST
+========================================================= */
+
+async function askNova(question) {
+
+    if (!question.trim()) return;
+
+    if (questionsUsed >= MAX_QUESTIONS) {
+
+        addMessage(
+            "Das lokale Fragenlimit von 20 Fragen wurde erreicht.",
+            "nova"
         );
 
         return;
-    }
 
+    }
 
     if (!useQuestion()) {
+
         return;
+
     }
 
-
-    setThinking(
-        true
+    addMessage(
+        question,
+        "user"
     );
+
+    userInput.value = "";
+
+    setStatus("Nova denkt...");
+    setOrb("thinking");
+
+    const aiReady =
+        await initializeAI();
+
+    if (!aiReady) {
+
+        setStatus("Fehler bei der KI.");
+
+        setOrb(null);
+
+        addMessage(
+            "Die KI konnte nicht initialisiert werden.",
+            "nova"
+        );
+
+        return;
+
+    }
 
 
     try {
 
-        const result =
-            await model.generateContent(
-                systemInstruction +
-                "\n\nBenutzer:\n" +
-                text
-            );
+        const systemPrompt = `
 
+Du bist Nova, eine moderne persönliche KI.
+
+Antworte auf Deutsch, sofern der Benutzer nicht
+eine andere Sprache verwendet.
+
+Sei freundlich, intelligent, direkt und natürlich.
+
+Keine langen unnötigen Einleitungen.
+
+Du kannst bei Bedarf erklären, rechnen,
+programmieren und Fragen beantworten.
+
+WICHTIG:
+
+Wenn der Benutzer YouTube öffnen möchte,
+füge exakt diesen Text ein:
+
+[ACTION:YOUTUBE]
+
+Wenn der Benutzer Google öffnen möchte,
+füge exakt diesen Text ein:
+
+[ACTION:GOOGLE]
+
+Beispiele:
+
+"Öffne YouTube"
+=> [ACTION:YOUTUBE]
+
+"Öffne Google"
+=> [ACTION:GOOGLE]
+
+Du sollst dabei trotzdem kurz antworten.
+
+`;
+
+        const prompt =
+            systemPrompt +
+            "\n\nBenutzer:\n" +
+            question;
+
+        const result =
+            await model.generateContent(prompt);
 
         let answer =
             result.response.text();
 
+        let action = null;
 
-        handleActions(
-            answer
-        );
+
+        if (
+            answer.includes(
+                "[ACTION:YOUTUBE]"
+            )
+        ) {
+
+            action = "youtube";
+
+            answer =
+                answer.replace(
+                    "[ACTION:YOUTUBE]",
+                    ""
+                );
+
+        }
+
+
+        if (
+            answer.includes(
+                "[ACTION:GOOGLE]"
+            )
+        ) {
+
+            action = "google";
+
+            answer =
+                answer.replace(
+                    "[ACTION:GOOGLE]",
+                    ""
+                );
+
+        }
 
 
         answer =
-            answer
-                .replace(
-                    "[ACTION:YOUTUBE]",
-                    ""
-                )
-                .replace(
-                    "[ACTION:GOOGLE]",
-                    ""
-                )
-                .trim();
+            answer.trim();
 
 
         if (!answer) {
 
             answer =
-                "Erledigt.";
+                action === "youtube"
+                    ? "Ich öffne YouTube."
+                    : action === "google"
+                        ? "Ich öffne Google."
+                        : "Erledigt.";
 
         }
 
 
-        addNovaMessage(
-            answer
+        addMessage(
+            answer,
+            "nova"
         );
 
 
-        speak(
-            answer
-        );
+        if (action === "youtube") {
+
+            window.open(
+                "https://www.youtube.com/",
+                "_blank"
+            );
+
+        }
 
 
-    } catch (error) {
+        if (action === "google") {
 
-        console.error(
-            "Gemini Anfrage Fehler:",
-            error
-        );
+            window.open(
+                "https://www.google.com/",
+                "_blank"
+            );
 
+        }
+
+
+        speak(answer);
+
+    } catch(error) {
+
+        console.error(error);
+
+        let errorText =
+            "Es ist ein Fehler aufgetreten.";
 
         if (
             error.message &&
-            (
-                error.message.includes(
-                    "429"
-                ) ||
-                error.message.toLowerCase().includes(
-                    "quota"
-                )
-            )
+            error.message.includes("429")
         ) {
 
-            addNovaMessage(
-                "Das Gemini-Kontingent ist momentan erreicht. Bitte später erneut versuchen."
-            );
+            errorText =
+                "Das Gemini-Limit wurde erreicht. Bitte später erneut versuchen.";
 
-        } else {
+        } else if (
+            error.message &&
+            error.message
+                .toLowerCase()
+                .includes("api key")
+        ) {
 
-            addNovaMessage(
-                "Bei der KI ist ein Fehler aufgetreten."
-            );
+            errorText =
+                "Der Firebase API-Key wird von Firebase abgelehnt.";
+
+        } else if (
+            error.message
+        ) {
+
+            errorText =
+                error.message;
 
         }
 
+
+        addMessage(
+            errorText,
+            "nova"
+        );
+
+        setStatus(
+            "Fehler"
+        );
+
     } finally {
 
-        setThinking(
-            false
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   ACTIONS
-========================================================= */
-
-function handleActions(
-    answer
-) {
-
-    if (
-        answer.includes(
-            "[ACTION:YOUTUBE]"
-        )
-    ) {
-
-        window.open(
-            "https://www.youtube.com/",
-            "_blank"
-        );
-
-    }
-
-
-    if (
-        answer.includes(
-            "[ACTION:GOOGLE]"
-        )
-    ) {
-
-        window.open(
-            "https://www.google.com/",
-            "_blank"
-        );
+        setOrb(null);
 
     }
 
@@ -1425,38 +1331,19 @@ function handleActions(
    SEND
 ========================================================= */
 
-async function sendMessage() {
-
-    const text =
-        promptInput.value.trim();
-
-
-    if (!text) return;
-
-
-    promptInput.value =
-        "";
-
-
-    addUserMessage(
-        text
-    );
-
-
-    await askNova(
-        text
-    );
-
-}
-
-
 sendBtn.addEventListener(
     "click",
-    sendMessage
+    () => {
+
+        askNova(
+            userInput.value
+        );
+
+    }
 );
 
 
-promptInput.addEventListener(
+userInput.addEventListener(
     "keydown",
     event => {
 
@@ -1464,7 +1351,9 @@ promptInput.addEventListener(
             event.key === "Enter"
         ) {
 
-            sendMessage();
+            askNova(
+                userInput.value
+            );
 
         }
 
@@ -1473,56 +1362,147 @@ promptInput.addEventListener(
 
 
 /* =========================================================
-   BUTTONS
+   SPEECH SYNTHESIS
 ========================================================= */
 
-youtubeBtn.addEventListener(
-    "click",
-    () => {
-
-        window.open(
-            "https://www.youtube.com/",
-            "_blank"
-        );
-
-    }
-);
+let isSpeaking = false;
+let voiceMode = true;
 
 
-googleBtn.addEventListener(
-    "click",
-    () => {
+function speak(text) {
 
-        window.open(
-            "https://www.google.com/",
-            "_blank"
-        );
+    if (!voiceMode) {
+
+        setStatus("Nova ist bereit.");
+
+        if (isListening) {
+
+            startListening();
+
+        }
+
+        return;
 
     }
-);
+
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+
+        setStatus("Nova ist bereit.");
+
+        return;
+
+    }
+
+
+    stopListening();
+
+    speechSynthesis.cancel();
+
+    const utterance =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+    utterance.lang = "de-DE";
+
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+
+    const voices =
+        speechSynthesis.getVoices();
+
+    const germanVoice =
+        voices.find(
+            voice =>
+                voice.lang &&
+                voice.lang
+                    .toLowerCase()
+                    .startsWith("de")
+        );
+
+    if (germanVoice) {
+
+        utterance.voice =
+            germanVoice;
+
+    }
+
+
+    isSpeaking = true;
+
+    setStatus(
+        "Nova spricht..."
+    );
+
+    setOrb("speaking");
+
+
+    utterance.onend = () => {
+
+        isSpeaking = false;
+
+        setOrb(null);
+
+        setStatus(
+            "Nova ist bereit."
+        );
+
+
+        if (voiceMode) {
+
+            setTimeout(
+                () => {
+
+                    startListening();
+
+                },
+                700
+            );
+
+        }
+
+    };
+
+
+    utterance.onerror = () => {
+
+        isSpeaking = false;
+
+        setOrb(null);
+
+        setStatus(
+            "Nova ist bereit."
+        );
+
+    };
+
+
+    speechSynthesis.speak(
+        utterance
+    );
+
+}
 
 
 /* =========================================================
-   VOICE
+   SPEECH RECOGNITION
 ========================================================= */
+
+let recognition = null;
+let isListening = false;
+let micTimeout = null;
+
+const MIC_MAX_TIME = 8000;
+
 
 const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
-
-
-let recognition = null;
-
-let isListening = false;
-let isSpeaking = false;
-let isThinking = false;
-
-let voiceMode = false;
-
-let micTimeout = null;
-
-const MIC_MAX_TIME =
-    8000;
 
 
 if (SpeechRecognition) {
@@ -1530,136 +1510,113 @@ if (SpeechRecognition) {
     recognition =
         new SpeechRecognition();
 
-
     recognition.lang =
         "de-DE";
 
-
     recognition.continuous =
         false;
-
 
     recognition.interimResults =
         false;
 
 
-    recognition.maxAlternatives =
-        1;
+    recognition.onstart = () => {
+
+        isListening = true;
+
+        setOrb("listening");
+
+        setStatus(
+            "Ich höre zu..."
+        );
 
 
-    recognition.onstart =
-        () => {
-
-            isListening =
-                true;
+        clearTimeout(
+            micTimeout
+        );
 
 
-            clearTimeout(
-                micTimeout
+        micTimeout =
+            setTimeout(
+                () => {
+
+                    stopListening();
+
+                },
+                MIC_MAX_TIME
             );
 
-
-            micTimeout =
-                setTimeout(
-                    () => {
-
-                        stopListening();
-
-                    },
-                    MIC_MAX_TIME
-                );
+    };
 
 
-            updateVisualState();
+    recognition.onresult = event => {
 
-        };
+        clearTimeout(
+            micTimeout
+        );
+
+        const text =
+            event.results[0][0].transcript;
+
+        stopListening();
+
+        if (text.trim()) {
+
+            askNova(text);
+
+        }
+
+    };
 
 
-    recognition.onresult =
-        async event => {
+    recognition.onend = () => {
 
-            clearTimeout(
-                micTimeout
+        clearTimeout(
+            micTimeout
+        );
+
+        isListening = false;
+
+        setOrb(null);
+
+        if (!isSpeaking) {
+
+            setStatus(
+                "Nova ist bereit."
             );
 
+        }
 
-            const transcript =
-                event
-                    .results[0][0]
-                    .transcript;
+    };
 
 
-            if (
-                !transcript.trim()
-            ) {
+    recognition.onerror = event => {
 
-                return;
+        clearTimeout(
+            micTimeout
+        );
 
-            }
+        isListening = false;
 
+        setOrb(null);
 
-            addUserMessage(
-                transcript
+        console.error(
+            "Speech:",
+            event.error
+        );
+
+        if (
+            event.error !==
+            "aborted"
+        ) {
+
+            setStatus(
+                "Mikrofon konnte nicht verwendet werden."
             );
 
+        }
 
-            await askNova(
-                transcript
-            );
-
-        };
-
-
-    recognition.onend =
-        () => {
-
-            isListening =
-                false;
-
-
-            clearTimeout(
-                micTimeout
-            );
-
-
-            micTimeout =
-                null;
-
-
-            updateVisualState();
-
-        };
-
-
-    recognition.onerror =
-        event => {
-
-            console.error(
-                "Speech Error:",
-                event.error
-            );
-
-
-            isListening =
-                false;
-
-
-            clearTimeout(
-                micTimeout
-            );
-
-
-            updateVisualState();
-
-        };
-
-} else {
-
-    micBtn.disabled =
-        true;
-
-    micBtn.textContent =
-        "Mikrofon nicht unterstützt";
+    };
 
 }
 
@@ -1672,8 +1629,8 @@ function startListening() {
 
     if (!recognition) {
 
-        addNovaMessage(
-            "Dein Browser unterstützt keine Spracherkennung."
+        setStatus(
+            "Spracherkennung wird von diesem Browser nicht unterstützt."
         );
 
         return;
@@ -1681,10 +1638,14 @@ function startListening() {
     }
 
 
-    if (
-        isSpeaking ||
-        isThinking
-    ) {
+    if (isSpeaking) {
+
+        return;
+
+    }
+
+
+    if (isListening) {
 
         return;
 
@@ -1695,11 +1656,9 @@ function startListening() {
 
         recognition.start();
 
-    } catch (error) {
+    } catch(error) {
 
-        console.log(
-            error
-        );
+        console.error(error);
 
     }
 
@@ -1712,45 +1671,41 @@ function startListening() {
 
 function stopListening() {
 
-    if (!recognition)
-        return;
-
-
     clearTimeout(
         micTimeout
     );
 
+    if (
+        recognition &&
+        isListening
+    ) {
 
-    micTimeout =
-        null;
+        try {
 
+            recognition.stop();
 
-    try {
+        } catch(error) {
 
-        recognition.stop();
+            console.error(error);
 
-    } catch (error) {
-
-        console.log(
-            error
-        );
+        }
 
     }
+
+    isListening = false;
+
+    setOrb(null);
 
 }
 
 
 /* =========================================================
-   MIC BUTTON
+   MICROPHONE BUTTON
 ========================================================= */
 
 micBtn.addEventListener(
     "click",
     () => {
-
-        voiceMode =
-            true;
-
 
         if (isListening) {
 
@@ -1767,237 +1722,116 @@ micBtn.addEventListener(
 
 
 /* =========================================================
-   SPEECH
+   VOICE MODE
 ========================================================= */
 
-function speak(
-    text
+voiceBtn.addEventListener(
+    "click",
+    () => {
+
+        voiceMode =
+            !voiceMode;
+
+        voiceBtn.textContent =
+            voiceMode
+                ? "Stimme: AN"
+                : "Stimme: AUS";
+
+        voiceBtn.classList.toggle(
+            "active",
+            voiceMode
+        );
+
+
+        if (!voiceMode) {
+
+            speechSynthesis.cancel();
+
+            isSpeaking = false;
+
+            stopListening();
+
+            setOrb(null);
+
+            setStatus(
+                "Sprachmodus deaktiviert."
+            );
+
+        } else {
+
+            setStatus(
+                "Sprachmodus aktiviert."
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   YOUTUBE
+========================================================= */
+
+youtubeBtn.addEventListener(
+    "click",
+    () => {
+
+        window.open(
+            "https://www.youtube.com/",
+            "_blank"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   GOOGLE
+========================================================= */
+
+googleBtn.addEventListener(
+    "click",
+    () => {
+
+        window.open(
+            "https://www.google.com/",
+            "_blank"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   VOICE LISTS
+========================================================= */
+
+if (
+    "speechSynthesis" in window
 ) {
 
-    if (
-        !window.speechSynthesis
-    ) {
-
-        return;
-
-    }
-
-
-    stopListening();
-
-
-    window.speechSynthesis.cancel();
-
-
-    isSpeaking =
-        true;
-
-
-    updateVisualState();
-
-
-    const utterance =
-        new SpeechSynthesisUtterance(
-            text
-        );
-
-
-    utterance.lang =
-        "de-DE";
-
-
-    utterance.rate =
-        1;
-
-
-    utterance.pitch =
-        1;
-
-
-    utterance.volume =
-        1;
-
-
-    const voices =
-        window.speechSynthesis
-            .getVoices();
-
-
-    const germanVoice =
-        voices.find(
-            voice =>
-                voice.lang
-                    .toLowerCase()
-                    .startsWith("de")
-        );
-
-
-    if (germanVoice) {
-
-        utterance.voice =
-            germanVoice;
-
-    }
-
-
-    utterance.onend =
+    speechSynthesis.onvoiceschanged =
         () => {
 
-            isSpeaking =
-                false;
-
-
-            updateVisualState();
-
-
-            if (voiceMode) {
-
-                setTimeout(
-                    () => {
-
-                        if (
-                            !isSpeaking &&
-                            !isThinking &&
-                            voiceMode
-                        ) {
-
-                            startListening();
-
-                        }
-
-                    },
-                    700
-                );
-
-            }
+            speechSynthesis
+                .getVoices();
 
         };
 
-
-    utterance.onerror =
-        () => {
-
-            isSpeaking =
-                false;
-
-            updateVisualState();
-
-        };
-
-
-    window.speechSynthesis.speak(
-        utterance
-    );
-
 }
 
 
 /* =========================================================
-   THINKING
+   START
 ========================================================= */
 
-function setThinking(
-    value
-) {
-
-    isThinking =
-        value;
-
-    updateVisualState();
-
-}
-
-
-/* =========================================================
-   VISUAL STATE
-========================================================= */
-
-function updateVisualState() {
-
-    orb.classList.remove(
-        "listening",
-        "thinking",
-        "speaking"
-    );
-
-
-    micBtn.classList.remove(
-        "micActive"
-    );
-
-
-    if (isSpeaking) {
-
-        orb.classList.add(
-            "speaking"
-        );
-
-        status.textContent =
-            "Nova spricht...";
-
-        return;
-
-    }
-
-
-    if (isThinking) {
-
-        orb.classList.add(
-            "thinking"
-        );
-
-        status.textContent =
-            "Nova denkt...";
-
-        return;
-
-    }
-
-
-    if (isListening) {
-
-        orb.classList.add(
-            "listening"
-        );
-
-        micBtn.classList.add(
-            "micActive"
-        );
-
-        status.textContent =
-            "Ich höre zu...";
-
-        return;
-
-    }
-
-
-    status.textContent =
-        "Bereit";
-
-}
-
-
-updateVisualState();
-
-
-/* =========================================================
-   DEBUG
-========================================================= */
-
-console.log(
-    "Nova Family AI gestartet"
+voiceBtn.classList.add(
+    "active"
 );
 
-console.log(
-    "Firebase Project:",
-    firebaseConfig.projectId
-);
-
-console.log(
-    "Microphone limit:",
-    MIC_MAX_TIME / 1000,
-    "seconds"
+setStatus(
+    "Nova ist bereit."
 );
 
 </script>
