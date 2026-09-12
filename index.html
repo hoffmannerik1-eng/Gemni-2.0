@@ -1,18 +1,14 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
-
-    <meta name="theme-color" content="#050505">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#020306">
 
     <title>Nova Family AI</title>
 
-    <link rel="stylesheet" href="./style.css?v=3">
+    <link rel="stylesheet" href="./style.css?v=5">
 </head>
 
 <body>
@@ -32,34 +28,28 @@
 
     <div class="account">
 
-        <img
-            id="userPhoto"
-            class="user-photo"
-            alt="Profilbild"
-            hidden
-        >
+        <img id="userPhoto"
+             class="user-photo"
+             alt="Profilbild"
+             hidden>
 
-        <div
-            id="userInfo"
-            class="user-info"
-            hidden
-        >
+        <div id="userInfo"
+             class="user-info"
+             hidden>
+
             <strong id="userName"></strong>
             <span id="userEmail"></span>
+
         </div>
 
-        <button
-            id="loginButton"
-            class="login-button"
-        >
+        <button id="loginButton"
+                class="login-button">
             Mit Google anmelden
         </button>
 
-        <button
-            id="logoutButton"
-            class="small-button"
-            hidden
-        >
+        <button id="logoutButton"
+                class="small-button"
+                hidden>
             Abmelden
         </button>
 
@@ -72,16 +62,30 @@
 
     <section class="assistant">
 
-        <div
-            id="orb"
-            class="orb"
-        >
-            <div class="orb-inner"></div>
+        <!-- REALISTISCHE KI-KUGEL -->
 
-            <div class="orb-ring ring1"></div>
-            <div class="orb-ring ring2"></div>
-            <div class="orb-ring ring3"></div>
+        <div id="orb"
+             class="orb"
+             aria-label="Nova KI">
+
+            <div class="orb-aura"></div>
+
+            <div class="orb-shell">
+
+                <div class="orb-surface"></div>
+
+                <div class="orb-light light-one"></div>
+                <div class="orb-light light-two"></div>
+
+                <div class="orb-energy energy-one"></div>
+                <div class="orb-energy energy-two"></div>
+
+                <div class="orb-center"></div>
+
+            </div>
+
         </div>
+
 
         <div class="status">
 
@@ -95,28 +99,26 @@
 
         </div>
 
-        <button
-            id="microphone"
-            class="microphone"
-            disabled
-            aria-label="Mikrofon"
-        >
+
+        <button id="microphone"
+                class="microphone"
+                disabled
+                aria-label="Mikrofon">
+
             <span>🎙</span>
+
         </button>
+
 
         <div class="mode-buttons">
 
-            <button
-                id="voiceMode"
-                class="mode active"
-            >
+            <button id="voiceMode"
+                    class="mode active">
                 Sprache
             </button>
 
-            <button
-                id="textMode"
-                class="mode"
-            >
+            <button id="textMode"
+                    class="mode">
                 Text
             </button>
 
@@ -125,31 +127,25 @@
     </section>
 
 
-    <section
-        id="textChat"
-        class="chat"
-        hidden
-    >
+    <section id="textChat"
+             class="chat"
+             hidden>
 
-        <div
-            id="messages"
-            class="messages"
-        ></div>
+        <div id="messages"
+             class="messages">
+        </div>
+
 
         <div class="input-area">
 
-            <input
-                id="textInput"
-                type="text"
-                autocomplete="off"
-                placeholder="Schreibe Nova etwas..."
-                disabled
-            >
+            <input id="textInput"
+                   type="text"
+                   autocomplete="off"
+                   placeholder="Schreibe Nova etwas..."
+                   disabled>
 
-            <button
-                id="sendText"
-                disabled
-            >
+            <button id="sendText"
+                    disabled>
                 Senden
             </button>
 
@@ -160,26 +156,20 @@
 
     <section class="actions">
 
-        <button
-            id="youtubeButton"
-            class="action-button"
-            disabled
-        >
+        <button id="youtubeButton"
+                class="action-button"
+                disabled>
             YouTube
         </button>
 
-        <button
-            id="googleButton"
-            class="action-button"
-            disabled
-        >
+        <button id="googleButton"
+                class="action-button"
+                disabled>
             Google
         </button>
 
-        <button
-            id="settingsButton"
-            class="action-button"
-        >
+        <button id="settingsButton"
+                class="action-button">
             Einstellungen
         </button>
 
@@ -188,41 +178,31 @@
 </main>
 
 
-<!-- =====================================================
-     EINSTELLUNGEN
-===================================================== -->
+<!-- EINSTELLUNGEN -->
 
-<div
-    id="settingsOverlay"
-    class="overlay"
-    hidden
-    aria-hidden="true"
->
+<div id="settingsOverlay"
+     class="overlay"
+     hidden
+     aria-hidden="true">
 
-    <div
-        class="settings"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="settingsTitle"
-    >
+    <div class="settings"
+         role="dialog"
+         aria-modal="true">
 
         <div class="settings-header">
 
             <div>
-                <h2 id="settingsTitle">
-                    Nova Einstellungen
-                </h2>
+
+                <h2>Nova Einstellungen</h2>
 
                 <p>
-                    Deine persönlichen Einstellungen
+                    Stimme, Geschwindigkeit und Familie
                 </p>
+
             </div>
 
-            <button
-                id="closeSettings"
-                class="close-button"
-                aria-label="Einstellungen schließen"
-            >
+            <button id="closeSettings"
+                    class="close-button">
                 ×
             </button>
 
@@ -254,14 +234,12 @@
 
             </label>
 
-            <input
-                id="rateSlider"
-                type="range"
-                min="0.6"
-                max="1.5"
-                step="0.1"
-                value="1"
-            >
+            <input id="rateSlider"
+                   type="range"
+                   min="0.6"
+                   max="1.5"
+                   step="0.1"
+                   value="1">
 
         </div>
 
@@ -280,14 +258,12 @@
 
             </label>
 
-            <input
-                id="volumeSlider"
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value="1"
-            >
+            <input id="volumeSlider"
+                   type="range"
+                   min="0"
+                   max="1"
+                   step="0.05"
+                   value="1">
 
         </div>
 
@@ -298,11 +274,9 @@
                 Erinnerungen
             </label>
 
-            <input
-                id="memoryToggle"
-                type="checkbox"
-                checked
-            >
+            <input id="memoryToggle"
+                   type="checkbox"
+                   checked>
 
         </div>
 
@@ -313,20 +287,18 @@
                 Animationen
             </label>
 
-            <input
-                id="animationToggle"
-                type="checkbox"
-                checked
-            >
+            <input id="animationToggle"
+                   type="checkbox"
+                   checked>
 
         </div>
 
 
-        <button
-            id="testVoice"
-            class="primary-button"
-        >
+        <button id="testVoice"
+                class="primary-button">
+
             Stimme testen
+
         </button>
 
 
@@ -343,24 +315,17 @@
 
             <div class="family-actions">
 
-                <button
-                    id="createFamily"
-                    class="secondary-button"
-                >
+                <button id="createFamily"
+                        class="secondary-button">
                     Familie erstellen
                 </button>
 
-                <input
-                    id="familyCode"
-                    type="text"
-                    placeholder="Familiencode"
-                    autocomplete="off"
-                >
+                <input id="familyCode"
+                       type="text"
+                       placeholder="Familiencode">
 
-                <button
-                    id="joinFamily"
-                    class="secondary-button"
-                >
+                <button id="joinFamily"
+                        class="secondary-button">
                     Beitreten
                 </button>
 
@@ -369,26 +334,24 @@
         </div>
 
 
-        <div
-            id="memoryStatus"
-            class="memory-status"
-        ></div>
+        <div id="memoryStatus"
+             class="memory-status">
+        </div>
 
     </div>
 
 </div>
 
 
-<div
-    id="toast"
-    class="toast"
-></div>
+<div id="toast"
+     class="toast">
+</div>
 
 
-<script
-    type="module"
-    src="./app.js?v=3"
-></script>
+<script type="module"
+        src="./app.js?v=5">
+</script>
 
 </body>
 </html>
+```
