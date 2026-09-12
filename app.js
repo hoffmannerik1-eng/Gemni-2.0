@@ -1,2017 +1,1522 @@
-/* =====================================================
-   NOVA FAMILY AI
-   COMPLETE APP.JS
-   ===================================================== */
+// ============================================================
+// NOVA FAMILY AI - COMPLETE APP.JS
+// Sprachmodus: Nova hört NICHT während sie spricht
+// ============================================================
 
-
-/* =====================================================
-   FIREBASE
-===================================================== */
-
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 
 import {
     getAuth,
     GoogleAuthProvider,
-    signInWithRedirect,
-    getRedirectResult,
-    signOut,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+    signInWithPopup,
+    onAuthStateChanged,
+    signOut
+} from
+    "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
     getFirestore,
     doc,
-    setDoc,
     getDoc,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-import {
-    firebaseConfig
-} from "./firebase-config.js";
-
-
-/* =====================================================
-   DOM
-===================================================== */
-
-const $ = id => document.getElementById(id);
-
-const orb = $("orb");
-const statusText = $("statusText");
-const statusSub = $("statusSub");
-
-const microphone = $("microphone");
-
-const voiceMode = $("voiceMode");
-const textMode = $("textMode");
-
-const textChat = $("textChat");
-const messages = $("messages");
-const textInput = $("textInput");
-const sendText = $("sendText");
-
-const youtubeButton = $("youtubeButton");
-const googleButton = $("googleButton");
-const settingsButton = $("settingsButton");
-
-const settingsOverlay = $("settingsOverlay");
-const closeSettings = $("closeSettings");
-
-const voiceSelect = $("voiceSelect");
-
-const rateSlider = $("rateSlider");
-const rateValue = $("rateValue");
-
-const volumeSlider = $("volumeSlider");
-const volumeValue = $("volumeValue");
-
-const testVoice = $("testVoice");
-
-const loginButton = $("loginButton");
-const logoutButton = $("logoutButton");
-
-const userPhoto = $("userPhoto");
-const userInfo = $("userInfo");
-const userName = $("userName");
-const userEmail = $("userEmail");
-
-const memoryToggle = $("memoryToggle");
-const animationToggle = $("animationToggle");
-
-const familyStatus = $("familyStatus");
-const createFamily = $("createFamily");
-const joinFamily = $("joinFamily");
-const familyCode = $("familyCode");
-
-const toast = $("toast");
+    setDoc,
+    updateDoc,
+    arrayUnion
+} from
+    "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 
-/* =====================================================
-   STATE
-===================================================== */
+// ============================================================
+// FIREBASE CONFIG
+// ============================================================
+// WICHTIG:
+// Hier deine bisherige firebaseConfig einsetzen.
+// Wenn du bereits einen funktionierenden firebaseConfig
+// in deiner alten app.js hattest, einfach genau diesen übernehmen.
+// ============================================================
 
-let firebaseApp = null;
-let auth = null;
-let db = null;
-let model = null;
-
-let currentUser = null;
-
-let recognition = null;
-let recognitionRunning = false;
-
-let voices = [];
-let activeUtterance = null;
-
-let thinking = false;
-let speaking = false;
-
-let mode = "voice";
-
-
-let settings = {
-    voiceName: "",
-    rate: 1,
-    volume: 1,
-    memory: true,
-    animation: true
+const firebaseConfig = {
+    apiKey: "DEINE_API_KEY",
+    authDomain: "DEIN-PROJEKT.firebaseapp.com",
+    projectId: "DEIN-PROJEKT",
+    storageBucket: "DEIN-PROJEKT.firebasestorage.app",
+    messagingSenderId: "DEINE_SENDER_ID",
+    appId: "DEINE_APP_ID"
 };
 
 
-/* =====================================================
-   SETTINGS LOAD
-===================================================== */
+// ============================================================
+// FIREBASE
+// ============================================================
 
-try {
+const app = initializeApp(firebaseConfig);
 
-    const saved =
-        localStorage.getItem(
-            "novaSettings"
-        );
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-    if (saved) {
+const googleProvider = new GoogleAuthProvider();
 
-        settings = {
-            ...settings,
-            ...JSON.parse(saved)
-        };
 
-    }
+// ============================================================
+// DOM
+// ============================================================
 
-} catch (error) {
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+const sendButton = document.getElementById("sendButton");
 
-    console.warn(
-        "Settings konnten nicht geladen werden:",
-        error
-    );
+const micButton =
+    document.getElementById("micButton") ||
+    document.getElementById("mic");
 
+const loginButton =
+    document.getElementById("loginButton") ||
+    document.getElementById("googleLogin");
+
+const logoutButton =
+    document.getElementById("logoutButton") ||
+    document.getElementById("logout");
+
+const textModeButton =
+    document.getElementById("textModeButton");
+
+const voiceModeButton =
+    document.getElementById("voiceModeButton");
+
+const youtubeButton =
+    document.getElementById("youtubeButton");
+
+const googleButton =
+    document.getElementById("googleButton");
+
+
+// ============================================================
+// STATE
+// ============================================================
+
+let currentUser = null;
+
+let mode = "voice";
+
+let model = null;
+
+let thinking = false;
+
+let isSpeaking = false;
+
+let isListening = false;
+
+let recognition = null;
+
+let recognitionSupported = false;
+
+let shouldListenAgain = false;
+
+let voices = [];
+
+let selectedVoice = null;
+
+let conversation = [];
+
+
+// ============================================================
+// HELPERS
+// ============================================================
+
+function $(id) {
+    return document.getElementById(id);
 }
 
 
-function saveSettings() {
+function addMessage(type, text) {
 
-    try {
+    if (!chat) return;
 
-        localStorage.setItem(
-            "novaSettings",
-            JSON.stringify(settings)
-        );
+    const message = document.createElement("div");
 
-    } catch (error) {
+    message.className =
+        type === "user"
+            ? "message user-message"
+            : "message nova-message";
 
-        console.warn(error);
+    message.textContent = text;
 
-    }
+    chat.appendChild(message);
 
-}
-
-
-/* =====================================================
-   UI STATE
-===================================================== */
-
-function setState(
-    title,
-    subtitle = ""
-) {
-
-    if (statusText) {
-        statusText.textContent =
-            title;
-    }
-
-    if (statusSub) {
-        statusSub.textContent =
-            subtitle;
-    }
-
-
-    if (orb) {
-
-        orb.classList.remove(
-            "thinking",
-            "listening",
-            "speaking"
-        );
-
-
-        if (title === "DENKE") {
-
-            orb.classList.add(
-                "thinking"
-            );
-
-        }
-
-
-        if (title === "ZUHÖREN") {
-
-            orb.classList.add(
-                "listening"
-            );
-
-        }
-
-
-        if (title === "SPRECHEN") {
-
-            orb.classList.add(
-                "speaking"
-            );
-
-        }
-
-    }
-
+    chat.scrollTop = chat.scrollHeight;
 }
 
 
 function showToast(text) {
 
-    if (!toast) return;
+    let toast = document.getElementById("novaToast");
 
-    toast.textContent =
-        text;
+    if (!toast) {
 
-    toast.classList.add(
-        "show"
-    );
+        toast = document.createElement("div");
 
+        toast.id = "novaToast";
 
-    setTimeout(() => {
+        toast.style.position = "fixed";
+        toast.style.bottom = "25px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.zIndex = "99999";
+        toast.style.background = "#111";
+        toast.style.color = "#fff";
+        toast.style.padding = "12px 18px";
+        toast.style.borderRadius = "12px";
+        toast.style.border = "1px solid #333";
+        toast.style.maxWidth = "80%";
+        toast.style.fontSize = "14px";
 
-        toast.classList.remove(
-            "show"
-        );
+        document.body.appendChild(toast);
+    }
 
-    }, 3000);
+    toast.textContent = text;
 
+    toast.style.display = "block";
+
+    clearTimeout(toast._timer);
+
+    toast._timer = setTimeout(() => {
+        toast.style.display = "none";
+    }, 5000);
 }
 
 
-/* =====================================================
-   BASIC BUTTONS
-===================================================== */
+function setState(title, subtitle = "") {
 
-settingsButton?.addEventListener(
-    "click",
-    () => {
+    const state =
+        document.getElementById("state") ||
+        document.getElementById("status");
 
-        settingsOverlay.hidden =
-            false;
+    if (!state) return;
 
-        refreshVoices();
-
+    if (typeof state.textContent === "string") {
+        state.textContent =
+            subtitle
+                ? `${title} – ${subtitle}`
+                : title;
     }
-);
+}
 
 
-closeSettings?.addEventListener(
-    "click",
-    () => {
+// ============================================================
+// SETTINGS
+// ============================================================
 
-        settingsOverlay.hidden =
-            true;
+function loadSettings() {
 
+    const savedVoice =
+        localStorage.getItem("novaVoice");
+
+    const savedMode =
+        localStorage.getItem("novaMode");
+
+    if (savedMode === "text" || savedMode === "voice") {
+        mode = savedMode;
     }
-);
+
+    if (savedVoice) {
+
+        setTimeout(() => {
+
+            voices = speechSynthesis.getVoices();
+
+            selectedVoice =
+                voices.find(v => v.name === savedVoice) ||
+                null;
+
+        }, 300);
+    }
+}
 
 
-settingsOverlay?.addEventListener(
-    "click",
-    event => {
+function saveSettings() {
 
-        if (
-            event.target ===
-            settingsOverlay
-        ) {
+    localStorage.setItem("novaMode", mode);
 
-            settingsOverlay.hidden =
-                true;
+    if (selectedVoice) {
+        localStorage.setItem(
+            "novaVoice",
+            selectedVoice.name
+        );
+    }
+}
 
+
+// ============================================================
+// MODE
+// ============================================================
+
+function setMode(newMode) {
+
+    mode = newMode;
+
+    localStorage.setItem("novaMode", mode);
+
+    if (mode === "voice") {
+
+        setState("SPRACHMODUS");
+
+        if (!isSpeaking && !thinking) {
+            startListening();
         }
 
+    } else {
+
+        setState("TEXTMODUS");
+
+        stopListening();
     }
-);
+}
 
 
-/* =====================================================
-   MODES
-===================================================== */
+if (textModeButton) {
 
-voiceMode?.addEventListener(
-    "click",
-    () => {
+    textModeButton.addEventListener("click", () => {
+        setMode("text");
+    });
+}
 
-        mode =
-            "voice";
 
-        voiceMode.classList.add(
-            "active"
+if (voiceModeButton) {
+
+    voiceModeButton.addEventListener("click", () => {
+        setMode("voice");
+    });
+}
+
+
+// ============================================================
+// GEMINI / FIREBASE AI
+// ============================================================
+
+async function initializeGemini() {
+
+    if (model) {
+        return model;
+    }
+
+    try {
+
+        const firebaseAI =
+            await import(
+                "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
+            );
+
+        const {
+            getAI,
+            getGenerativeModel,
+            GoogleAIBackend
+        } = firebaseAI;
+
+        const ai = getAI(app, {
+            backend: new GoogleAIBackend()
+        });
+
+        model = getGenerativeModel(ai, {
+            model: "gemini-3.7-flash"
+        });
+
+        return model;
+
+    } catch (error) {
+
+        console.error(
+            "NOVA AI INITIALISIERUNG FEHLER:",
+            error
         );
 
-        textMode.classList.remove(
-            "active"
+        throw error;
+    }
+}
+
+
+// ============================================================
+// SPEECH SYNTHESIS
+// ============================================================
+
+function loadVoices() {
+
+    voices = speechSynthesis.getVoices();
+
+    if (!voices.length) return;
+
+    const savedVoice =
+        localStorage.getItem("novaVoice");
+
+    if (savedVoice) {
+
+        selectedVoice =
+            voices.find(v => v.name === savedVoice);
+    }
+
+    if (!selectedVoice) {
+
+        selectedVoice =
+            voices.find(v =>
+                v.lang &&
+                v.lang.toLowerCase().startsWith("de")
+            ) ||
+            voices[0];
+    }
+}
+
+
+speechSynthesis.onvoiceschanged = loadVoices;
+
+loadVoices();
+
+
+function stopSpeaking() {
+
+    try {
+        speechSynthesis.cancel();
+    } catch (_) {}
+
+    isSpeaking = false;
+}
+
+
+function speak(text) {
+
+    return new Promise(resolve => {
+
+        if (!text) {
+            resolve();
+            return;
+        }
+
+        // ====================================================
+        // GANZ WICHTIG:
+        // Während Nova spricht NICHT zuhören.
+        // ====================================================
+
+        shouldListenAgain = false;
+
+        stopListening();
+
+        stopSpeaking();
+
+        isSpeaking = true;
+
+        setState("NOVA SPRICHT");
+
+        const utterance =
+            new SpeechSynthesisUtterance(text);
+
+        utterance.lang = "de-DE";
+
+        utterance.rate = 1.0;
+
+        utterance.pitch = 1.0;
+
+        utterance.volume = 1.0;
+
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+        }
+
+        utterance.onstart = () => {
+
+            isSpeaking = true;
+
+            // Sicherheitsmaßnahme:
+            stopListening();
+
+            setState("NOVA SPRICHT");
+        };
+
+
+        utterance.onend = () => {
+
+            isSpeaking = false;
+
+            setState("BEREIT");
+
+            resolve();
+
+            // Erst NACHDEM Nova komplett fertig gesprochen hat
+            // wird das Mikrofon wieder aktiviert.
+
+            if (
+                mode === "voice" &&
+                !thinking
+            ) {
+
+                setTimeout(() => {
+
+                    if (
+                        !isSpeaking &&
+                        !thinking &&
+                        mode === "voice"
+                    ) {
+
+                        startListening();
+                    }
+
+                }, 350);
+            }
+        };
+
+
+        utterance.onerror = (event) => {
+
+            console.error(
+                "SPEECH ERROR:",
+                event
+            );
+
+            isSpeaking = false;
+
+            setState("BEREIT");
+
+            resolve();
+
+            if (
+                mode === "voice" &&
+                !thinking
+            ) {
+
+                setTimeout(() => {
+                    startListening();
+                }, 350);
+            }
+        };
+
+
+        speechSynthesis.speak(utterance);
+    });
+}
+
+
+// ============================================================
+// SPEECH RECOGNITION
+// ============================================================
+
+function setupRecognition() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+
+        recognitionSupported = false;
+
+        console.warn(
+            "SpeechRecognition wird von diesem Browser nicht unterstützt."
         );
 
-        textChat.hidden =
-            true;
+        return;
+    }
+
+    recognitionSupported = true;
+
+    recognition = new SpeechRecognition();
+
+    recognition.lang = "de-DE";
+
+    recognition.continuous = false;
+
+    recognition.interimResults = false;
+
+    recognition.maxAlternatives = 1;
+
+
+    recognition.onstart = () => {
+
+        // NIEMALS zuhören, während Nova spricht.
+
+        if (isSpeaking || thinking) {
+
+            try {
+                recognition.stop();
+            } catch (_) {}
+
+            return;
+        }
+
+        isListening = true;
+
+        setState("ICH HÖRE ZU");
+    };
+
+
+    recognition.onresult = async (event) => {
+
+        // Sicherheitscheck:
+        // Falls Nova inzwischen spricht -> ignorieren.
+
+        if (isSpeaking || thinking) {
+            return;
+        }
+
+        const result =
+            event.results[
+                event.results.length - 1
+            ];
+
+        if (!result || !result[0]) {
+            return;
+        }
+
+        const text =
+            result[0].transcript.trim();
+
+        if (!text) return;
+
+        input.value = text;
+
+        await sendToNova(text);
+    };
+
+
+    recognition.onerror = (event) => {
+
+        console.warn(
+            "SpeechRecognition:",
+            event.error
+        );
+
+        isListening = false;
+
+        if (
+            event.error === "not-allowed" ||
+            event.error === "service-not-allowed"
+        ) {
+
+            setState(
+                "MIKROFON NICHT ERLAUBT"
+            );
+
+            showToast(
+                "Bitte Mikrofonzugriff für diese Website erlauben."
+            );
+
+            return;
+        }
+
+        setState("BEREIT");
+    };
+
+
+    recognition.onend = () => {
+
+        isListening = false;
+
+        // Während Nova spricht NICHT neu starten.
+
+        if (
+            isSpeaking ||
+            thinking
+        ) {
+
+            return;
+        }
+
+        // Nur im Sprachmodus wieder zuhören.
+
+        if (
+            mode === "voice" &&
+            shouldListenAgain
+        ) {
+
+            setTimeout(() => {
+
+                if (
+                    !isSpeaking &&
+                    !thinking &&
+                    mode === "voice"
+                ) {
+
+                    startListening();
+                }
+
+            }, 250);
+
+        } else {
+
+            setState("BEREIT");
+        }
+    };
+}
+
+
+setupRecognition();
+
+
+// ============================================================
+// START LISTENING
+// ============================================================
+
+function startListening() {
+
+    if (!recognitionSupported) {
+
+        showToast(
+            "Dieser Browser unterstützt keine Sprachsteuerung."
+        );
+
+        return;
+    }
+
+    // ABSOLUTE SICHERHEIT:
+    // Nova spricht -> kein Mikrofon.
+
+    if (isSpeaking) {
+        return;
+    }
+
+    // Nova denkt -> kein Mikrofon.
+
+    if (thinking) {
+        return;
+    }
+
+    if (mode !== "voice") {
+        return;
+    }
+
+    if (isListening) {
+        return;
+    }
+
+    shouldListenAgain = true;
+
+    try {
+
+        recognition.start();
+
+    } catch (error) {
+
+        console.warn(
+            "Mikrofon konnte nicht gestartet werden:",
+            error
+        );
+    }
+}
+
+
+// ============================================================
+// STOP LISTENING
+// ============================================================
+
+function stopListening() {
+
+    shouldListenAgain = false;
+
+    if (!recognition) return;
+
+    try {
+
+        recognition.stop();
+
+    } catch (_) {}
+
+    isListening = false;
+}
+
+
+// ============================================================
+// MICROPHONE BUTTON
+// ============================================================
+
+if (micButton) {
+
+    micButton.addEventListener(
+        "click",
+        () => {
+
+            if (isSpeaking) {
+                return;
+            }
+
+            if (thinking) {
+                return;
+            }
+
+            if (isListening) {
+
+                stopListening();
+
+                setState("BEREIT");
+
+            } else {
+
+                mode = "voice";
+
+                localStorage.setItem(
+                    "novaMode",
+                    "voice"
+                );
+
+                startListening();
+            }
+        }
+    );
+}
+
+
+// ============================================================
+// SEND BUTTON
+// ============================================================
+
+if (sendButton) {
+
+    sendButton.addEventListener(
+        "click",
+        async () => {
+
+            const text =
+                input?.value?.trim();
+
+            if (!text) return;
+
+            input.value = "";
+
+            await sendToNova(text);
+        }
+    );
+}
+
+
+if (input) {
+
+    input.addEventListener(
+        "keydown",
+        async event => {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                const text =
+                    input.value.trim();
+
+                if (!text) return;
+
+                input.value = "";
+
+                await sendToNova(text);
+            }
+        }
+    );
+}
+
+
+// ============================================================
+// NOVA RESPONSE
+// ============================================================
+
+async function sendToNova(text) {
+
+    if (!text) return;
+
+    if (thinking) return;
+
+    // Falls Nova gerade spricht:
+    // niemals neue Anfrage starten.
+
+    if (isSpeaking) return;
+
+
+    thinking = true;
+
+    shouldListenAgain = false;
+
+    stopListening();
+
+    setState("NOVA DENKT");
+
+
+    addMessage(
+        "user",
+        text
+    );
+
+
+    conversation.push({
+        role: "user",
+        text: text
+    });
+
+
+    try {
+
+        // ====================================================
+        // GEMINI STARTEN
+        // ====================================================
+
+        const aiModel =
+            await initializeGemini();
+
+
+        if (!aiModel) {
+            throw new Error(
+                "Gemini-Modell konnte nicht geladen werden."
+            );
+        }
+
+
+        // ====================================================
+        // PROMPT
+        // ====================================================
+
+        const prompt = `
+
+Du bist Nova, eine persönliche KI.
+
+Antworte auf Deutsch.
+
+Du bist freundlich, ruhig, intelligent und direkt.
+
+WICHTIGE REGELN:
+
+1. Antworte möglichst natürlich.
+2. Keine unnötigen langen Erklärungen.
+3. Wenn der Benutzer eine einfache Frage stellt,
+   antworte kurz und klar.
+4. Wenn der Benutzer "öffne YouTube" sagt,
+   soll eine Aktion ausgegeben werden.
+5. Wenn der Benutzer "öffne Google" sagt,
+   soll eine Aktion ausgegeben werden.
+6. Gib die Antwort ausschließlich als JSON zurück.
+
+Format:
+
+{
+  "answer": "Deine Antwort",
+  "action": "none"
+}
+
+Mögliche Aktionen:
+
+none
+youtube
+google
+
+Beispiele:
+
+Benutzer:
+"Hallo Nova"
+
+Antwort:
+{
+  "answer": "Hallo! Was kann ich für dich tun?",
+  "action": "none"
+}
+
+Benutzer:
+"Öffne YouTube"
+
+Antwort:
+{
+  "answer": "Ich öffne YouTube.",
+  "action": "youtube"
+}
+
+Benutzer:
+"Öffne Google"
+
+Antwort:
+{
+  "answer": "Ich öffne Google.",
+  "action": "google"
+}
+
+Benutzer:
+"Wie spät ist es?"
+
+Antwort:
+{
+  "answer": "Ich kann dir die aktuelle Uhrzeit nennen.",
+  "action": "none"
+}
+
+Aktuelle Unterhaltung:
+
+${conversation
+    .slice(-12)
+    .map(x =>
+        `${x.role}: ${x.text}`
+    )
+    .join("\n")}
+
+Neue Nachricht:
+
+${text}
+
+`;
+
+
+        // ====================================================
+        // GEMINI REQUEST
+        // ====================================================
+
+        const result =
+            await aiModel.generateContent(
+                prompt
+            );
+
+
+        const response =
+            result.response;
+
+
+        let answer =
+            response.text();
+
+
+        // ====================================================
+        // JSON PARSEN
+        // ====================================================
+
+        let data;
+
+        try {
+
+            answer =
+                answer
+                    .replace(/```json/gi, "")
+                    .replace(/```/g, "")
+                    .trim();
+
+            data =
+                JSON.parse(answer);
+
+        } catch (jsonError) {
+
+            console.warn(
+                "JSON konnte nicht gelesen werden:",
+                answer
+            );
+
+            data = {
+                answer: answer,
+                action: "none"
+            };
+        }
+
+
+        const novaAnswer =
+            data.answer ||
+            "Ich konnte darauf gerade nicht antworten.";
+
+
+        const action =
+            data.action ||
+            "none";
+
+
+        conversation.push({
+            role: "nova",
+            text: novaAnswer
+        });
+
+
+        // ====================================================
+        // NOVA ANTWORT
+        // ====================================================
+
+        addMessage(
+            "nova",
+            novaAnswer
+        );
+
+
+        // Denken beenden BEVOR gesprochen wird.
+
+        thinking = false;
+
+
+        // ====================================================
+        // AKTION
+        // ====================================================
+
+        executeAction(action);
+
+
+        // ====================================================
+        // SPRACHE
+        // ====================================================
+
+        if (mode === "voice") {
+
+            // speak() stoppt das Mikrofon noch einmal
+            // und startet es erst nach dem Ende.
+
+            await speak(
+                novaAnswer
+            );
+
+        } else {
+
+            setState("BEREIT");
+        }
+
+
+    } catch (error) {
+
+        thinking = false;
+
+        isSpeaking = false;
+
+        stopListening();
+
+
+        console.error(
+            "=============================="
+        );
+
+        console.error(
+            "NOVA GEMINI FEHLER:"
+        );
+
+        console.error(error);
+
+        console.error(
+            "=============================="
+        );
+
+
+        // ====================================================
+        // ECHTEN FEHLER ANZEIGEN
+        // ====================================================
+
+        let errorText =
+            error?.message ||
+            error?.code ||
+            String(error);
+
+
+        if (
+            errorText.includes("permission-denied")
+        ) {
+
+            errorText =
+                "Firebase hat den Zugriff auf Gemini verweigert. Prüfe die Firebase AI Logic Einrichtung.";
+        }
+
+
+        if (
+            errorText.includes("not-found")
+        ) {
+
+            errorText =
+                "Das Gemini-Modell wurde nicht gefunden oder ist für dieses Projekt nicht verfügbar.";
+        }
+
+
+        if (
+            errorText.includes("unauthenticated")
+        ) {
+
+            errorText =
+                "Die Firebase-Anmeldung ist nicht gültig.";
+        }
+
+
+        const visibleError =
+            "Gemini-Fehler: " +
+            errorText;
+
+
+        addMessage(
+            "nova",
+            visibleError
+        );
+
+
+        showToast(
+            visibleError
+        );
+
 
         setState(
-            "BEREIT",
-            "Drücke das Mikrofon"
+            "FEHLER",
+            "Details wurden im Chat angezeigt"
         );
 
+
+        // NICHT versuchen, den Fehler vorzulesen.
+        // Dadurch bleibt das Mikrofon sauber.
+
+
+        if (
+            mode === "voice"
+        ) {
+
+            setTimeout(() => {
+
+                if (
+                    !thinking &&
+                    !isSpeaking
+                ) {
+
+                    startListening();
+                }
+
+            }, 700);
+        }
     }
-);
+}
 
 
-textMode?.addEventListener(
-    "click",
-    () => {
+// ============================================================
+// ACTIONS
+// ============================================================
 
-        mode =
-            "text";
+function executeAction(action) {
 
-        textMode.classList.add(
-            "active"
-        );
-
-        voiceMode.classList.remove(
-            "active"
-        );
-
-        textChat.hidden =
-            false;
-
-        setState(
-            "TEXTMODUS",
-            "Schreibe Nova etwas"
-        );
-
-        setTimeout(
-            () => {
-
-                textInput?.focus();
-
-            },
-            100
-        );
-
-    }
-);
+    if (!action) return;
 
 
-/* =====================================================
-   YOUTUBE BUTTON
-===================================================== */
-
-youtubeButton?.addEventListener(
-    "click",
-    () => {
+    if (action === "youtube") {
 
         window.open(
             "https://www.youtube.com/",
             "_blank"
         );
 
+        return;
     }
-);
 
 
-/* =====================================================
-   GOOGLE BUTTON
-===================================================== */
-
-googleButton?.addEventListener(
-    "click",
-    () => {
+    if (action === "google") {
 
         window.open(
             "https://www.google.com/",
             "_blank"
         );
 
+        return;
     }
-);
-
-
-/* =====================================================
-   FIREBASE INIT
-===================================================== */
-
-try {
-
-    firebaseApp =
-        initializeApp(
-            firebaseConfig
-        );
-
-
-    auth =
-        getAuth(
-            firebaseApp
-        );
-
-
-    db =
-        getFirestore(
-            firebaseApp
-        );
-
-
-    console.log(
-        "Firebase gestartet."
-    );
-
-} catch (error) {
-
-    console.error(
-        "Firebase Fehler:",
-        error
-    );
-
-
-    showToast(
-        "Firebase konnte nicht gestartet werden."
-    );
-
 }
 
 
-/* =====================================================
-   GEMINI
-===================================================== */
+// ============================================================
+// YOUTUBE BUTTON
+// ============================================================
 
-async function initializeGemini() {
+if (youtubeButton) {
 
-    if (!firebaseApp) {
-
-        return;
-
-    }
-
-
-    if (model) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const aiModule =
-            await import(
-                "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
-            );
-
-
-        const ai =
-            aiModule.getAI(
-                firebaseApp,
-                {
-                    backend:
-                        new aiModule.GoogleAIBackend()
-                }
-            );
-
-
-        model =
-            aiModule.getGenerativeModel(
-                ai,
-                {
-                    model:
-                        "gemini-3.7-flash"
-                }
-            );
-
-
-        console.log(
-            "Gemini gestartet."
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Gemini Fehler:",
-            error
-        );
-
-
-        model =
-            null;
-
-    }
-
-}
-
-
-/* =====================================================
-   GOOGLE LOGIN
-===================================================== */
-
-loginButton?.addEventListener(
-    "click",
-    async () => {
-
-        if (!auth) {
-
-            showToast(
-                "Firebase ist nicht verfügbar."
-            );
-
-            return;
-
-        }
-
-
-        try {
-
-            const provider =
-                new GoogleAuthProvider();
-
-
-            await signInWithRedirect(
-                auth,
-                provider
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Login:",
-                error
-            );
-
-
-            showToast(
-                "Google-Anmeldung konnte nicht gestartet werden."
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-logoutButton?.addEventListener(
-    "click",
-    async () => {
-
-        if (!auth) return;
-
-
-        try {
-
-            await signOut(
-                auth
-            );
-
-        } catch (error) {
-
-            console.error(
-                error
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   REDIRECT RESULT
-===================================================== */
-
-if (auth) {
-
-    getRedirectResult(
-        auth
-    ).catch(
-        error => {
-
-            console.error(
-                "Login Redirect:",
-                error
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   AUTH STATE
-===================================================== */
-
-if (auth) {
-
-    onAuthStateChanged(
-        auth,
-        user => {
-
-            currentUser =
-                user;
-
-
-            if (!user) {
-
-                loginButton.hidden =
-                    false;
-
-                logoutButton.hidden =
-                    true;
-
-                userInfo.hidden =
-                    true;
-
-                userPhoto.hidden =
-                    true;
-
-                return;
-
-            }
-
-
-            loginButton.hidden =
-                true;
-
-            logoutButton.hidden =
-                false;
-
-            userInfo.hidden =
-                false;
-
-
-            userName.textContent =
-                user.displayName ||
-                "Benutzer";
-
-
-            userEmail.textContent =
-                user.email ||
-                "";
-
-
-            if (user.photoURL) {
-
-                userPhoto.src =
-                    user.photoURL;
-
-                userPhoto.hidden =
-                    false;
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   SPEECH RECOGNITION
-===================================================== */
-
-function initializeSpeech() {
-
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
-
-
-    if (!SpeechRecognition) {
-
-        if (microphone) {
-
-            microphone.disabled =
-                true;
-
-        }
-
-        return;
-
-    }
-
-
-    if (recognition) {
-
-        return;
-
-    }
-
-
-    recognition =
-        new SpeechRecognition();
-
-
-    recognition.lang =
-        "de-DE";
-
-
-    recognition.continuous =
-        false;
-
-
-    recognition.interimResults =
-        false;
-
-
-    recognition.maxAlternatives =
-        1;
-
-
-    recognition.onstart =
+    youtubeButton.addEventListener(
+        "click",
         () => {
 
-            recognitionRunning =
-                true;
-
-
-            microphone.classList.add(
-                "active"
+            window.open(
+                "https://www.youtube.com/",
+                "_blank"
             );
-
-
-            setState(
-                "ZUHÖREN",
-                "Ich höre zu..."
-            );
-
-        };
-
-
-    recognition.onresult =
-        event => {
-
-            const text =
-                event
-                    .results[0][0]
-                    .transcript
-                    .trim();
-
-
-            if (!text) {
-
-                return;
-
-            }
-
-
-            sendToNova(
-                text
-            );
-
-        };
-
-
-    recognition.onerror =
-        event => {
-
-            console.error(
-                "Mikrofon:",
-                event.error
-            );
-
-
-            recognitionRunning =
-                false;
-
-
-            microphone.classList.remove(
-                "active"
-            );
-
-
-            setState(
-                "BEREIT",
-                "Drücke das Mikrofon"
-            );
-
-
-            if (
-                event.error ===
-                "not-allowed"
-            ) {
-
-                showToast(
-                    "Mikrofonzugriff wurde blockiert."
-                );
-
-            }
-
-        };
-
-
-    recognition.onend =
-        () => {
-
-            recognitionRunning =
-                false;
-
-
-            microphone.classList.remove(
-                "active"
-            );
-
-
-            if (
-                !thinking &&
-                !speaking
-            ) {
-
-                setState(
-                    "BEREIT",
-                    "Drücke das Mikrofon"
-                );
-
-            }
-
-        };
-
-}
-
-
-/* =====================================================
-   MICROPHONE
-===================================================== */
-
-microphone?.addEventListener(
-    "click",
-    () => {
-
-        if (!recognition) {
-
-            initializeSpeech();
-
-        }
-
-
-        if (!recognition) {
-
-            return;
-
-        }
-
-
-        if (
-            thinking ||
-            speaking
-        ) {
-
-            return;
-
-        }
-
-
-        try {
-
-            if (
-                recognitionRunning
-            ) {
-
-                recognition.stop();
-
-            } else {
-
-                speechSynthesis.cancel();
-
-                recognition.start();
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Microphone:",
-                error
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   VOICES
-===================================================== */
-
-function refreshVoices() {
-
-    voices =
-        speechSynthesis.getVoices();
-
-
-    if (!voiceSelect) {
-
-        return;
-
-    }
-
-
-    voiceSelect.innerHTML =
-        "";
-
-
-    voices.forEach(
-        voice => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                voice.name;
-
-
-            option.textContent =
-                `${voice.name} — ${voice.lang}`;
-
-
-            voiceSelect.appendChild(
-                option
-            );
-
         }
     );
-
-
-    if (
-        settings.voiceName
-    ) {
-
-        voiceSelect.value =
-            settings.voiceName;
-
-    }
-
 }
 
 
-speechSynthesis.addEventListener(
-    "voiceschanged",
-    refreshVoices
-);
+// ============================================================
+// GOOGLE BUTTON
+// ============================================================
 
+if (googleButton) {
 
-refreshVoices();
+    googleButton.addEventListener(
+        "click",
+        () => {
 
-
-/* =====================================================
-   NOVA SPEAK
-===================================================== */
-
-async function speak(text) {
-
-    if (!text) {
-
-        return;
-
-    }
-
-
-    try {
-
-        speechSynthesis.cancel();
-
-
-        await new Promise(
-            resolve =>
-                setTimeout(
-                    resolve,
-                    100
-                )
-        );
-
-
-        speechSynthesis.resume();
-
-
-        const utterance =
-            new SpeechSynthesisUtterance(
-                text
+            window.open(
+                "https://www.google.com/",
+                "_blank"
             );
+        }
+    );
+}
 
 
-        utterance.lang =
-            "de-DE";
+// ============================================================
+// GOOGLE LOGIN
+// ============================================================
 
+if (loginButton) {
 
-        utterance.rate =
-            Number(
-                settings.rate
-            ) || 1;
+    loginButton.addEventListener(
+        "click",
+        async () => {
 
+            try {
 
-        utterance.volume =
-            Number(
-                settings.volume
-            );
-
-
-        utterance.pitch =
-            1;
-
-
-        const currentVoices =
-            speechSynthesis.getVoices();
-
-
-        let voice =
-            null;
-
-
-        if (
-            settings.voiceName
-        ) {
-
-            voice =
-                currentVoices.find(
-                    item =>
-                        item.name ===
-                        settings.voiceName
+                await signInWithPopup(
+                    auth,
+                    googleProvider
                 );
 
-        }
-
-
-        if (!voice) {
-
-            voice =
-                currentVoices.find(
-                    item =>
-                        item.lang
-                            .toLowerCase()
-                            .startsWith(
-                                "de"
-                            )
-                );
-
-        }
-
-
-        if (voice) {
-
-            utterance.voice =
-                voice;
-
-        }
-
-
-        activeUtterance =
-            utterance;
-
-
-        speaking =
-            true;
-
-
-        setState(
-            "SPRECHEN",
-            "Nova spricht..."
-        );
-
-
-        utterance.onstart =
-            () => {
-
-                speaking =
-                    true;
-
-            };
-
-
-        utterance.onend =
-            () => {
-
-                speaking =
-                    false;
-
-                activeUtterance =
-                    null;
-
-
-                setState(
-                    "BEREIT",
-                    "Drücke das Mikrofon"
-                );
-
-            };
-
-
-        utterance.onerror =
-            error => {
+            } catch (error) {
 
                 console.error(
-                    "SpeechSynthesis:",
+                    "LOGIN FEHLER:",
                     error
                 );
 
-
-                speaking =
-                    false;
-
-
-                activeUtterance =
-                    null;
-
-
-                setState(
-                    "BEREIT",
-                    "Drücke das Mikrofon"
-                );
-
-            };
-
-
-        speechSynthesis.speak(
-            utterance
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Speech Error:",
-            error
-        );
-
-
-        speaking =
-            false;
-
-    }
-
-}
-
-
-/* =====================================================
-   TEST VOICE
-===================================================== */
-
-testVoice?.addEventListener(
-    "click",
-    () => {
-
-        speak(
-            "Hallo. Ich bin Nova. Ich bin bereit."
-        );
-
-    }
-);
-
-
-/* =====================================================
-   VOICE SETTINGS
-===================================================== */
-
-rateSlider.value =
-    settings.rate;
-
-
-rateValue.textContent =
-    Number(
-        settings.rate
-    ).toFixed(1);
-
-
-rateSlider.addEventListener(
-    "input",
-    () => {
-
-        settings.rate =
-            Number(
-                rateSlider.value
-            );
-
-
-        rateValue.textContent =
-            settings.rate.toFixed(1);
-
-
-        saveSettings();
-
-    }
-);
-
-
-volumeSlider.value =
-    settings.volume;
-
-
-volumeValue.textContent =
-    `${Math.round(
-        settings.volume * 100
-    )}%`;
-
-
-volumeSlider.addEventListener(
-    "input",
-    () => {
-
-        settings.volume =
-            Number(
-                volumeSlider.value
-            );
-
-
-        volumeValue.textContent =
-            `${Math.round(
-                settings.volume * 100
-            )}%`;
-
-
-        saveSettings();
-
-    }
-);
-
-
-voiceSelect.addEventListener(
-    "change",
-    () => {
-
-        settings.voiceName =
-            voiceSelect.value;
-
-
-        saveSettings();
-
-    }
-);
-
-
-/* =====================================================
-   MEMORY TOGGLE
-===================================================== */
-
-memoryToggle.checked =
-    settings.memory;
-
-
-memoryToggle.addEventListener(
-    "change",
-    () => {
-
-        settings.memory =
-            memoryToggle.checked;
-
-
-        saveSettings();
-
-    }
-);
-
-
-/* =====================================================
-   ANIMATION TOGGLE
-===================================================== */
-
-animationToggle.checked =
-    settings.animation;
-
-
-animationToggle.addEventListener(
-    "change",
-    () => {
-
-        settings.animation =
-            animationToggle.checked;
-
-
-        document.body.classList.toggle(
-            "no-animation",
-            !settings.animation
-        );
-
-
-        saveSettings();
-
-    }
-);
-
-
-/* =====================================================
-   TEXT CHAT
-===================================================== */
-
-sendText?.addEventListener(
-    "click",
-    () => {
-
-        const text =
-            textInput.value.trim();
-
-
-        if (!text) {
-
-            return;
-
-        }
-
-
-        textInput.value =
-            "";
-
-
-        sendToNova(
-            text
-        );
-
-    }
-);
-
-
-textInput?.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key ===
-            "Enter"
-        ) {
-
-            event.preventDefault();
-
-            sendText.click();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   MEMORY
-===================================================== */
-
-async function getMemory() {
-
-    if (
-        !currentUser ||
-        !db
-    ) {
-
-        return "";
-
-    }
-
-
-    try {
-
-        const memoryRef =
-            doc(
-                db,
-                "users",
-                currentUser.uid,
-                "settings",
-                "memory"
-            );
-
-
-        const snapshot =
-            await getDoc(
-                memoryRef
-            );
-
-
-        if (
-            !snapshot.exists()
-        ) {
-
-            return "";
-
-        }
-
-
-        return JSON.stringify(
-            snapshot.data()
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Memory:",
-            error
-        );
-
-
-        return "";
-
-    }
-
-}
-
-
-/* =====================================================
-   NOVA
-===================================================== */
-
-async function sendToNova(
-    userText
-) {
-
-    if (
-        !userText ||
-        thinking
-    ) {
-
-        return;
-
-    }
-
-
-    thinking =
-        true;
-
-
-    addMessage(
-        "user",
-        userText
-    );
-
-
-    setState(
-        "DENKE",
-        "Nova verarbeitet deine Anfrage..."
-    );
-
-
-    /* Gemini erst jetzt laden */
-
-    if (!model) {
-
-        await initializeGemini();
-
-    }
-
-
-    if (!model) {
-
-        thinking =
-            false;
-
-
-        const errorText =
-            "Die KI-Verbindung ist momentan nicht verfügbar.";
-
-
-        if (
-            mode === "text"
-        ) {
-
-            addMessage(
-                "nova",
-                errorText
-            );
-
-
-            setState(
-                "BEREIT",
-                "Nova ist bereit"
-            );
-
-        } else {
-
-            await speak(
-                errorText
-            );
-
-        }
-
-
-        return;
-
-    }
-
-
-    try {
-
-        const memory =
-            settings.memory
-                ? await getMemory()
-                : "";
-
-
-        const prompt = `
-Du bist Nova, eine moderne persönliche KI-Assistentin.
-
-Antworte immer auf Deutsch.
-
-Sei natürlich, freundlich, intelligent und direkt.
-
-Antworte ausschließlich als JSON:
-
-{
-  "reply": "deine Antwort",
-  "action": "NONE",
-  "query": ""
-}
-
-Erlaubte Aktionen:
-
-NONE
-YOUTUBE_HOME
-YOUTUBE_SEARCH
-GOOGLE_SEARCH
-
-YOUTUBE_HOME:
-Wenn der Benutzer YouTube öffnen möchte.
-
-YOUTUBE_SEARCH:
-Wenn der Benutzer etwas auf YouTube suchen möchte.
-
-GOOGLE_SEARCH:
-Wenn der Benutzer etwas bei Google suchen möchte.
-
-Wenn der Benutzer sagt:
-"Öffne YouTube"
-oder
-"Mach YouTube auf"
-verwende:
-
-YOUTUBE_HOME
-
-Wenn der Benutzer sagt:
-"Suche auf YouTube nach Minecraft"
-verwende:
-
-YOUTUBE_SEARCH
-
-und setze query auf:
-
-Minecraft
-
-Wenn der Benutzer sagt:
-"Suche bei Google nach dem Wetter"
-verwende:
-
-GOOGLE_SEARCH
-
-und setze query auf:
-
-Wetter
-
-Gedächtnis:
-${memory || "Kein gespeicherter Kontext."}
-
-Benutzer:
-${userText}
-`;
-
-
-        const result =
-            await model.generateContent(
-                prompt
-            );
-
-
-        const raw =
-            result.response.text();
-
-
-        let data;
-
-
-        try {
-
-            const cleaned =
-                raw
-                    .replace(
-                        /```json/gi,
-                        ""
-                    )
-                    .replace(
-                        /```/g,
-                        ""
-                    )
-                    .trim();
-
-
-            data =
-                JSON.parse(
-                    cleaned
-                );
-
-        } catch {
-
-            data = {
-
-                reply:
-                    raw,
-
-                action:
-                    "NONE",
-
-                query:
-                    ""
-
-            };
-
-        }
-
-
-        const reply =
-            data.reply ||
-            "Ich habe keine Antwort erhalten.";
-
-
-        thinking =
-            false;
-
-
-        if (
-            mode === "text"
-        ) {
-
-            addMessage(
-                "nova",
-                reply
-            );
-
-
-            setState(
-                "BEREIT",
-                "Nova ist bereit"
-            );
-
-        } else {
-
-            await speak(
-                reply
-            );
-
-        }
-
-
-        executeAction(
-            data.action,
-            data.query
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Nova Fehler:",
-            error
-        );
-
-
-        thinking =
-            false;
-
-
-        const errorText =
-            "Bei der Verbindung mit Nova ist gerade ein Fehler aufgetreten.";
-
-
-        if (
-            mode === "text"
-        ) {
-
-            addMessage(
-                "nova",
-                errorText
-            );
-
-
-            setState(
-                "BEREIT",
-                "Nova ist bereit"
-            );
-
-        } else {
-
-            await speak(
-                errorText
-            );
-
-        }
-
-    }
-
-}
-
-
-/* =====================================================
-   ACTIONS
-===================================================== */
-
-function executeAction(
-    action,
-    query
-) {
-
-    if (
-        action ===
-        "YOUTUBE_HOME"
-    ) {
-
-        window.open(
-            "https://www.youtube.com/",
-            "_blank"
-        );
-
-        return;
-
-    }
-
-
-    if (
-        action ===
-        "YOUTUBE_SEARCH"
-    ) {
-
-        const q =
-            encodeURIComponent(
-                query || ""
-            );
-
-
-        window.open(
-            `https://www.youtube.com/results?search_query=${q}`,
-            "_blank"
-        );
-
-        return;
-
-    }
-
-
-    if (
-        action ===
-        "GOOGLE_SEARCH"
-    ) {
-
-        const q =
-            encodeURIComponent(
-                query || ""
-            );
-
-
-        window.open(
-            `https://www.google.com/search?q=${q}`,
-            "_blank"
-        );
-
-        return;
-
-    }
-
-}
-
-
-/* =====================================================
-   CHAT MESSAGES
-===================================================== */
-
-function addMessage(
-    type,
-    text
-) {
-
-    if (!messages) {
-
-        return;
-
-    }
-
-
-    const message =
-        document.createElement(
-            "div"
-        );
-
-
-    message.className =
-        `message ${type}`;
-
-
-    message.textContent =
-        text;
-
-
-    messages.appendChild(
-        message
-    );
-
-
-    messages.scrollTop =
-        messages.scrollHeight;
-
-}
-
-
-/* =====================================================
-   FAMILY CREATE
-===================================================== */
-
-createFamily?.addEventListener(
-    "click",
-    async () => {
-
-        if (
-            !currentUser ||
-            !db
-        ) {
-
-            showToast(
-                "Bitte zuerst mit Google anmelden."
-            );
-
-            return;
-
-        }
-
-
-        const code =
-            Math.random()
-                .toString(36)
-                .substring(
-                    2,
-                    8
-                )
-                .toUpperCase();
-
-
-        try {
-
-            await setDoc(
-                doc(
-                    db,
-                    "families",
-                    code
-                ),
-                {
-                    owner:
-                        currentUser.uid,
-
-                    createdAt:
-                        serverTimestamp()
-                }
-            );
-
-
-            familyStatus.textContent =
-                `Familiencode: ${code}`;
-
-
-            showToast(
-                `Familiencode: ${code}`
-            );
-
-        } catch (error) {
-
-            console.error(
-                error
-            );
-
-
-            showToast(
-                "Familie konnte nicht erstellt werden."
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   FAMILY JOIN
-===================================================== */
-
-joinFamily?.addEventListener(
-    "click",
-    async () => {
-
-        if (
-            !currentUser ||
-            !db
-        ) {
-
-            showToast(
-                "Bitte zuerst anmelden."
-            );
-
-            return;
-
-        }
-
-
-        const code =
-            familyCode.value
-                .trim()
-                .toUpperCase();
-
-
-        if (!code) {
-
-            showToast(
-                "Bitte Familiencode eingeben."
-            );
-
-            return;
-
-        }
-
-
-        try {
-
-            const result =
-                await getDoc(
-                    doc(
-                        db,
-                        "families",
-                        code
-                    )
-                );
-
-
-            if (
-                !result.exists()
-            ) {
-
                 showToast(
-                    "Familie wurde nicht gefunden."
+                    "Login fehlgeschlagen: " +
+                    (error.message || error)
                 );
+            }
+        }
+    );
+}
 
-                return;
 
+// ============================================================
+// LOGOUT
+// ============================================================
+
+if (logoutButton) {
+
+    logoutButton.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await signOut(auth);
+
+            } catch (error) {
+
+                console.error(
+                    "LOGOUT FEHLER:",
+                    error
+                );
+            }
+        }
+    );
+}
+
+
+// ============================================================
+// AUTH
+// ============================================================
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        currentUser = user;
+
+
+        if (user) {
+
+            console.log(
+                "Nova Benutzer:",
+                user.email
+            );
+
+
+            if (loginButton) {
+                loginButton.style.display = "none";
             }
 
 
-            familyStatus.textContent =
-                `Verbunden: ${code}`;
+            if (logoutButton) {
+                logoutButton.style.display = "";
+            }
 
 
-            showToast(
-                "Familie verbunden."
-            );
+            // User-Dokument vorbereiten
 
-        } catch (error) {
+            try {
 
-            console.error(
-                error
-            );
+                const userRef =
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    );
+
+                const userSnap =
+                    await getDoc(userRef);
 
 
-            showToast(
-                "Beitreten fehlgeschlagen."
-            );
+                if (!userSnap.exists()) {
 
+                    await setDoc(
+                        userRef,
+                        {
+                            email: user.email,
+                            displayName:
+                                user.displayName ||
+                                "Benutzer",
+                            createdAt:
+                                new Date()
+                        }
+                    );
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    "Benutzer-Daten konnten nicht gespeichert werden:",
+                    error
+                );
+            }
+
+        } else {
+
+            if (loginButton) {
+                loginButton.style.display = "";
+            }
+
+            if (logoutButton) {
+                logoutButton.style.display = "none";
+            }
         }
-
     }
 );
 
 
-/* =====================================================
-   INITIAL START
-===================================================== */
+// ============================================================
+// MEMORY
+// ============================================================
 
-settingsOverlay.hidden =
-    true;
+async function saveMemory(key, value) {
+
+    if (!currentUser) return;
+
+    try {
+
+        const ref =
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            );
+
+        await setDoc(
+            ref,
+            {
+                memories: {
+                    [key]: value
+                }
+            },
+            {
+                merge: true
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "MEMORY FEHLER:",
+            error
+        );
+    }
+}
 
 
-textChat.hidden =
-    true;
+async function loadMemory() {
+
+    if (!currentUser) return null;
+
+    try {
+
+        const ref =
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            );
+
+        const snap =
+            await getDoc(ref);
+
+        if (!snap.exists()) {
+            return null;
+        }
+
+        return snap.data();
+
+    } catch (error) {
+
+        console.error(
+            "MEMORY LADEN FEHLER:",
+            error
+        );
+
+        return null;
+    }
+}
 
 
-microphone.disabled =
-    false;
+// ============================================================
+// TEST VOICE
+// ============================================================
+
+window.testNovaVoice = async function () {
+
+    if (isSpeaking) return;
+
+    thinking = false;
+
+    stopListening();
+
+    await speak(
+        "Hallo. Ich bin Nova. Die Sprachwiedergabe funktioniert."
+    );
+};
 
 
-textInput.disabled =
-    false;
+// ============================================================
+// INITIALIZATION
+// ============================================================
 
-
-sendText.disabled =
-    false;
-
-
-initializeSpeech();
-
+loadSettings();
 
 setState(
-    "BEREIT",
-    "Nova ist bereit"
+    "NOVA BEREIT"
 );
 
 
 console.log(
-    "NOVA: System gestartet."
+    "===================================="
 );
+
+console.log(
+    "NOVA FAMILY AI gestartet"
+);
+
+console.log(
+    "Sprachmodus:",
+    mode
+);
+
+console.log(
+    "Mikrofon unterstützt:",
+    recognitionSupported
+);
+
+console.log(
+    "===================================="
+);
+
+
+// ============================================================
+// START VOICE MODE
+// ============================================================
+
+setTimeout(() => {
+
+    if (
+        mode === "voice" &&
+        !isSpeaking &&
+        !thinking
+    ) {
+
+        startListening();
+    }
+
+}, 1000);
