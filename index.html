@@ -1,26 +1,58 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<meta name="description" content="Nova Family AI">
 <title>Nova Family AI</title>
 
 <style>
+:root{
+    --bg:#030303;
+    --panel:#080808;
+    --panel2:#0d0d0d;
+    --panel3:#121212;
+    --line:#242424;
+    --line2:#363636;
+    --text:#f5f5f5;
+    --muted:#888;
+    --muted2:#555;
+    --white:#fff;
+    --danger:#ff5c5c;
+    --green:#b8ffcc;
+    --shadow:0 20px 60px rgba(0,0,0,.45);
+}
+
 *{
     box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    width:100%;
+    height:100%;
     margin:0;
-    padding:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
 }
 
 body{
-    min-height:100vh;
-    background:#050505;
-    color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
+    overflow:hidden;
 }
 
-button,input{
-    font-family:inherit;
+button,
+input,
+textarea{
+    font:inherit;
 }
 
 button{
@@ -31,495 +63,1172 @@ button{
     display:none!important;
 }
 
-/* LOGIN */
+/* =========================================================
+   LOGIN
+========================================================= */
 
 #loginScreen{
     position:fixed;
     inset:0;
+    z-index:9999;
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     background:
-        radial-gradient(circle at center,#191919 0%,#080808 40%,#020202 100%);
-    z-index:100;
+        radial-gradient(circle at 50% 35%,rgba(255,255,255,.09),transparent 30%),
+        #020202;
 }
 
-.loginBox{
-    width:min(430px,calc(100% - 30px));
-    padding:40px 30px;
-    border:1px solid #292929;
-    border-radius:24px;
-    background:#0b0b0b;
+.login-card{
+    width:min(460px,calc(100% - 30px));
+    padding:42px 32px;
+    border:1px solid #282828;
+    border-radius:28px;
+    background:rgba(10,10,10,.92);
+    box-shadow:var(--shadow);
     text-align:center;
-    box-shadow:0 0 80px rgba(255,255,255,.05);
+    backdrop-filter:blur(20px);
 }
 
-.loginOrb{
-    width:120px;
-    height:120px;
+.login-orb{
+    width:100px;
+    height:100px;
     margin:0 auto 25px;
     border-radius:50%;
     background:
-        radial-gradient(circle at 30% 25%,#fff,#aaa 20%,#333 55%,#050505 75%);
-    box-shadow:0 0 45px rgba(255,255,255,.16);
-    animation:breathe 3s infinite;
+        radial-gradient(circle at 34% 28%,#fff 0%,#ddd 8%,#777 25%,#1c1c1c 57%,#050505 78%);
+    box-shadow:
+        0 0 35px rgba(255,255,255,.18),
+        inset 0 0 35px rgba(255,255,255,.18);
+    animation:novaFloat 4s ease-in-out infinite;
 }
 
-@keyframes breathe{
-    50%{
-        transform:scale(1.06);
-        box-shadow:0 0 70px rgba(255,255,255,.25);
-    }
-}
-
-.loginBox h1{
+.login-title{
     font-size:32px;
-    letter-spacing:5px;
+    font-weight:800;
+    letter-spacing:4px;
 }
 
-.loginBox p{
-    color:#888;
-    line-height:1.5;
-    margin:12px 0 25px;
+.login-subtitle{
+    margin-top:10px;
+    color:#777;
+    font-size:14px;
 }
 
-#googleLogin{
+.login-button{
     width:100%;
-    border:0;
-    border-radius:12px;
+    margin-top:28px;
     padding:15px;
+    border:0;
+    border-radius:13px;
     background:#fff;
     color:#000;
-    font-weight:bold;
+    font-weight:700;
 }
 
-#loginError{
-    color:#ff7070;
-    font-size:13px;
-    margin-top:15px;
+.login-button:hover{
+    background:#ddd;
 }
 
-/* HEADER */
+.login-note{
+    margin-top:16px;
+    color:#555;
+    font-size:11px;
+    line-height:1.5;
+}
 
-header{
+/* =========================================================
+   APP
+========================================================= */
+
+#app{
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
     height:70px;
-    padding:0 25px;
+    min-height:70px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    border-bottom:1px solid #222;
-    background:rgba(5,5,5,.9);
+    padding:0 22px;
+    border-bottom:1px solid var(--line);
+    background:rgba(5,5,5,.94);
+    backdrop-filter:blur(18px);
+    z-index:20;
 }
 
-.logo{
-    font-size:21px;
-    font-weight:bold;
-    letter-spacing:3px;
-}
-
-.logo span{
-    color:#777;
-}
-
-.headerRight{
+.brand{
     display:flex;
     align-items:center;
     gap:12px;
 }
 
-#userName{
-    color:#888;
-    font-size:13px;
-}
-
-#logoutBtn{
-    background:#111;
-    color:#fff;
-    border:1px solid #333;
-    padding:10px 14px;
-    border-radius:10px;
-}
-
-/* MAIN */
-
-main{
-    width:min(1000px,100%);
-    min-height:calc(100vh - 70px);
-    margin:auto;
-    padding:25px 18px 50px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-
-#status{
-    color:#777;
-    min-height:20px;
-    font-size:13px;
-    text-align:center;
-}
-
-/* ORB */
-
-.orbArea{
-    height:350px;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-#orb{
-    width:215px;
-    height:215px;
+.brand-orb{
+    width:32px;
+    height:32px;
     border-radius:50%;
     background:
-        radial-gradient(circle at 32% 25%,#fff 0%,#ddd 8%,#777 25%,#222 58%,#030303 78%);
-    box-shadow:
-        0 0 40px rgba(255,255,255,.13),
-        inset 0 0 50px rgba(255,255,255,.12);
-    transition:.3s;
-    position:relative;
+        radial-gradient(circle at 35% 30%,#fff,#777 25%,#111 65%);
+    box-shadow:0 0 18px rgba(255,255,255,.13);
 }
 
-#orb:before,
-#orb:after{
-    content:"";
-    position:absolute;
-    inset:-20px;
-    border:1px solid rgba(255,255,255,.1);
+.brand-name{
+    font-weight:800;
+    letter-spacing:3px;
+    font-size:16px;
+}
+
+.brand-name span{
+    color:#666;
+    font-weight:500;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.status-pill,
+.key-pill,
+.quota-pill{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    min-height:34px;
+    padding:0 11px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#0b0b0b;
+    color:#aaa;
+    font-size:12px;
+}
+
+.status-dot{
+    width:7px;
+    height:7px;
     border-radius:50%;
-    animation:rotate 10s linear infinite;
+    background:#555;
 }
 
-#orb:after{
-    inset:-35px;
-    animation-direction:reverse;
-    animation-duration:15s;
+.status-dot.active{
+    background:#fff;
+    box-shadow:0 0 10px rgba(255,255,255,.7);
 }
 
-@keyframes rotate{
-    to{
-        transform:rotate(360deg);
-    }
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.content{
+    flex:1;
+    min-height:0;
+    display:flex;
 }
 
-#orb.listening{
-    transform:scale(1.1);
-    box-shadow:0 0 80px rgba(255,255,255,.3);
-}
-
-#orb.thinking{
-    animation:think 1s infinite;
-}
-
-@keyframes think{
-    50%{
-        transform:scale(1.08);
-    }
-}
-
-#orb.speaking{
-    animation:speak .5s infinite;
-}
-
-@keyframes speak{
-    50%{
-        transform:scale(1.12);
-    }
-}
-
-/* CHAT */
-
-#chat{
-    width:min(850px,100%);
-    max-height:400px;
+.sidebar{
+    width:310px;
+    min-width:310px;
+    border-right:1px solid var(--line);
+    background:#070707;
     overflow-y:auto;
+    padding:18px;
+}
+
+.main{
+    min-width:0;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar-title{
+    color:#666;
+    font-size:10px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin:9px 0;
+}
+
+.user-card{
+    padding:13px;
     margin-bottom:15px;
-}
-
-.message{
-    max-width:85%;
-    padding:14px 17px;
-    margin:8px 0;
-    border-radius:16px;
-    line-height:1.5;
-    font-size:15px;
-}
-
-.message.user{
-    margin-left:auto;
-    background:#171717;
-    border:1px solid #2b2b2b;
-}
-
-.message.nova{
-    margin-right:auto;
+    border:1px solid var(--line);
+    border-radius:14px;
     background:#0c0c0c;
-    border:1px solid #222;
+}
+
+.user-name{
+    font-weight:700;
+    font-size:13px;
+}
+
+.user-email{
+    color:#666;
+    font-size:11px;
+    margin-top:4px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.small-button{
+    margin-top:10px;
+    width:100%;
+    padding:9px;
+    border:1px solid var(--line2);
+    border-radius:9px;
+    background:#111;
     color:#ddd;
 }
 
-/* INPUT */
-
-.inputArea{
-    width:min(850px,100%);
-    display:flex;
-    gap:8px;
+.small-button:hover{
+    background:#1a1a1a;
 }
 
-#userInput{
-    flex:1;
-    min-width:0;
-    background:#101010;
+.key-box{
+    margin-bottom:10px;
+    padding:13px;
+    border:1px solid var(--line);
+    border-radius:15px;
+    background:#0b0b0b;
+    transition:.2s;
+}
+
+.key-box.active{
+    border-color:#777;
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.04),
+        0 0 30px rgba(255,255,255,.035);
+}
+
+.key-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:9px;
+}
+
+.key-name{
+    font-weight:700;
+    font-size:13px;
+}
+
+.key-active-label{
+    color:#aaa;
+    font-size:10px;
+}
+
+.key-input{
+    width:100%;
+    height:39px;
+    border:1px solid #303030;
+    border-radius:9px;
+    background:#050505;
     color:#fff;
-    border:1px solid #292929;
-    border-radius:13px;
-    padding:15px;
+    padding:0 10px;
     outline:none;
 }
 
-#userInput:focus{
-    border-color:#666;
+.key-input:focus{
+    border-color:#777;
 }
 
-.actionBtn{
-    background:#111;
+.key-row{
+    display:flex;
+    gap:7px;
+    margin-top:8px;
+}
+
+.key-row button{
+    flex:1;
+    height:36px;
+    border:1px solid #303030;
+    border-radius:9px;
+    background:#151515;
     color:#fff;
-    border:1px solid #333;
-    border-radius:13px;
-    padding:0 15px;
-    min-width:48px;
 }
 
-.sendBtn{
+.key-row button.primary{
     background:#fff;
     color:#000;
     border-color:#fff;
-    font-weight:bold;
 }
 
-/* CONTROLS */
-
-.controls{
-    width:min(850px,100%);
-    display:flex;
-    gap:8px;
-    margin-top:10px;
+.key-row button:hover{
+    filter:brightness(1.15);
 }
 
-.control{
-    flex:1;
-    padding:11px;
-    background:#0d0d0d;
-    color:#bbb;
-    border:1px solid #252525;
-    border-radius:10px;
+.shortcut{
+    color:#555;
+    font-size:10px;
+    margin-top:7px;
 }
 
-.control.active{
-    color:#fff;
-    border-color:#888;
+.quota-box{
+    padding:13px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#0b0b0b;
+    margin-top:15px;
 }
 
-/* QUOTA */
-
-.quota{
-    width:min(850px,100%);
-    margin-top:20px;
-}
-
-.quotaTop{
+.quota-top{
     display:flex;
     justify-content:space-between;
-    color:#777;
-    font-size:12px;
-    margin-bottom:7px;
+    font-size:11px;
+    color:#888;
+    margin-bottom:9px;
 }
 
-.quotaBar{
+.progress{
+    width:100%;
     height:5px;
-    background:#181818;
-    border-radius:10px;
+    background:#202020;
+    border-radius:99px;
     overflow:hidden;
 }
 
-#quotaFill{
+.progress-fill{
     height:100%;
-    width:0;
+    width:0%;
     background:#fff;
     transition:.3s;
 }
 
-@media(max-width:600px){
+.action-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+    margin-top:12px;
+}
 
-    header{
-        padding:0 14px;
+.action-button{
+    padding:10px 7px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#0d0d0d;
+    color:#ddd;
+    font-size:11px;
+}
+
+.action-button:hover{
+    background:#181818;
+}
+
+.sidebar-info{
+    margin-top:15px;
+    padding:13px;
+    border:1px solid #1d1d1d;
+    border-radius:13px;
+    color:#666;
+    font-size:10px;
+    line-height:1.6;
+}
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+.chat{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    scroll-behavior:smooth;
+    padding:35px 25px;
+}
+
+.chat-inner{
+    width:min(950px,100%);
+    margin:auto;
+}
+
+.welcome{
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    padding:60px 20px;
+}
+
+.main-orb{
+    width:135px;
+    height:135px;
+    border-radius:50%;
+    margin-bottom:26px;
+    background:
+        radial-gradient(circle at 35% 28%,#fff 0%,#ddd 8%,#888 23%,#222 55%,#050505 78%);
+    box-shadow:
+        0 0 55px rgba(255,255,255,.14),
+        inset 0 0 35px rgba(255,255,255,.2);
+    animation:novaFloat 4.5s ease-in-out infinite;
+}
+
+@keyframes novaFloat{
+    0%,100%{
+        transform:translateY(0);
     }
-
-    .logo{
-        font-size:17px;
+    50%{
+        transform:translateY(-8px);
     }
+}
 
-    #userName{
+.welcome h1{
+    margin:0;
+    font-size:39px;
+    letter-spacing:4px;
+}
+
+.welcome p{
+    margin:10px 0 0;
+    color:#666;
+}
+
+.welcome-tip{
+    margin-top:24px;
+    padding:11px 15px;
+    border:1px solid #222;
+    border-radius:12px;
+    color:#777;
+    font-size:11px;
+}
+
+.message-row{
+    display:flex;
+    margin-bottom:20px;
+    animation:messageIn .18s ease;
+}
+
+@keyframes messageIn{
+    from{
+        opacity:0;
+        transform:translateY(5px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.message-row.user{
+    justify-content:flex-end;
+}
+
+.message-row.assistant{
+    justify-content:flex-start;
+}
+
+.bubble{
+    max-width:min(78%,760px);
+    padding:14px 17px;
+    border-radius:17px;
+    line-height:1.6;
+    font-size:14px;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+}
+
+.message-row.user .bubble{
+    background:#fff;
+    color:#000;
+    border-bottom-right-radius:4px;
+}
+
+.message-row.assistant .bubble{
+    background:#0e0e0e;
+    border:1px solid #242424;
+    border-bottom-left-radius:4px;
+}
+
+.message-meta{
+    font-size:9px;
+    color:#555;
+    margin-top:5px;
+}
+
+.message-row.user .message-meta{
+    text-align:right;
+}
+
+.typing{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.typing span{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#aaa;
+    animation:typing 1s infinite;
+}
+
+.typing span:nth-child(2){
+    animation-delay:.15s;
+}
+
+.typing span:nth-child(3){
+    animation-delay:.3s;
+}
+
+@keyframes typing{
+    0%,100%{
+        opacity:.25;
+        transform:translateY(0);
+    }
+    50%{
+        opacity:1;
+        transform:translateY(-3px);
+    }
+}
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.input-zone{
+    padding:14px 22px 18px;
+    border-top:1px solid var(--line);
+    background:rgba(6,6,6,.96);
+}
+
+.input-container{
+    width:min(950px,100%);
+    margin:auto;
+}
+
+.input-row{
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
+}
+
+.message-input{
+    flex:1;
+    min-height:55px;
+    max-height:170px;
+    resize:none;
+    border:1px solid #303030;
+    border-radius:16px;
+    background:#0e0e0e;
+    color:#fff;
+    outline:none;
+    padding:16px;
+    line-height:1.45;
+}
+
+.message-input:focus{
+    border-color:#666;
+}
+
+.input-button{
+    flex:0 0 55px;
+    height:55px;
+    border:1px solid #303030;
+    border-radius:15px;
+    background:#111;
+    color:#fff;
+    font-size:18px;
+}
+
+.input-button:hover{
+    background:#1d1d1d;
+}
+
+.input-button.active{
+    background:#fff;
+    color:#000;
+}
+
+.send-button{
+    background:#fff;
+    color:#000;
+    border-color:#fff;
+}
+
+.send-button:hover{
+    background:#ddd;
+}
+
+.input-footer{
+    display:flex;
+    justify-content:space-between;
+    color:#4f4f4f;
+    font-size:9px;
+    margin-top:7px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:900px){
+
+    .sidebar{
         display:none;
     }
 
-    .orbArea{
-        height:290px;
+    .header{
+        padding:0 12px;
     }
 
-    #orb{
-        width:170px;
-        height:170px;
+    .brand-name{
+        font-size:13px;
     }
 
-    .controls{
-        flex-wrap:wrap;
+    .header-right{
+        gap:5px;
     }
 
-    .control{
-        min-width:30%;
+    .status-pill{
+        display:none;
     }
+
+    .quota-pill{
+        display:none;
+    }
+
+    .chat{
+        padding:20px 12px;
+    }
+
+    .bubble{
+        max-width:90%;
+        font-size:14px;
+    }
+
+    .input-zone{
+        padding:9px;
+    }
+
+    .input-footer{
+        display:none;
+    }
+
+    .welcome h1{
+        font-size:30px;
+    }
+
+    .main-orb{
+        width:105px;
+        height:105px;
+    }
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:90px;
+    transform:translateX(-50%) translateY(15px);
+    padding:11px 16px;
+    border:1px solid #333;
+    border-radius:12px;
+    background:#111;
+    color:#ddd;
+    font-size:12px;
+    opacity:0;
+    pointer-events:none;
+    transition:.2s;
+    z-index:10000;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
 <div id="loginScreen">
 
-    <div class="loginBox">
+    <div class="login-card">
 
-        <div class="loginOrb"></div>
+        <div class="login-orb"></div>
 
-        <h1>NOVA</h1>
+        <div class="login-title">
+            NOVA
+        </div>
 
-        <p>
-            Deine persönliche Family AI.<br>
-            Melde dich mit Google an.
-        </p>
+        <div class="login-subtitle">
+            FAMILY AI
+        </div>
 
-        <button id="googleLogin">
+        <button
+            id="loginButton"
+            class="login-button"
+        >
             Mit Google anmelden
         </button>
 
-        <div id="loginError"></div>
+        <div class="login-note">
+            Firebase übernimmt die Anmeldung.
+            Private Gemini-Keys werden nicht in
+            dieser HTML-Datei gespeichert.
+        </div>
 
     </div>
 
 </div>
 
 
-<!-- APP -->
+<!-- =====================================================
+     APP
+===================================================== -->
 
 <div id="app" class="hidden">
 
-<header>
+    <header class="header">
 
-    <div class="logo">
-        NOVA <span>FAMILY AI</span>
-    </div>
+        <div class="brand">
 
-    <div class="headerRight">
+            <div class="brand-orb"></div>
 
-        <span id="userName"></span>
-
-        <button id="logoutBtn">
-            Abmelden
-        </button>
-
-    </div>
-
-</header>
-
-
-<main>
-
-    <div id="status">
-        Nova ist bereit.
-    </div>
-
-    <div class="orbArea">
-        <div id="orb"></div>
-    </div>
-
-
-    <div id="chat">
-
-        <div class="message nova">
-            Hallo. Ich bin Nova. Wie kann ich dir helfen?
-        </div>
-
-    </div>
-
-
-    <div class="inputArea">
-
-        <button id="micBtn" class="actionBtn">
-            🎙
-        </button>
-
-        <input
-            id="userInput"
-            placeholder="Schreibe oder frage etwas..."
-            autocomplete="off"
-        >
-
-        <button id="sendBtn" class="actionBtn sendBtn">
-            →
-        </button>
-
-    </div>
-
-
-    <div class="controls">
-
-        <button id="voiceBtn" class="control active">
-            Stimme: AN
-        </button>
-
-        <button id="youtubeBtn" class="control">
-            YouTube
-        </button>
-
-        <button id="googleBtn" class="control">
-            Google
-        </button>
-
-    </div>
-
-
-    <div class="quota">
-
-        <div class="quotaTop">
-
-            <span>Fragen</span>
-
-            <span id="quotaText">
-                0 / 20
-            </span>
+            <div class="brand-name">
+                NOVA <span>FAMILY AI</span>
+            </div>
 
         </div>
 
-        <div class="quotaBar">
-            <div id="quotaFill"></div>
+
+        <div class="header-right">
+
+            <div class="status-pill">
+
+                <div
+                    id="statusDot"
+                    class="status-dot active"
+                ></div>
+
+                <span id="statusText">
+                    Bereit
+                </span>
+
+            </div>
+
+
+            <div
+                id="quotaPill"
+                class="quota-pill"
+            >
+                Fragen: 0 / 20
+            </div>
+
+
+            <div
+                id="activeKeyPill"
+                class="key-pill"
+            >
+                Aktiv: Key 1
+            </div>
+
         </div>
 
-    </div>
+    </header>
 
-</main>
+
+    <div class="content">
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-title">
+                Konto
+            </div>
+
+            <div class="user-card">
+
+                <div
+                    id="userName"
+                    class="user-name"
+                >
+                    Nicht angemeldet
+                </div>
+
+                <div
+                    id="userEmail"
+                    class="user-email"
+                >
+                    -
+                </div>
+
+                <button
+                    id="logoutButton"
+                    class="small-button"
+                >
+                    Abmelden
+                </button>
+
+            </div>
+
+
+            <div class="sidebar-title">
+                Gemini-Zugänge
+            </div>
+
+
+            <!-- KEY 1 -->
+
+            <div
+                id="keyBox1"
+                class="key-box active"
+            >
+
+                <div class="key-head">
+
+                    <div class="key-name">
+                        Gemini Key 1
+                    </div>
+
+                    <div
+                        id="keyActive1"
+                        class="key-active-label"
+                    >
+                        AKTIV
+                    </div>
+
+                </div>
+
+
+                <input
+                    id="keyInput1"
+                    class="key-input"
+                    type="password"
+                    autocomplete="off"
+                    placeholder="Gemini Key 1"
+                >
+
+
+                <div class="key-row">
+
+                    <button
+                        onclick="saveGeminiKey(1)"
+                    >
+                        Speichern
+                    </button>
+
+                    <button
+                        class="primary"
+                        onclick="activateGeminiKey(1)"
+                    >
+                        Aktivieren
+                    </button>
+
+                </div>
+
+
+                <div class="shortcut">
+                    Tastatur: F1
+                </div>
+
+            </div>
+
+
+            <!-- KEY 2 -->
+
+            <div
+                id="keyBox2"
+                class="key-box"
+            >
+
+                <div class="key-head">
+
+                    <div class="key-name">
+                        Gemini Key 2
+                    </div>
+
+                    <div
+                        id="keyActive2"
+                        class="key-active-label"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+                <input
+                    id="keyInput2"
+                    class="key-input"
+                    type="password"
+                    autocomplete="off"
+                    placeholder="Gemini Key 2"
+                >
+
+
+                <div class="key-row">
+
+                    <button
+                        onclick="saveGeminiKey(2)"
+                    >
+                        Speichern
+                    </button>
+
+                    <button
+                        class="primary"
+                        onclick="activateGeminiKey(2)"
+                    >
+                        Aktivieren
+                    </button>
+
+                </div>
+
+
+                <div class="shortcut">
+                    Tastatur: F2
+                </div>
+
+            </div>
+
+
+            <!-- QUOTA -->
+
+            <div class="quota-box">
+
+                <div class="quota-top">
+
+                    <span>
+                        Lokaler Fragenzähler
+                    </span>
+
+                    <span id="quotaText">
+                        0 / 20
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        id="quotaFill"
+                        class="progress-fill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="sidebar-title">
+                Web-Aktionen
+            </div>
+
+            <div class="action-grid">
+
+                <button
+                    class="action-button"
+                    onclick="openGoogle()"
+                >
+                    Google
+                </button>
+
+                <button
+                    class="action-button"
+                    onclick="openYouTube()"
+                >
+                    YouTube
+                </button>
+
+                <button
+                    class="action-button"
+                    onclick="openImages()"
+                >
+                    Bilder
+                </button>
+
+                <button
+                    class="action-button"
+                    onclick="openMaps()"
+                >
+                    Maps
+                </button>
+
+                <button
+                    class="action-button"
+                    onclick="openWikipedia()"
+                >
+                    Wikipedia
+                </button>
+
+                <button
+                    class="action-button"
+                    onclick="clearConversation()"
+                >
+                    Chat löschen
+                </button>
+
+            </div>
+
+
+            <div class="sidebar-info">
+
+                <b>F1 / F2</b><br>
+                Wechselt manuell zwischen deinen
+                beiden Gemini-Zugängen.
+
+                <br><br>
+
+                Der Chatverlauf bleibt gemeinsam
+                erhalten. Beim nächsten Gemini-Aufruf
+                wird der bisherige Verlauf mitgesendet.
+
+                <br><br>
+
+                Der Wechsel erfolgt nicht automatisch
+                aufgrund eines Rate-Limits.
+
+                <br><br>
+
+                Deine privaten Gemini-Keys werden
+                nicht in dieser Datei veröffentlicht.
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <main class="main">
+
+            <div
+                id="chat"
+                class="chat"
+            >
+
+                <div
+                    id="chatInner"
+                    class="chat-inner"
+                >
+
+                    <div
+                        id="welcome"
+                        class="welcome"
+                    >
+
+                        <div class="main-orb"></div>
+
+                        <h1>
+                            NOVA
+                        </h1>
+
+                        <p>
+                            Dein persönlicher KI-Assistent
+                        </p>
+
+                        <div class="welcome-tip">
+                            F1 = Gemini Key 1 &nbsp; · &nbsp;
+                            F2 = Gemini Key 2
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- INPUT -->
+
+            <div class="input-zone">
+
+                <div class="input-container">
+
+                    <div class="input-row">
+
+                        <textarea
+                            id="messageInput"
+                            class="message-input"
+                            rows="1"
+                            placeholder="Schreib Nova etwas..."
+                        ></textarea>
+
+
+                        <button
+                            id="voiceButton"
+                            class="input-button"
+                            title="Spracheingabe"
+                        >
+                            🎙
+                        </button>
+
+
+                        <button
+                            id="sendButton"
+                            class="input-button send-button"
+                            title="Senden"
+                        >
+                            ➤
+                        </button>
+
+                    </div>
+
+
+                    <div class="input-footer">
+
+                        <span>
+                            Enter = senden · Shift + Enter = neue Zeile
+                        </span>
+
+                        <span>
+                            Mikrofon maximal 8 Sekunden
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
 
 </div>
 
 
-<script type="module">
+<div
+    id="toast"
+    class="toast"
+></div>
 
-/* =========================================================
-   FIREBASE IMPORTS
-========================================================= */
+
+<!-- =====================================================
+     FIREBASE
+===================================================== -->
+
+<script type="module">
 
 import {
     initializeApp
@@ -542,7 +1251,7 @@ import {
 
 
 /* =========================================================
-   FIREBASE CONFIG
+   DEINE FIREBASE KONFIGURATION
 ========================================================= */
 
 const firebaseConfig = {
@@ -556,157 +1265,243 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   FIREBASE
+   FIREBASE STARTEN
 ========================================================= */
 
-let app;
-let auth;
-let db;
-let model = null;
+const app =
+    initializeApp(firebaseConfig);
 
-try{
+const auth =
+    getAuth(app);
 
-    app = initializeApp(firebaseConfig);
+const db =
+    getFirestore(app);
 
-    auth = getAuth(app);
-
-    db = getFirestore(app);
-
-}catch(error){
-
-    console.error(error);
-
-}
+const googleProvider =
+    new GoogleAuthProvider();
 
 
 /* =========================================================
-   ELEMENTE
+   NOVA STATE
+========================================================= */
+
+const KEY_STORAGE =
+    "nova_private_gemini_keys_v3";
+
+const ACTIVE_KEY_STORAGE =
+    "nova_active_gemini_key_v3";
+
+const LOCAL_CHAT_STORAGE =
+    "nova_shared_chat_v3";
+
+const QUESTION_STORAGE =
+    "nova_questions_v3";
+
+const MAX_QUESTIONS = 20;
+
+const GEMINI_MODEL =
+    "gemini-2.5-flash";
+
+
+let currentUser = null;
+
+let activeGeminiKey = 1;
+
+let geminiKeys = {
+    1: "",
+    2: ""
+};
+
+let conversation = [];
+
+let questionsUsed = 0;
+
+let recognition = null;
+
+let listening = false;
+
+let speaking = false;
+
+let thinking = false;
+
+let micTimeout = null;
+
+const MIC_MAX_TIME = 8000;
+
+
+/* =========================================================
+   DOM
 ========================================================= */
 
 const loginScreen =
     document.getElementById("loginScreen");
 
-const appScreen =
+const appElement =
     document.getElementById("app");
 
-const googleLogin =
-    document.getElementById("googleLogin");
+const loginButton =
+    document.getElementById("loginButton");
 
-const loginError =
-    document.getElementById("loginError");
-
-const logoutBtn =
-    document.getElementById("logoutBtn");
+const logoutButton =
+    document.getElementById("logoutButton");
 
 const userName =
     document.getElementById("userName");
 
-const status =
-    document.getElementById("status");
+const userEmail =
+    document.getElementById("userEmail");
 
-const orb =
-    document.getElementById("orb");
+const keyInput1 =
+    document.getElementById("keyInput1");
 
-const chat =
-    document.getElementById("chat");
+const keyInput2 =
+    document.getElementById("keyInput2");
 
-const userInput =
-    document.getElementById("userInput");
+const keyBox1 =
+    document.getElementById("keyBox1");
 
-const sendBtn =
-    document.getElementById("sendBtn");
+const keyBox2 =
+    document.getElementById("keyBox2");
 
-const micBtn =
-    document.getElementById("micBtn");
+const keyActive1 =
+    document.getElementById("keyActive1");
 
-const voiceBtn =
-    document.getElementById("voiceBtn");
+const keyActive2 =
+    document.getElementById("keyActive2");
 
-const youtubeBtn =
-    document.getElementById("youtubeBtn");
+const activeKeyPill =
+    document.getElementById("activeKeyPill");
 
-const googleBtn =
-    document.getElementById("googleBtn");
+const statusText =
+    document.getElementById("statusText");
+
+const statusDot =
+    document.getElementById("statusDot");
 
 const quotaText =
     document.getElementById("quotaText");
 
+const quotaPill =
+    document.getElementById("quotaPill");
+
 const quotaFill =
     document.getElementById("quotaFill");
 
+const chat =
+    document.getElementById("chat");
+
+const chatInner =
+    document.getElementById("chatInner");
+
+const welcome =
+    document.getElementById("welcome");
+
+const messageInput =
+    document.getElementById("messageInput");
+
+const sendButton =
+    document.getElementById("sendButton");
+
+const voiceButton =
+    document.getElementById("voiceButton");
+
+const toast =
+    document.getElementById("toast");
+
 
 /* =========================================================
-   GOOGLE LOGIN
+   TOAST
 ========================================================= */
 
-const provider =
-    new GoogleAuthProvider();
+let toastTimer = null;
 
-provider.setCustomParameters({
-    prompt:"select_account"
-});
+function showToast(text){
+
+    toast.textContent = text;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(
+            () => toast.classList.remove("show"),
+            2500
+        );
+}
 
 
-googleLogin.addEventListener(
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setStatus(text, active = true){
+
+    statusText.textContent = text;
+
+    statusDot.classList.toggle(
+        "active",
+        active
+    );
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+loginButton.addEventListener(
     "click",
-    async()=>{
-
-        loginError.textContent = "";
-
-        googleLogin.disabled = true;
-
-        googleLogin.textContent =
-            "Anmeldung...";
+    async () => {
 
         try{
 
+            loginButton.disabled = true;
+
+            loginButton.textContent =
+                "Anmeldung...";
+
             await signInWithPopup(
                 auth,
-                provider
+                googleProvider
             );
 
         }catch(error){
 
             console.error(error);
 
-            if(
-                error.code ===
-                "auth/api-key-not-valid"
-            ){
-
-                loginError.textContent =
-                    "Firebase lehnt den API-Key ab. Bitte überprüfe den aktuellen Web-API-Key in Firebase.";
-
-            }else if(
-                error.code ===
-                "auth/unauthorized-domain"
-            ){
-
-                loginError.textContent =
-                    "Diese Website ist in Firebase noch nicht als autorisierte Domain eingetragen.";
-
-            }else if(
-                error.code ===
-                "auth/popup-blocked"
-            ){
-
-                loginError.textContent =
-                    "Der Browser hat das Google-Fenster blockiert.";
-
-            }else{
-
-                loginError.textContent =
-                    "Anmeldung fehlgeschlagen: " +
-                    error.message;
-
-            }
+            showToast(
+                "Google-Anmeldung fehlgeschlagen."
+            );
 
         }finally{
 
-            googleLogin.disabled = false;
+            loginButton.disabled = false;
 
-            googleLogin.textContent =
+            loginButton.textContent =
                 "Mit Google anmelden";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+logoutButton.addEventListener(
+    "click",
+    async () => {
+
+        try{
+
+            await signOut(auth);
+
+        }catch(error){
+
+            console.error(error);
 
         }
 
@@ -720,38 +1515,43 @@ googleLogin.addEventListener(
 
 onAuthStateChanged(
     auth,
-    async(user)=>{
+    async user => {
+
+        currentUser = user;
 
         if(user){
 
-            loginScreen.classList.add(
-                "hidden"
-            );
+            loginScreen.classList.add("hidden");
 
-            appScreen.classList.remove(
-                "hidden"
-            );
+            appElement.classList.remove("hidden");
 
             userName.textContent =
                 user.displayName ||
+                "Nova Benutzer";
+
+            userEmail.textContent =
                 user.email ||
-                "Benutzer";
+                "";
 
-            await createUserDocument(
-                user
+            await loadUserData();
+
+            setStatus(
+                "Bereit · Key " +
+                activeGeminiKey,
+                true
             );
-
-            updateQuota();
 
         }else{
 
-            loginScreen.classList.remove(
-                "hidden"
-            );
+            appElement.classList.add("hidden");
 
-            appScreen.classList.add(
-                "hidden"
-            );
+            loginScreen.classList.remove("hidden");
+
+            userName.textContent =
+                "Nicht angemeldet";
+
+            userEmail.textContent =
+                "-";
 
         }
 
@@ -760,45 +1560,191 @@ onAuthStateChanged(
 
 
 /* =========================================================
-   FIRESTORE
+   LOCAL DATEN
 ========================================================= */
 
-async function createUserDocument(user){
-
-    if(!db) return;
+function loadLocalData(){
 
     try{
 
-        const userRef =
+        const savedKeys =
+            JSON.parse(
+                localStorage.getItem(
+                    KEY_STORAGE
+                ) || "{}"
+            );
+
+        geminiKeys[1] =
+            savedKeys[1] || "";
+
+        geminiKeys[2] =
+            savedKeys[2] || "";
+
+
+        activeGeminiKey =
+            Number(
+                localStorage.getItem(
+                    ACTIVE_KEY_STORAGE
+                ) || "1"
+            );
+
+
+        const savedChat =
+            JSON.parse(
+                localStorage.getItem(
+                    LOCAL_CHAT_STORAGE
+                ) || "[]"
+            );
+
+        if(
+            Array.isArray(savedChat)
+        ){
+
+            conversation =
+                savedChat;
+
+        }
+
+
+        questionsUsed =
+            Number(
+                localStorage.getItem(
+                    QUESTION_STORAGE
+                ) || "0"
+            );
+
+    }catch(error){
+
+        console.error(
+            "Local data:",
+            error
+        );
+
+    }
+
+
+    keyInput1.value =
+        geminiKeys[1];
+
+    keyInput2.value =
+        geminiKeys[2];
+
+    updateKeyUI();
+
+    updateQuotaUI();
+
+    renderConversation();
+
+}
+
+
+/* =========================================================
+   LOCAL SPEICHERN
+========================================================= */
+
+function saveLocalData(){
+
+    localStorage.setItem(
+        KEY_STORAGE,
+        JSON.stringify(geminiKeys)
+    );
+
+    localStorage.setItem(
+        ACTIVE_KEY_STORAGE,
+        String(activeGeminiKey)
+    );
+
+    localStorage.setItem(
+        LOCAL_CHAT_STORAGE,
+        JSON.stringify(conversation)
+    );
+
+    localStorage.setItem(
+        QUESTION_STORAGE,
+        String(questionsUsed)
+    );
+
+}
+
+
+/* =========================================================
+   FIRESTORE LADEN
+========================================================= */
+
+async function loadUserData(){
+
+    loadLocalData();
+
+    if(!currentUser){
+        return;
+    }
+
+    try{
+
+        const reference =
             doc(
                 db,
                 "users",
-                user.uid
+                currentUser.uid
             );
 
-        const existing =
-            await getDoc(userRef);
+        const snapshot =
+            await getDoc(reference);
 
-        if(!existing.exists()){
 
-            await setDoc(
-                userRef,
-                {
-                    name:
-                        user.displayName || "",
-                    email:
-                        user.email || "",
-                    createdAt:
-                        new Date().toISOString()
-                }
-            );
+        if(snapshot.exists()){
+
+            const data =
+                snapshot.data();
+
+
+            if(
+                Array.isArray(
+                    data.conversation
+                )
+            ){
+
+                conversation =
+                    data.conversation;
+
+            }
+
+
+            if(
+                typeof data.questionsUsed ===
+                "number"
+            ){
+
+                questionsUsed =
+                    data.questionsUsed;
+
+            }
+
+
+            if(
+                data.activeKey === 1 ||
+                data.activeKey === 2
+            ){
+
+                activeGeminiKey =
+                    data.activeKey;
+
+            }
+
+            saveLocalData();
+
+            renderConversation();
+
+            updateKeyUI();
+
+            updateQuotaUI();
 
         }
 
     }catch(error){
 
         console.error(
-            "Firestore:",
+            "Firestore load:",
             error
         );
 
@@ -808,14 +1754,213 @@ async function createUserDocument(user){
 
 
 /* =========================================================
-   LOGOUT
+   FIRESTORE SPEICHERN
 ========================================================= */
 
-logoutBtn.addEventListener(
-    "click",
-    async()=>{
+async function saveUserData(){
 
-        await signOut(auth);
+    saveLocalData();
+
+    if(!currentUser){
+        return;
+    }
+
+    try{
+
+        await setDoc(
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            ),
+            {
+                conversation:
+                    conversation.slice(-80),
+
+                questionsUsed:
+                    questionsUsed,
+
+                activeKey:
+                    activeGeminiKey,
+
+                updatedAt:
+                    new Date().toISOString()
+            },
+            {
+                merge:true
+            }
+        );
+
+    }catch(error){
+
+        console.error(
+            "Firestore save:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   KEY SPEICHERN
+========================================================= */
+
+window.saveGeminiKey =
+    function(number){
+
+        const input =
+            number === 1
+                ? keyInput1
+                : keyInput2;
+
+        const value =
+            input.value.trim();
+
+        if(!value){
+
+            showToast(
+                "Bitte zuerst einen Key eingeben."
+            );
+
+            return;
+        }
+
+        geminiKeys[number] =
+            value;
+
+        saveLocalData();
+
+        showToast(
+            "Gemini Key " +
+            number +
+            " lokal gespeichert."
+        );
+
+    };
+
+
+/* =========================================================
+   KEY AKTIVIEREN
+========================================================= */
+
+window.activateGeminiKey =
+    function(number){
+
+        const input =
+            number === 1
+                ? keyInput1
+                : keyInput2;
+
+        const value =
+            input.value.trim();
+
+
+        if(value){
+
+            geminiKeys[number] =
+                value;
+
+        }
+
+
+        if(!geminiKeys[number]){
+
+            showToast(
+                "Für Key " +
+                number +
+                " wurde noch kein Key gespeichert."
+            );
+
+            return;
+
+        }
+
+
+        activeGeminiKey =
+            number;
+
+        saveLocalData();
+
+        saveUserData();
+
+        updateKeyUI();
+
+        setStatus(
+            "Bereit · Key " +
+            number,
+            true
+        );
+
+        showToast(
+            "Key " +
+            number +
+            " ist jetzt aktiv."
+        );
+
+    };
+
+
+/* =========================================================
+   KEY UI
+========================================================= */
+
+function updateKeyUI(){
+
+    activeKeyPill.textContent =
+        "Aktiv: Key " +
+        activeGeminiKey;
+
+
+    keyBox1.classList.toggle(
+        "active",
+        activeGeminiKey === 1
+    );
+
+    keyBox2.classList.toggle(
+        "active",
+        activeGeminiKey === 2
+    );
+
+
+    keyActive1.textContent =
+        activeGeminiKey === 1
+            ? "AKTIV"
+            : "-";
+
+    keyActive2.textContent =
+        activeGeminiKey === 2
+            ? "AKTIV"
+            : "-";
+
+}
+
+
+/* =========================================================
+   F1 / F2
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "F1"){
+
+            event.preventDefault();
+
+            activateGeminiKey(1);
+
+        }
+
+
+        if(event.key === "F2"){
+
+            event.preventDefault();
+
+            activateGeminiKey(2);
+
+        }
 
     }
 );
@@ -825,168 +1970,184 @@ logoutBtn.addEventListener(
    QUOTA
 ========================================================= */
 
-const MAX_QUESTIONS = 20;
+function updateQuotaUI(){
 
-let questionsUsed =
-    Number(
-        localStorage.getItem(
-            "nova_questions_used"
-        ) || 0
-    );
-
-
-function updateQuota(){
-
-    questionsUsed =
-        Math.max(
-            0,
-            Math.min(
-                MAX_QUESTIONS,
-                questionsUsed
-            )
+    const percentage =
+        Math.min(
+            100,
+            (questionsUsed /
+                MAX_QUESTIONS) *
+                100
         );
+
 
     quotaText.textContent =
         questionsUsed +
         " / " +
         MAX_QUESTIONS;
 
+
+    quotaPill.textContent =
+        "Fragen: " +
+        questionsUsed +
+        " / " +
+        MAX_QUESTIONS;
+
+
     quotaFill.style.width =
-        (
-            questionsUsed /
-            MAX_QUESTIONS *
-            100
-        ) + "%";
+        percentage + "%";
 
 }
 
 
-function useQuestion(){
+function canAsk(){
 
     if(
         questionsUsed >=
         MAX_QUESTIONS
     ){
 
+        showToast(
+            "Der lokale Fragenzähler ist bei 20 / 20."
+        );
+
         return false;
 
     }
-
-    questionsUsed++;
-
-    localStorage.setItem(
-        "nova_questions_used",
-        questionsUsed
-    );
-
-    updateQuota();
 
     return true;
 
 }
 
-updateQuota();
-
 
 /* =========================================================
-   GEMINI
+   CONVERSATION RENDER
 ========================================================= */
 
-async function initializeAI(){
+function renderConversation(){
 
-    if(model){
-        return true;
-    }
+    chatInner
+        .querySelectorAll(
+            ".message-row"
+        )
+        .forEach(
+            element =>
+                element.remove()
+        );
 
-    try{
 
-        const aiModule =
-            await import(
-                "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
-            );
+    if(conversation.length){
 
-        const {
-            getAI,
-            getGenerativeModel,
-            GoogleAIBackend
-        } = aiModule;
+        welcome.classList.add(
+            "hidden"
+        );
 
-        const ai =
-            getAI(
-                app,
-                {
-                    backend:
-                        new GoogleAIBackend()
-                }
-            );
+    }else{
 
-        model =
-            getGenerativeModel(
-                ai,
-                {
-                    model:
-                        "gemini-3.7-flash"
-                }
-            );
-
-        return true;
-
-    }catch(error){
-
-        console.error(error);
-
-        return false;
+        welcome.classList.remove(
+            "hidden"
+        );
 
     }
+
+
+    conversation.forEach(
+        message => {
+
+            addMessageToUI(
+                message.role,
+                message.text,
+                false
+            );
+
+        }
+    );
+
+
+    scrollChat();
 
 }
 
 
 /* =========================================================
-   CHAT
+   MESSAGE UI
 ========================================================= */
 
-function addMessage(
+function addMessageToUI(
+    role,
     text,
-    type
+    scroll = true
 ){
 
-    const div =
+    const row =
         document.createElement(
             "div"
         );
 
-    div.className =
-        "message " + type;
+    row.className =
+        "message-row " +
+        (
+            role === "user"
+                ? "user"
+                : "assistant"
+        );
 
-    div.textContent =
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+
+    const bubble =
+        document.createElement(
+            "div"
+        );
+
+    bubble.className =
+        "bubble";
+
+    bubble.textContent =
         text;
 
-    chat.appendChild(div);
 
-    chat.scrollTop =
-        chat.scrollHeight;
-
-}
-
-
-/* =========================================================
-   ORB
-========================================================= */
-
-function setOrb(mode){
-
-    orb.classList.remove(
-        "listening",
-        "thinking",
-        "speaking"
+    wrapper.appendChild(
+        bubble
     );
 
-    if(mode){
 
-        orb.classList.add(
-            mode
+    const meta =
+        document.createElement(
+            "div"
         );
+
+    meta.className =
+        "message-meta";
+
+    meta.textContent =
+        role === "user"
+            ? "Du"
+            : "Nova";
+
+
+    wrapper.appendChild(
+        meta
+    );
+
+
+    row.appendChild(
+        wrapper
+    );
+
+
+    chatInner.appendChild(
+        row
+    );
+
+
+    if(scroll){
+
+        scrollChat();
 
     }
 
@@ -994,206 +2155,923 @@ function setOrb(mode){
 
 
 /* =========================================================
-   WEB-AKTIONEN
+   TYPING
 ========================================================= */
 
-/*
-    Diese Funktion erkennt Suchbefehle.
+function showTyping(){
 
-    Beispiele:
+    hideTyping();
 
-    "Öffne auf Google Minecraft"
-    "Such auf YouTube Minecraft"
-    "Zeig mir Bilder vom Kölner Dom"
-    "Wo ist der Kölner Dom?"
-    "Zeig mir Videos vom Kölner Dom"
-    "Öffne Wikipedia über Albert Einstein"
-    "Öffne Google Maps Kölner Dom"
-*/
+    const row =
+        document.createElement(
+            "div"
+        );
 
-function detectWebAction(text){
+    row.id =
+        "typingMessage";
 
-    const original =
-        text.trim();
+    row.className =
+        "message-row assistant";
+
+
+    const bubble =
+        document.createElement(
+            "div"
+        );
+
+    bubble.className =
+        "bubble";
+
+
+    const typing =
+        document.createElement(
+            "div"
+        );
+
+    typing.className =
+        "typing";
+
+
+    for(
+        let i = 0;
+        i < 3;
+        i++
+    ){
+
+        const dot =
+            document.createElement(
+                "span"
+            );
+
+        typing.appendChild(
+            dot
+        );
+
+    }
+
+
+    bubble.appendChild(
+        typing
+    );
+
+    row.appendChild(
+        bubble
+    );
+
+    chatInner.appendChild(
+        row
+    );
+
+    scrollChat();
+
+}
+
+
+function hideTyping(){
+
+    const element =
+        document.getElementById(
+            "typingMessage"
+        );
+
+    if(element){
+
+        element.remove();
+
+    }
+
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollChat(){
+
+    requestAnimationFrame(
+        () => {
+
+            chat.scrollTop =
+                chat.scrollHeight;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CHAT LÖSCHEN
+========================================================= */
+
+window.clearConversation =
+    async function(){
+
+        if(
+            !confirm(
+                "Den gesamten gemeinsamen Chatverlauf löschen?"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        conversation = [];
+
+        saveLocalData();
+
+        await saveUserData();
+
+        renderConversation();
+
+        showToast(
+            "Chatverlauf gelöscht."
+        );
+
+    };
+
+
+/* =========================================================
+   GEMINI REQUEST
+========================================================= */
+
+async function askGemini(){
+
+    const key =
+        geminiKeys[
+            activeGeminiKey
+        ];
+
+
+    if(!key){
+
+        throw new Error(
+            "Für den aktiven Key wurde kein Gemini API-Key eingetragen."
+        );
+
+    }
+
+
+    /*
+        Der komplette gemeinsame Verlauf
+        wird an den aktuell ausgewählten
+        Zugang geschickt.
+
+        Es gibt KEIN automatisches
+        Umschalten bei Fehlern.
+    */
+
+    const contents =
+        conversation.map(
+            message => ({
+                role:
+                    message.role ===
+                    "assistant"
+                        ? "model"
+                        : "user",
+
+                parts:[
+                    {
+                        text:
+                            message.text
+                    }
+                ]
+            })
+        );
+
+
+    const url =
+        "https://generativelanguage.googleapis.com/v1beta/models/" +
+        encodeURIComponent(
+            GEMINI_MODEL
+        ) +
+        ":generateContent?key=" +
+        encodeURIComponent(key);
+
+
+    const response =
+        await fetch(
+            url,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    systemInstruction:{
+                        parts:[
+                            {
+                                text:
+`Du bist Nova, ein moderner persönlicher KI-Assistent.
+
+Antworte standardmäßig auf Deutsch, wenn der Benutzer Deutsch spricht.
+
+Sei direkt, freundlich und hilfreich.
+
+Behalte den Gesprächskontext.
+
+Der Benutzer kann manuell zwischen zwei Gemini-Zugängen wechseln. Behandle den übergebenen Verlauf trotzdem als EINEN zusammenhängenden Chat.
+
+Wenn der Benutzer dich auffordert, eine Webseite, Google, YouTube, Bilder, Maps oder Wikipedia zu öffnen, erkenne diesen Wunsch. Die Webseite übernimmt das Öffnen solcher Links selbst.
+
+Du sollst keine privaten API-Keys ausgeben oder anzeigen.`
+                            }
+                        ]
+                    },
+
+                    contents:
+
+                        contents,
+
+                    generationConfig:{
+                        temperature:.7,
+                        maxOutputTokens:2048
+                    }
+
+                })
+            }
+        );
+
+
+    if(!response.ok){
+
+        const body =
+            await response.text();
+
+        throw new Error(
+            "HTTP " +
+            response.status +
+            " – " +
+            body
+        );
+
+    }
+
+
+    const data =
+        await response.json();
+
+
+    const parts =
+        data
+            ?.candidates?.[0]
+            ?.content?.parts;
+
+
+    if(
+        !Array.isArray(parts) ||
+        !parts.length
+    ){
+
+        throw new Error(
+            "Gemini hat keine Textantwort geliefert."
+        );
+
+    }
+
+
+    const answer =
+        parts
+            .map(
+                part =>
+                    part.text || ""
+            )
+            .join("")
+            .trim();
+
+
+    if(!answer){
+
+        throw new Error(
+            "Gemini-Antwort war leer."
+        );
+
+    }
+
+
+    return answer;
+
+}
+
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
+
+async function sendMessage(){
+
+    if(thinking){
+
+        return;
+
+    }
+
+
+    const text =
+        messageInput.value.trim();
+
+
+    if(!text){
+
+        return;
+
+    }
+
+
+    if(!canAsk()){
+
+        return;
+
+    }
+
+
+    if(
+        !geminiKeys[
+            activeGeminiKey
+        ]
+    ){
+
+        showToast(
+            "Bitte zuerst Key " +
+            activeGeminiKey +
+            " eintragen."
+        );
+
+        return;
+
+    }
+
+
+    messageInput.value = "";
+
+    messageInput.style.height =
+        "auto";
+
+
+    const webAction =
+        detectWebAction(text);
+
+
+    conversation.push({
+        role:"user",
+        text:text,
+        time:
+            new Date().toISOString()
+    });
+
+
+    addMessageToUI(
+        "user",
+        text
+    );
+
+
+    questionsUsed++;
+
+    updateQuotaUI();
+
+    saveLocalData();
+
+    await saveUserData();
+
+
+    /*
+        Web-Aktionen werden direkt geöffnet.
+    */
+
+    if(webAction){
+
+        openWebAction(
+            webAction
+        );
+
+        const reply =
+            webAction.description;
+
+
+        conversation.push({
+            role:"assistant",
+            text:reply,
+            time:
+                new Date().toISOString()
+        });
+
+
+        addMessageToUI(
+            "assistant",
+            reply
+        );
+
+
+        saveLocalData();
+
+        await saveUserData();
+
+        speak(reply);
+
+        return;
+
+    }
+
+
+    thinking = true;
+
+    setStatus(
+        "Nova denkt...",
+        true
+    );
+
+    showTyping();
+
+
+    try{
+
+        const answer =
+            await askGemini();
+
+
+        hideTyping();
+
+
+        conversation.push({
+            role:"assistant",
+            text:answer,
+            time:
+                new Date().toISOString()
+        });
+
+
+        addMessageToUI(
+            "assistant",
+            answer
+        );
+
+
+        saveLocalData();
+
+        await saveUserData();
+
+
+        setStatus(
+            "Bereit · Key " +
+            activeGeminiKey,
+            true
+        );
+
+
+        speak(answer);
+
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+
+        hideTyping();
+
+
+        const readable =
+            readableGeminiError(
+                error
+            );
+
+
+        conversation.push({
+            role:"assistant",
+            text:readable,
+            time:
+                new Date().toISOString()
+        });
+
+
+        addMessageToUI(
+            "assistant",
+            readable
+        );
+
+
+        saveLocalData();
+
+        await saveUserData();
+
+
+        setStatus(
+            "Fehler",
+            false
+        );
+
+    }finally{
+
+        thinking = false;
+
+    }
+
+}
+
+
+/* =========================================================
+   GEMINI ERROR
+========================================================= */
+
+function readableGeminiError(
+    error
+){
+
+    const message =
+        String(
+            error?.message ||
+            error ||
+            ""
+        );
+
+
+    if(message.includes("429")){
+
+        return (
+            "Gemini meldet HTTP 429. " +
+            "Der aktuell ausgewählte Zugang hat " +
+            "sein verfügbares Limit erreicht oder " +
+            "wurde vorübergehend begrenzt.\n\n" +
+            "Du kannst mit F1 oder F2 manuell " +
+            "einen anderen separat autorisierten " +
+            "Zugang auswählen."
+        );
+
+    }
+
+
+    if(
+        message.includes("401") ||
+        message.includes("403")
+    ){
+
+        return (
+            "Der aktuelle Gemini-Key wurde abgelehnt. " +
+            "Prüfe den Key und ob die Gemini API " +
+            "für diesen Zugang aktiviert ist."
+        );
+
+    }
+
+
+    if(
+        message.includes("400")
+    ){
+
+        return (
+            "Gemini hat die Anfrage abgelehnt. " +
+            "Prüfe den verwendeten Key und das Modell."
+        );
+
+    }
+
+
+    return (
+        "Bei der Gemini-Anfrage ist ein Fehler aufgetreten:\n\n" +
+        message
+    );
+
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+messageInput.addEventListener(
+    "input",
+    function(){
+
+        this.style.height =
+            "auto";
+
+        this.style.height =
+            Math.min(
+                this.scrollHeight,
+                170
+            ) + "px";
+
+    }
+);
+
+
+/* =========================================================
+   ENTER SENDEN
+========================================================= */
+
+messageInput.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SEND BUTTON
+========================================================= */
+
+sendButton.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+/* =========================================================
+   WEB ACTION DETECTION
+========================================================= */
+
+function detectWebAction(
+    originalText
+){
+
+    const text =
+        originalText
+            .trim();
+
 
     const lower =
-        original.toLowerCase();
+        text.toLowerCase();
 
 
-    /* -----------------------------------------
-       YOUTUBE
-    ----------------------------------------- */
+    /*
+        YOUTUBE
+    */
 
     if(
         lower.includes("youtube")
     ){
 
         let query =
-            original
+            text
                 .replace(
-                    /.*youtube/i,
+                    /youtube/ig,
                     ""
                 )
                 .replace(
-                    /^(nach|für|zu|über|suche|such|öffne)\s*/i,
+                    /öffne/ig,
+                    ""
+                )
+                .replace(
+                    /auf/ig,
                     ""
                 )
                 .trim();
 
-        if(
-            query &&
-            query.length > 1
-        ){
-
-            return {
-                type:"youtube-search",
-                query
-            };
-
-        }
 
         return {
+
             type:"youtube",
-            query:""
+
+            query:query,
+
+            description:
+                query
+                    ? "Ich öffne YouTube für „" +
+                      query +
+                      "“."
+                    : "Ich öffne YouTube."
+
         };
 
     }
 
 
-    /* -----------------------------------------
-       GOOGLE BILDER
-    ----------------------------------------- */
+    /*
+        BILDER
+    */
 
     if(
         lower.includes("bilder") ||
         lower.includes("bild von") ||
-        lower.includes("bilder von") ||
-        lower.includes("bilder über")
+        lower.includes("bilder von")
     ){
 
         let query =
-            original
+            text
                 .replace(
-                    /zeig(e)?\s+mir\s+/i,
+                    /zeige? mir/ig,
                     ""
                 )
                 .replace(
-                    /bilder?\s+(von|über)\s*/i,
+                    /bilder?/ig,
+                    ""
+                )
+                .replace(
+                    /von/ig,
+                    ""
+                )
+                .replace(
+                    /auf google/ig,
                     ""
                 )
                 .trim();
 
-        if(!query){
-
-            query = original;
-
-        }
 
         return {
-            type:"google-images",
-            query
+
+            type:"images",
+
+            query:query,
+
+            description:
+                "Ich öffne die Google-Bildersuche" +
+                (
+                    query
+                        ? " für „" +
+                          query +
+                          "“."
+                        : "."
+                )
+
         };
 
     }
 
 
-    /* -----------------------------------------
-       GOOGLE MAPS
-    ----------------------------------------- */
+    /*
+        MAPS
+    */
 
     if(
         lower.includes("google maps") ||
         lower.includes("maps") ||
         lower.includes("karte von") ||
-        lower.includes("wo ist")
+        lower.startsWith("wo ist ") ||
+        lower.startsWith("wo befindet sich ")
     ){
 
         let query =
-            original
+            text
                 .replace(
-                    /google maps/i,
+                    /google maps/ig,
                     ""
                 )
                 .replace(
-                    /wo ist/i,
+                    /maps/ig,
                     ""
                 )
                 .replace(
-                    /karte von/i,
+                    /wo ist/ig,
+                    ""
+                )
+                .replace(
+                    /wo befindet sich/ig,
+                    ""
+                )
+                .replace(
+                    /karte von/ig,
                     ""
                 )
                 .trim();
 
-        if(query){
-
-            return {
-                type:"maps",
-                query
-            };
-
-        }
-
-    }
-
-
-    /* -----------------------------------------
-       VIDEOS
-    ----------------------------------------- */
-
-    if(
-        lower.includes("videos von") ||
-        lower.includes("video von") ||
-        lower.includes("videos über") ||
-        lower.includes("video über")
-    ){
-
-        let query =
-            original
-                .replace(
-                    /.*videos?\s+(von|über)\s*/i,
-                    ""
-                )
-                .trim();
 
         return {
-            type:"youtube-search",
-            query
+
+            type:"maps",
+
+            query:query,
+
+            description:
+                "Ich öffne Google Maps" +
+                (
+                    query
+                        ? " für „" +
+                          query +
+                          "“."
+                        : "."
+                )
+
         };
 
     }
 
 
-    /* -----------------------------------------
-       WIKIPEDIA
-    ----------------------------------------- */
+    /*
+        WIKIPEDIA
+    */
 
     if(
         lower.includes("wikipedia")
     ){
 
         let query =
-            original
+            text
                 .replace(
-                    /.*wikipedia/i,
+                    /wikipedia/ig,
                     ""
                 )
                 .replace(
-                    /^(über|zu|von|nach)\s*/i,
+                    /öffne/ig,
+                    ""
+                )
+                .replace(
+                    /über/ig,
+                    ""
+                )
+                .replace(
+                    /auf/ig,
                     ""
                 )
                 .trim();
 
+
         return {
+
             type:"wikipedia",
-            query
+
+            query:query,
+
+            description:
+                "Ich öffne Wikipedia" +
+                (
+                    query
+                        ? " für „" +
+                          query +
+                          "“."
+                        : "."
+                )
+
         };
 
     }
 
 
-    /* -----------------------------------------
-       GOOGLE SUCHE
-    ----------------------------------------- */
+    /*
+        VIDEOS
+    */
+
+    if(
+        lower.includes("videos von") ||
+        lower.includes("videos über") ||
+        lower.includes("zeig mir videos")
+    ){
+
+        let query =
+            text
+                .replace(
+                    /zeig mir/ig,
+                    ""
+                )
+                .replace(
+                    /videos?/ig,
+                    ""
+                )
+                .replace(
+                    /von/ig,
+                    ""
+                )
+                .replace(
+                    /über/ig,
+                    ""
+                )
+                .trim();
+
+
+        return {
+
+            type:"youtube",
+
+            query:query,
+
+            description:
+                "Ich öffne YouTube-Videos" +
+                (
+                    query
+                        ? " über „" +
+                          query +
+                          "“."
+                        : "."
+                )
+
+        };
+
+    }
+
+
+    /*
+        GOOGLE
+    */
 
     if(
         lower.includes("auf google") ||
@@ -1202,54 +3080,46 @@ function detectWebAction(text){
     ){
 
         let query =
-            original
+            text
                 .replace(
-                    /.*?(auf|bei)\s+google/i,
+                    /auf google/ig,
                     ""
                 )
                 .replace(
-                    /^google\s+/i,
+                    /bei google/ig,
                     ""
                 )
                 .replace(
-                    /^(nach|über|zu)\s+/i,
-                    ""
-                )
-                .trim();
-
-        return {
-            type:"google-search",
-            query
-        };
-
-    }
-
-
-    /* -----------------------------------------
-       ALLGEMEINE FRAGE:
-       "Wo ist der Kölner Dom?"
-    ----------------------------------------- */
-
-    if(
-        lower.startsWith("wo ist ") ||
-        lower.startsWith("wo befindet sich ")
-    ){
-
-        let query =
-            original
-                .replace(
-                    /^wo ist\s+/i,
+                    /^google/ig,
                     ""
                 )
                 .replace(
-                    /^wo befindet sich\s+/i,
+                    /öffne/ig,
+                    ""
+                )
+                .replace(
+                    /such/ig,
                     ""
                 )
                 .trim();
 
+
         return {
-            type:"google-search",
-            query
+
+            type:"google",
+
+            query:query,
+
+            description:
+                "Ich öffne Google" +
+                (
+                    query
+                        ? " für „" +
+                          query +
+                          "“."
+                        : "."
+                )
+
         };
 
     }
@@ -1261,229 +3131,352 @@ function detectWebAction(text){
 
 
 /* =========================================================
-   URL ÖFFNEN
+   WEB ACTION OPEN
 ========================================================= */
 
-function openWebAction(action){
-
-    if(!action){
-        return false;
-    }
-
+function openWebAction(
+    action
+){
 
     const query =
-        action.query || "";
-
-
-    const encoded =
         encodeURIComponent(
-            query
+            action.query || ""
         );
 
 
-    switch(action.type){
-
-        case "google-search":
-
-            window.open(
-                "https://www.google.com/search?q=" +
-                encoded,
-                "_blank"
-            );
-
-            return true;
+    let url = "";
 
 
-        case "google-images":
+    if(
+        action.type ===
+        "google"
+    ){
 
-            window.open(
-                "https://www.google.com/search?tbm=isch&q=" +
-                encoded,
-                "_blank"
-            );
-
-            return true;
-
-
-        case "youtube-search":
-
-            if(query){
-
-                window.open(
-                    "https://www.youtube.com/results?search_query=" +
-                    encoded,
-                    "_blank"
-                );
-
-            }else{
-
-                window.open(
-                    "https://www.youtube.com/",
-                    "_blank"
-                );
-
-            }
-
-            return true;
-
-
-        case "youtube":
-
-            window.open(
-                "https://www.youtube.com/",
-                "_blank"
-            );
-
-            return true;
-
-
-        case "wikipedia":
-
-            window.open(
-                "https://de.wikipedia.org/w/index.php?search=" +
-                encoded,
-                "_blank"
-            );
-
-            return true;
-
-
-        case "maps":
-
-            window.open(
-                "https://www.google.com/maps/search/?api=1&query=" +
-                encoded,
-                "_blank"
-            );
-
-            return true;
+        url =
+            "https://www.google.com/search?q=" +
+            query;
 
     }
 
-    return false;
+
+    if(
+        action.type ===
+        "images"
+    ){
+
+        url =
+            "https://www.google.com/search?tbm=isch&q=" +
+            query;
+
+    }
+
+
+    if(
+        action.type ===
+        "youtube"
+    ){
+
+        url =
+            action.query
+                ? "https://www.youtube.com/results?search_query=" +
+                  query
+                : "https://www.youtube.com/";
+
+    }
+
+
+    if(
+        action.type ===
+        "maps"
+    ){
+
+        url =
+            "https://www.google.com/maps/search/?api=1&query=" +
+            query;
+
+    }
+
+
+    if(
+        action.type ===
+        "wikipedia"
+    ){
+
+        url =
+            "https://de.wikipedia.org/w/index.php?search=" +
+            query;
+
+    }
+
+
+    if(url){
+
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    }
 
 }
 
 
 /* =========================================================
-   NOVA
+   MANUELLE WEB BUTTONS
 ========================================================= */
 
-async function askNova(question){
+window.openGoogle =
+    function(){
 
-    question =
-        question.trim();
-
-    if(!question){
-        return;
-    }
-
-
-    /* -----------------------------------------
-       WEB-BEFEHL ZUERST PRÜFEN
-    ----------------------------------------- */
-
-    const webAction =
-        detectWebAction(
-            question
+        window.open(
+            "https://www.google.com/",
+            "_blank",
+            "noopener,noreferrer"
         );
 
+    };
 
-    /*
-       Direkte Website-Aktion:
 
-       Dadurch muss Gemini nicht erst
-       entscheiden, ob Google/YouTube
-       geöffnet werden soll.
-    */
+window.openYouTube =
+    function(){
 
-    if(webAction){
-
-        addMessage(
-            question,
-            "user"
+        window.open(
+            "https://www.youtube.com/",
+            "_blank",
+            "noopener,noreferrer"
         );
 
-        if(
-            webAction.type ===
-            "google-images"
-        ){
+    };
 
-            addMessage(
-                "Ich öffne die passenden Bilder.",
-                "nova"
-            );
 
-        }else if(
-            webAction.type ===
-            "youtube-search"
-        ){
+window.openImages =
+    function(){
 
-            addMessage(
-                "Ich suche das auf YouTube.",
-                "nova"
-            );
-
-        }else if(
-            webAction.type ===
-            "maps"
-        ){
-
-            addMessage(
-                "Ich öffne den Ort in Google Maps.",
-                "nova"
-            );
-
-        }else if(
-            webAction.type ===
-            "wikipedia"
-        ){
-
-            addMessage(
-                "Ich öffne die passende Wikipedia-Suche.",
-                "nova"
-            );
-
-        }else{
-
-            addMessage(
-                "Ich öffne die passende Google-Suche.",
-                "nova"
-            );
-
-        }
-
-        openWebAction(
-            webAction
+        window.open(
+            "https://images.google.com/",
+            "_blank",
+            "noopener,noreferrer"
         );
 
-        speak(
-            webAction.type === "youtube-search"
-                ? "Ich suche das auf YouTube."
-                : webAction.type === "google-images"
-                    ? "Ich öffne die passenden Bilder."
-                    : webAction.type === "maps"
-                        ? "Ich öffne den Ort in Google Maps."
-                        : "Ich öffne die passende Suche."
+    };
+
+
+window.openMaps =
+    function(){
+
+        window.open(
+            "https://www.google.com/maps/",
+            "_blank",
+            "noopener,noreferrer"
         );
+
+    };
+
+
+window.openWikipedia =
+    function(){
+
+        window.open(
+            "https://de.wikipedia.org/",
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    };
+
+
+/* =========================================================
+   SPEECH RECOGNITION
+========================================================= */
+
+function setupSpeechRecognition(){
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if(!SpeechRecognition){
+
+        voiceButton.disabled = true;
+
+        voiceButton.title =
+            "Spracheingabe wird von diesem Browser nicht unterstützt.";
 
         return;
 
     }
 
 
-    /* -----------------------------------------
-       NORMALE KI-FRAGE
-    ----------------------------------------- */
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang =
+        "de-DE";
+
+    recognition.continuous =
+        false;
+
+    recognition.interimResults =
+        false;
+
+    recognition.maxAlternatives =
+        1;
+
+
+    recognition.onstart =
+        () => {
+
+            listening = true;
+
+            voiceButton.classList.add(
+                "active"
+            );
+
+            setStatus(
+                "Ich höre...",
+                true
+            );
+
+
+            clearTimeout(
+                micTimeout
+            );
+
+
+            micTimeout =
+                setTimeout(
+                    () => {
+
+                        stopListening();
+
+                    },
+                    MIC_MAX_TIME
+                );
+
+        };
+
+
+    recognition.onresult =
+        event => {
+
+            clearTimeout(
+                micTimeout
+            );
+
+
+            const result =
+                event
+                    .results?.[0]?.[0]
+                    ?.transcript
+                    ?.trim();
+
+
+            stopListening();
+
+
+            if(result){
+
+                messageInput.value =
+                    result;
+
+                messageInput.dispatchEvent(
+                    new Event(
+                        "input"
+                    )
+                );
+
+                sendMessage();
+
+            }
+
+        };
+
+
+    recognition.onerror =
+        event => {
+
+            clearTimeout(
+                micTimeout
+            );
+
+            console.error(
+                "Speech error:",
+                event.error
+            );
+
+            stopListening();
+
+            if(
+                event.error !==
+                "aborted"
+            ){
+
+                showToast(
+                    "Mikrofonfehler: " +
+                    event.error
+                );
+
+            }
+
+        };
+
+
+    recognition.onend =
+        () => {
+
+            clearTimeout(
+                micTimeout
+            );
+
+            micTimeout =
+                null;
+
+            listening =
+                false;
+
+            voiceButton.classList.remove(
+                "active"
+            );
+
+
+            if(!speaking){
+
+                setStatus(
+                    "Bereit · Key " +
+                    activeGeminiKey,
+                    true
+                );
+
+            }
+
+        };
+
+}
+
+
+/* =========================================================
+   START LISTENING
+========================================================= */
+
+function startListening(){
 
     if(
-        questionsUsed >=
-        MAX_QUESTIONS
+        speaking ||
+        thinking
     ){
 
-        addMessage(
-            "Das lokale Fragenlimit von 20 Fragen wurde erreicht.",
-            "nova"
+        return;
+
+    }
+
+
+    if(!recognition){
+
+        showToast(
+            "Dein Browser unterstützt keine Spracheingabe."
         );
 
         return;
@@ -1491,41 +3484,9 @@ async function askNova(question){
     }
 
 
-    if(!useQuestion()){
-        return;
-    }
+    if(listening){
 
-
-    addMessage(
-        question,
-        "user"
-    );
-
-
-    userInput.value = "";
-
-
-    setStatus(
-        "Nova denkt..."
-    );
-
-    setOrb(
-        "thinking"
-    );
-
-
-    const ready =
-        await initializeAI();
-
-
-    if(!ready){
-
-        addMessage(
-            "Die KI konnte nicht initialisiert werden.",
-            "nova"
-        );
-
-        setOrb(null);
+        stopListening();
 
         return;
 
@@ -1534,96 +3495,12 @@ async function askNova(question){
 
     try{
 
-        const systemPrompt = `
-
-Du bist Nova, eine moderne persönliche KI.
-
-Antworte auf Deutsch, wenn der Benutzer Deutsch spricht.
-
-Sei freundlich, intelligent und direkt.
-
-Beantworte normale Fragen.
-
-Wichtig:
-Wenn der Benutzer nach einer Information fragt,
-sollst du die Frage normal beantworten.
-
-Der Browser kann Webseiten direkt über JavaScript öffnen.
-Direkte Website-Befehle werden bereits vor deiner Antwort
-erkannt.
-
-`;
-
-        const result =
-            await model.generateContent(
-                systemPrompt +
-                "\n\nBenutzer:\n" +
-                question
-            );
-
-
-        const answer =
-            result.response.text();
-
-
-        addMessage(
-            answer,
-            "nova"
-        );
-
-
-        speak(
-            answer
-        );
-
+        recognition.start();
 
     }catch(error){
 
-        console.error(error);
-
-        let text =
-            "Es ist ein Fehler aufgetreten.";
-
-
-        if(
-            error.message &&
-            error.message.includes("429")
-        ){
-
-            text =
-                "Das Gemini-Limit wurde erreicht. Bitte später erneut versuchen.";
-
-        }else if(
-            error.message &&
-            error.message
-                .toLowerCase()
-                .includes("api key")
-        ){
-
-            text =
-                "Der Firebase API-Key wird abgelehnt.";
-
-        }else if(
-            error.message
-        ){
-
-            text =
-                error.message;
-
-        }
-
-
-        addMessage(
-            text,
-            "nova"
-        );
-
-    }finally{
-
-        setOrb(null);
-
-        setStatus(
-            "Nova ist bereit."
+        console.error(
+            error
         );
 
     }
@@ -1632,30 +3509,56 @@ erkannt.
 
 
 /* =========================================================
-   SEND
+   STOP LISTENING
 ========================================================= */
 
-sendBtn.addEventListener(
-    "click",
-    ()=>{
-        askNova(
-            userInput.value
-        );
+function stopListening(){
+
+    clearTimeout(
+        micTimeout
+    );
+
+    micTimeout =
+        null;
+
+
+    if(recognition){
+
+        try{
+
+            recognition.stop();
+
+        }catch(error){}
+
     }
-);
 
 
-userInput.addEventListener(
-    "keydown",
-    event=>{
+    listening =
+        false;
 
-        if(
-            event.key === "Enter"
-        ){
 
-            askNova(
-                userInput.value
-            );
+    voiceButton.classList.remove(
+        "active"
+    );
+
+}
+
+
+/* =========================================================
+   VOICE BUTTON
+========================================================= */
+
+voiceButton.addEventListener(
+    "click",
+    () => {
+
+        if(listening){
+
+            stopListening();
+
+        }else{
+
+            startListening();
 
         }
 
@@ -1664,26 +3567,25 @@ userInput.addEventListener(
 
 
 /* =========================================================
-   SPRACH-AUSGABE
+   SPEECH SYNTHESIS
 ========================================================= */
 
-let isSpeaking = false;
-let voiceMode = true;
-
-
 function speak(text){
-
-    if(!voiceMode){
-        return;
-    }
-
 
     if(
         !("speechSynthesis" in window)
     ){
+
         return;
+
     }
 
+
+    /*
+        Ganz wichtig:
+        Nova darf nicht gleichzeitig
+        zuhören und sprechen.
+    */
 
     stopListening();
 
@@ -1705,78 +3607,71 @@ function speak(text){
     utterance.pitch =
         1;
 
-    utterance.volume =
-        1;
-
 
     const voices =
         speechSynthesis.getVoices();
 
 
-    const german =
+    const germanVoice =
         voices.find(
-            v =>
-                v.lang &&
-                v.lang
-                    .toLowerCase()
-                    .startsWith("de")
+            voice =>
+                voice.lang
+                    ?.toLowerCase()
+                    .startsWith(
+                        "de"
+                    )
         );
 
 
-    if(german){
+    if(germanVoice){
 
         utterance.voice =
-            german;
+            germanVoice;
 
     }
 
 
-    isSpeaking = true;
+    utterance.onstart =
+        () => {
 
-    setOrb(
-        "speaking"
-    );
+            speaking =
+                true;
 
-    setStatus(
-        "Nova spricht..."
-    );
+            stopListening();
+
+            setStatus(
+                "Nova spricht...",
+                true
+            );
+
+        };
 
 
     utterance.onend =
-        ()=>{
+        () => {
 
-            isSpeaking = false;
-
-            setOrb(null);
+            speaking =
+                false;
 
             setStatus(
-                "Nova ist bereit."
+                "Bereit · Key " +
+                activeGeminiKey,
+                true
             );
-
-
-            if(voiceMode){
-
-                setTimeout(
-                    ()=>{
-                        startListening();
-                    },
-                    700
-                );
-
-            }
 
         };
 
 
     utterance.onerror =
-        ()=>{
+        () => {
 
-            isSpeaking = false;
-
-            setOrb(null);
+            speaking =
+                false;
 
             setStatus(
-                "Nova ist bereit."
+                "Bereit · Key " +
+                activeGeminiKey,
+                true
             );
 
         };
@@ -1790,306 +3685,7 @@ function speak(text){
 
 
 /* =========================================================
-   SPRACHERKENNUNG
-========================================================= */
-
-const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-let recognition = null;
-let isListening = false;
-let micTimeout = null;
-
-const MIC_MAX_TIME =
-    8000;
-
-
-if(SpeechRecognition){
-
-    recognition =
-        new SpeechRecognition();
-
-    recognition.lang =
-        "de-DE";
-
-    recognition.continuous =
-        false;
-
-    recognition.interimResults =
-        false;
-
-
-    recognition.onstart =
-        ()=>{
-
-            isListening = true;
-
-            setOrb(
-                "listening"
-            );
-
-            setStatus(
-                "Ich höre zu..."
-            );
-
-
-            clearTimeout(
-                micTimeout
-            );
-
-
-            micTimeout =
-                setTimeout(
-                    ()=>{
-                        stopListening();
-                    },
-                    MIC_MAX_TIME
-                );
-
-        };
-
-
-    recognition.onresult =
-        event=>{
-
-            clearTimeout(
-                micTimeout
-            );
-
-
-            const text =
-                event.results[0][0]
-                    .transcript;
-
-
-            stopListening();
-
-
-            if(text.trim()){
-
-                askNova(
-                    text
-                );
-
-            }
-
-        };
-
-
-    recognition.onend =
-        ()=>{
-
-            clearTimeout(
-                micTimeout
-            );
-
-            isListening = false;
-
-            setOrb(null);
-
-            if(!isSpeaking){
-
-                setStatus(
-                    "Nova ist bereit."
-                );
-
-            }
-
-        };
-
-
-    recognition.onerror =
-        event=>{
-
-            clearTimeout(
-                micTimeout
-            );
-
-            isListening = false;
-
-            setOrb(null);
-
-            console.error(
-                "Speech:",
-                event.error
-            );
-
-        };
-
-}
-
-
-/* =========================================================
-   LISTENING
-========================================================= */
-
-function startListening(){
-
-    if(!recognition){
-
-        setStatus(
-            "Dieser Browser unterstützt keine Spracherkennung."
-        );
-
-        return;
-
-    }
-
-
-    if(isSpeaking){
-        return;
-    }
-
-
-    if(isListening){
-        return;
-    }
-
-
-    try{
-
-        recognition.start();
-
-    }catch(error){
-
-        console.error(error);
-
-    }
-
-}
-
-
-function stopListening(){
-
-    clearTimeout(
-        micTimeout
-    );
-
-
-    if(
-        recognition &&
-        isListening
-    ){
-
-        try{
-
-            recognition.stop();
-
-        }catch(error){
-
-            console.error(error);
-
-        }
-
-    }
-
-
-    isListening = false;
-
-    setOrb(null);
-
-}
-
-
-/* =========================================================
-   MIC BUTTON
-========================================================= */
-
-micBtn.addEventListener(
-    "click",
-    ()=>{
-
-        if(isListening){
-
-            stopListening();
-
-        }else{
-
-            startListening();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   VOICE BUTTON
-========================================================= */
-
-voiceBtn.addEventListener(
-    "click",
-    ()=>{
-
-        voiceMode =
-            !voiceMode;
-
-
-        voiceBtn.textContent =
-            voiceMode
-                ? "Stimme: AN"
-                : "Stimme: AUS";
-
-
-        voiceBtn.classList.toggle(
-            "active",
-            voiceMode
-        );
-
-
-        if(!voiceMode){
-
-            speechSynthesis.cancel();
-
-            isSpeaking = false;
-
-            stopListening();
-
-            setStatus(
-                "Sprachmodus deaktiviert."
-            );
-
-        }else{
-
-            setStatus(
-                "Sprachmodus aktiviert."
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   DIREKTE BUTTONS
-========================================================= */
-
-youtubeBtn.addEventListener(
-    "click",
-    ()=>{
-        openWebAction({
-            type:"youtube",
-            query:""
-        });
-    }
-);
-
-
-googleBtn.addEventListener(
-    "click",
-    ()=>{
-        openWebAction({
-            type:"google-search",
-            query:""
-        });
-    }
-);
-
-
-/* =========================================================
-   VOICES
+   SPEECH VOICES LADEN
 ========================================================= */
 
 if(
@@ -2097,18 +3693,45 @@ if(
 ){
 
     speechSynthesis.onvoiceschanged =
-        ()=>{
-            speechSynthesis.getVoices();
-        };
+        () => {};
 
 }
 
 
+/* =========================================================
+   START
+========================================================= */
+
+loadLocalData();
+
+setupSpeechRecognition();
+
 setStatus(
-    "Nova ist bereit."
+    "Bereit · Key " +
+    activeGeminiKey,
+    true
 );
 
 </script>
 
 </body>
 </html>
+```
+
+### Einrichtung
+
+1. Deine alte `index.html` auf GitHub **komplett löschen/ersetzen**.
+2. Den Code oben als `index.html` speichern.
+3. GitHub Pages neu laden.
+4. Mit deinem Google-Konto anmelden.
+5. Links **Gemini Key 1** eintragen → **Speichern** → **Aktivieren**.
+6. Den zweiten Key genauso bei **Gemini Key 2** eintragen.
+7. Danach:
+
+   * **F1 → Key 1**
+   * **F2 → Key 2**
+8. Der Chatverlauf bleibt **ein gemeinsamer Verlauf**, egal welcher der beiden Keys gerade aktiv ist.
+
+**Noch wichtig:** Der `apiKey` in deiner Firebase-Konfiguration ist eine öffentliche Firebase-Web-Konfiguration. Die **Gemini-Keys sind dagegen private Zugangsdaten** und stehen deshalb nicht im Quelltext. Die beiden Gemini-Keys werden in dieser Version lokal im Browser gespeichert. Für eine wirklich öffentlich nutzbare Familienseite wäre ein Backend/Firebase-basierter Gemini-Zugriff sicherer.
+
+Der Zähler `20 / 20` ist außerdem nur ein **lokaler App-Zähler** – er zeigt nicht das echte Google-Gemini-Kontingent an.
