@@ -1,501 +1,385 @@
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Nova Family AI</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    min-height: 100vh;
-    background: #050505;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    overflow-x: hidden;
+body{
+    min-height:100vh;
+    background:#050505;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+button,input{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* LOGIN */
+
+#loginScreen{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
     background:
-        radial-gradient(circle at 50% 35%, rgba(255,255,255,.08), transparent 25%),
-        radial-gradient(circle at 50% 100%, rgba(255,255,255,.035), transparent 35%);
-    pointer-events: none;
+        radial-gradient(circle at center,#191919 0%,#080808 40%,#020202 100%);
+    z-index:100;
 }
 
-button {
-    font-family: inherit;
-    cursor: pointer;
+.loginBox{
+    width:min(430px,calc(100% - 30px));
+    padding:40px 30px;
+    border:1px solid #292929;
+    border-radius:24px;
+    background:#0b0b0b;
+    text-align:center;
+    box-shadow:0 0 80px rgba(255,255,255,.05);
 }
 
-#app {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-header {
-    height: 72px;
-    padding: 0 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #222;
-    background: rgba(5,5,5,.88);
-    backdrop-filter: blur(15px);
-    position: relative;
-    z-index: 10;
-}
-
-.logo {
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: 3px;
-}
-
-.logo span {
-    color: #aaa;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.user-name {
-    color: #aaa;
-    font-size: 13px;
-}
-
-.top-btn {
-    border: 1px solid #333;
-    background: #111;
-    color: white;
-    border-radius: 10px;
-    padding: 10px 15px;
-    transition: .2s;
-}
-
-.top-btn:hover {
-    background: #1c1c1c;
-    border-color: #666;
-}
-
-/* =========================
-   LOGIN
-========================= */
-
-#loginScreen {
-    position: fixed;
-    inset: 0;
+.loginOrb{
+    width:120px;
+    height:120px;
+    margin:0 auto 25px;
+    border-radius:50%;
     background:
-        radial-gradient(circle at center, #161616 0%, #080808 35%, #030303 75%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
+        radial-gradient(circle at 30% 25%,#fff,#aaa 20%,#333 55%,#050505 75%);
+    box-shadow:0 0 45px rgba(255,255,255,.16);
+    animation:breathe 3s infinite;
 }
 
-.login-box {
-    width: min(430px, calc(100% - 30px));
-    padding: 42px 32px;
-    border: 1px solid #292929;
-    background: rgba(10,10,10,.9);
-    border-radius: 24px;
-    text-align: center;
-    box-shadow: 0 0 70px rgba(255,255,255,.04);
-}
-
-.login-orb {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 28px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #fff, #888 20%, #222 60%, #050505 75%);
-    box-shadow:
-        0 0 25px rgba(255,255,255,.15),
-        inset 0 0 30px rgba(255,255,255,.15);
-    animation: breathe 3s infinite ease-in-out;
-}
-
-@keyframes breathe {
-    0%,100% {
-        transform: scale(1);
-        box-shadow: 0 0 25px rgba(255,255,255,.12);
-    }
-    50% {
-        transform: scale(1.06);
-        box-shadow: 0 0 45px rgba(255,255,255,.24);
+@keyframes breathe{
+    50%{
+        transform:scale(1.06);
+        box-shadow:0 0 70px rgba(255,255,255,.25);
     }
 }
 
-.login-box h1 {
-    font-size: 31px;
-    letter-spacing: 3px;
-    margin-bottom: 10px;
+.loginBox h1{
+    font-size:32px;
+    letter-spacing:5px;
 }
 
-.login-box p {
-    color: #888;
-    margin-bottom: 28px;
-    line-height: 1.5;
+.loginBox p{
+    color:#888;
+    line-height:1.5;
+    margin:12px 0 25px;
 }
 
-.google-btn {
-    width: 100%;
-    padding: 15px;
-    border: 0;
-    border-radius: 12px;
-    background: white;
-    color: black;
-    font-weight: bold;
-    font-size: 15px;
-    transition: .2s;
+#googleLogin{
+    width:100%;
+    border:0;
+    border-radius:12px;
+    padding:15px;
+    background:#fff;
+    color:#000;
+    font-weight:bold;
 }
 
-.google-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255,255,255,.12);
+#loginError{
+    color:#ff7070;
+    font-size:13px;
+    margin-top:15px;
 }
 
-.login-error {
-    margin-top: 15px;
-    color: #ff6b6b;
-    font-size: 13px;
-    line-height: 1.5;
+/* HEADER */
+
+header{
+    height:70px;
+    padding:0 25px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid #222;
+    background:rgba(5,5,5,.9);
 }
 
-/* =========================
-   MAIN
-========================= */
-
-main {
-    flex: 1;
-    width: min(1100px, 100%);
-    margin: auto;
-    padding: 30px 20px 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.logo{
+    font-size:21px;
+    font-weight:bold;
+    letter-spacing:3px;
 }
 
-/* =========================
-   STATUS
-========================= */
-
-.status {
-    color: #777;
-    font-size: 13px;
-    min-height: 20px;
-    margin-bottom: 18px;
-    text-align: center;
+.logo span{
+    color:#777;
 }
 
-.status.active {
-    color: #ddd;
+.headerRight{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
-/* =========================
-   ORB
-========================= */
-
-.orb-area {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 390px;
-    position: relative;
+#userName{
+    color:#888;
+    font-size:13px;
 }
 
-.orb {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    position: relative;
+#logoutBtn{
+    background:#111;
+    color:#fff;
+    border:1px solid #333;
+    padding:10px 14px;
+    border-radius:10px;
+}
+
+/* MAIN */
+
+main{
+    width:min(1000px,100%);
+    min-height:calc(100vh - 70px);
+    margin:auto;
+    padding:25px 18px 50px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+#status{
+    color:#777;
+    min-height:20px;
+    font-size:13px;
+    text-align:center;
+}
+
+/* ORB */
+
+.orbArea{
+    height:350px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#orb{
+    width:215px;
+    height:215px;
+    border-radius:50%;
     background:
-        radial-gradient(circle at 35% 28%, white 0%, #ddd 8%, #777 25%, #252525 55%, #070707 75%);
+        radial-gradient(circle at 32% 25%,#fff 0%,#ddd 8%,#777 25%,#222 58%,#030303 78%);
     box-shadow:
-        0 0 40px rgba(255,255,255,.12),
-        0 0 100px rgba(255,255,255,.06),
-        inset 0 0 45px rgba(255,255,255,.15);
-    transition: .35s;
+        0 0 40px rgba(255,255,255,.13),
+        inset 0 0 50px rgba(255,255,255,.12);
+    transition:.3s;
+    position:relative;
 }
 
-.orb::before,
-.orb::after {
-    content: "";
-    position: absolute;
-    inset: -18px;
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 50%;
-    animation: rotateOrb 10s linear infinite;
+#orb:before,
+#orb:after{
+    content:"";
+    position:absolute;
+    inset:-20px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:50%;
+    animation:rotate 10s linear infinite;
 }
 
-.orb::after {
-    inset: -32px;
-    border-color: rgba(255,255,255,.05);
-    animation-direction: reverse;
-    animation-duration: 14s;
+#orb:after{
+    inset:-35px;
+    animation-direction:reverse;
+    animation-duration:15s;
 }
 
-@keyframes rotateOrb {
-    from { transform: rotate(0deg) scaleX(1); }
-    to { transform: rotate(360deg) scaleX(1); }
-}
-
-.orb.listening {
-    transform: scale(1.1);
-    box-shadow:
-        0 0 55px rgba(255,255,255,.3),
-        0 0 130px rgba(255,255,255,.12);
-}
-
-.orb.thinking {
-    animation: thinking 1s infinite ease-in-out;
-}
-
-@keyframes thinking {
-    0%,100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.08);
+@keyframes rotate{
+    to{
+        transform:rotate(360deg);
     }
 }
 
-.orb.speaking {
-    animation: speaking .55s infinite ease-in-out;
+#orb.listening{
+    transform:scale(1.1);
+    box-shadow:0 0 80px rgba(255,255,255,.3);
 }
 
-@keyframes speaking {
-    0%,100% {
-        transform: scale(1);
+#orb.thinking{
+    animation:think 1s infinite;
+}
+
+@keyframes think{
+    50%{
+        transform:scale(1.08);
     }
-    50% {
-        transform: scale(1.12);
+}
+
+#orb.speaking{
+    animation:speak .5s infinite;
+}
+
+@keyframes speak{
+    50%{
+        transform:scale(1.12);
     }
 }
 
-/* =========================
-   CHAT
-========================= */
+/* CHAT */
 
-.chat {
-    width: min(850px, 100%);
-    min-height: 150px;
-    max-height: 420px;
-    overflow-y: auto;
-    padding: 10px;
-    margin-bottom: 18px;
+#chat{
+    width:min(850px,100%);
+    max-height:400px;
+    overflow-y:auto;
+    margin-bottom:15px;
 }
 
-.message {
-    padding: 14px 17px;
-    border-radius: 16px;
-    margin: 8px 0;
-    max-width: 85%;
-    line-height: 1.5;
-    font-size: 15px;
+.message{
+    max-width:85%;
+    padding:14px 17px;
+    margin:8px 0;
+    border-radius:16px;
+    line-height:1.5;
+    font-size:15px;
 }
 
-.message.user {
-    margin-left: auto;
-    background: #171717;
-    border: 1px solid #2c2c2c;
+.message.user{
+    margin-left:auto;
+    background:#171717;
+    border:1px solid #2b2b2b;
 }
 
-.message.nova {
-    margin-right: auto;
-    background: #0c0c0c;
-    border: 1px solid #222;
-    color: #ddd;
+.message.nova{
+    margin-right:auto;
+    background:#0c0c0c;
+    border:1px solid #222;
+    color:#ddd;
 }
 
-/* =========================
-   INPUT
-========================= */
+/* INPUT */
 
-.input-area {
-    width: min(850px, 100%);
-    display: flex;
-    gap: 10px;
+.inputArea{
+    width:min(850px,100%);
+    display:flex;
+    gap:8px;
 }
 
-#userInput {
-    flex: 1;
-    min-width: 0;
-    background: #101010;
-    color: white;
-    border: 1px solid #292929;
-    border-radius: 14px;
-    outline: none;
-    padding: 15px;
-    font-size: 15px;
+#userInput{
+    flex:1;
+    min-width:0;
+    background:#101010;
+    color:#fff;
+    border:1px solid #292929;
+    border-radius:13px;
+    padding:15px;
+    outline:none;
 }
 
-#userInput:focus {
-    border-color: #666;
+#userInput:focus{
+    border-color:#666;
 }
 
-.action-btn {
-    border: 1px solid #333;
-    background: #111;
-    color: white;
-    border-radius: 14px;
-    min-width: 50px;
-    padding: 0 15px;
-    transition: .2s;
+.actionBtn{
+    background:#111;
+    color:#fff;
+    border:1px solid #333;
+    border-radius:13px;
+    padding:0 15px;
+    min-width:48px;
 }
 
-.action-btn:hover {
-    background: #1d1d1d;
-    border-color: #666;
+.sendBtn{
+    background:#fff;
+    color:#000;
+    border-color:#fff;
+    font-weight:bold;
 }
 
-.send-btn {
-    background: white;
-    color: black;
-    border-color: white;
-    font-weight: bold;
+/* CONTROLS */
+
+.controls{
+    width:min(850px,100%);
+    display:flex;
+    gap:8px;
+    margin-top:10px;
 }
 
-/* =========================
-   CONTROLS
-========================= */
-
-.controls {
-    width: min(850px, 100%);
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
+.control{
+    flex:1;
+    padding:11px;
+    background:#0d0d0d;
+    color:#bbb;
+    border:1px solid #252525;
+    border-radius:10px;
 }
 
-.control {
-    flex: 1;
-    padding: 11px;
-    background: #0e0e0e;
-    color: #ccc;
-    border: 1px solid #242424;
-    border-radius: 11px;
+.control.active{
+    color:#fff;
+    border-color:#888;
 }
 
-.control:hover {
-    background: #171717;
+/* QUOTA */
+
+.quota{
+    width:min(850px,100%);
+    margin-top:20px;
 }
 
-.control.active {
-    border-color: #aaa;
-    color: white;
+.quotaTop{
+    display:flex;
+    justify-content:space-between;
+    color:#777;
+    font-size:12px;
+    margin-bottom:7px;
 }
 
-/* =========================
-   QUOTA
-========================= */
-
-.quota {
-    width: min(850px, 100%);
-    margin-top: 20px;
+.quotaBar{
+    height:5px;
+    background:#181818;
+    border-radius:10px;
+    overflow:hidden;
 }
 
-.quota-top {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: #777;
-    margin-bottom: 7px;
+#quotaFill{
+    height:100%;
+    width:0;
+    background:#fff;
+    transition:.3s;
 }
 
-.quota-bar {
-    height: 5px;
-    background: #181818;
-    border-radius: 10px;
-    overflow: hidden;
-}
+@media(max-width:600px){
 
-#quotaFill {
-    width: 0%;
-    height: 100%;
-    background: white;
-    transition: width .3s;
-}
-
-/* =========================
-   HIDDEN
-========================= */
-
-.hidden {
-    display: none !important;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:600px) {
-
-    header {
-        padding: 0 14px;
+    header{
+        padding:0 14px;
     }
 
-    .logo {
-        font-size: 17px;
+    .logo{
+        font-size:17px;
     }
 
-    .user-name {
-        display: none;
+    #userName{
+        display:none;
     }
 
-    main {
-        padding: 15px 12px 35px;
+    .orbArea{
+        height:290px;
     }
 
-    .orb-area {
-        height: 300px;
+    #orb{
+        width:170px;
+        height:170px;
     }
 
-    .orb {
-        width: 170px;
-        height: 170px;
+    .controls{
+        flex-wrap:wrap;
     }
 
-    .message {
-        max-width: 92%;
-        font-size: 14px;
-    }
-
-    .input-area {
-        gap: 6px;
-    }
-
-    #userInput {
-        padding: 13px;
-    }
-
-    .action-btn {
-        min-width: 44px;
-        padding: 0 10px;
-    }
-
-    .controls {
-        flex-wrap: wrap;
-    }
-
-    .control {
-        min-width: 30%;
+    .control{
+        min-width:30%;
     }
 }
 </style>
@@ -503,36 +387,33 @@ main {
 
 <body>
 
-<!-- =========================
-     LOGIN
-========================= -->
+<!-- LOGIN -->
 
 <div id="loginScreen">
 
-    <div class="login-box">
+    <div class="loginBox">
 
-        <div class="login-orb"></div>
+        <div class="loginOrb"></div>
 
         <h1>NOVA</h1>
 
         <p>
             Deine persönliche Family AI.<br>
-            Melde dich mit deinem Google-Konto an.
+            Melde dich mit Google an.
         </p>
 
-        <button id="googleLogin" class="google-btn">
+        <button id="googleLogin">
             Mit Google anmelden
         </button>
 
-        <div id="loginError" class="login-error"></div>
+        <div id="loginError"></div>
 
     </div>
 
 </div>
 
-<!-- =========================
-     APP
-========================= -->
+
+<!-- APP -->
 
 <div id="app" class="hidden">
 
@@ -542,11 +423,11 @@ main {
         NOVA <span>FAMILY AI</span>
     </div>
 
-    <div class="header-right">
+    <div class="headerRight">
 
-        <span id="userName" class="user-name"></span>
+        <span id="userName"></span>
 
-        <button id="logoutBtn" class="top-btn">
+        <button id="logoutBtn">
             Abmelden
         </button>
 
@@ -554,19 +435,19 @@ main {
 
 </header>
 
+
 <main>
 
-    <div id="status" class="status">
+    <div id="status">
         Nova ist bereit.
     </div>
 
-    <div class="orb-area">
-
-        <div id="orb" class="orb"></div>
-
+    <div class="orbArea">
+        <div id="orb"></div>
     </div>
 
-    <div id="chat" class="chat">
+
+    <div id="chat">
 
         <div class="message nova">
             Hallo. Ich bin Nova. Wie kann ich dir helfen?
@@ -574,28 +455,29 @@ main {
 
     </div>
 
-    <div class="input-area">
 
-        <button id="micBtn" class="action-btn" title="Mikrofon">
+    <div class="inputArea">
+
+        <button id="micBtn" class="actionBtn">
             🎙
         </button>
 
         <input
             id="userInput"
-            type="text"
-            placeholder="Schreibe etwas..."
+            placeholder="Schreibe oder frage etwas..."
             autocomplete="off"
         >
 
-        <button id="sendBtn" class="action-btn send-btn">
+        <button id="sendBtn" class="actionBtn sendBtn">
             →
         </button>
 
     </div>
 
+
     <div class="controls">
 
-        <button id="voiceBtn" class="control">
+        <button id="voiceBtn" class="control active">
             Stimme: AN
         </button>
 
@@ -609,9 +491,10 @@ main {
 
     </div>
 
+
     <div class="quota">
 
-        <div class="quota-top">
+        <div class="quotaTop">
 
             <span>Fragen</span>
 
@@ -621,7 +504,7 @@ main {
 
         </div>
 
-        <div class="quota-bar">
+        <div class="quotaBar">
             <div id="quotaFill"></div>
         </div>
 
@@ -631,10 +514,11 @@ main {
 
 </div>
 
+
 <script type="module">
 
 /* =========================================================
-   FIREBASE
+   FIREBASE IMPORTS
 ========================================================= */
 
 import {
@@ -658,7 +542,7 @@ import {
 
 
 /* =========================================================
-   DEINE FIREBASE CONFIG
+   FIREBASE CONFIG
 ========================================================= */
 
 const firebaseConfig = {
@@ -672,7 +556,7 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   FIREBASE START
+   FIREBASE
 ========================================================= */
 
 let app;
@@ -680,7 +564,7 @@ let auth;
 let db;
 let model = null;
 
-try {
+try{
 
     app = initializeApp(firebaseConfig);
 
@@ -688,12 +572,9 @@ try {
 
     db = getFirestore(app);
 
-} catch(error) {
+}catch(error){
 
     console.error(error);
-
-    document.getElementById("loginError").textContent =
-        "Firebase konnte nicht gestartet werden: " + error.message;
 
 }
 
@@ -711,11 +592,11 @@ const appScreen =
 const googleLogin =
     document.getElementById("googleLogin");
 
-const logoutBtn =
-    document.getElementById("logoutBtn");
-
 const loginError =
     document.getElementById("loginError");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
 
 const userName =
     document.getElementById("userName");
@@ -762,138 +643,162 @@ const provider =
     new GoogleAuthProvider();
 
 provider.setCustomParameters({
-    prompt: "select_account"
+    prompt:"select_account"
 });
 
 
-googleLogin.addEventListener("click", async () => {
+googleLogin.addEventListener(
+    "click",
+    async()=>{
 
-    if (!auth) return;
+        loginError.textContent = "";
 
-    loginError.textContent = "";
+        googleLogin.disabled = true;
 
-    googleLogin.disabled = true;
-    googleLogin.textContent = "Anmeldung...";
+        googleLogin.textContent =
+            "Anmeldung...";
 
-    try {
+        try{
 
-        await signInWithPopup(auth, provider);
+            await signInWithPopup(
+                auth,
+                provider
+            );
 
-    } catch(error) {
+        }catch(error){
 
-        console.error(error);
+            console.error(error);
 
-        let message =
-            "Anmeldung fehlgeschlagen: " + error.message;
+            if(
+                error.code ===
+                "auth/api-key-not-valid"
+            ){
 
-        if (error.code === "auth/api-key-not-valid") {
+                loginError.textContent =
+                    "Firebase lehnt den API-Key ab. Bitte überprüfe den aktuellen Web-API-Key in Firebase.";
 
-            message =
-                "Firebase lehnt den API-Key ab. Bitte überprüfe den aktuellen Web-API-Key in den Firebase-Projekteinstellungen.";
+            }else if(
+                error.code ===
+                "auth/unauthorized-domain"
+            ){
+
+                loginError.textContent =
+                    "Diese Website ist in Firebase noch nicht als autorisierte Domain eingetragen.";
+
+            }else if(
+                error.code ===
+                "auth/popup-blocked"
+            ){
+
+                loginError.textContent =
+                    "Der Browser hat das Google-Fenster blockiert.";
+
+            }else{
+
+                loginError.textContent =
+                    "Anmeldung fehlgeschlagen: " +
+                    error.message;
+
+            }
+
+        }finally{
+
+            googleLogin.disabled = false;
+
+            googleLogin.textContent =
+                "Mit Google anmelden";
 
         }
-
-        if (error.code === "auth/unauthorized-domain") {
-
-            message =
-                "Diese GitHub-Pages-Domain ist in Firebase noch nicht autorisiert.";
-
-        }
-
-        if (error.code === "auth/popup-blocked") {
-
-            message =
-                "Der Browser hat das Google-Anmeldefenster blockiert.";
-
-        }
-
-        if (error.code === "auth/popup-closed-by-user") {
-
-            message =
-                "Das Anmeldefenster wurde geschlossen.";
-
-        }
-
-        loginError.textContent = message;
-
-    } finally {
-
-        googleLogin.disabled = false;
-        googleLogin.textContent = "Mit Google anmelden";
 
     }
-
-});
+);
 
 
 /* =========================================================
    AUTH STATE
 ========================================================= */
 
-if (auth) {
+onAuthStateChanged(
+    auth,
+    async(user)=>{
 
-    onAuthStateChanged(auth, async (user) => {
+        if(user){
 
-        if (user) {
+            loginScreen.classList.add(
+                "hidden"
+            );
 
-            loginScreen.classList.add("hidden");
-            appScreen.classList.remove("hidden");
+            appScreen.classList.remove(
+                "hidden"
+            );
 
             userName.textContent =
                 user.displayName ||
                 user.email ||
                 "Benutzer";
 
-            await createUserDocument(user);
+            await createUserDocument(
+                user
+            );
 
             updateQuota();
 
-        } else {
+        }else{
 
-            loginScreen.classList.remove("hidden");
-            appScreen.classList.add("hidden");
+            loginScreen.classList.remove(
+                "hidden"
+            );
 
-            userName.textContent = "";
+            appScreen.classList.add(
+                "hidden"
+            );
 
         }
 
-    });
-
-}
+    }
+);
 
 
 /* =========================================================
-   FIRESTORE USER
+   FIRESTORE
 ========================================================= */
 
-async function createUserDocument(user) {
+async function createUserDocument(user){
 
-    if (!db) return;
+    if(!db) return;
 
-    try {
+    try{
 
         const userRef =
-            doc(db, "users", user.uid);
+            doc(
+                db,
+                "users",
+                user.uid
+            );
 
         const existing =
             await getDoc(userRef);
 
-        if (!existing.exists()) {
+        if(!existing.exists()){
 
-            await setDoc(userRef, {
-
-                name: user.displayName || "",
-                email: user.email || "",
-                createdAt: new Date().toISOString()
-
-            });
+            await setDoc(
+                userRef,
+                {
+                    name:
+                        user.displayName || "",
+                    email:
+                        user.email || "",
+                    createdAt:
+                        new Date().toISOString()
+                }
+            );
 
         }
 
-    } catch(error) {
+    }catch(error){
 
         console.error(
-            "Firestore Fehler:",
+            "Firestore:",
             error
         );
 
@@ -906,19 +811,14 @@ async function createUserDocument(user) {
    LOGOUT
 ========================================================= */
 
-logoutBtn.addEventListener("click", async () => {
-
-    try {
+logoutBtn.addEventListener(
+    "click",
+    async()=>{
 
         await signOut(auth);
 
-    } catch(error) {
-
-        console.error(error);
-
     }
-
-});
+);
 
 
 /* =========================================================
@@ -935,7 +835,7 @@ let questionsUsed =
     );
 
 
-function updateQuota() {
+function updateQuota(){
 
     questionsUsed =
         Math.max(
@@ -947,17 +847,26 @@ function updateQuota() {
         );
 
     quotaText.textContent =
-        questionsUsed + " / " + MAX_QUESTIONS;
+        questionsUsed +
+        " / " +
+        MAX_QUESTIONS;
 
     quotaFill.style.width =
-        ((questionsUsed / MAX_QUESTIONS) * 100) + "%";
+        (
+            questionsUsed /
+            MAX_QUESTIONS *
+            100
+        ) + "%";
 
 }
 
 
-function useQuestion() {
+function useQuestion(){
 
-    if (questionsUsed >= MAX_QUESTIONS) {
+    if(
+        questionsUsed >=
+        MAX_QUESTIONS
+    ){
 
         return false;
 
@@ -976,7 +885,6 @@ function useQuestion() {
 
 }
 
-
 updateQuota();
 
 
@@ -984,11 +892,13 @@ updateQuota();
    GEMINI
 ========================================================= */
 
-async function initializeAI() {
+async function initializeAI(){
 
-    if (model) return true;
+    if(model){
+        return true;
+    }
 
-    try {
+    try{
 
         const aiModule =
             await import(
@@ -1014,18 +924,16 @@ async function initializeAI() {
             getGenerativeModel(
                 ai,
                 {
-                    model: "gemini-3.7-flash"
+                    model:
+                        "gemini-3.7-flash"
                 }
             );
 
         return true;
 
-    } catch(error) {
+    }catch(error){
 
-        console.error(
-            "AI Initialisierung:",
-            error
-        );
+        console.error(error);
 
         return false;
 
@@ -1035,18 +943,24 @@ async function initializeAI() {
 
 
 /* =========================================================
-   CHAT UI
+   CHAT
 ========================================================= */
 
-function addMessage(text, type) {
+function addMessage(
+    text,
+    type
+){
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     div.className =
         "message " + type;
 
-    div.textContent = text;
+    div.textContent =
+        text;
 
     chat.appendChild(div);
 
@@ -1057,21 +971,10 @@ function addMessage(text, type) {
 
 
 /* =========================================================
-   STATUS
-========================================================= */
-
-function setStatus(text) {
-
-    status.textContent = text;
-
-}
-
-
-/* =========================================================
    ORB
 ========================================================= */
 
-function setOrb(mode) {
+function setOrb(mode){
 
     orb.classList.remove(
         "listening",
@@ -1079,9 +982,11 @@ function setOrb(mode) {
         "speaking"
     );
 
-    if (mode) {
+    if(mode){
 
-        orb.classList.add(mode);
+        orb.classList.add(
+            mode
+        );
 
     }
 
@@ -1089,14 +994,492 @@ function setOrb(mode) {
 
 
 /* =========================================================
-   GEMINI REQUEST
+   WEB-AKTIONEN
 ========================================================= */
 
-async function askNova(question) {
+/*
+    Diese Funktion erkennt Suchbefehle.
 
-    if (!question.trim()) return;
+    Beispiele:
 
-    if (questionsUsed >= MAX_QUESTIONS) {
+    "Öffne auf Google Minecraft"
+    "Such auf YouTube Minecraft"
+    "Zeig mir Bilder vom Kölner Dom"
+    "Wo ist der Kölner Dom?"
+    "Zeig mir Videos vom Kölner Dom"
+    "Öffne Wikipedia über Albert Einstein"
+    "Öffne Google Maps Kölner Dom"
+*/
+
+function detectWebAction(text){
+
+    const original =
+        text.trim();
+
+    const lower =
+        original.toLowerCase();
+
+
+    /* -----------------------------------------
+       YOUTUBE
+    ----------------------------------------- */
+
+    if(
+        lower.includes("youtube")
+    ){
+
+        let query =
+            original
+                .replace(
+                    /.*youtube/i,
+                    ""
+                )
+                .replace(
+                    /^(nach|für|zu|über|suche|such|öffne)\s*/i,
+                    ""
+                )
+                .trim();
+
+        if(
+            query &&
+            query.length > 1
+        ){
+
+            return {
+                type:"youtube-search",
+                query
+            };
+
+        }
+
+        return {
+            type:"youtube",
+            query:""
+        };
+
+    }
+
+
+    /* -----------------------------------------
+       GOOGLE BILDER
+    ----------------------------------------- */
+
+    if(
+        lower.includes("bilder") ||
+        lower.includes("bild von") ||
+        lower.includes("bilder von") ||
+        lower.includes("bilder über")
+    ){
+
+        let query =
+            original
+                .replace(
+                    /zeig(e)?\s+mir\s+/i,
+                    ""
+                )
+                .replace(
+                    /bilder?\s+(von|über)\s*/i,
+                    ""
+                )
+                .trim();
+
+        if(!query){
+
+            query = original;
+
+        }
+
+        return {
+            type:"google-images",
+            query
+        };
+
+    }
+
+
+    /* -----------------------------------------
+       GOOGLE MAPS
+    ----------------------------------------- */
+
+    if(
+        lower.includes("google maps") ||
+        lower.includes("maps") ||
+        lower.includes("karte von") ||
+        lower.includes("wo ist")
+    ){
+
+        let query =
+            original
+                .replace(
+                    /google maps/i,
+                    ""
+                )
+                .replace(
+                    /wo ist/i,
+                    ""
+                )
+                .replace(
+                    /karte von/i,
+                    ""
+                )
+                .trim();
+
+        if(query){
+
+            return {
+                type:"maps",
+                query
+            };
+
+        }
+
+    }
+
+
+    /* -----------------------------------------
+       VIDEOS
+    ----------------------------------------- */
+
+    if(
+        lower.includes("videos von") ||
+        lower.includes("video von") ||
+        lower.includes("videos über") ||
+        lower.includes("video über")
+    ){
+
+        let query =
+            original
+                .replace(
+                    /.*videos?\s+(von|über)\s*/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"youtube-search",
+            query
+        };
+
+    }
+
+
+    /* -----------------------------------------
+       WIKIPEDIA
+    ----------------------------------------- */
+
+    if(
+        lower.includes("wikipedia")
+    ){
+
+        let query =
+            original
+                .replace(
+                    /.*wikipedia/i,
+                    ""
+                )
+                .replace(
+                    /^(über|zu|von|nach)\s*/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"wikipedia",
+            query
+        };
+
+    }
+
+
+    /* -----------------------------------------
+       GOOGLE SUCHE
+    ----------------------------------------- */
+
+    if(
+        lower.includes("auf google") ||
+        lower.includes("bei google") ||
+        lower.startsWith("google ")
+    ){
+
+        let query =
+            original
+                .replace(
+                    /.*?(auf|bei)\s+google/i,
+                    ""
+                )
+                .replace(
+                    /^google\s+/i,
+                    ""
+                )
+                .replace(
+                    /^(nach|über|zu)\s+/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"google-search",
+            query
+        };
+
+    }
+
+
+    /* -----------------------------------------
+       ALLGEMEINE FRAGE:
+       "Wo ist der Kölner Dom?"
+    ----------------------------------------- */
+
+    if(
+        lower.startsWith("wo ist ") ||
+        lower.startsWith("wo befindet sich ")
+    ){
+
+        let query =
+            original
+                .replace(
+                    /^wo ist\s+/i,
+                    ""
+                )
+                .replace(
+                    /^wo befindet sich\s+/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"google-search",
+            query
+        };
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   URL ÖFFNEN
+========================================================= */
+
+function openWebAction(action){
+
+    if(!action){
+        return false;
+    }
+
+
+    const query =
+        action.query || "";
+
+
+    const encoded =
+        encodeURIComponent(
+            query
+        );
+
+
+    switch(action.type){
+
+        case "google-search":
+
+            window.open(
+                "https://www.google.com/search?q=" +
+                encoded,
+                "_blank"
+            );
+
+            return true;
+
+
+        case "google-images":
+
+            window.open(
+                "https://www.google.com/search?tbm=isch&q=" +
+                encoded,
+                "_blank"
+            );
+
+            return true;
+
+
+        case "youtube-search":
+
+            if(query){
+
+                window.open(
+                    "https://www.youtube.com/results?search_query=" +
+                    encoded,
+                    "_blank"
+                );
+
+            }else{
+
+                window.open(
+                    "https://www.youtube.com/",
+                    "_blank"
+                );
+
+            }
+
+            return true;
+
+
+        case "youtube":
+
+            window.open(
+                "https://www.youtube.com/",
+                "_blank"
+            );
+
+            return true;
+
+
+        case "wikipedia":
+
+            window.open(
+                "https://de.wikipedia.org/w/index.php?search=" +
+                encoded,
+                "_blank"
+            );
+
+            return true;
+
+
+        case "maps":
+
+            window.open(
+                "https://www.google.com/maps/search/?api=1&query=" +
+                encoded,
+                "_blank"
+            );
+
+            return true;
+
+    }
+
+    return false;
+
+}
+
+
+/* =========================================================
+   NOVA
+========================================================= */
+
+async function askNova(question){
+
+    question =
+        question.trim();
+
+    if(!question){
+        return;
+    }
+
+
+    /* -----------------------------------------
+       WEB-BEFEHL ZUERST PRÜFEN
+    ----------------------------------------- */
+
+    const webAction =
+        detectWebAction(
+            question
+        );
+
+
+    /*
+       Direkte Website-Aktion:
+
+       Dadurch muss Gemini nicht erst
+       entscheiden, ob Google/YouTube
+       geöffnet werden soll.
+    */
+
+    if(webAction){
+
+        addMessage(
+            question,
+            "user"
+        );
+
+        if(
+            webAction.type ===
+            "google-images"
+        ){
+
+            addMessage(
+                "Ich öffne die passenden Bilder.",
+                "nova"
+            );
+
+        }else if(
+            webAction.type ===
+            "youtube-search"
+        ){
+
+            addMessage(
+                "Ich suche das auf YouTube.",
+                "nova"
+            );
+
+        }else if(
+            webAction.type ===
+            "maps"
+        ){
+
+            addMessage(
+                "Ich öffne den Ort in Google Maps.",
+                "nova"
+            );
+
+        }else if(
+            webAction.type ===
+            "wikipedia"
+        ){
+
+            addMessage(
+                "Ich öffne die passende Wikipedia-Suche.",
+                "nova"
+            );
+
+        }else{
+
+            addMessage(
+                "Ich öffne die passende Google-Suche.",
+                "nova"
+            );
+
+        }
+
+        openWebAction(
+            webAction
+        );
+
+        speak(
+            webAction.type === "youtube-search"
+                ? "Ich suche das auf YouTube."
+                : webAction.type === "google-images"
+                    ? "Ich öffne die passenden Bilder."
+                    : webAction.type === "maps"
+                        ? "Ich öffne den Ort in Google Maps."
+                        : "Ich öffne die passende Suche."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       NORMALE KI-FRAGE
+    ----------------------------------------- */
+
+    if(
+        questionsUsed >=
+        MAX_QUESTIONS
+    ){
 
         addMessage(
             "Das lokale Fragenlimit von 20 Fragen wurde erreicht.",
@@ -1107,143 +1490,80 @@ async function askNova(question) {
 
     }
 
-    if (!useQuestion()) {
 
+    if(!useQuestion()){
         return;
-
     }
+
 
     addMessage(
         question,
         "user"
     );
 
+
     userInput.value = "";
 
-    setStatus("Nova denkt...");
-    setOrb("thinking");
 
-    const aiReady =
+    setStatus(
+        "Nova denkt..."
+    );
+
+    setOrb(
+        "thinking"
+    );
+
+
+    const ready =
         await initializeAI();
 
-    if (!aiReady) {
 
-        setStatus("Fehler bei der KI.");
-
-        setOrb(null);
+    if(!ready){
 
         addMessage(
             "Die KI konnte nicht initialisiert werden.",
             "nova"
         );
 
+        setOrb(null);
+
         return;
 
     }
 
 
-    try {
+    try{
 
         const systemPrompt = `
 
 Du bist Nova, eine moderne persönliche KI.
 
-Antworte auf Deutsch, sofern der Benutzer nicht
-eine andere Sprache verwendet.
+Antworte auf Deutsch, wenn der Benutzer Deutsch spricht.
 
-Sei freundlich, intelligent, direkt und natürlich.
+Sei freundlich, intelligent und direkt.
 
-Keine langen unnötigen Einleitungen.
+Beantworte normale Fragen.
 
-Du kannst bei Bedarf erklären, rechnen,
-programmieren und Fragen beantworten.
+Wichtig:
+Wenn der Benutzer nach einer Information fragt,
+sollst du die Frage normal beantworten.
 
-WICHTIG:
-
-Wenn der Benutzer YouTube öffnen möchte,
-füge exakt diesen Text ein:
-
-[ACTION:YOUTUBE]
-
-Wenn der Benutzer Google öffnen möchte,
-füge exakt diesen Text ein:
-
-[ACTION:GOOGLE]
-
-Beispiele:
-
-"Öffne YouTube"
-=> [ACTION:YOUTUBE]
-
-"Öffne Google"
-=> [ACTION:GOOGLE]
-
-Du sollst dabei trotzdem kurz antworten.
+Der Browser kann Webseiten direkt über JavaScript öffnen.
+Direkte Website-Befehle werden bereits vor deiner Antwort
+erkannt.
 
 `;
 
-        const prompt =
-            systemPrompt +
-            "\n\nBenutzer:\n" +
-            question;
-
         const result =
-            await model.generateContent(prompt);
+            await model.generateContent(
+                systemPrompt +
+                "\n\nBenutzer:\n" +
+                question
+            );
 
-        let answer =
+
+        const answer =
             result.response.text();
-
-        let action = null;
-
-
-        if (
-            answer.includes(
-                "[ACTION:YOUTUBE]"
-            )
-        ) {
-
-            action = "youtube";
-
-            answer =
-                answer.replace(
-                    "[ACTION:YOUTUBE]",
-                    ""
-                );
-
-        }
-
-
-        if (
-            answer.includes(
-                "[ACTION:GOOGLE]"
-            )
-        ) {
-
-            action = "google";
-
-            answer =
-                answer.replace(
-                    "[ACTION:GOOGLE]",
-                    ""
-                );
-
-        }
-
-
-        answer =
-            answer.trim();
-
-
-        if (!answer) {
-
-            answer =
-                action === "youtube"
-                    ? "Ich öffne YouTube."
-                    : action === "google"
-                        ? "Ich öffne Google."
-                        : "Erledigt.";
-
-        }
 
 
         addMessage(
@@ -1252,75 +1572,59 @@ Du sollst dabei trotzdem kurz antworten.
         );
 
 
-        if (action === "youtube") {
-
-            window.open(
-                "https://www.youtube.com/",
-                "_blank"
-            );
-
-        }
+        speak(
+            answer
+        );
 
 
-        if (action === "google") {
-
-            window.open(
-                "https://www.google.com/",
-                "_blank"
-            );
-
-        }
-
-
-        speak(answer);
-
-    } catch(error) {
+    }catch(error){
 
         console.error(error);
 
-        let errorText =
+        let text =
             "Es ist ein Fehler aufgetreten.";
 
-        if (
+
+        if(
             error.message &&
             error.message.includes("429")
-        ) {
+        ){
 
-            errorText =
+            text =
                 "Das Gemini-Limit wurde erreicht. Bitte später erneut versuchen.";
 
-        } else if (
+        }else if(
             error.message &&
             error.message
                 .toLowerCase()
                 .includes("api key")
-        ) {
+        ){
 
-            errorText =
-                "Der Firebase API-Key wird von Firebase abgelehnt.";
+            text =
+                "Der Firebase API-Key wird abgelehnt.";
 
-        } else if (
+        }else if(
             error.message
-        ) {
+        ){
 
-            errorText =
+            text =
                 error.message;
 
         }
 
 
         addMessage(
-            errorText,
+            text,
             "nova"
         );
 
-        setStatus(
-            "Fehler"
-        );
-
-    } finally {
+    }finally{
 
         setOrb(null);
+
+        setStatus(
+            "Nova ist bereit."
+        );
 
     }
 
@@ -1333,23 +1637,21 @@ Du sollst dabei trotzdem kurz antworten.
 
 sendBtn.addEventListener(
     "click",
-    () => {
-
+    ()=>{
         askNova(
             userInput.value
         );
-
     }
 );
 
 
 userInput.addEventListener(
     "keydown",
-    event => {
+    event=>{
 
-        if (
+        if(
             event.key === "Enter"
-        ) {
+        ){
 
             askNova(
                 userInput.value
@@ -1362,38 +1664,24 @@ userInput.addEventListener(
 
 
 /* =========================================================
-   SPEECH SYNTHESIS
+   SPRACH-AUSGABE
 ========================================================= */
 
 let isSpeaking = false;
 let voiceMode = true;
 
 
-function speak(text) {
+function speak(text){
 
-    if (!voiceMode) {
-
-        setStatus("Nova ist bereit.");
-
-        if (isListening) {
-
-            startListening();
-
-        }
-
+    if(!voiceMode){
         return;
-
     }
 
 
-    if (
+    if(
         !("speechSynthesis" in window)
-    ) {
-
-        setStatus("Nova ist bereit.");
-
+    ){
         return;
-
     }
 
 
@@ -1401,85 +1689,97 @@ function speak(text) {
 
     speechSynthesis.cancel();
 
+
     const utterance =
         new SpeechSynthesisUtterance(
             text
         );
 
-    utterance.lang = "de-DE";
 
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
+    utterance.lang =
+        "de-DE";
+
+    utterance.rate =
+        1;
+
+    utterance.pitch =
+        1;
+
+    utterance.volume =
+        1;
 
 
     const voices =
         speechSynthesis.getVoices();
 
-    const germanVoice =
+
+    const german =
         voices.find(
-            voice =>
-                voice.lang &&
-                voice.lang
+            v =>
+                v.lang &&
+                v.lang
                     .toLowerCase()
                     .startsWith("de")
         );
 
-    if (germanVoice) {
+
+    if(german){
 
         utterance.voice =
-            germanVoice;
+            german;
 
     }
 
 
     isSpeaking = true;
 
+    setOrb(
+        "speaking"
+    );
+
     setStatus(
         "Nova spricht..."
     );
 
-    setOrb("speaking");
 
+    utterance.onend =
+        ()=>{
 
-    utterance.onend = () => {
+            isSpeaking = false;
 
-        isSpeaking = false;
+            setOrb(null);
 
-        setOrb(null);
-
-        setStatus(
-            "Nova ist bereit."
-        );
-
-
-        if (voiceMode) {
-
-            setTimeout(
-                () => {
-
-                    startListening();
-
-                },
-                700
+            setStatus(
+                "Nova ist bereit."
             );
 
-        }
 
-    };
+            if(voiceMode){
+
+                setTimeout(
+                    ()=>{
+                        startListening();
+                    },
+                    700
+                );
+
+            }
+
+        };
 
 
-    utterance.onerror = () => {
+    utterance.onerror =
+        ()=>{
 
-        isSpeaking = false;
+            isSpeaking = false;
 
-        setOrb(null);
+            setOrb(null);
 
-        setStatus(
-            "Nova ist bereit."
-        );
+            setStatus(
+                "Nova ist bereit."
+            );
 
-    };
+        };
 
 
     speechSynthesis.speak(
@@ -1490,22 +1790,22 @@ function speak(text) {
 
 
 /* =========================================================
-   SPEECH RECOGNITION
+   SPRACHERKENNUNG
 ========================================================= */
-
-let recognition = null;
-let isListening = false;
-let micTimeout = null;
-
-const MIC_MAX_TIME = 8000;
-
 
 const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
+let recognition = null;
+let isListening = false;
+let micTimeout = null;
 
-if (SpeechRecognition) {
+const MIC_MAX_TIME =
+    8000;
+
+
+if(SpeechRecognition){
 
     recognition =
         new SpeechRecognition();
@@ -1520,117 +1820,116 @@ if (SpeechRecognition) {
         false;
 
 
-    recognition.onstart = () => {
+    recognition.onstart =
+        ()=>{
 
-        isListening = true;
+            isListening = true;
 
-        setOrb("listening");
-
-        setStatus(
-            "Ich höre zu..."
-        );
-
-
-        clearTimeout(
-            micTimeout
-        );
-
-
-        micTimeout =
-            setTimeout(
-                () => {
-
-                    stopListening();
-
-                },
-                MIC_MAX_TIME
+            setOrb(
+                "listening"
             );
-
-    };
-
-
-    recognition.onresult = event => {
-
-        clearTimeout(
-            micTimeout
-        );
-
-        const text =
-            event.results[0][0].transcript;
-
-        stopListening();
-
-        if (text.trim()) {
-
-            askNova(text);
-
-        }
-
-    };
-
-
-    recognition.onend = () => {
-
-        clearTimeout(
-            micTimeout
-        );
-
-        isListening = false;
-
-        setOrb(null);
-
-        if (!isSpeaking) {
 
             setStatus(
-                "Nova ist bereit."
+                "Ich höre zu..."
             );
 
-        }
 
-    };
-
-
-    recognition.onerror = event => {
-
-        clearTimeout(
-            micTimeout
-        );
-
-        isListening = false;
-
-        setOrb(null);
-
-        console.error(
-            "Speech:",
-            event.error
-        );
-
-        if (
-            event.error !==
-            "aborted"
-        ) {
-
-            setStatus(
-                "Mikrofon konnte nicht verwendet werden."
+            clearTimeout(
+                micTimeout
             );
 
-        }
 
-    };
+            micTimeout =
+                setTimeout(
+                    ()=>{
+                        stopListening();
+                    },
+                    MIC_MAX_TIME
+                );
+
+        };
+
+
+    recognition.onresult =
+        event=>{
+
+            clearTimeout(
+                micTimeout
+            );
+
+
+            const text =
+                event.results[0][0]
+                    .transcript;
+
+
+            stopListening();
+
+
+            if(text.trim()){
+
+                askNova(
+                    text
+                );
+
+            }
+
+        };
+
+
+    recognition.onend =
+        ()=>{
+
+            clearTimeout(
+                micTimeout
+            );
+
+            isListening = false;
+
+            setOrb(null);
+
+            if(!isSpeaking){
+
+                setStatus(
+                    "Nova ist bereit."
+                );
+
+            }
+
+        };
+
+
+    recognition.onerror =
+        event=>{
+
+            clearTimeout(
+                micTimeout
+            );
+
+            isListening = false;
+
+            setOrb(null);
+
+            console.error(
+                "Speech:",
+                event.error
+            );
+
+        };
 
 }
 
 
 /* =========================================================
-   START LISTENING
+   LISTENING
 ========================================================= */
 
-function startListening() {
+function startListening(){
 
-    if (!recognition) {
+    if(!recognition){
 
         setStatus(
-            "Spracherkennung wird von diesem Browser nicht unterstützt."
+            "Dieser Browser unterstützt keine Spracherkennung."
         );
 
         return;
@@ -1638,25 +1937,21 @@ function startListening() {
     }
 
 
-    if (isSpeaking) {
-
+    if(isSpeaking){
         return;
-
     }
 
 
-    if (isListening) {
-
+    if(isListening){
         return;
-
     }
 
 
-    try {
+    try{
 
         recognition.start();
 
-    } catch(error) {
+    }catch(error){
 
         console.error(error);
 
@@ -1665,32 +1960,30 @@ function startListening() {
 }
 
 
-/* =========================================================
-   STOP LISTENING
-========================================================= */
-
-function stopListening() {
+function stopListening(){
 
     clearTimeout(
         micTimeout
     );
 
-    if (
+
+    if(
         recognition &&
         isListening
-    ) {
+    ){
 
-        try {
+        try{
 
             recognition.stop();
 
-        } catch(error) {
+        }catch(error){
 
             console.error(error);
 
         }
 
     }
+
 
     isListening = false;
 
@@ -1700,18 +1993,18 @@ function stopListening() {
 
 
 /* =========================================================
-   MICROPHONE BUTTON
+   MIC BUTTON
 ========================================================= */
 
 micBtn.addEventListener(
     "click",
-    () => {
+    ()=>{
 
-        if (isListening) {
+        if(isListening){
 
             stopListening();
 
-        } else {
+        }else{
 
             startListening();
 
@@ -1722,20 +2015,22 @@ micBtn.addEventListener(
 
 
 /* =========================================================
-   VOICE MODE
+   VOICE BUTTON
 ========================================================= */
 
 voiceBtn.addEventListener(
     "click",
-    () => {
+    ()=>{
 
         voiceMode =
             !voiceMode;
+
 
         voiceBtn.textContent =
             voiceMode
                 ? "Stimme: AN"
                 : "Stimme: AUS";
+
 
         voiceBtn.classList.toggle(
             "active",
@@ -1743,7 +2038,7 @@ voiceBtn.addEventListener(
         );
 
 
-        if (!voiceMode) {
+        if(!voiceMode){
 
             speechSynthesis.cancel();
 
@@ -1751,13 +2046,11 @@ voiceBtn.addEventListener(
 
             stopListening();
 
-            setOrb(null);
-
             setStatus(
                 "Sprachmodus deaktiviert."
             );
 
-        } else {
+        }else{
 
             setStatus(
                 "Sprachmodus aktiviert."
@@ -1770,65 +2063,46 @@ voiceBtn.addEventListener(
 
 
 /* =========================================================
-   YOUTUBE
+   DIREKTE BUTTONS
 ========================================================= */
 
 youtubeBtn.addEventListener(
     "click",
-    () => {
-
-        window.open(
-            "https://www.youtube.com/",
-            "_blank"
-        );
-
+    ()=>{
+        openWebAction({
+            type:"youtube",
+            query:""
+        });
     }
 );
 
-
-/* =========================================================
-   GOOGLE
-========================================================= */
 
 googleBtn.addEventListener(
     "click",
-    () => {
-
-        window.open(
-            "https://www.google.com/",
-            "_blank"
-        );
-
+    ()=>{
+        openWebAction({
+            type:"google-search",
+            query:""
+        });
     }
 );
 
 
 /* =========================================================
-   VOICE LISTS
+   VOICES
 ========================================================= */
 
-if (
+if(
     "speechSynthesis" in window
-) {
+){
 
     speechSynthesis.onvoiceschanged =
-        () => {
-
-            speechSynthesis
-                .getVoices();
-
+        ()=>{
+            speechSynthesis.getVoices();
         };
 
 }
 
-
-/* =========================================================
-   START
-========================================================= */
-
-voiceBtn.classList.add(
-    "active"
-);
 
 setStatus(
     "Nova ist bereit."
@@ -1838,4 +2112,3 @@ setStatus(
 
 </body>
 </html>
-```
