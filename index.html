@@ -28,8 +28,6 @@ body{
         radial-gradient(circle at 50% 35%,#202020 0%,#080808 45%,#000 100%);
 }
 
-/* HEADER */
-
 header{
     height:74px;
     display:flex;
@@ -197,12 +195,14 @@ main{
     height:180px;
     border-radius:50%;
     background:
-        radial-gradient(circle at 35% 28%,
-        #ffffff 0%,
-        #ffffff 38%,
-        #eeeeee 62%,
-        #cfcfcf 82%,
-        #999 100%);
+        radial-gradient(
+            circle at 35% 28%,
+            #ffffff 0%,
+            #ffffff 38%,
+            #eeeeee 62%,
+            #cfcfcf 82%,
+            #999 100%
+        );
     box-shadow:
         0 0 35px rgba(255,255,255,.18),
         0 25px 70px rgba(0,0,0,.8),
@@ -244,13 +244,23 @@ main{
 }
 
 @keyframes pulse{
-    0%,100%{transform:scale(1)}
-    50%{transform:scale(1.06)}
+    0%,100%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.06);
+    }
 }
 
 @keyframes speakPulse{
-    from{transform:scale(1)}
-    to{transform:scale(1.055)}
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.055);
+    }
 }
 
 .coreCenter{
@@ -297,6 +307,7 @@ main{
     border-radius:18px;
     line-height:1.45;
     font-size:15px;
+    white-space:pre-wrap;
 }
 
 .message.user{
@@ -432,6 +443,19 @@ main{
     font-weight:650;
 }
 
+.googleLogin:disabled{
+    opacity:.55;
+    cursor:wait;
+}
+
+.loginError{
+    margin-top:14px;
+    color:#ff7777;
+    font-size:12px;
+    line-height:1.4;
+    display:none;
+}
+
 /* MOBILE */
 
 @media(max-width:600px){
@@ -490,17 +514,22 @@ main{
 
     <div class="headerRight">
 
-        <button class="headerBtn light" id="voiceModeButton">
+        <button
+            class="headerBtn light"
+            id="voiceModeButton">
             Sprache
         </button>
 
-        <button class="headerBtn" id="loginButton">
+        <button
+            class="headerBtn"
+            id="loginButton">
             Anmelden
         </button>
 
-        <button class="headerBtn light"
-                id="logoutButton"
-                style="display:none">
+        <button
+            class="headerBtn light"
+            id="logoutButton"
+            style="display:none">
             Abmelden
         </button>
 
@@ -511,6 +540,7 @@ main{
 <div class="quotaBox">
 
     <div class="quotaTop">
+
         <span class="quotaTitle">
             Fragen übrig
         </span>
@@ -518,6 +548,7 @@ main{
         <strong id="quotaText">
             20 / 20
         </strong>
+
     </div>
 
     <div class="quotaBar">
@@ -538,7 +569,9 @@ main{
 
 <section class="coreArea">
 
-    <div class="core" id="core">
+    <div
+        class="core"
+        id="core">
 
         <div class="coreCenter">
             N
@@ -546,7 +579,9 @@ main{
 
     </div>
 
-    <div class="status" id="state">
+    <div
+        class="status"
+        id="state">
         System bereit
     </div>
 
@@ -556,13 +591,18 @@ main{
 
 </section>
 
-<section class="chat" id="chat"></section>
+<section
+    class="chat"
+    id="chat">
+</section>
 
 <section class="bottom">
 
     <div class="inputBox">
 
-        <button class="iconBtn" id="micButton">
+        <button
+            class="iconBtn"
+            id="micButton">
             🎙
         </button>
 
@@ -570,10 +610,11 @@ main{
             id="input"
             type="text"
             autocomplete="off"
-            placeholder="Sprich mit Nova..."
-        >
+            placeholder="Sprich mit Nova...">
 
-        <button class="sendBtn" id="sendButton">
+        <button
+            class="sendBtn"
+            id="sendButton">
             ↑
         </button>
 
@@ -581,15 +622,21 @@ main{
 
     <div class="tools">
 
-        <button class="toolBtn" id="youtubeButton">
+        <button
+            class="toolBtn"
+            id="youtubeButton">
             YouTube
         </button>
 
-        <button class="toolBtn" id="googleButton">
+        <button
+            class="toolBtn"
+            id="googleButton">
             Google
         </button>
 
-        <button class="toolBtn" id="testVoiceButton">
+        <button
+            class="toolBtn"
+            id="testVoiceButton">
             Stimme testen
         </button>
 
@@ -600,12 +647,17 @@ main{
 </main>
 </div>
 
-<div class="loginOverlay" id="loginOverlay">
+<!-- LOGIN -->
+
+<div
+    class="loginOverlay"
+    id="loginOverlay">
 
     <div class="loginCard">
 
-        <div class="logo"
-             style="justify-content:center;margin-bottom:20px">
+        <div
+            class="logo"
+            style="justify-content:center;margin-bottom:20px">
 
             <div class="logoDot"></div>
             NOVA
@@ -620,15 +672,26 @@ main{
             Deine persönliche KI.
         </p>
 
-        <button class="googleLogin" id="googleLogin">
+        <button
+            class="googleLogin"
+            id="googleLogin">
             Mit Google anmelden
         </button>
+
+        <div
+            class="loginError"
+            id="loginError">
+        </div>
 
     </div>
 
 </div>
 
 <script type="module">
+
+/* =====================================================
+   FIREBASE
+===================================================== */
 
 import {
     initializeApp
@@ -637,7 +700,8 @@ import {
 import {
     getAuth,
     GoogleAuthProvider,
-    signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
@@ -649,6 +713,10 @@ import {
     setDoc
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
+
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
 
 const firebaseConfig = {
 
@@ -669,8 +737,13 @@ const firebaseConfig = {
 
     appId:
         "1:1020069093020:web:9be72af9e60af659475759"
+
 };
 
+
+/* =====================================================
+   FIREBASE START
+===================================================== */
 
 const app =
     initializeApp(firebaseConfig);
@@ -684,6 +757,10 @@ const db =
 const provider =
     new GoogleAuthProvider();
 
+
+/* =====================================================
+   DOM
+===================================================== */
 
 const chat =
     document.getElementById("chat");
@@ -715,6 +792,9 @@ const googleLogin =
 const loginOverlay =
     document.getElementById("loginOverlay");
 
+const loginError =
+    document.getElementById("loginError");
+
 const voiceModeButton =
     document.getElementById("voiceModeButton");
 
@@ -726,8 +806,6 @@ const googleButton =
 
 const testVoiceButton =
     document.getElementById("testVoiceButton");
-
-const MAX_QUESTIONS = 20;
 
 const quotaText =
     document.getElementById("quotaText");
@@ -741,6 +819,12 @@ const quotaStatus =
 const quotaReset =
     document.getElementById("quotaReset");
 
+
+/* =====================================================
+   FRAGENLIMIT
+===================================================== */
+
+const MAX_QUESTIONS = 20;
 
 let questionsUsed =
     Number(
@@ -767,6 +851,7 @@ function updateQuota(){
     quotaFill.style.width =
         percentage + "%";
 
+
     if(remaining <= 0){
 
         quotaStatus.textContent =
@@ -775,7 +860,9 @@ function updateQuota(){
         quotaReset.style.display =
             "block";
 
-    }else if(remaining <= 5){
+    }
+
+    else if(remaining <= 5){
 
         quotaStatus.textContent =
             "Nur noch wenige Fragen";
@@ -783,7 +870,9 @@ function updateQuota(){
         quotaReset.style.display =
             "none";
 
-    }else{
+    }
+
+    else{
 
         quotaStatus.textContent =
             "Bereit";
@@ -817,6 +906,7 @@ function useQuestion(){
     updateQuota();
 
     return true;
+
 }
 
 
@@ -842,6 +932,22 @@ quotaReset.onclick =
 updateQuota();
 
 
+/* =====================================================
+   STATUS
+===================================================== */
+
+function setState(text){
+
+    state.textContent =
+        text;
+
+}
+
+
+/* =====================================================
+   VARIABLEN
+===================================================== */
+
 let model = null;
 
 let currentUser = null;
@@ -858,14 +964,19 @@ let recognition = null;
 
 let retryTimer = null;
 
-/* NEU: Mikrofon-Timer */
-
 let micTimeout = null;
 
 const MIC_MAX_TIME = 8000;
 
 
-function addMessage(text,type){
+/* =====================================================
+   NACHRICHT
+===================================================== */
+
+function addMessage(
+    text,
+    type
+){
 
     const message =
         document.createElement("div");
@@ -882,18 +993,12 @@ function addMessage(text,type){
 
     chat.scrollTop =
         chat.scrollHeight;
-}
 
-
-function setState(text){
-
-    state.textContent =
-        text;
 }
 
 
 /* =====================================================
-   MIKROFON STOPPEN
+   STOP LISTENING
 ===================================================== */
 
 function stopListening(){
@@ -904,14 +1009,23 @@ function stopListening(){
 
     micTimeout = null;
 
-    if(!recognition)
+    if(!recognition){
+
+        isListening = false;
+
         return;
+
+    }
 
     try{
 
         recognition.stop();
 
-    }catch(e){}
+    }
+
+    catch(error){
+
+    }
 
     isListening = false;
 
@@ -927,7 +1041,7 @@ function stopListening(){
 
 
 /* =====================================================
-   NOVA SPRICHT
+   SPRACH-AUSGABE
 ===================================================== */
 
 function speak(text){
@@ -962,6 +1076,7 @@ function speak(text){
         "Nova spricht"
     );
 
+
     const utterance =
         new SpeechSynthesisUtterance(
             text
@@ -979,6 +1094,7 @@ function speak(text){
     utterance.volume =
         1;
 
+
     const voices =
         speechSynthesis.getVoices();
 
@@ -991,12 +1107,14 @@ function speak(text){
                     .startsWith("de")
         );
 
+
     if(germanVoice){
 
         utterance.voice =
             germanVoice;
 
     }
+
 
     utterance.onend =
         () => {
@@ -1013,6 +1131,7 @@ function speak(text){
                     : "Textmodus"
             );
 
+
             if(
                 voiceMode &&
                 !isThinking
@@ -1026,6 +1145,7 @@ function speak(text){
             }
 
         };
+
 
     utterance.onerror =
         () => {
@@ -1042,6 +1162,7 @@ function speak(text){
 
         };
 
+
     speechSynthesis.speak(
         utterance
     );
@@ -1050,7 +1171,7 @@ function speak(text){
 
 
 /* =====================================================
-   SPRACHERKENNUNG
+   SPEECH RECOGNITION
 ===================================================== */
 
 const SpeechRecognition =
@@ -1087,6 +1208,7 @@ if(SpeechRecognition){
 
             }
 
+
             isListening = true;
 
             core.classList.add(
@@ -1101,13 +1223,11 @@ if(SpeechRecognition){
                 "Ich höre zu"
             );
 
-            /* =================================================
-               AUTOMATISCH NACH 8 SEKUNDEN AUS
-            ================================================= */
 
             clearTimeout(
                 micTimeout
             );
+
 
             micTimeout =
                 setTimeout(
@@ -1149,6 +1269,7 @@ if(SpeechRecognition){
                 "listening"
             );
 
+
             if(
                 !isSpeaking &&
                 !isThinking
@@ -1175,7 +1296,7 @@ if(SpeechRecognition){
             micTimeout = null;
 
             console.log(
-                "Speech:",
+                "Speech error:",
                 event.error
             );
 
@@ -1198,8 +1319,12 @@ if(SpeechRecognition){
             if(
                 isSpeaking ||
                 isThinking
-            )
+            ){
+
                 return;
+
+            }
+
 
             clearTimeout(
                 micTimeout
@@ -1207,13 +1332,16 @@ if(SpeechRecognition){
 
             micTimeout = null;
 
+
             const text =
                 event
                     .results[0][0]
                     .transcript;
 
+
             input.value =
                 text;
+
 
             sendMessage();
 
@@ -1223,7 +1351,7 @@ if(SpeechRecognition){
 
 
 /* =====================================================
-   ZUHÖREN STARTEN
+   MIKROFON START
 ===================================================== */
 
 function startListening(){
@@ -1236,6 +1364,7 @@ function startListening(){
 
     if(isThinking)
         return;
+
 
     if(
         questionsUsed >=
@@ -1250,6 +1379,7 @@ function startListening(){
 
     }
 
+
     if(!recognition){
 
         setState(
@@ -1260,6 +1390,7 @@ function startListening(){
 
     }
 
+
     try{
 
         clearTimeout(
@@ -1268,7 +1399,16 @@ function startListening(){
 
         recognition.start();
 
-    }catch(e){}
+    }
+
+    catch(error){
+
+        console.log(
+            "Mic start:",
+            error
+        );
+
+    }
 
 }
 
@@ -1285,16 +1425,19 @@ async function setupAI(){
             "KI wird geladen"
         );
 
+
         const aiModule =
             await import(
                 "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
             );
+
 
         const {
             getAI,
             getGenerativeModel,
             GoogleAIBackend
         } = aiModule;
+
 
         const ai =
             getAI(
@@ -1305,6 +1448,7 @@ async function setupAI(){
                 }
             );
 
+
         model =
             getGenerativeModel(
                 ai,
@@ -1314,11 +1458,14 @@ async function setupAI(){
                 }
             );
 
+
         setState(
             "System bereit"
         );
 
-    }catch(error){
+    }
+
+    catch(error){
 
         console.error(
             "AI Setup:",
@@ -1346,27 +1493,34 @@ function handleQuotaError(){
         "thinking"
     );
 
+
     questionsUsed =
         MAX_QUESTIONS;
+
 
     localStorage.setItem(
         "nova_questions_used",
         questionsUsed
     );
 
+
     updateQuota();
+
 
     const message =
         "Mein aktuelles KI-Kontingent ist gerade aufgebraucht. Bitte versuche es später erneut.";
+
 
     addMessage(
         message,
         "nova"
     );
 
+
     setState(
         "Kontingent erreicht"
     );
+
 
     if(voiceMode){
 
@@ -1376,9 +1530,11 @@ function handleQuotaError(){
 
     }
 
+
     clearTimeout(
         retryTimer
     );
+
 
     retryTimer =
         setTimeout(
@@ -1387,17 +1543,21 @@ function handleQuotaError(){
                 if(!model)
                     return;
 
+
                 try{
 
                     await model.generateContent(
                         "Antworte nur mit OK."
                     );
 
+
                     setState(
                         "KI wieder verfügbar"
                     );
 
-                }catch(error){
+                }
+
+                catch(error){
 
                     if(
                         String(error)
@@ -1423,6 +1583,7 @@ function handleQuotaRetryOnly(){
         retryTimer
     );
 
+
     retryTimer =
         setTimeout(
             async () => {
@@ -1430,17 +1591,21 @@ function handleQuotaRetryOnly(){
                 if(!model)
                     return;
 
+
                 try{
 
                     await model.generateContent(
                         "Antworte nur mit OK."
                     );
 
+
                     setState(
                         "KI wieder verfügbar"
                     );
 
-                }catch(error){
+                }
+
+                catch(error){
 
                     if(
                         String(error)
@@ -1469,11 +1634,14 @@ async function sendMessage(){
     const text =
         input.value.trim();
 
+
     if(!text)
         return;
 
+
     if(isThinking)
         return;
+
 
     if(
         questionsUsed >=
@@ -1483,21 +1651,26 @@ async function sendMessage(){
         const message =
             "Du hast momentan keine Fragen mehr übrig.";
 
+
         addMessage(
             message,
             "nova"
         );
 
+
         setState(
             "Fragenlimit erreicht"
         );
 
+
         if(voiceMode)
             speak(message);
+
 
         return;
 
     }
+
 
     if(
         !useQuestion()
@@ -1507,39 +1680,49 @@ async function sendMessage(){
 
     }
 
+
     input.value =
         "";
 
+
     stopListening();
+
 
     addMessage(
         text,
         "user"
     );
 
+
     if(!model){
 
         const message =
             "Die KI ist noch nicht bereit.";
+
 
         addMessage(
             message,
             "nova"
         );
 
+
         if(voiceMode)
             speak(message);
+
 
         return;
 
     }
 
+
     isThinking =
         true;
+
 
     core.classList.add(
         "thinking"
     );
+
 
     setState(
         "Nova denkt"
@@ -1578,8 +1761,10 @@ ${text}
                 prompt
             );
 
+
         let answer =
             result.response.text();
+
 
         let action =
             null;
@@ -1594,11 +1779,13 @@ ${text}
             action =
                 "youtube";
 
+
             answer =
                 answer.replace(
                     "[ACTION:YOUTUBE]",
                     ""
-                ).trim();
+                )
+                .trim();
 
         }
 
@@ -1612,11 +1799,13 @@ ${text}
             action =
                 "google";
 
+
             answer =
                 answer.replace(
                     "[ACTION:GOOGLE]",
                     ""
-                ).trim();
+                )
+                .trim();
 
         }
 
@@ -1635,8 +1824,13 @@ ${text}
         );
 
 
+        /*
+           Aktionen öffnen.
+        */
+
         if(
-            action === "youtube"
+            action ===
+            "youtube"
         ){
 
             window.open(
@@ -1648,7 +1842,8 @@ ${text}
 
 
         if(
-            action === "google"
+            action ===
+            "google"
         ){
 
             window.open(
@@ -1662,6 +1857,7 @@ ${text}
         isThinking =
             false;
 
+
         core.classList.remove(
             "thinking"
         );
@@ -1673,7 +1869,9 @@ ${text}
                 answer
             );
 
-        }else{
+        }
+
+        else{
 
             setState(
                 "Textmodus"
@@ -1681,13 +1879,15 @@ ${text}
 
         }
 
+    }
 
-    }catch(error){
+    catch(error){
 
         console.error(
             "AI:",
             error
         );
+
 
         const errorString =
             String(error);
@@ -1709,6 +1909,7 @@ ${text}
         isThinking =
             false;
 
+
         core.classList.remove(
             "thinking"
         );
@@ -1717,10 +1918,12 @@ ${text}
         const message =
             "Ich konnte die KI gerade nicht erreichen.";
 
+
         addMessage(
             message,
             "nova"
         );
+
 
         setState(
             "Verbindungsfehler"
@@ -1741,33 +1944,162 @@ ${text}
 
 
 /* =====================================================
-   LOGIN
+   GOOGLE LOGIN
+   REDIRECT STATT POPUP
 ===================================================== */
 
 async function login(){
 
+    loginError.style.display =
+        "none";
+
+    googleLogin.disabled =
+        true;
+
+    googleLogin.textContent =
+        "Google wird geöffnet...";
+
+
     try{
 
-        await signInWithPopup(
+        setState(
+            "Google-Anmeldung wird geöffnet"
+        );
+
+
+        /*
+           Google Login per Redirect.
+           Dadurch wird kein Popup benötigt.
+        */
+
+        await signInWithRedirect(
             auth,
             provider
         );
 
-    }catch(error){
+    }
+
+    catch(error){
 
         console.error(
             "Login:",
             error
         );
 
-        alert(
-            "Anmeldung fehlgeschlagen."
+
+        googleLogin.disabled =
+            false;
+
+        googleLogin.textContent =
+            "Mit Google anmelden";
+
+
+        loginError.style.display =
+            "block";
+
+
+        loginError.textContent =
+            "Anmeldung fehlgeschlagen: " +
+            error.code;
+
+
+        setState(
+            "Anmeldung fehlgeschlagen"
         );
 
     }
 
 }
 
+
+/* =====================================================
+   REDIRECT ERGEBNIS
+===================================================== */
+
+async function checkRedirectLogin(){
+
+    try{
+
+        const result =
+            await getRedirectResult(
+                auth
+            );
+
+
+        if(result && result.user){
+
+            console.log(
+                "Google Login erfolgreich:",
+                result.user.email
+            );
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Google Redirect:",
+            error
+        );
+
+
+        if(
+            error.code ===
+            "auth/unauthorized-domain"
+        ){
+
+            loginError.style.display =
+                "block";
+
+
+            loginError.textContent =
+                "Diese Website ist in Firebase noch nicht als erlaubte Domain eingetragen.";
+
+        }
+
+        else if(
+            error.code ===
+            "auth/operation-not-allowed"
+        ){
+
+            loginError.style.display =
+                "block";
+
+
+            loginError.textContent =
+                "Google-Anmeldung ist in Firebase noch nicht aktiviert.";
+
+        }
+
+        else{
+
+            loginError.style.display =
+                "block";
+
+
+            loginError.textContent =
+                "Google-Anmeldung konnte nicht abgeschlossen werden.";
+
+        }
+
+
+        googleLogin.disabled =
+            false;
+
+
+        googleLogin.textContent =
+            "Mit Google anmelden";
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
 
 async function logout(){
 
@@ -1777,9 +2109,12 @@ async function logout(){
             auth
         );
 
-    }catch(error){
+    }
+
+    catch(error){
 
         console.error(
+            "Logout:",
             error
         );
 
@@ -1789,7 +2124,7 @@ async function logout(){
 
 
 /* =====================================================
-   AUTH
+   AUTH STATE
 ===================================================== */
 
 onAuthStateChanged(
@@ -1799,17 +2134,36 @@ onAuthStateChanged(
         currentUser =
             user;
 
+
         if(user){
 
             loginOverlay.style.display =
                 "none";
 
+
             loginButton.style.display =
                 "none";
+
 
             logoutButton.style.display =
                 "block";
 
+
+            googleLogin.disabled =
+                false;
+
+
+            googleLogin.textContent =
+                "Mit Google anmelden";
+
+
+            loginError.style.display =
+                "none";
+
+
+            /*
+               Firestore Benutzer speichern.
+            */
 
             try{
 
@@ -1820,10 +2174,12 @@ onAuthStateChanged(
                         user.uid
                     );
 
+
                 const snapshot =
                     await getDoc(
                         reference
                     );
+
 
                 if(
                     !snapshot.exists()
@@ -1832,20 +2188,26 @@ onAuthStateChanged(
                     await setDoc(
                         reference,
                         {
+
                             name:
-                                user.displayName || "",
+                                user.displayName ||
+                                "",
 
                             email:
-                                user.email || "",
+                                user.email ||
+                                "",
 
                             created:
                                 Date.now()
+
                         }
                     );
 
                 }
 
-            }catch(error){
+            }
+
+            catch(error){
 
                 console.log(
                     "Firestore:",
@@ -1856,7 +2218,8 @@ onAuthStateChanged(
 
 
             if(
-                chat.children.length === 0
+                chat.children.length ===
+                0
             ){
 
                 addMessage(
@@ -1869,16 +2232,28 @@ onAuthStateChanged(
 
             await setupAI();
 
-        }else{
+        }
+
+        else{
 
             loginOverlay.style.display =
                 "flex";
 
+
             loginButton.style.display =
                 "block";
 
+
             logoutButton.style.display =
                 "none";
+
+
+            googleLogin.disabled =
+                false;
+
+
+            googleLogin.textContent =
+                "Mit Google anmelden";
 
         }
 
@@ -1893,21 +2268,26 @@ onAuthStateChanged(
 googleLogin.onclick =
     login;
 
+
 loginButton.onclick =
     login;
+
 
 logoutButton.onclick =
     logout;
 
+
 sendButton.onclick =
     sendMessage;
+
 
 input.addEventListener(
     "keydown",
     event => {
 
         if(
-            event.key === "Enter"
+            event.key ===
+            "Enter"
         ){
 
             event.preventDefault();
@@ -1921,7 +2301,7 @@ input.addEventListener(
 
 
 /* =====================================================
-   MIKROFON
+   MIKROFON BUTTON
 ===================================================== */
 
 micButton.onclick =
@@ -1937,6 +2317,7 @@ micButton.onclick =
 
         }
 
+
         if(
             questionsUsed >=
             MAX_QUESTIONS
@@ -1950,6 +2331,7 @@ micButton.onclick =
 
         }
 
+
         if(isSpeaking)
             return;
 
@@ -1962,13 +2344,17 @@ micButton.onclick =
                 "Mikrofon ausgeschaltet"
             );
 
-        }else{
+        }
+
+        else{
 
             voiceMode =
                 true;
 
+
             voiceModeButton.textContent =
                 "Sprache";
+
 
             startListening();
 
@@ -1987,6 +2373,7 @@ voiceModeButton.onclick =
         voiceMode =
             !voiceMode;
 
+
         if(!voiceMode){
 
             stopListening();
@@ -1996,17 +2383,22 @@ voiceModeButton.onclick =
             isSpeaking =
                 false;
 
+
             voiceModeButton.textContent =
                 "Text";
+
 
             setState(
                 "Textmodus"
             );
 
-        }else{
+        }
+
+        else{
 
             voiceModeButton.textContent =
                 "Sprache";
+
 
             setState(
                 "Bereit"
@@ -2079,9 +2471,20 @@ if(
 }
 
 
+/* =====================================================
+   START
+===================================================== */
+
 setState(
     "System wird gestartet"
 );
+
+
+/*
+   Redirect-Ergebnis prüfen.
+*/
+
+checkRedirectLogin();
 
 </script>
 
