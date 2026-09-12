@@ -1,57 +1,43 @@
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050505">
-<meta name="description" content="Nova Family AI">
+
 <title>Nova Family AI</title>
 
 <style>
 :root{
-    --bg:#030303;
-    --panel:#080808;
-    --panel2:#0d0d0d;
-    --panel3:#121212;
-    --line:#242424;
-    --line2:#363636;
-    --text:#f5f5f5;
-    --muted:#888;
-    --muted2:#555;
-    --white:#fff;
-    --danger:#ff5c5c;
-    --green:#b8ffcc;
-    --shadow:0 20px 60px rgba(0,0,0,.45);
+    --bg:#050505;
+    --panel:#0d0d0d;
+    --panel2:#121212;
+    --line:#252525;
+    --white:#ffffff;
+    --gray:#a5a5a5;
+    --green:#45ff9a;
+    --red:#ff5555;
+    --blue:#69a7ff;
+    --shadow:0 20px 80px rgba(0,0,0,.55);
 }
 
 *{
     box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-    width:100%;
-    height:100%;
     margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
+    padding:0;
 }
 
 body{
-    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% -10%,#242424 0%,#0a0a0a 35%,#050505 70%);
+    color:var(--white);
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
 }
 
 button,
-input,
-textarea{
+input{
     font:inherit;
 }
 
@@ -63,106 +49,91 @@ button{
     display:none!important;
 }
 
-/* =========================================================
+/* =========================
    LOGIN
-========================================================= */
+========================= */
 
 #loginScreen{
     position:fixed;
     inset:0;
-    z-index:9999;
+    z-index:1000;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:
-        radial-gradient(circle at 50% 35%,rgba(255,255,255,.09),transparent 30%),
-        #020202;
+    background:#050505;
 }
 
-.login-card{
-    width:min(460px,calc(100% - 30px));
-    padding:42px 32px;
-    border:1px solid #282828;
+.loginBox{
+    width:min(440px,92vw);
+    padding:42px;
+    border:1px solid #292929;
     border-radius:28px;
-    background:rgba(10,10,10,.92);
+    background:rgba(13,13,13,.92);
     box-shadow:var(--shadow);
     text-align:center;
-    backdrop-filter:blur(20px);
 }
 
-.login-orb{
+.loginLogo{
     width:100px;
     height:100px;
     margin:0 auto 25px;
     border-radius:50%;
     background:
-        radial-gradient(circle at 34% 28%,#fff 0%,#ddd 8%,#777 25%,#1c1c1c 57%,#050505 78%);
+        radial-gradient(circle,#fff 0%,#aaa 18%,#333 45%,#090909 70%);
     box-shadow:
-        0 0 35px rgba(255,255,255,.18),
-        inset 0 0 35px rgba(255,255,255,.18);
-    animation:novaFloat 4s ease-in-out infinite;
+        0 0 25px rgba(255,255,255,.3),
+        inset 0 0 35px rgba(255,255,255,.25);
 }
 
-.login-title{
-    font-size:32px;
-    font-weight:800;
-    letter-spacing:4px;
+.loginBox h1{
+    font-size:34px;
+    letter-spacing:3px;
+    margin-bottom:10px;
 }
 
-.login-subtitle{
-    margin-top:10px;
-    color:#777;
-    font-size:14px;
+.loginBox p{
+    color:var(--gray);
+    line-height:1.5;
+    margin-bottom:28px;
 }
 
-.login-button{
+.googleBtn{
     width:100%;
-    margin-top:28px;
     padding:15px;
-    border:0;
-    border-radius:13px;
+    border:1px solid #333;
+    border-radius:14px;
     background:#fff;
     color:#000;
-    font-weight:700;
+    font-weight:bold;
+    transition:.2s;
 }
 
-.login-button:hover{
-    background:#ddd;
+.googleBtn:hover{
+    transform:translateY(-2px);
 }
 
-.login-note{
-    margin-top:16px;
-    color:#555;
-    font-size:11px;
-    line-height:1.5;
-}
-
-/* =========================================================
+/* =========================
    APP
-========================================================= */
+========================= */
 
 #app{
-    width:100%;
-    height:100%;
-    display:flex;
-    flex-direction:column;
+    min-height:100vh;
 }
 
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header{
-    height:70px;
-    min-height:70px;
+.topbar{
+    height:72px;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:50;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 22px;
-    border-bottom:1px solid var(--line);
-    background:rgba(5,5,5,.94);
+    padding:0 24px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    background:rgba(5,5,5,.82);
     backdrop-filter:blur(18px);
-    z-index:20;
 }
 
 .brand{
@@ -171,346 +142,354 @@ button{
     gap:12px;
 }
 
-.brand-orb{
-    width:32px;
-    height:32px;
+.brandOrb{
+    width:38px;
+    height:38px;
     border-radius:50%;
     background:
-        radial-gradient(circle at 35% 30%,#fff,#777 25%,#111 65%);
-    box-shadow:0 0 18px rgba(255,255,255,.13);
+        radial-gradient(circle,#fff,#8b8b8b 28%,#272727 58%,#050505 75%);
+    box-shadow:0 0 20px rgba(255,255,255,.2);
 }
 
-.brand-name{
-    font-weight:800;
-    letter-spacing:3px;
-    font-size:16px;
+.brandText{
+    font-weight:bold;
+    letter-spacing:2px;
 }
 
-.brand-name span{
-    color:#666;
-    font-weight:500;
-}
-
-.header-right{
+.topActions{
     display:flex;
     align-items:center;
-    gap:9px;
+    gap:8px;
 }
 
-.status-pill,
-.key-pill,
-.quota-pill{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    min-height:34px;
-    padding:0 11px;
-    border:1px solid var(--line);
+.smallBtn{
+    border:1px solid #2b2b2b;
+    background:#111;
+    color:#fff;
     border-radius:10px;
-    background:#0b0b0b;
-    color:#aaa;
-    font-size:12px;
+    padding:8px 12px;
 }
 
-.status-dot{
-    width:7px;
-    height:7px;
+.smallBtn:hover{
+    background:#191919;
+}
+
+.userAvatar{
+    width:36px;
+    height:36px;
     border-radius:50%;
-    background:#555;
+    border:1px solid #333;
+    object-fit:cover;
 }
 
-.status-dot.active{
-    background:#fff;
-    box-shadow:0 0 10px rgba(255,255,255,.7);
-}
-
-/* =========================================================
-   LAYOUT
-========================================================= */
-
-.content{
-    flex:1;
-    min-height:0;
-    display:flex;
-}
-
-.sidebar{
-    width:310px;
-    min-width:310px;
-    border-right:1px solid var(--line);
-    background:#070707;
-    overflow-y:auto;
-    padding:18px;
-}
+/* =========================
+   MAIN
+========================= */
 
 .main{
-    min-width:0;
-    flex:1;
-    display:flex;
-    flex-direction:column;
+    width:min(1100px,94vw);
+    margin:0 auto;
+    padding-top:105px;
+    padding-bottom:150px;
 }
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-.sidebar-title{
-    color:#666;
-    font-size:10px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    margin:9px 0;
+.hero{
+    text-align:center;
+    margin-bottom:25px;
 }
 
-.user-card{
-    padding:13px;
-    margin-bottom:15px;
-    border:1px solid var(--line);
-    border-radius:14px;
-    background:#0c0c0c;
-}
-
-.user-name{
-    font-weight:700;
-    font-size:13px;
-}
-
-.user-email{
-    color:#666;
-    font-size:11px;
-    margin-top:4px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-
-.small-button{
-    margin-top:10px;
-    width:100%;
-    padding:9px;
-    border:1px solid var(--line2);
-    border-radius:9px;
-    background:#111;
-    color:#ddd;
-}
-
-.small-button:hover{
-    background:#1a1a1a;
-}
-
-.key-box{
-    margin-bottom:10px;
-    padding:13px;
-    border:1px solid var(--line);
-    border-radius:15px;
-    background:#0b0b0b;
-    transition:.2s;
-}
-
-.key-box.active{
-    border-color:#777;
+.heroOrb{
+    width:170px;
+    height:170px;
+    margin:10px auto 22px;
+    border-radius:50%;
+    position:relative;
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff 0%,
+            #e5e5e5 8%,
+            #777 27%,
+            #292929 53%,
+            #090909 74%
+        );
     box-shadow:
-        0 0 0 1px rgba(255,255,255,.04),
-        0 0 30px rgba(255,255,255,.035);
+        0 0 30px rgba(255,255,255,.22),
+        0 0 100px rgba(255,255,255,.08),
+        inset -20px -20px 40px rgba(0,0,0,.8);
+    animation:orbFloat 4s ease-in-out infinite;
 }
 
-.key-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:9px;
+.heroOrb::after{
+    content:"";
+    position:absolute;
+    inset:-15px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:50%;
+    animation:spin 12s linear infinite;
 }
 
-.key-name{
-    font-weight:700;
-    font-size:13px;
+.hero h1{
+    font-size:clamp(32px,6vw,60px);
+    letter-spacing:5px;
 }
 
-.key-active-label{
-    color:#aaa;
-    font-size:10px;
-}
-
-.key-input{
-    width:100%;
-    height:39px;
-    border:1px solid #303030;
-    border-radius:9px;
-    background:#050505;
-    color:#fff;
-    padding:0 10px;
-    outline:none;
-}
-
-.key-input:focus{
-    border-color:#777;
-}
-
-.key-row{
-    display:flex;
-    gap:7px;
+.hero p{
+    color:var(--gray);
     margin-top:8px;
 }
 
-.key-row button{
-    flex:1;
-    height:36px;
-    border:1px solid #303030;
-    border-radius:9px;
-    background:#151515;
+@keyframes orbFloat{
+    0%,100%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-8px) scale(1.025)}
+}
+
+@keyframes spin{
+    from{transform:rotate(0)}
+    to{transform:rotate(360deg)}
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.statusRow{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:20px 0;
+}
+
+.status{
+    border:1px solid #272727;
+    background:#0c0c0c;
+    padding:7px 12px;
+    border-radius:999px;
+    color:#aaa;
+    font-size:13px;
+}
+
+.status.active{
     color:#fff;
+    border-color:#555;
 }
 
-.key-row button.primary{
-    background:#fff;
-    color:#000;
-    border-color:#fff;
+.dot{
+    display:inline-block;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    margin-right:6px;
+    background:#555;
 }
 
-.key-row button:hover{
-    filter:brightness(1.15);
+.dot.green{
+    background:var(--green);
+    box-shadow:0 0 10px var(--green);
 }
 
-.shortcut{
-    color:#555;
-    font-size:10px;
-    margin-top:7px;
+.dot.red{
+    background:var(--red);
+    box-shadow:0 0 10px var(--red);
 }
 
-.quota-box{
-    padding:13px;
+/* =========================
+   SETTINGS
+========================= */
+
+.settings{
     border:1px solid var(--line);
-    border-radius:14px;
-    background:#0b0b0b;
-    margin-top:15px;
+    background:rgba(12,12,12,.8);
+    border-radius:20px;
+    padding:18px;
+    margin-bottom:20px;
 }
 
-.quota-top{
+.settingsHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.settingsHeader h2{
+    font-size:16px;
+    letter-spacing:1px;
+}
+
+.modelTag{
+    color:var(--green);
+    font-size:12px;
+    border:1px solid #245c43;
+    padding:5px 8px;
+    border-radius:7px;
+}
+
+.keyGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.keyBox{
+    border:1px solid #252525;
+    border-radius:14px;
+    padding:12px;
+    background:#090909;
+}
+
+.keyBox.active{
+    border-color:#777;
+    box-shadow:0 0 20px rgba(255,255,255,.04);
+}
+
+.keyTop{
     display:flex;
     justify-content:space-between;
-    font-size:11px;
-    color:#888;
-    margin-bottom:9px;
+    align-items:center;
+    margin-bottom:8px;
 }
 
-.progress{
+.keyTop strong{
+    font-size:14px;
+}
+
+.keyState{
+    font-size:11px;
+    color:#777;
+}
+
+.keyInput{
+    width:100%;
+    padding:10px;
+    background:#111;
+    border:1px solid #252525;
+    color:#fff;
+    border-radius:9px;
+    outline:none;
+}
+
+.keyInput:focus{
+    border-color:#555;
+}
+
+.keyButtons{
+    display:flex;
+    gap:8px;
+    margin-top:9px;
+}
+
+.keyBtn{
+    flex:1;
+    padding:9px;
+    border:1px solid #292929;
+    background:#151515;
+    color:#fff;
+    border-radius:9px;
+}
+
+.keyBtn:hover{
+    background:#202020;
+}
+
+.keyBtn.active{
+    background:#fff;
+    color:#000;
+}
+
+.keyHelp{
+    margin-top:12px;
+    color:#777;
+    font-size:12px;
+    line-height:1.5;
+}
+
+/* =========================
+   QUOTA
+========================= */
+
+.quota{
+    margin-top:14px;
+}
+
+.quotaTop{
+    display:flex;
+    justify-content:space-between;
+    color:#888;
+    font-size:12px;
+    margin-bottom:7px;
+}
+
+.quotaBar{
     width:100%;
     height:5px;
-    background:#202020;
+    background:#1d1d1d;
     border-radius:99px;
     overflow:hidden;
 }
 
-.progress-fill{
+.quotaFill{
     height:100%;
     width:0%;
     background:#fff;
     transition:.3s;
 }
 
-.action-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:7px;
-    margin-top:12px;
-}
-
-.action-button{
-    padding:10px 7px;
-    border:1px solid var(--line);
-    border-radius:10px;
-    background:#0d0d0d;
-    color:#ddd;
-    font-size:11px;
-}
-
-.action-button:hover{
-    background:#181818;
-}
-
-.sidebar-info{
-    margin-top:15px;
-    padding:13px;
-    border:1px solid #1d1d1d;
-    border-radius:13px;
-    color:#666;
-    font-size:10px;
-    line-height:1.6;
-}
-
-/* =========================================================
+/* =========================
    CHAT
-========================================================= */
+========================= */
 
 .chat{
-    flex:1;
-    min-height:0;
-    overflow-y:auto;
-    scroll-behavior:smooth;
-    padding:35px 25px;
-}
-
-.chat-inner{
-    width:min(950px,100%);
-    margin:auto;
-}
-
-.welcome{
-    min-height:100%;
     display:flex;
-    align-items:center;
-    justify-content:center;
     flex-direction:column;
-    text-align:center;
-    padding:60px 20px;
+    gap:12px;
 }
 
-.main-orb{
-    width:135px;
-    height:135px;
-    border-radius:50%;
-    margin-bottom:26px;
-    background:
-        radial-gradient(circle at 35% 28%,#fff 0%,#ddd 8%,#888 23%,#222 55%,#050505 78%);
-    box-shadow:
-        0 0 55px rgba(255,255,255,.14),
-        inset 0 0 35px rgba(255,255,255,.2);
-    animation:novaFloat 4.5s ease-in-out infinite;
-}
-
-@keyframes novaFloat{
-    0%,100%{
-        transform:translateY(0);
-    }
-    50%{
-        transform:translateY(-8px);
-    }
-}
-
-.welcome h1{
-    margin:0;
-    font-size:39px;
-    letter-spacing:4px;
-}
-
-.welcome p{
-    margin:10px 0 0;
-    color:#666;
-}
-
-.welcome-tip{
-    margin-top:24px;
-    padding:11px 15px;
-    border:1px solid #222;
-    border-radius:12px;
-    color:#777;
-    font-size:11px;
-}
-
-.message-row{
+.message{
     display:flex;
-    margin-bottom:20px;
-    animation:messageIn .18s ease;
+    gap:10px;
+    max-width:88%;
+    animation:messageIn .2s ease;
+}
+
+.message.user{
+    align-self:flex-end;
+    flex-direction:row-reverse;
+}
+
+.message.ai{
+    align-self:flex-start;
+}
+
+.messageAvatar{
+    width:34px;
+    height:34px;
+    min-width:34px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle,#fff,#777 30%,#111 68%);
+    border:1px solid #333;
+}
+
+.user .messageAvatar{
+    background:#fff;
+}
+
+.messageContent{
+    padding:13px 15px;
+    border-radius:16px;
+    border:1px solid #242424;
+    background:#0e0e0e;
+    line-height:1.5;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+}
+
+.user .messageContent{
+    background:#fff;
+    color:#000;
+    border-color:#fff;
 }
 
 @keyframes messageIn{
@@ -520,61 +499,21 @@ button{
     }
     to{
         opacity:1;
-        transform:none;
+        transform:translateY(0);
     }
-}
-
-.message-row.user{
-    justify-content:flex-end;
-}
-
-.message-row.assistant{
-    justify-content:flex-start;
-}
-
-.bubble{
-    max-width:min(78%,760px);
-    padding:14px 17px;
-    border-radius:17px;
-    line-height:1.6;
-    font-size:14px;
-    white-space:pre-wrap;
-    overflow-wrap:anywhere;
-}
-
-.message-row.user .bubble{
-    background:#fff;
-    color:#000;
-    border-bottom-right-radius:4px;
-}
-
-.message-row.assistant .bubble{
-    background:#0e0e0e;
-    border:1px solid #242424;
-    border-bottom-left-radius:4px;
-}
-
-.message-meta{
-    font-size:9px;
-    color:#555;
-    margin-top:5px;
-}
-
-.message-row.user .message-meta{
-    text-align:right;
 }
 
 .typing{
     display:flex;
-    align-items:center;
     gap:5px;
+    align-items:center;
 }
 
 .typing span{
     width:6px;
     height:6px;
-    border-radius:50%;
     background:#aaa;
+    border-radius:50%;
     animation:typing 1s infinite;
 }
 
@@ -587,432 +526,359 @@ button{
 }
 
 @keyframes typing{
-    0%,100%{
-        opacity:.25;
-        transform:translateY(0);
-    }
-    50%{
-        opacity:1;
-        transform:translateY(-3px);
-    }
+    0%,80%,100%{opacity:.2;transform:translateY(0)}
+    40%{opacity:1;transform:translateY(-3px)}
 }
 
-/* =========================================================
+/* =========================
    INPUT
-========================================================= */
+========================= */
 
-.input-zone{
-    padding:14px 22px 18px;
-    border-top:1px solid var(--line);
-    background:rgba(6,6,6,.96);
+.inputArea{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:40;
+    padding:14px;
+    background:linear-gradient(
+        transparent,
+        rgba(5,5,5,.96) 25%
+    );
 }
 
-.input-container{
-    width:min(950px,100%);
+.inputBox{
+    width:min(900px,94vw);
     margin:auto;
-}
-
-.input-row{
     display:flex;
-    align-items:flex-end;
     gap:8px;
+    padding:8px;
+    border:1px solid #292929;
+    border-radius:18px;
+    background:#0d0d0d;
+    box-shadow:0 15px 50px rgba(0,0,0,.6);
 }
 
-.message-input{
+#messageInput{
     flex:1;
-    min-height:55px;
-    max-height:170px;
-    resize:none;
-    border:1px solid #303030;
-    border-radius:16px;
-    background:#0e0e0e;
+    min-width:0;
+    border:0;
+    outline:0;
+    background:transparent;
     color:#fff;
-    outline:none;
-    padding:16px;
-    line-height:1.45;
+    padding:10px;
 }
 
-.message-input:focus{
-    border-color:#666;
+#messageInput::placeholder{
+    color:#666;
 }
 
-.input-button{
-    flex:0 0 55px;
-    height:55px;
-    border:1px solid #303030;
-    border-radius:15px;
-    background:#111;
+.actionBtn{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    border:1px solid #292929;
+    background:#151515;
     color:#fff;
-    font-size:18px;
 }
 
-.input-button:hover{
-    background:#1d1d1d;
+.actionBtn:hover{
+    background:#202020;
 }
 
-.input-button.active{
-    background:#fff;
-    color:#000;
-}
-
-.send-button{
+.sendBtn{
     background:#fff;
     color:#000;
     border-color:#fff;
 }
 
-.send-button:hover{
+.sendBtn:hover{
     background:#ddd;
 }
 
-.input-footer{
-    display:flex;
-    justify-content:space-between;
-    color:#4f4f4f;
-    font-size:9px;
-    margin-top:7px;
-}
+/* =========================
+   RESPONSIVE
+========================= */
 
-/* =========================================================
-   MOBILE
-========================================================= */
+@media(max-width:700px){
 
-@media(max-width:900px){
-
-    .sidebar{
-        display:none;
-    }
-
-    .header{
+    .topbar{
         padding:0 12px;
     }
 
-    .brand-name{
+    .brandText{
         font-size:13px;
     }
 
-    .header-right{
-        gap:5px;
+    .main{
+        width:94vw;
     }
 
-    .status-pill{
-        display:none;
+    .heroOrb{
+        width:130px;
+        height:130px;
     }
 
-    .quota-pill{
-        display:none;
+    .keyGrid{
+        grid-template-columns:1fr;
     }
 
-    .chat{
-        padding:20px 12px;
+    .message{
+        max-width:94%;
     }
 
-    .bubble{
-        max-width:90%;
-        font-size:14px;
+    .inputBox{
+        border-radius:15px;
     }
 
-    .input-zone{
-        padding:9px;
+    .actionBtn{
+        width:40px;
+        height:40px;
     }
-
-    .input-footer{
-        display:none;
-    }
-
-    .welcome h1{
-        font-size:30px;
-    }
-
-    .main-orb{
-        width:105px;
-        height:105px;
-    }
-}
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-.toast{
-    position:fixed;
-    left:50%;
-    bottom:90px;
-    transform:translateX(-50%) translateY(15px);
-    padding:11px 16px;
-    border:1px solid #333;
-    border-radius:12px;
-    background:#111;
-    color:#ddd;
-    font-size:12px;
-    opacity:0;
-    pointer-events:none;
-    transition:.2s;
-    z-index:10000;
-}
-
-.toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
 }
 </style>
 </head>
 
 <body>
 
-<!-- =====================================================
-     LOGIN
-===================================================== -->
+<!-- =========================
+     LOGIN SCREEN
+========================= -->
 
 <div id="loginScreen">
 
-    <div class="login-card">
+    <div class="loginBox">
 
-        <div class="login-orb"></div>
+        <div class="loginLogo"></div>
 
-        <div class="login-title">
-            NOVA
-        </div>
+        <h1>NOVA</h1>
 
-        <div class="login-subtitle">
-            FAMILY AI
-        </div>
+        <p>
+            Nova Family AI<br>
+            Dein persönlicher KI-Assistent
+        </p>
 
-        <button
-            id="loginButton"
-            class="login-button"
-        >
+        <button class="googleBtn" id="googleLoginBtn">
             Mit Google anmelden
         </button>
 
-        <div class="login-note">
-            Firebase übernimmt die Anmeldung.
-            Private Gemini-Keys werden nicht in
-            dieser HTML-Datei gespeichert.
-        </div>
+        <p id="loginError"
+           style="margin-top:15px;color:#ff5555;font-size:13px">
+        </p>
 
     </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      APP
-===================================================== -->
+========================= -->
 
 <div id="app" class="hidden">
 
-    <header class="header">
+    <header class="topbar">
 
         <div class="brand">
-
-            <div class="brand-orb"></div>
-
-            <div class="brand-name">
-                NOVA <span>FAMILY AI</span>
-            </div>
-
+            <div class="brandOrb"></div>
+            <div class="brandText">NOVA FAMILY AI</div>
         </div>
 
+        <div class="topActions">
 
-        <div class="header-right">
+            <button
+                class="smallBtn"
+                id="clearChatBtn">
+                Chat löschen
+            </button>
 
-            <div class="status-pill">
+            <button
+                class="smallBtn"
+                id="logoutBtn">
+                Abmelden
+            </button>
 
-                <div
-                    id="statusDot"
-                    class="status-dot active"
-                ></div>
-
-                <span id="statusText">
-                    Bereit
-                </span>
-
-            </div>
-
-
-            <div
-                id="quotaPill"
-                class="quota-pill"
-            >
-                Fragen: 0 / 20
-            </div>
-
-
-            <div
-                id="activeKeyPill"
-                class="key-pill"
-            >
-                Aktiv: Key 1
-            </div>
+            <img
+                id="userAvatar"
+                class="userAvatar"
+                src=""
+                alt="User">
 
         </div>
 
     </header>
 
 
-    <div class="content">
+    <main class="main">
 
-        <!-- =================================================
-             SIDEBAR
-        ================================================== -->
+        <section class="hero">
 
-        <aside class="sidebar">
+            <div class="heroOrb"></div>
 
-            <div class="sidebar-title">
-                Konto
+            <h1>NOVA</h1>
+
+            <p>
+                Dein persönlicher KI-Assistent
+            </p>
+
+        </section>
+
+
+        <!-- STATUS -->
+
+        <div class="statusRow">
+
+            <div class="status">
+                <span
+                    id="connectionDot"
+                    class="dot">
+                </span>
+                <span id="connectionStatus">
+                    Bereit
+                </span>
             </div>
 
-            <div class="user-card">
+            <div class="status">
+                Modell:
+                <strong>
+                    gemini-3.6-flash
+                </strong>
+            </div>
+
+            <div class="status">
+                Sprache:
+                <strong>Deutsch</strong>
+            </div>
+
+        </div>
+
+
+        <!-- SETTINGS -->
+
+        <section class="settings">
+
+            <div class="settingsHeader">
+
+                <h2>GEMINI ZUGÄNGE</h2>
+
+                <div class="modelTag">
+                    gemini-3.6-flash
+                </div>
+
+            </div>
+
+
+            <div class="keyGrid">
+
+                <!-- KEY 1 -->
 
                 <div
-                    id="userName"
-                    class="user-name"
-                >
-                    Nicht angemeldet
+                    class="keyBox active"
+                    id="keyBox1">
+
+                    <div class="keyTop">
+
+                        <strong>
+                            F1 · Gemini Key 1
+                        </strong>
+
+                        <span
+                            class="keyState"
+                            id="keyState1">
+                            Nicht gesetzt
+                        </span>
+
+                    </div>
+
+                    <input
+                        id="keyInput1"
+                        class="keyInput"
+                        type="password"
+                        placeholder="Gemini API Key 1">
+
+                    <div class="keyButtons">
+
+                        <button
+                            class="keyBtn"
+                            id="saveKey1">
+                            Speichern
+                        </button>
+
+                        <button
+                            class="keyBtn active"
+                            id="activateKey1">
+                            F1 aktiv
+                        </button>
+
+                    </div>
+
                 </div>
+
+
+                <!-- KEY 2 -->
 
                 <div
-                    id="userEmail"
-                    class="user-email"
-                >
-                    -
-                </div>
+                    class="keyBox"
+                    id="keyBox2">
 
-                <button
-                    id="logoutButton"
-                    class="small-button"
-                >
-                    Abmelden
-                </button>
+                    <div class="keyTop">
 
-            </div>
+                        <strong>
+                            F2 · Gemini Key 2
+                        </strong>
 
+                        <span
+                            class="keyState"
+                            id="keyState2">
+                            Nicht gesetzt
+                        </span>
 
-            <div class="sidebar-title">
-                Gemini-Zugänge
-            </div>
-
-
-            <!-- KEY 1 -->
-
-            <div
-                id="keyBox1"
-                class="key-box active"
-            >
-
-                <div class="key-head">
-
-                    <div class="key-name">
-                        Gemini Key 1
                     </div>
 
-                    <div
-                        id="keyActive1"
-                        class="key-active-label"
-                    >
-                        AKTIV
+                    <input
+                        id="keyInput2"
+                        class="keyInput"
+                        type="password"
+                        placeholder="Gemini API Key 2">
+
+                    <div class="keyButtons">
+
+                        <button
+                            class="keyBtn"
+                            id="saveKey2">
+                            Speichern
+                        </button>
+
+                        <button
+                            class="keyBtn"
+                            id="activateKey2">
+                            F2 aktiv
+                        </button>
+
                     </div>
 
-                </div>
-
-
-                <input
-                    id="keyInput1"
-                    class="key-input"
-                    type="password"
-                    autocomplete="off"
-                    placeholder="Gemini Key 1"
-                >
-
-
-                <div class="key-row">
-
-                    <button
-                        onclick="saveGeminiKey(1)"
-                    >
-                        Speichern
-                    </button>
-
-                    <button
-                        class="primary"
-                        onclick="activateGeminiKey(1)"
-                    >
-                        Aktivieren
-                    </button>
-
-                </div>
-
-
-                <div class="shortcut">
-                    Tastatur: F1
                 </div>
 
             </div>
 
 
-            <!-- KEY 2 -->
+            <div class="keyHelp">
 
-            <div
-                id="keyBox2"
-                class="key-box"
-            >
-
-                <div class="key-head">
-
-                    <div class="key-name">
-                        Gemini Key 2
-                    </div>
-
-                    <div
-                        id="keyActive2"
-                        class="key-active-label"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <input
-                    id="keyInput2"
-                    class="key-input"
-                    type="password"
-                    autocomplete="off"
-                    placeholder="Gemini Key 2"
-                >
-
-
-                <div class="key-row">
-
-                    <button
-                        onclick="saveGeminiKey(2)"
-                    >
-                        Speichern
-                    </button>
-
-                    <button
-                        class="primary"
-                        onclick="activateGeminiKey(2)"
-                    >
-                        Aktivieren
-                    </button>
-
-                </div>
-
-
-                <div class="shortcut">
-                    Tastatur: F2
-                </div>
+                F1 und F2 wechseln die Gemini-Zugänge
+                <strong>manuell</strong>.
+                Nova wechselt nicht automatisch bei einem
+                429-Fehler. Die Schlüssel werden nur lokal
+                im Browser gespeichert und stehen nicht
+                im GitHub-Code.
 
             </div>
 
 
-            <!-- QUOTA -->
+            <!-- QUESTION COUNTER -->
 
-            <div class="quota-box">
+            <div class="quota">
 
-                <div class="quota-top">
+                <div class="quotaTop">
 
                     <span>
                         Lokaler Fragenzähler
@@ -1024,209 +890,65 @@ button{
 
                 </div>
 
-                <div class="progress">
+                <div class="quotaBar">
 
                     <div
                         id="quotaFill"
-                        class="progress-fill"
-                    ></div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ACTIONS -->
-
-            <div class="sidebar-title">
-                Web-Aktionen
-            </div>
-
-            <div class="action-grid">
-
-                <button
-                    class="action-button"
-                    onclick="openGoogle()"
-                >
-                    Google
-                </button>
-
-                <button
-                    class="action-button"
-                    onclick="openYouTube()"
-                >
-                    YouTube
-                </button>
-
-                <button
-                    class="action-button"
-                    onclick="openImages()"
-                >
-                    Bilder
-                </button>
-
-                <button
-                    class="action-button"
-                    onclick="openMaps()"
-                >
-                    Maps
-                </button>
-
-                <button
-                    class="action-button"
-                    onclick="openWikipedia()"
-                >
-                    Wikipedia
-                </button>
-
-                <button
-                    class="action-button"
-                    onclick="clearConversation()"
-                >
-                    Chat löschen
-                </button>
-
-            </div>
-
-
-            <div class="sidebar-info">
-
-                <b>F1 / F2</b><br>
-                Wechselt manuell zwischen deinen
-                beiden Gemini-Zugängen.
-
-                <br><br>
-
-                Der Chatverlauf bleibt gemeinsam
-                erhalten. Beim nächsten Gemini-Aufruf
-                wird der bisherige Verlauf mitgesendet.
-
-                <br><br>
-
-                Der Wechsel erfolgt nicht automatisch
-                aufgrund eines Rate-Limits.
-
-                <br><br>
-
-                Deine privaten Gemini-Keys werden
-                nicht in dieser Datei veröffentlicht.
-
-            </div>
-
-        </aside>
-
-
-        <!-- =================================================
-             MAIN
-        ================================================== -->
-
-        <main class="main">
-
-            <div
-                id="chat"
-                class="chat"
-            >
-
-                <div
-                    id="chatInner"
-                    class="chat-inner"
-                >
-
-                    <div
-                        id="welcome"
-                        class="welcome"
-                    >
-
-                        <div class="main-orb"></div>
-
-                        <h1>
-                            NOVA
-                        </h1>
-
-                        <p>
-                            Dein persönlicher KI-Assistent
-                        </p>
-
-                        <div class="welcome-tip">
-                            F1 = Gemini Key 1 &nbsp; · &nbsp;
-                            F2 = Gemini Key 2
-                        </div>
-
+                        class="quotaFill">
                     </div>
 
                 </div>
 
             </div>
 
-
-            <!-- INPUT -->
-
-            <div class="input-zone">
-
-                <div class="input-container">
-
-                    <div class="input-row">
-
-                        <textarea
-                            id="messageInput"
-                            class="message-input"
-                            rows="1"
-                            placeholder="Schreib Nova etwas..."
-                        ></textarea>
+        </section>
 
 
-                        <button
-                            id="voiceButton"
-                            class="input-button"
-                            title="Spracheingabe"
-                        >
-                            🎙
-                        </button>
+        <!-- CHAT -->
+
+        <section
+            id="chat"
+            class="chat">
+        </section>
+
+    </main>
 
 
-                        <button
-                            id="sendButton"
-                            class="input-button send-button"
-                            title="Senden"
-                        >
-                            ➤
-                        </button>
+    <!-- INPUT -->
 
-                    </div>
+    <div class="inputArea">
 
+        <div class="inputBox">
 
-                    <div class="input-footer">
+            <button
+                id="micBtn"
+                class="actionBtn"
+                title="Spracheingabe">
+                🎙
+            </button>
 
-                        <span>
-                            Enter = senden · Shift + Enter = neue Zeile
-                        </span>
+            <input
+                id="messageInput"
+                autocomplete="off"
+                placeholder="Schreib Nova etwas...">
 
-                        <span>
-                            Mikrofon maximal 8 Sekunden
-                        </span>
+            <button
+                id="sendBtn"
+                class="actionBtn sendBtn"
+                title="Senden">
+                ➤
+            </button>
 
-                    </div>
-
-                </div>
-
-            </div>
-
-        </main>
+        </div>
 
     </div>
 
 </div>
 
 
-<div
-    id="toast"
-    class="toast"
-></div>
-
-
-<!-- =====================================================
+<!-- =========================
      FIREBASE
-===================================================== -->
+========================= -->
 
 <script type="module">
 
@@ -1251,7 +973,7 @@ import {
 
 
 /* =========================================================
-   DEINE FIREBASE KONFIGURATION
+   FIREBASE CONFIG
 ========================================================= */
 
 const firebaseConfig = {
@@ -1265,47 +987,48 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   FIREBASE STARTEN
+   FIREBASE INITIALIZATION
 ========================================================= */
 
-const app =
-    initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
-const auth =
-    getAuth(app);
+const auth = getAuth(firebaseApp);
 
-const db =
-    getFirestore(app);
+const db = getFirestore(firebaseApp);
 
-const googleProvider =
-    new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
 
 /* =========================================================
-   NOVA STATE
+   NOVA CONFIG
 ========================================================= */
 
-const KEY_STORAGE =
-    "nova_private_gemini_keys_v3";
-
-const ACTIVE_KEY_STORAGE =
-    "nova_active_gemini_key_v3";
-
-const LOCAL_CHAT_STORAGE =
-    "nova_shared_chat_v3";
-
-const QUESTION_STORAGE =
-    "nova_questions_v3";
+const GEMINI_MODEL = "gemini-3.6-flash";
 
 const MAX_QUESTIONS = 20;
 
-const GEMINI_MODEL =
-    "gemini-2.5-flash";
+const MIC_MAX_TIME = 8000;
 
+const KEY_STORAGE =
+    "nova_private_gemini_keys_v4";
+
+const ACTIVE_KEY_STORAGE =
+    "nova_active_gemini_key_v4";
+
+const LOCAL_CHAT_STORAGE =
+    "nova_shared_chat_v4";
+
+const QUESTION_STORAGE =
+    "nova_questions_v4";
+
+
+/* =========================================================
+   STATE
+========================================================= */
 
 let currentUser = null;
 
-let activeGeminiKey = 1;
+let activeKeyNumber = 1;
 
 let geminiKeys = {
     1: "",
@@ -1318,15 +1041,15 @@ let questionsUsed = 0;
 
 let recognition = null;
 
-let listening = false;
+let isListening = false;
 
-let speaking = false;
+let isSpeaking = false;
 
-let thinking = false;
+let isThinking = false;
+
+let voiceMode = false;
 
 let micTimeout = null;
-
-const MIC_MAX_TIME = 8000;
 
 
 /* =========================================================
@@ -1336,20 +1059,41 @@ const MIC_MAX_TIME = 8000;
 const loginScreen =
     document.getElementById("loginScreen");
 
-const appElement =
+const app =
     document.getElementById("app");
 
-const loginButton =
-    document.getElementById("loginButton");
+const googleLoginBtn =
+    document.getElementById("googleLoginBtn");
 
-const logoutButton =
-    document.getElementById("logoutButton");
+const loginError =
+    document.getElementById("loginError");
 
-const userName =
-    document.getElementById("userName");
+const logoutBtn =
+    document.getElementById("logoutBtn");
 
-const userEmail =
-    document.getElementById("userEmail");
+const clearChatBtn =
+    document.getElementById("clearChatBtn");
+
+const userAvatar =
+    document.getElementById("userAvatar");
+
+const chat =
+    document.getElementById("chat");
+
+const messageInput =
+    document.getElementById("messageInput");
+
+const sendBtn =
+    document.getElementById("sendBtn");
+
+const micBtn =
+    document.getElementById("micBtn");
+
+const connectionDot =
+    document.getElementById("connectionDot");
+
+const connectionStatus =
+    document.getElementById("connectionStatus");
 
 const keyInput1 =
     document.getElementById("keyInput1");
@@ -1357,109 +1101,274 @@ const keyInput1 =
 const keyInput2 =
     document.getElementById("keyInput2");
 
+const saveKey1 =
+    document.getElementById("saveKey1");
+
+const saveKey2 =
+    document.getElementById("saveKey2");
+
+const activateKey1 =
+    document.getElementById("activateKey1");
+
+const activateKey2 =
+    document.getElementById("activateKey2");
+
 const keyBox1 =
     document.getElementById("keyBox1");
 
 const keyBox2 =
     document.getElementById("keyBox2");
 
-const keyActive1 =
-    document.getElementById("keyActive1");
+const keyState1 =
+    document.getElementById("keyState1");
 
-const keyActive2 =
-    document.getElementById("keyActive2");
-
-const activeKeyPill =
-    document.getElementById("activeKeyPill");
-
-const statusText =
-    document.getElementById("statusText");
-
-const statusDot =
-    document.getElementById("statusDot");
+const keyState2 =
+    document.getElementById("keyState2");
 
 const quotaText =
     document.getElementById("quotaText");
 
-const quotaPill =
-    document.getElementById("quotaPill");
-
 const quotaFill =
     document.getElementById("quotaFill");
 
-const chat =
-    document.getElementById("chat");
-
-const chatInner =
-    document.getElementById("chatInner");
-
-const welcome =
-    document.getElementById("welcome");
-
-const messageInput =
-    document.getElementById("messageInput");
-
-const sendButton =
-    document.getElementById("sendButton");
-
-const voiceButton =
-    document.getElementById("voiceButton");
-
-const toast =
-    document.getElementById("toast");
-
 
 /* =========================================================
-   TOAST
+   LOCAL STORAGE
 ========================================================= */
 
-let toastTimer = null;
+function loadLocalData(){
 
-function showToast(text){
+    try{
 
-    toast.textContent = text;
+        const savedKeys =
+            localStorage.getItem(KEY_STORAGE);
 
-    toast.classList.add("show");
+        if(savedKeys){
 
-    clearTimeout(toastTimer);
+            const parsed =
+                JSON.parse(savedKeys);
 
-    toastTimer =
-        setTimeout(
-            () => toast.classList.remove("show"),
-            2500
+            geminiKeys = {
+                1: parsed[1] || "",
+                2: parsed[2] || ""
+            };
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Keys konnten nicht geladen werden:",
+            error
         );
+
+    }
+
+
+    try{
+
+        const savedActive =
+            localStorage.getItem(
+                ACTIVE_KEY_STORAGE
+            );
+
+        if(savedActive){
+
+            activeKeyNumber =
+                Number(savedActive) === 2
+                    ? 2
+                    : 1;
+
+        }
+
+    }catch(error){
+
+        activeKeyNumber = 1;
+
+    }
+
+
+    try{
+
+        const savedChat =
+            localStorage.getItem(
+                LOCAL_CHAT_STORAGE
+            );
+
+        if(savedChat){
+
+            conversation =
+                JSON.parse(savedChat);
+
+        }
+
+    }catch(error){
+
+        conversation = [];
+
+    }
+
+
+    try{
+
+        const savedQuestions =
+            localStorage.getItem(
+                QUESTION_STORAGE
+            );
+
+        if(savedQuestions){
+
+            questionsUsed =
+                Number(savedQuestions) || 0;
+
+        }
+
+    }catch(error){
+
+        questionsUsed = 0;
+
+    }
+
+
+    keyInput1.value =
+        geminiKeys[1];
+
+    keyInput2.value =
+        geminiKeys[2];
+
+    updateKeyUI();
+
+    updateQuotaUI();
+
+    renderConversation();
 }
 
 
-/* =========================================================
-   STATUS
-========================================================= */
+function saveLocalData(){
 
-function setStatus(text, active = true){
+    localStorage.setItem(
+        KEY_STORAGE,
+        JSON.stringify(geminiKeys)
+    );
 
-    statusText.textContent = text;
+    localStorage.setItem(
+        ACTIVE_KEY_STORAGE,
+        String(activeKeyNumber)
+    );
 
-    statusDot.classList.toggle(
-        "active",
-        active
+    localStorage.setItem(
+        LOCAL_CHAT_STORAGE,
+        JSON.stringify(conversation)
+    );
+
+    localStorage.setItem(
+        QUESTION_STORAGE,
+        String(questionsUsed)
     );
 }
 
 
 /* =========================================================
-   LOGIN
+   FIRESTORE USER DATA
 ========================================================= */
 
-loginButton.addEventListener(
+async function loadUserData(){
+
+    if(!currentUser) return;
+
+    try{
+
+        const ref =
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            );
+
+        const snap =
+            await getDoc(ref);
+
+        if(!snap.exists()) return;
+
+        const data = snap.data();
+
+
+        if(
+            Array.isArray(data.conversation) &&
+            conversation.length === 0
+        ){
+
+            conversation =
+                data.conversation;
+
+            saveLocalData();
+
+            renderConversation();
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "Firestore laden fehlgeschlagen:",
+            error
+        );
+
+    }
+
+}
+
+
+async function saveUserData(){
+
+    if(!currentUser) return;
+
+    try{
+
+        const ref =
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            );
+
+        await setDoc(
+            ref,
+            {
+                conversation:
+                    conversation.slice(-100),
+
+                updatedAt:
+                    Date.now()
+            },
+            {
+                merge:true
+            }
+        );
+
+    }catch(error){
+
+        console.warn(
+            "Firestore speichern fehlgeschlagen:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   GOOGLE LOGIN
+========================================================= */
+
+googleLoginBtn.addEventListener(
     "click",
     async () => {
 
+        loginError.textContent = "";
+
         try{
-
-            loginButton.disabled = true;
-
-            loginButton.textContent =
-                "Anmeldung...";
 
             await signInWithPopup(
                 auth,
@@ -1470,16 +1379,9 @@ loginButton.addEventListener(
 
             console.error(error);
 
-            showToast(
-                "Google-Anmeldung fehlgeschlagen."
-            );
-
-        }finally{
-
-            loginButton.disabled = false;
-
-            loginButton.textContent =
-                "Mit Google anmelden";
+            loginError.textContent =
+                "Anmeldung fehlgeschlagen: " +
+                readableFirebaseError(error);
 
         }
 
@@ -1487,11 +1389,7 @@ loginButton.addEventListener(
 );
 
 
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-logoutButton.addEventListener(
+logoutBtn.addEventListener(
     "click",
     async () => {
 
@@ -1509,10 +1407,6 @@ logoutButton.addEventListener(
 );
 
 
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
 onAuthStateChanged(
     auth,
     async user => {
@@ -1521,37 +1415,36 @@ onAuthStateChanged(
 
         if(user){
 
-            loginScreen.classList.add("hidden");
+            loginScreen.classList.add(
+                "hidden"
+            );
 
-            appElement.classList.remove("hidden");
+            app.classList.remove(
+                "hidden"
+            );
 
-            userName.textContent =
-                user.displayName ||
-                "Nova Benutzer";
-
-            userEmail.textContent =
-                user.email ||
+            userAvatar.src =
+                user.photoURL ||
                 "";
+
+            loadLocalData();
 
             await loadUserData();
 
-            setStatus(
-                "Bereit · Key " +
-                activeGeminiKey,
+            setConnection(
+                "Bereit",
                 true
             );
 
         }else{
 
-            appElement.classList.add("hidden");
+            loginScreen.classList.remove(
+                "hidden"
+            );
 
-            loginScreen.classList.remove("hidden");
-
-            userName.textContent =
-                "Nicht angemeldet";
-
-            userEmail.textContent =
-                "-";
+            app.classList.add(
+                "hidden"
+            );
 
         }
 
@@ -1560,381 +1453,185 @@ onAuthStateChanged(
 
 
 /* =========================================================
-   LOCAL DATEN
+   FIREBASE ERROR
 ========================================================= */
 
-function loadLocalData(){
+function readableFirebaseError(error){
 
-    try{
+    if(!error) return "Unbekannter Fehler.";
 
-        const savedKeys =
-            JSON.parse(
-                localStorage.getItem(
-                    KEY_STORAGE
-                ) || "{}"
-            );
+    const code =
+        error.code || "";
 
-        geminiKeys[1] =
-            savedKeys[1] || "";
-
-        geminiKeys[2] =
-            savedKeys[2] || "";
-
-
-        activeGeminiKey =
-            Number(
-                localStorage.getItem(
-                    ACTIVE_KEY_STORAGE
-                ) || "1"
-            );
-
-
-        const savedChat =
-            JSON.parse(
-                localStorage.getItem(
-                    LOCAL_CHAT_STORAGE
-                ) || "[]"
-            );
-
-        if(
-            Array.isArray(savedChat)
-        ){
-
-            conversation =
-                savedChat;
-
-        }
-
-
-        questionsUsed =
-            Number(
-                localStorage.getItem(
-                    QUESTION_STORAGE
-                ) || "0"
-            );
-
-    }catch(error){
-
-        console.error(
-            "Local data:",
-            error
-        );
-
+    if(
+        code.includes(
+            "popup-closed"
+        )
+    ){
+        return "Das Anmeldefenster wurde geschlossen.";
     }
 
+    if(
+        code.includes(
+            "popup-blocked"
+        )
+    ){
+        return "Der Browser hat das Google-Fenster blockiert.";
+    }
 
-    keyInput1.value =
-        geminiKeys[1];
+    if(
+        code.includes(
+            "api-key-not-valid"
+        )
+    ){
+        return "Der Firebase API-Key ist ungültig. Prüfe deine Firebase-Konfiguration.";
+    }
 
-    keyInput2.value =
-        geminiKeys[2];
-
-    updateKeyUI();
-
-    updateQuotaUI();
-
-    renderConversation();
-
-}
-
-
-/* =========================================================
-   LOCAL SPEICHERN
-========================================================= */
-
-function saveLocalData(){
-
-    localStorage.setItem(
-        KEY_STORAGE,
-        JSON.stringify(geminiKeys)
-    );
-
-    localStorage.setItem(
-        ACTIVE_KEY_STORAGE,
-        String(activeGeminiKey)
-    );
-
-    localStorage.setItem(
-        LOCAL_CHAT_STORAGE,
-        JSON.stringify(conversation)
-    );
-
-    localStorage.setItem(
-        QUESTION_STORAGE,
-        String(questionsUsed)
+    return (
+        error.message ||
+        "Unbekannter Firebase-Fehler."
     );
 
 }
 
 
 /* =========================================================
-   FIRESTORE LADEN
+   KEY MANAGEMENT
 ========================================================= */
 
-async function loadUserData(){
+function saveGeminiKey(number){
 
-    loadLocalData();
+    const input =
+        number === 1
+            ? keyInput1
+            : keyInput2;
 
-    if(!currentUser){
-        return;
-    }
+    const value =
+        input.value.trim();
 
-    try{
-
-        const reference =
-            doc(
-                db,
-                "users",
-                currentUser.uid
-            );
-
-        const snapshot =
-            await getDoc(reference);
-
-
-        if(snapshot.exists()){
-
-            const data =
-                snapshot.data();
-
-
-            if(
-                Array.isArray(
-                    data.conversation
-                )
-            ){
-
-                conversation =
-                    data.conversation;
-
-            }
-
-
-            if(
-                typeof data.questionsUsed ===
-                "number"
-            ){
-
-                questionsUsed =
-                    data.questionsUsed;
-
-            }
-
-
-            if(
-                data.activeKey === 1 ||
-                data.activeKey === 2
-            ){
-
-                activeGeminiKey =
-                    data.activeKey;
-
-            }
-
-            saveLocalData();
-
-            renderConversation();
-
-            updateKeyUI();
-
-            updateQuotaUI();
-
-        }
-
-    }catch(error){
-
-        console.error(
-            "Firestore load:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   FIRESTORE SPEICHERN
-========================================================= */
-
-async function saveUserData(){
+    geminiKeys[number] =
+        value;
 
     saveLocalData();
 
-    if(!currentUser){
-        return;
-    }
+    updateKeyUI();
 
-    try{
-
-        await setDoc(
-            doc(
-                db,
-                "users",
-                currentUser.uid
-            ),
-            {
-                conversation:
-                    conversation.slice(-80),
-
-                questionsUsed:
-                    questionsUsed,
-
-                activeKey:
-                    activeGeminiKey,
-
-                updatedAt:
-                    new Date().toISOString()
-            },
-            {
-                merge:true
-            }
-        );
-
-    }catch(error){
-
-        console.error(
-            "Firestore save:",
-            error
-        );
-
-    }
+    setConnection(
+        `Gemini Key ${number} gespeichert`,
+        true
+    );
 
 }
 
 
-/* =========================================================
-   KEY SPEICHERN
-========================================================= */
+function activateGeminiKey(number){
 
-window.saveGeminiKey =
-    function(number){
+    if(
+        !geminiKeys[number]
+    ){
 
-        const input =
-            number === 1
-                ? keyInput1
-                : keyInput2;
-
-        const value =
-            input.value.trim();
-
-        if(!value){
-
-            showToast(
-                "Bitte zuerst einen Key eingeben."
-            );
-
-            return;
-        }
-
-        geminiKeys[number] =
-            value;
-
-        saveLocalData();
-
-        showToast(
-            "Gemini Key " +
-            number +
-            " lokal gespeichert."
+        setConnection(
+            `F${number}: Kein API-Key gespeichert`,
+            false
         );
 
-    };
+        return;
 
+    }
 
-/* =========================================================
-   KEY AKTIVIEREN
-========================================================= */
+    activeKeyNumber =
+        number;
 
-window.activateGeminiKey =
-    function(number){
+    saveLocalData();
 
-        const input =
-            number === 1
-                ? keyInput1
-                : keyInput2;
+    updateKeyUI();
 
-        const value =
-            input.value.trim();
+    setConnection(
+        `F${number} · Gemini ${GEMINI_MODEL} aktiv`,
+        true
+    );
 
+}
 
-        if(value){
-
-            geminiKeys[number] =
-                value;
-
-        }
-
-
-        if(!geminiKeys[number]){
-
-            showToast(
-                "Für Key " +
-                number +
-                " wurde noch kein Key gespeichert."
-            );
-
-            return;
-
-        }
-
-
-        activeGeminiKey =
-            number;
-
-        saveLocalData();
-
-        saveUserData();
-
-        updateKeyUI();
-
-        setStatus(
-            "Bereit · Key " +
-            number,
-            true
-        );
-
-        showToast(
-            "Key " +
-            number +
-            " ist jetzt aktiv."
-        );
-
-    };
-
-
-/* =========================================================
-   KEY UI
-========================================================= */
 
 function updateKeyUI(){
 
-    activeKeyPill.textContent =
-        "Aktiv: Key " +
-        activeGeminiKey;
+    const has1 =
+        !!geminiKeys[1];
+
+    const has2 =
+        !!geminiKeys[2];
+
+
+    keyState1.textContent =
+        has1
+            ? "Gespeichert"
+            : "Nicht gesetzt";
+
+    keyState2.textContent =
+        has2
+            ? "Gespeichert"
+            : "Nicht gesetzt";
 
 
     keyBox1.classList.toggle(
         "active",
-        activeGeminiKey === 1
+        activeKeyNumber === 1
     );
 
     keyBox2.classList.toggle(
         "active",
-        activeGeminiKey === 2
+        activeKeyNumber === 2
     );
 
 
-    keyActive1.textContent =
-        activeGeminiKey === 1
-            ? "AKTIV"
-            : "-";
+    activateKey1.classList.toggle(
+        "active",
+        activeKeyNumber === 1
+    );
 
-    keyActive2.textContent =
-        activeGeminiKey === 2
-            ? "AKTIV"
-            : "-";
+    activateKey2.classList.toggle(
+        "active",
+        activeKeyNumber === 2
+    );
+
+
+    activateKey1.textContent =
+        activeKeyNumber === 1
+            ? "F1 aktiv"
+            : "F1 verwenden";
+
+    activateKey2.textContent =
+        activeKeyNumber === 2
+            ? "F2 aktiv"
+            : "F2 verwenden";
 
 }
+
+
+/* =========================================================
+   KEY BUTTONS
+========================================================= */
+
+saveKey1.addEventListener(
+    "click",
+    () => saveGeminiKey(1)
+);
+
+saveKey2.addEventListener(
+    "click",
+    () => saveGeminiKey(2)
+);
+
+activateKey1.addEventListener(
+    "click",
+    () => activateGeminiKey(1)
+);
+
+activateKey2.addEventListener(
+    "click",
+    () => activateGeminiKey(2)
+);
 
 
 /* =========================================================
@@ -1953,7 +1650,6 @@ document.addEventListener(
 
         }
 
-
         if(event.key === "F2"){
 
             event.preventDefault();
@@ -1967,89 +1663,54 @@ document.addEventListener(
 
 
 /* =========================================================
-   QUOTA
+   QUOTA UI
 ========================================================= */
 
 function updateQuotaUI(){
 
-    const percentage =
+    quotaText.textContent =
+        `${questionsUsed} / ${MAX_QUESTIONS}`;
+
+    const percent =
         Math.min(
             100,
             (questionsUsed /
-                MAX_QUESTIONS) *
-                100
+                MAX_QUESTIONS) * 100
         );
-
-
-    quotaText.textContent =
-        questionsUsed +
-        " / " +
-        MAX_QUESTIONS;
-
-
-    quotaPill.textContent =
-        "Fragen: " +
-        questionsUsed +
-        " / " +
-        MAX_QUESTIONS;
-
 
     quotaFill.style.width =
-        percentage + "%";
-
-}
-
-
-function canAsk(){
-
-    if(
-        questionsUsed >=
-        MAX_QUESTIONS
-    ){
-
-        showToast(
-            "Der lokale Fragenzähler ist bei 20 / 20."
-        );
-
-        return false;
-
-    }
-
-    return true;
+        percent + "%";
 
 }
 
 
 /* =========================================================
-   CONVERSATION RENDER
+   STATUS
+========================================================= */
+
+function setConnection(
+    text,
+    good = true
+){
+
+    connectionStatus.textContent =
+        text;
+
+    connectionDot.className =
+        good
+            ? "dot green"
+            : "dot red";
+
+}
+
+
+/* =========================================================
+   CHAT RENDER
 ========================================================= */
 
 function renderConversation(){
 
-    chatInner
-        .querySelectorAll(
-            ".message-row"
-        )
-        .forEach(
-            element =>
-                element.remove()
-        );
-
-
-    if(conversation.length){
-
-        welcome.classList.add(
-            "hidden"
-        );
-
-    }else{
-
-        welcome.classList.remove(
-            "hidden"
-        );
-
-    }
-
+    chat.innerHTML = "";
 
     conversation.forEach(
         message => {
@@ -2063,124 +1724,109 @@ function renderConversation(){
         }
     );
 
-
-    scrollChat();
-
 }
 
-
-/* =========================================================
-   MESSAGE UI
-========================================================= */
 
 function addMessageToUI(
     role,
     text,
-    scroll = true
+    animate = true
 ){
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-    row.className =
-        "message-row " +
-        (
-            role === "user"
-                ? "user"
-                : "assistant"
-        );
-
 
     const wrapper =
         document.createElement(
             "div"
         );
 
+    wrapper.className =
+        "message " +
+        (
+            role === "user"
+                ? "user"
+                : "ai"
+        );
 
-    const bubble =
+    if(!animate){
+
+        wrapper.style.animation =
+            "none";
+
+    }
+
+
+    const avatar =
         document.createElement(
             "div"
         );
 
-    bubble.className =
-        "bubble";
+    avatar.className =
+        "messageAvatar";
 
-    bubble.textContent =
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.className =
+        "messageContent";
+
+    content.textContent =
         text;
 
 
     wrapper.appendChild(
-        bubble
+        avatar
     );
-
-
-    const meta =
-        document.createElement(
-            "div"
-        );
-
-    meta.className =
-        "message-meta";
-
-    meta.textContent =
-        role === "user"
-            ? "Du"
-            : "Nova";
-
 
     wrapper.appendChild(
-        meta
+        content
     );
 
-
-    row.appendChild(
+    chat.appendChild(
         wrapper
     );
 
-
-    chatInner.appendChild(
-        row
+    window.scrollTo(
+        0,
+        document.body.scrollHeight
     );
-
-
-    if(scroll){
-
-        scrollChat();
-
-    }
 
 }
 
-
-/* =========================================================
-   TYPING
-========================================================= */
 
 function showTyping(){
 
     hideTyping();
 
-    const row =
+    const wrapper =
         document.createElement(
             "div"
         );
 
-    row.id =
+    wrapper.id =
         "typingMessage";
 
-    row.className =
-        "message-row assistant";
+    wrapper.className =
+        "message ai";
 
 
-    const bubble =
+    const avatar =
         document.createElement(
             "div"
         );
 
-    bubble.className =
-        "bubble";
+    avatar.className =
+        "messageAvatar";
+
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.className =
+        "messageContent";
 
 
     const typing =
@@ -2192,37 +1838,30 @@ function showTyping(){
         "typing";
 
 
-    for(
-        let i = 0;
-        i < 3;
-        i++
-    ){
-
-        const dot =
-            document.createElement(
-                "span"
-            );
-
-        typing.appendChild(
-            dot
-        );
-
-    }
+    typing.innerHTML =
+        "<span></span><span></span><span></span>";
 
 
-    bubble.appendChild(
+    content.appendChild(
         typing
     );
 
-    row.appendChild(
-        bubble
+    wrapper.appendChild(
+        avatar
     );
 
-    chatInner.appendChild(
-        row
+    wrapper.appendChild(
+        content
     );
 
-    scrollChat();
+    chat.appendChild(
+        wrapper
+    );
+
+    window.scrollTo(
+        0,
+        document.body.scrollHeight
+    );
 
 }
 
@@ -2244,103 +1883,61 @@ function hideTyping(){
 
 
 /* =========================================================
-   SCROLL
+   SYSTEM PROMPT
 ========================================================= */
 
-function scrollChat(){
+const NOVA_SYSTEM_PROMPT = `
+Du bist Nova, ein moderner persönlicher KI-Assistent.
 
-    requestAnimationFrame(
-        () => {
+Deine Antworten sind:
+- hilfreich
+- natürlich
+- klar
+- direkt
+- freundlich
+- auf Deutsch, wenn der Benutzer Deutsch schreibt
 
-            chat.scrollTop =
-                chat.scrollHeight;
+Du bist Teil von Nova Family AI.
 
-        }
-    );
+Das aktuell verwendete Modell ist:
+gemini-3.6-flash
 
-}
+Der Benutzer kann manuell zwischen zwei Gemini-API-Zugängen wechseln.
+Wechsle niemals selbst zwischen den Keys.
 
+Wenn der Benutzer nach etwas fragt, antworte direkt.
 
-/* =========================================================
-   CHAT LÖSCHEN
-========================================================= */
+Wenn der Benutzer eine einfache Frage stellt, halte die Antwort passend kurz.
 
-window.clearConversation =
-    async function(){
+Wenn der Benutzer eine Anleitung möchte, erkläre sie verständlich Schritt für Schritt.
 
-        if(
-            !confirm(
-                "Den gesamten gemeinsamen Chatverlauf löschen?"
-            )
-        ){
+Verwende keine unnötigen Hinweise darauf, dass du eine KI bist.
 
-            return;
+Wenn eine Browser-Aktion vom Programm erkannt wird,
+muss die Antwort nicht selbst versuchen, eine Webseite einzubetten.
+Die Webseite wird vom Browser geöffnet.
 
-        }
-
-
-        conversation = [];
-
-        saveLocalData();
-
-        await saveUserData();
-
-        renderConversation();
-
-        showToast(
-            "Chatverlauf gelöscht."
-        );
-
-    };
+Du kannst nicht direkt den Computer des Benutzers bedienen,
+außer durch die vom Browser bereitgestellten Aktionen.
+`;
 
 
 /* =========================================================
    GEMINI REQUEST
 ========================================================= */
 
-async function askGemini(){
+async function askGemini(userText){
 
     const key =
-        geminiKeys[
-            activeGeminiKey
-        ];
-
+        geminiKeys[activeKeyNumber];
 
     if(!key){
 
         throw new Error(
-            "Für den aktiven Key wurde kein Gemini API-Key eingetragen."
+            `Für F${activeKeyNumber} wurde noch kein Gemini API-Key eingetragen.`
         );
 
     }
-
-
-    /*
-        Der komplette gemeinsame Verlauf
-        wird an den aktuell ausgewählten
-        Zugang geschickt.
-
-        Es gibt KEIN automatisches
-        Umschalten bei Fehlern.
-    */
-
-    const contents =
-        conversation.map(
-            message => ({
-                role:
-                    message.role ===
-                    "assistant"
-                        ? "model"
-                        : "user",
-
-                parts:[
-                    {
-                        text:
-                            message.text
-                    }
-                ]
-            })
-        );
 
 
     const url =
@@ -2349,7 +1946,70 @@ async function askGemini(){
             GEMINI_MODEL
         ) +
         ":generateContent?key=" +
-        encodeURIComponent(key);
+        encodeURIComponent(
+            key
+        );
+
+
+    const contents =
+        conversation
+            .slice(-30)
+            .map(
+                message => ({
+                    role:
+                        message.role === "user"
+                            ? "user"
+                            : "model",
+
+                    parts:[
+                        {
+                            text:
+                                message.text
+                        }
+                    ]
+                })
+            );
+
+
+    contents.push({
+
+        role:"user",
+
+        parts:[
+            {
+                text:userText
+            }
+        ]
+
+    });
+
+
+    const body = {
+
+        systemInstruction:{
+
+            parts:[
+                {
+                    text:
+                        NOVA_SYSTEM_PROMPT
+                }
+            ]
+
+        },
+
+        contents,
+
+        generationConfig:{
+
+            temperature:0.7,
+
+            topP:0.95,
+
+            maxOutputTokens:2048
+
+        }
+
+    };
 
 
     const response =
@@ -2363,83 +2023,39 @@ async function askGemini(){
                         "application/json"
                 },
 
-                body:JSON.stringify({
-
-                    systemInstruction:{
-                        parts:[
-                            {
-                                text:
-`Du bist Nova, ein moderner persönlicher KI-Assistent.
-
-Antworte standardmäßig auf Deutsch, wenn der Benutzer Deutsch spricht.
-
-Sei direkt, freundlich und hilfreich.
-
-Behalte den Gesprächskontext.
-
-Der Benutzer kann manuell zwischen zwei Gemini-Zugängen wechseln. Behandle den übergebenen Verlauf trotzdem als EINEN zusammenhängenden Chat.
-
-Wenn der Benutzer dich auffordert, eine Webseite, Google, YouTube, Bilder, Maps oder Wikipedia zu öffnen, erkenne diesen Wunsch. Die Webseite übernimmt das Öffnen solcher Links selbst.
-
-Du sollst keine privaten API-Keys ausgeben oder anzeigen.`
-                            }
-                        ]
-                    },
-
-                    contents:
-
-                        contents,
-
-                    generationConfig:{
-                        temperature:.7,
-                        maxOutputTokens:2048
-                    }
-
-                })
+                body:
+                    JSON.stringify(body)
             }
         );
-
-
-    if(!response.ok){
-
-        const body =
-            await response.text();
-
-        throw new Error(
-            "HTTP " +
-            response.status +
-            " – " +
-            body
-        );
-
-    }
 
 
     const data =
         await response.json();
 
 
-    const parts =
-        data
-            ?.candidates?.[0]
-            ?.content?.parts;
+    if(!response.ok){
 
+        const error =
+            new Error(
+                readableGeminiError(
+                    data,
+                    response.status
+                )
+            );
 
-    if(
-        !Array.isArray(parts) ||
-        !parts.length
-    ){
+        error.status =
+            response.status;
 
-        throw new Error(
-            "Gemini hat keine Textantwort geliefert."
-        );
+        throw error;
 
     }
 
 
     const answer =
-        parts
-            .map(
+        data
+            ?.candidates?.[0]
+            ?.content?.parts
+            ?.map(
                 part =>
                     part.text || ""
             )
@@ -2450,7 +2066,7 @@ Du sollst keine privaten API-Keys ausgeben oder anzeigen.`
     if(!answer){
 
         throw new Error(
-            "Gemini-Antwort war leer."
+            "Gemini hat keine Antwort zurückgegeben."
         );
 
     }
@@ -2462,30 +2078,517 @@ Du sollst keine privaten API-Keys ausgeben oder anzeigen.`
 
 
 /* =========================================================
+   GEMINI ERRORS
+========================================================= */
+
+function readableGeminiError(
+    data,
+    status
+){
+
+    const message =
+        data?.error?.message ||
+        "";
+
+
+    if(status === 400){
+
+        return (
+            "Gemini-Anfrage ungültig.\n\n" +
+            message
+        );
+
+    }
+
+
+    if(status === 401 ||
+       status === 403){
+
+        return (
+            "Der Gemini API-Key ist ungültig " +
+            "oder besitzt keine Berechtigung."
+        );
+
+    }
+
+
+    if(status === 404){
+
+        return (
+            "Das Gemini-Modell " +
+            GEMINI_MODEL +
+            " wurde nicht gefunden.\n\n" +
+            message
+        );
+
+    }
+
+
+    if(status === 429){
+
+        return (
+            "Gemini meldet 429: " +
+            "Quota oder Rate-Limit erreicht.\n\n" +
+            "Drücke F1 oder F2 und " +
+            "wechsle manuell auf den anderen " +
+            "Gemini-Key."
+        );
+
+    }
+
+
+    if(status >= 500){
+
+        return (
+            "Gemini-Serverfehler (" +
+            status +
+            "). Bitte später erneut versuchen."
+        );
+
+    }
+
+
+    return (
+        "Gemini-Fehler (" +
+        status +
+        "):\n" +
+        message
+    );
+
+}
+
+
+/* =========================================================
+   WEB ACTION DETECTION
+========================================================= */
+
+function detectWebAction(text){
+
+    const lower =
+        text.toLowerCase().trim();
+
+
+    /*
+       YOUTUBE
+    */
+
+    if(
+        lower.includes("youtube") ||
+        lower.includes("auf youtube") ||
+        lower.includes("youtube suche")
+    ){
+
+        let query =
+            text
+                .replace(
+                    /öffne\s*/i,
+                    ""
+                )
+                .replace(
+                    /auf\s*youtube/i,
+                    ""
+                )
+                .replace(
+                    /youtube/i,
+                    ""
+                )
+                .replace(
+                    /such(e)?/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"youtube",
+            query:
+                query ||
+                "YouTube"
+        };
+
+    }
+
+
+    /*
+       BILDER
+    */
+
+    if(
+        lower.includes("bilder von") ||
+        lower.includes("bilder über") ||
+        lower.includes("bild von") ||
+        lower.includes("google bilder")
+    ){
+
+        let query =
+            text
+                .replace(
+                    /zeig(e)?/i,
+                    ""
+                )
+                .replace(
+                    /mir/i,
+                    ""
+                )
+                .replace(
+                    /bilder?/i,
+                    ""
+                )
+                .replace(
+                    /von/i,
+                    ""
+                )
+                .replace(
+                    /über/i,
+                    ""
+                )
+                .replace(
+                    /google/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"images",
+            query:
+                query ||
+                "Bilder"
+        };
+
+    }
+
+
+    /*
+       MAPS
+    */
+
+    if(
+        lower.includes("google maps") ||
+        lower.includes("karte von") ||
+        lower.includes("wo ist") ||
+        lower.includes("maps")
+    ){
+
+        let query =
+            text
+                .replace(
+                    /google maps/i,
+                    ""
+                )
+                .replace(
+                    /maps/i,
+                    ""
+                )
+                .replace(
+                    /wo ist/i,
+                    ""
+                )
+                .replace(
+                    /karte von/i,
+                    ""
+                )
+                .replace(
+                    /öffne/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"maps",
+            query:
+                query ||
+                "Google Maps"
+        };
+
+    }
+
+
+    /*
+       WIKIPEDIA
+    */
+
+    if(
+        lower.includes("wikipedia")
+    ){
+
+        let query =
+            text
+                .replace(
+                    /öffne/i,
+                    ""
+                )
+                .replace(
+                    /wikipedia/i,
+                    ""
+                )
+                .replace(
+                    /über/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"wikipedia",
+            query:
+                query ||
+                "Wikipedia"
+        };
+
+    }
+
+
+    /*
+       VIDEOS
+    */
+
+    if(
+        lower.includes("videos von") ||
+        lower.includes("videos über") ||
+        lower.includes("video von")
+    ){
+
+        let query =
+            text
+                .replace(
+                    /zeig(e)?/i,
+                    ""
+                )
+                .replace(
+                    /mir/i,
+                    ""
+                )
+                .replace(
+                    /videos?/i,
+                    ""
+                )
+                .replace(
+                    /von/i,
+                    ""
+                )
+                .replace(
+                    /über/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"youtube",
+            query:
+                query ||
+                "YouTube"
+        };
+
+    }
+
+
+    /*
+       GOOGLE
+    */
+
+    if(
+        lower.includes("auf google") ||
+        lower.includes("bei google") ||
+        lower.startsWith("google ")
+    ){
+
+        let query =
+            text
+                .replace(
+                    /auf google/i,
+                    ""
+                )
+                .replace(
+                    /bei google/i,
+                    ""
+                )
+                .replace(
+                    /^google/i,
+                    ""
+                )
+                .replace(
+                    /öffne/i,
+                    ""
+                )
+                .replace(
+                    /such(e)?/i,
+                    ""
+                )
+                .trim();
+
+        return {
+            type:"google",
+            query:
+                query ||
+                "Google"
+        };
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   WEB OPEN
+========================================================= */
+
+function openWebAction(action){
+
+    if(!action) return;
+
+
+    const query =
+        encodeURIComponent(
+            action.query
+        );
+
+
+    let url = "";
+
+
+    if(action.type === "google"){
+
+        url =
+            "https://www.google.com/search?q=" +
+            query;
+
+    }
+
+
+    if(action.type === "images"){
+
+        url =
+            "https://www.google.com/search?tbm=isch&q=" +
+            query;
+
+    }
+
+
+    if(action.type === "youtube"){
+
+        if(
+            !action.query ||
+            action.query === "YouTube"
+        ){
+
+            url =
+                "https://www.youtube.com/";
+
+        }else{
+
+            url =
+                "https://www.youtube.com/results?search_query=" +
+                query;
+
+        }
+
+    }
+
+
+    if(action.type === "maps"){
+
+        url =
+            "https://www.google.com/maps/search/?api=1&query=" +
+            query;
+
+    }
+
+
+    if(action.type === "wikipedia"){
+
+        url =
+            "https://de.wikipedia.org/w/index.php?search=" +
+            query;
+
+    }
+
+
+    if(!url) return;
+
+
+    window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+}
+
+
+/* =========================================================
+   QUICK OPEN FUNCTIONS
+========================================================= */
+
+function openGoogle(query){
+
+    openWebAction({
+        type:"google",
+        query:
+            query || "Google"
+    });
+
+}
+
+
+function openYouTube(query){
+
+    openWebAction({
+        type:"youtube",
+        query:
+            query || "YouTube"
+    });
+
+}
+
+
+function openImages(query){
+
+    openWebAction({
+        type:"images",
+        query:
+            query || "Bilder"
+    });
+
+}
+
+
+function openMaps(query){
+
+    openWebAction({
+        type:"maps",
+        query:
+            query || "Google Maps"
+    });
+
+}
+
+
+function openWikipedia(query){
+
+    openWebAction({
+        type:"wikipedia",
+        query:
+            query || "Wikipedia"
+    });
+
+}
+
+
+/* =========================================================
    SEND MESSAGE
 ========================================================= */
 
 async function sendMessage(){
 
-    if(thinking){
-
-        return;
-
-    }
-
-
     const text =
         messageInput.value.trim();
 
 
-    if(!text){
-
-        return;
-
-    }
+    if(!text) return;
 
 
-    if(!canAsk()){
+    if(isThinking){
 
         return;
 
@@ -2493,15 +2596,13 @@ async function sendMessage(){
 
 
     if(
-        !geminiKeys[
-            activeGeminiKey
-        ]
+        questionsUsed >=
+        MAX_QUESTIONS
     ){
 
-        showToast(
-            "Bitte zuerst Key " +
-            activeGeminiKey +
-            " eintragen."
+        addMessageToUI(
+            "ai",
+            "Der lokale Fragenzähler ist bei 20/20. Du kannst ihn in dieser Version nicht automatisch zurücksetzen."
         );
 
         return;
@@ -2509,82 +2610,132 @@ async function sendMessage(){
     }
 
 
-    messageInput.value = "";
+    /*
+       STOP LISTENING
+       BEFORE NOVA ANSWERS
+    */
 
-    messageInput.style.height =
-        "auto";
+    stopListening();
 
+
+    /*
+       WEB ACTION
+    */
 
     const webAction =
         detectWebAction(text);
 
 
+    if(webAction){
+
+        conversation.push({
+            role:"user",
+            text:text
+        });
+
+        addMessageToUI(
+            "user",
+            text
+        );
+
+        messageInput.value = "";
+
+        saveLocalData();
+
+        await saveUserData();
+
+
+        openWebAction(
+            webAction
+        );
+
+
+        let actionText = "";
+
+        switch(webAction.type){
+
+            case "youtube":
+                actionText =
+                    "Ich öffne YouTube.";
+                break;
+
+            case "images":
+                actionText =
+                    "Ich öffne die Google-Bildersuche.";
+                break;
+
+            case "maps":
+                actionText =
+                    "Ich öffne Google Maps.";
+                break;
+
+            case "wikipedia":
+                actionText =
+                    "Ich öffne Wikipedia.";
+                break;
+
+            default:
+                actionText =
+                    "Ich öffne Google.";
+
+        }
+
+
+        conversation.push({
+            role:"model",
+            text:actionText
+        });
+
+        addMessageToUI(
+            "ai",
+            actionText
+        );
+
+        saveLocalData();
+
+        await saveUserData();
+
+        return;
+
+    }
+
+
+    /*
+       QUESTION COUNT
+    */
+
+    questionsUsed++;
+
+    saveLocalData();
+
+    updateQuotaUI();
+
+
+    /*
+       USER MESSAGE
+    */
+
     conversation.push({
         role:"user",
-        text:text,
-        time:
-            new Date().toISOString()
+        text:text
     });
-
 
     addMessageToUI(
         "user",
         text
     );
 
-
-    questionsUsed++;
-
-    updateQuotaUI();
-
-    saveLocalData();
-
-    await saveUserData();
+    messageInput.value = "";
 
 
     /*
-        Web-Aktionen werden direkt geöffnet.
+       GEMINI
     */
 
-    if(webAction){
+    isThinking = true;
 
-        openWebAction(
-            webAction
-        );
-
-        const reply =
-            webAction.description;
-
-
-        conversation.push({
-            role:"assistant",
-            text:reply,
-            time:
-                new Date().toISOString()
-        });
-
-
-        addMessageToUI(
-            "assistant",
-            reply
-        );
-
-
-        saveLocalData();
-
-        await saveUserData();
-
-        speak(reply);
-
-        return;
-
-    }
-
-
-    thinking = true;
-
-    setStatus(
-        "Nova denkt...",
+    setConnection(
+        `Gemini ${GEMINI_MODEL} denkt...`,
         true
     );
 
@@ -2594,22 +2745,20 @@ async function sendMessage(){
     try{
 
         const answer =
-            await askGemini();
+            await askGemini(text);
 
 
         hideTyping();
 
 
         conversation.push({
-            role:"assistant",
-            text:answer,
-            time:
-                new Date().toISOString()
+            role:"model",
+            text:answer
         });
 
 
         addMessageToUI(
-            "assistant",
+            "ai",
             answer
         );
 
@@ -2619,59 +2768,62 @@ async function sendMessage(){
         await saveUserData();
 
 
-        setStatus(
-            "Bereit · Key " +
-            activeGeminiKey,
+        /*
+           NOVA SPRICHT
+        */
+
+        if(
+            voiceMode
+        ){
+
+            speak(answer);
+
+        }
+
+
+        setConnection(
+            `F${activeKeyNumber} · ${GEMINI_MODEL} bereit`,
             true
         );
 
 
-        speak(answer);
-
-
     }catch(error){
-
-        console.error(
-            error
-        );
-
 
         hideTyping();
 
+        console.error(error);
 
-        const readable =
-            readableGeminiError(
-                error
-            );
+
+        const errorText =
+            error?.message ||
+            "Unbekannter Fehler.";
 
 
         conversation.push({
-            role:"assistant",
-            text:readable,
-            time:
-                new Date().toISOString()
+            role:"model",
+            text:
+                "Fehler: " +
+                errorText
         });
 
 
         addMessageToUI(
-            "assistant",
-            readable
+            "ai",
+            "Fehler: " +
+            errorText
         );
 
 
         saveLocalData();
 
-        await saveUserData();
-
-
-        setStatus(
-            "Fehler",
+        setConnection(
+            "Gemini-Fehler",
             false
         );
 
     }finally{
 
-        thinking = false;
+        isThinking = false;
 
     }
 
@@ -2679,93 +2831,17 @@ async function sendMessage(){
 
 
 /* =========================================================
-   GEMINI ERROR
+   SEND BUTTON
 ========================================================= */
 
-function readableGeminiError(
-    error
-){
-
-    const message =
-        String(
-            error?.message ||
-            error ||
-            ""
-        );
-
-
-    if(message.includes("429")){
-
-        return (
-            "Gemini meldet HTTP 429. " +
-            "Der aktuell ausgewählte Zugang hat " +
-            "sein verfügbares Limit erreicht oder " +
-            "wurde vorübergehend begrenzt.\n\n" +
-            "Du kannst mit F1 oder F2 manuell " +
-            "einen anderen separat autorisierten " +
-            "Zugang auswählen."
-        );
-
-    }
-
-
-    if(
-        message.includes("401") ||
-        message.includes("403")
-    ){
-
-        return (
-            "Der aktuelle Gemini-Key wurde abgelehnt. " +
-            "Prüfe den Key und ob die Gemini API " +
-            "für diesen Zugang aktiviert ist."
-        );
-
-    }
-
-
-    if(
-        message.includes("400")
-    ){
-
-        return (
-            "Gemini hat die Anfrage abgelehnt. " +
-            "Prüfe den verwendeten Key und das Modell."
-        );
-
-    }
-
-
-    return (
-        "Bei der Gemini-Anfrage ist ein Fehler aufgetreten:\n\n" +
-        message
-    );
-
-}
-
-
-/* =========================================================
-   TEXTAREA
-========================================================= */
-
-messageInput.addEventListener(
-    "input",
-    function(){
-
-        this.style.height =
-            "auto";
-
-        this.style.height =
-            Math.min(
-                this.scrollHeight,
-                170
-            ) + "px";
-
-    }
+sendBtn.addEventListener(
+    "click",
+    sendMessage
 );
 
 
 /* =========================================================
-   ENTER SENDEN
+   ENTER
 ========================================================= */
 
 messageInput.addEventListener(
@@ -2788,502 +2864,36 @@ messageInput.addEventListener(
 
 
 /* =========================================================
-   SEND BUTTON
+   CLEAR CHAT
 ========================================================= */
 
-sendButton.addEventListener(
+clearChatBtn.addEventListener(
     "click",
-    sendMessage
+    async () => {
+
+        const confirmed =
+            confirm(
+                "Möchtest du den gemeinsamen Chat wirklich löschen?"
+            );
+
+        if(!confirmed) return;
+
+
+        conversation = [];
+
+        saveLocalData();
+
+        renderConversation();
+
+        await saveUserData();
+
+        setConnection(
+            "Chat gelöscht",
+            true
+        );
+
+    }
 );
-
-
-/* =========================================================
-   WEB ACTION DETECTION
-========================================================= */
-
-function detectWebAction(
-    originalText
-){
-
-    const text =
-        originalText
-            .trim();
-
-
-    const lower =
-        text.toLowerCase();
-
-
-    /*
-        YOUTUBE
-    */
-
-    if(
-        lower.includes("youtube")
-    ){
-
-        let query =
-            text
-                .replace(
-                    /youtube/ig,
-                    ""
-                )
-                .replace(
-                    /öffne/ig,
-                    ""
-                )
-                .replace(
-                    /auf/ig,
-                    ""
-                )
-                .trim();
-
-
-        return {
-
-            type:"youtube",
-
-            query:query,
-
-            description:
-                query
-                    ? "Ich öffne YouTube für „" +
-                      query +
-                      "“."
-                    : "Ich öffne YouTube."
-
-        };
-
-    }
-
-
-    /*
-        BILDER
-    */
-
-    if(
-        lower.includes("bilder") ||
-        lower.includes("bild von") ||
-        lower.includes("bilder von")
-    ){
-
-        let query =
-            text
-                .replace(
-                    /zeige? mir/ig,
-                    ""
-                )
-                .replace(
-                    /bilder?/ig,
-                    ""
-                )
-                .replace(
-                    /von/ig,
-                    ""
-                )
-                .replace(
-                    /auf google/ig,
-                    ""
-                )
-                .trim();
-
-
-        return {
-
-            type:"images",
-
-            query:query,
-
-            description:
-                "Ich öffne die Google-Bildersuche" +
-                (
-                    query
-                        ? " für „" +
-                          query +
-                          "“."
-                        : "."
-                )
-
-        };
-
-    }
-
-
-    /*
-        MAPS
-    */
-
-    if(
-        lower.includes("google maps") ||
-        lower.includes("maps") ||
-        lower.includes("karte von") ||
-        lower.startsWith("wo ist ") ||
-        lower.startsWith("wo befindet sich ")
-    ){
-
-        let query =
-            text
-                .replace(
-                    /google maps/ig,
-                    ""
-                )
-                .replace(
-                    /maps/ig,
-                    ""
-                )
-                .replace(
-                    /wo ist/ig,
-                    ""
-                )
-                .replace(
-                    /wo befindet sich/ig,
-                    ""
-                )
-                .replace(
-                    /karte von/ig,
-                    ""
-                )
-                .trim();
-
-
-        return {
-
-            type:"maps",
-
-            query:query,
-
-            description:
-                "Ich öffne Google Maps" +
-                (
-                    query
-                        ? " für „" +
-                          query +
-                          "“."
-                        : "."
-                )
-
-        };
-
-    }
-
-
-    /*
-        WIKIPEDIA
-    */
-
-    if(
-        lower.includes("wikipedia")
-    ){
-
-        let query =
-            text
-                .replace(
-                    /wikipedia/ig,
-                    ""
-                )
-                .replace(
-                    /öffne/ig,
-                    ""
-                )
-                .replace(
-                    /über/ig,
-                    ""
-                )
-                .replace(
-                    /auf/ig,
-                    ""
-                )
-                .trim();
-
-
-        return {
-
-            type:"wikipedia",
-
-            query:query,
-
-            description:
-                "Ich öffne Wikipedia" +
-                (
-                    query
-                        ? " für „" +
-                          query +
-                          "“."
-                        : "."
-                )
-
-        };
-
-    }
-
-
-    /*
-        VIDEOS
-    */
-
-    if(
-        lower.includes("videos von") ||
-        lower.includes("videos über") ||
-        lower.includes("zeig mir videos")
-    ){
-
-        let query =
-            text
-                .replace(
-                    /zeig mir/ig,
-                    ""
-                )
-                .replace(
-                    /videos?/ig,
-                    ""
-                )
-                .replace(
-                    /von/ig,
-                    ""
-                )
-                .replace(
-                    /über/ig,
-                    ""
-                )
-                .trim();
-
-
-        return {
-
-            type:"youtube",
-
-            query:query,
-
-            description:
-                "Ich öffne YouTube-Videos" +
-                (
-                    query
-                        ? " über „" +
-                          query +
-                          "“."
-                        : "."
-                )
-
-        };
-
-    }
-
-
-    /*
-        GOOGLE
-    */
-
-    if(
-        lower.includes("auf google") ||
-        lower.includes("bei google") ||
-        lower.startsWith("google ")
-    ){
-
-        let query =
-            text
-                .replace(
-                    /auf google/ig,
-                    ""
-                )
-                .replace(
-                    /bei google/ig,
-                    ""
-                )
-                .replace(
-                    /^google/ig,
-                    ""
-                )
-                .replace(
-                    /öffne/ig,
-                    ""
-                )
-                .replace(
-                    /such/ig,
-                    ""
-                )
-                .trim();
-
-
-        return {
-
-            type:"google",
-
-            query:query,
-
-            description:
-                "Ich öffne Google" +
-                (
-                    query
-                        ? " für „" +
-                          query +
-                          "“."
-                        : "."
-                )
-
-        };
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =========================================================
-   WEB ACTION OPEN
-========================================================= */
-
-function openWebAction(
-    action
-){
-
-    const query =
-        encodeURIComponent(
-            action.query || ""
-        );
-
-
-    let url = "";
-
-
-    if(
-        action.type ===
-        "google"
-    ){
-
-        url =
-            "https://www.google.com/search?q=" +
-            query;
-
-    }
-
-
-    if(
-        action.type ===
-        "images"
-    ){
-
-        url =
-            "https://www.google.com/search?tbm=isch&q=" +
-            query;
-
-    }
-
-
-    if(
-        action.type ===
-        "youtube"
-    ){
-
-        url =
-            action.query
-                ? "https://www.youtube.com/results?search_query=" +
-                  query
-                : "https://www.youtube.com/";
-
-    }
-
-
-    if(
-        action.type ===
-        "maps"
-    ){
-
-        url =
-            "https://www.google.com/maps/search/?api=1&query=" +
-            query;
-
-    }
-
-
-    if(
-        action.type ===
-        "wikipedia"
-    ){
-
-        url =
-            "https://de.wikipedia.org/w/index.php?search=" +
-            query;
-
-    }
-
-
-    if(url){
-
-        window.open(
-            url,
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   MANUELLE WEB BUTTONS
-========================================================= */
-
-window.openGoogle =
-    function(){
-
-        window.open(
-            "https://www.google.com/",
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    };
-
-
-window.openYouTube =
-    function(){
-
-        window.open(
-            "https://www.youtube.com/",
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    };
-
-
-window.openImages =
-    function(){
-
-        window.open(
-            "https://images.google.com/",
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    };
-
-
-window.openMaps =
-    function(){
-
-        window.open(
-            "https://www.google.com/maps/",
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    };
-
-
-window.openWikipedia =
-    function(){
-
-        window.open(
-            "https://de.wikipedia.org/",
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    };
 
 
 /* =========================================================
@@ -3299,9 +2909,12 @@ function setupSpeechRecognition(){
 
     if(!SpeechRecognition){
 
-        voiceButton.disabled = true;
+        micBtn.disabled = true;
 
-        voiceButton.title =
+        micBtn.style.opacity =
+            ".4";
+
+        micBtn.title =
             "Spracheingabe wird von diesem Browser nicht unterstützt.";
 
         return;
@@ -3316,11 +2929,14 @@ function setupSpeechRecognition(){
     recognition.lang =
         "de-DE";
 
+
     recognition.continuous =
         false;
 
+
     recognition.interimResults =
         false;
+
 
     recognition.maxAlternatives =
         1;
@@ -3329,14 +2945,14 @@ function setupSpeechRecognition(){
     recognition.onstart =
         () => {
 
-            listening = true;
+            isListening = true;
 
-            voiceButton.classList.add(
+            micBtn.classList.add(
                 "active"
             );
 
-            setStatus(
-                "Ich höre...",
+            setConnection(
+                "Nova hört zu...",
                 true
             );
 
@@ -3369,24 +2985,14 @@ function setupSpeechRecognition(){
 
             const result =
                 event
-                    .results?.[0]?.[0]
-                    ?.transcript
-                    ?.trim();
-
-
-            stopListening();
+                    ?.results?.[0]?.[0]
+                    ?.transcript;
 
 
             if(result){
 
                 messageInput.value =
                     result;
-
-                messageInput.dispatchEvent(
-                    new Event(
-                        "input"
-                    )
-                );
 
                 sendMessage();
 
@@ -3402,21 +3008,21 @@ function setupSpeechRecognition(){
                 micTimeout
             );
 
-            console.error(
-                "Speech error:",
-                event.error
+            isListening = false;
+
+            micBtn.classList.remove(
+                "active"
             );
 
-            stopListening();
 
             if(
                 event.error !==
                 "aborted"
             ){
 
-                showToast(
-                    "Mikrofonfehler: " +
-                    event.error
+                setConnection(
+                    "Mikrofonfehler",
+                    false
                 );
 
             }
@@ -3431,22 +3037,20 @@ function setupSpeechRecognition(){
                 micTimeout
             );
 
-            micTimeout =
-                null;
+            isListening = false;
 
-            listening =
-                false;
-
-            voiceButton.classList.remove(
+            micBtn.classList.remove(
                 "active"
             );
 
 
-            if(!speaking){
+            if(
+                !isThinking &&
+                !isSpeaking
+            ){
 
-                setStatus(
-                    "Bereit · Key " +
-                    activeGeminiKey,
+                setConnection(
+                    `F${activeKeyNumber} · ${GEMINI_MODEL} bereit`,
                     true
                 );
 
@@ -3457,36 +3061,13 @@ function setupSpeechRecognition(){
 }
 
 
-/* =========================================================
-   START LISTENING
-========================================================= */
-
 function startListening(){
 
     if(
-        speaking ||
-        thinking
+        !recognition ||
+        isSpeaking ||
+        isThinking
     ){
-
-        return;
-
-    }
-
-
-    if(!recognition){
-
-        showToast(
-            "Dein Browser unterstützt keine Spracheingabe."
-        );
-
-        return;
-
-    }
-
-
-    if(listening){
-
-        stopListening();
 
         return;
 
@@ -3495,22 +3076,21 @@ function startListening(){
 
     try{
 
+        stopListening();
+
+
+        voiceMode = true;
+
         recognition.start();
 
     }catch(error){
 
-        console.error(
-            error
-        );
+        console.warn(error);
 
     }
 
 }
 
-
-/* =========================================================
-   STOP LISTENING
-========================================================= */
 
 function stopListening(){
 
@@ -3518,26 +3098,28 @@ function stopListening(){
         micTimeout
     );
 
-    micTimeout =
-        null;
 
-
-    if(recognition){
+    if(
+        recognition &&
+        isListening
+    ){
 
         try{
 
             recognition.stop();
 
-        }catch(error){}
+        }catch(error){
+
+            console.warn(error);
+
+        }
 
     }
 
 
-    listening =
-        false;
+    isListening = false;
 
-
-    voiceButton.classList.remove(
+    micBtn.classList.remove(
         "active"
     );
 
@@ -3545,14 +3127,21 @@ function stopListening(){
 
 
 /* =========================================================
-   VOICE BUTTON
+   MICROPHONE BUTTON
 ========================================================= */
 
-voiceButton.addEventListener(
+micBtn.addEventListener(
     "click",
     () => {
 
-        if(listening){
+        if(isSpeaking){
+
+            return;
+
+        }
+
+
+        if(isListening){
 
             stopListening();
 
@@ -3582,14 +3171,23 @@ function speak(text){
 
 
     /*
-        Ganz wichtig:
-        Nova darf nicht gleichzeitig
-        zuhören und sprechen.
+       Nova darf während des Sprechens
+       niemals gleichzeitig zuhören.
     */
 
     stopListening();
 
-    speechSynthesis.cancel();
+
+    isSpeaking = true;
+
+
+    setConnection(
+        "Nova spricht...",
+        true
+    );
+
+
+    window.speechSynthesis.cancel();
 
 
     const utterance =
@@ -3601,25 +3199,31 @@ function speak(text){
     utterance.lang =
         "de-DE";
 
+
     utterance.rate =
-        1;
+        1.0;
+
 
     utterance.pitch =
-        1;
+        1.0;
+
+
+    utterance.volume =
+        1.0;
 
 
     const voices =
-        speechSynthesis.getVoices();
+        window.speechSynthesis
+            .getVoices();
 
 
     const germanVoice =
         voices.find(
             voice =>
+                voice.lang &&
                 voice.lang
-                    ?.toLowerCase()
-                    .startsWith(
-                        "de"
-                    )
+                    .toLowerCase()
+                    .startsWith("de")
         );
 
 
@@ -3634,15 +3238,9 @@ function speak(text){
     utterance.onstart =
         () => {
 
-            speaking =
-                true;
+            isSpeaking = true;
 
             stopListening();
-
-            setStatus(
-                "Nova spricht...",
-                true
-            );
 
         };
 
@@ -3650,12 +3248,11 @@ function speak(text){
     utterance.onend =
         () => {
 
-            speaking =
-                false;
+            isSpeaking = false;
 
-            setStatus(
-                "Bereit · Key " +
-                activeGeminiKey,
+
+            setConnection(
+                `F${activeKeyNumber} · ${GEMINI_MODEL} bereit`,
                 true
             );
 
@@ -3665,19 +3262,18 @@ function speak(text){
     utterance.onerror =
         () => {
 
-            speaking =
-                false;
+            isSpeaking = false;
 
-            setStatus(
-                "Bereit · Key " +
-                activeGeminiKey,
+
+            setConnection(
+                `F${activeKeyNumber} · ${GEMINI_MODEL} bereit`,
                 true
             );
 
         };
 
 
-    speechSynthesis.speak(
+    window.speechSynthesis.speak(
         utterance
     );
 
@@ -3685,53 +3281,35 @@ function speak(text){
 
 
 /* =========================================================
-   SPEECH VOICES LADEN
+   INITIALIZE SPEECH
 ========================================================= */
 
-if(
-    "speechSynthesis" in window
-){
-
-    speechSynthesis.onvoiceschanged =
-        () => {};
-
-}
+setupSpeechRecognition();
 
 
 /* =========================================================
-   START
+   INITIAL LOAD
 ========================================================= */
 
 loadLocalData();
 
-setupSpeechRecognition();
 
-setStatus(
-    "Bereit · Key " +
-    activeGeminiKey,
-    true
-);
+/* =========================================================
+   WELCOME
+========================================================= */
+
+if(
+    conversation.length === 0
+){
+
+    addMessageToUI(
+        "ai",
+        "Hallo. Ich bin Nova. Wie kann ich dir helfen?"
+    );
+
+}
 
 </script>
 
 </body>
 </html>
-```
-
-### Einrichtung
-
-1. Deine alte `index.html` auf GitHub **komplett löschen/ersetzen**.
-2. Den Code oben als `index.html` speichern.
-3. GitHub Pages neu laden.
-4. Mit deinem Google-Konto anmelden.
-5. Links **Gemini Key 1** eintragen → **Speichern** → **Aktivieren**.
-6. Den zweiten Key genauso bei **Gemini Key 2** eintragen.
-7. Danach:
-
-   * **F1 → Key 1**
-   * **F2 → Key 2**
-8. Der Chatverlauf bleibt **ein gemeinsamer Verlauf**, egal welcher der beiden Keys gerade aktiv ist.
-
-**Noch wichtig:** Der `apiKey` in deiner Firebase-Konfiguration ist eine öffentliche Firebase-Web-Konfiguration. Die **Gemini-Keys sind dagegen private Zugangsdaten** und stehen deshalb nicht im Quelltext. Die beiden Gemini-Keys werden in dieser Version lokal im Browser gespeichert. Für eine wirklich öffentlich nutzbare Familienseite wäre ein Backend/Firebase-basierter Gemini-Zugriff sicherer.
-
-Der Zähler `20 / 20` ist außerdem nur ein **lokaler App-Zähler** – er zeigt nicht das echte Google-Gemini-Kontingent an.
