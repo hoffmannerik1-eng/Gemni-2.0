@@ -6,9 +6,12 @@
 html,
 body {
     margin: 0;
+    width: 100%;
     min-height: 100%;
-    background: #020306;
-    color: #f5f7fa;
+
+    background: #020305;
+    color: white;
+
     font-family:
         Inter,
         -apple-system,
@@ -28,39 +31,40 @@ body {
 .background {
     position: fixed;
     inset: 0;
-    z-index: -2;
+    z-index: -10;
 
     background:
         radial-gradient(
-            circle at 50% 45%,
-            rgba(45, 105, 190, .12),
-            transparent 30%
+            circle at 50% 43%,
+            rgba(38, 100, 190, .13),
+            transparent 32%
         ),
         radial-gradient(
-            circle at 20% 20%,
-            rgba(0, 140, 255, .06),
+            circle at 15% 20%,
+            rgba(20, 90, 180, .06),
             transparent 30%
         ),
-        #020306;
+        #020305;
 }
 
 .background::after {
     content: "";
+
     position: absolute;
     inset: 0;
 
-    background-image:
+    background:
         linear-gradient(
-            rgba(255,255,255,.015) 1px,
+            rgba(255,255,255,.012) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(255,255,255,.015) 1px,
+            rgba(255,255,255,.012) 1px,
             transparent 1px
         );
 
-    background-size: 60px 60px;
+    background-size: 70px 70px;
 
     mask-image:
         radial-gradient(
@@ -71,22 +75,24 @@ body {
 }
 
 
-/* TOP */
+/* HEADER */
 
 .topbar {
-    height: 80px;
-    padding: 0 30px;
+    height: 78px;
+
+    padding: 0 28px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    border-bottom: 1px solid rgba(255,255,255,.07);
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
 
     background:
-        rgba(2,3,6,.72);
+        rgba(2,3,5,.72);
 
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(22px);
 }
 
 .logo {
@@ -96,37 +102,43 @@ body {
 }
 
 .logo-orb {
-    width: 30px;
-    height: 30px;
+    width: 31px;
+    height: 31px;
 
     border-radius: 50%;
 
     background:
         radial-gradient(
-            circle at 35% 30%,
-            white 0 5%,
-            #91c9ff 12%,
-            #2879ff 35%,
-            #07132e 70%,
-            #020306
+            circle at 33% 28%,
+            white 0 4%,
+            #a7d5ff 10%,
+            #398cff 32%,
+            #07152d 65%,
+            #010205
         );
 
     box-shadow:
-        0 0 20px rgba(55,140,255,.45);
+        0 0 22px rgba(55,140,255,.45);
 }
 
 .logo strong {
     display: block;
-    letter-spacing: 4px;
+
     font-size: 15px;
+
+    letter-spacing: 4px;
 }
 
 .logo span {
     display: block;
+
     margin-top: 2px;
-    color: #737b8b;
-    font-size: 11px;
-    letter-spacing: 1px;
+
+    color: #707888;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
 }
 
 
@@ -141,12 +153,14 @@ body {
 .user-photo {
     width: 36px;
     height: 36px;
+
     border-radius: 50%;
 }
 
 .user-info {
     display: flex;
     flex-direction: column;
+
     text-align: right;
 }
 
@@ -155,29 +169,50 @@ body {
 }
 
 .user-info span {
-    color: #777f8d;
+    margin-top: 2px;
+
+    color: #707888;
+
     font-size: 11px;
 }
 
+
+/* BUTTONS */
+
 button {
-    border: 0;
-    color: white;
     font: inherit;
+    color: white;
+
+    border: 0;
+
     cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
 }
 
 .login-button,
 .small-button {
     padding: 10px 15px;
+
     border-radius: 10px;
 
-    background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.1);
+    background:
+        rgba(255,255,255,.055);
+
+    border:
+        1px solid rgba(255,255,255,.1);
+
+    transition: .2s;
 }
 
 .login-button:hover,
 .small-button:hover {
-    background: rgba(255,255,255,.12);
+    background:
+        rgba(255,255,255,.1);
+
+    transform: translateY(-1px);
 }
 
 
@@ -196,22 +231,21 @@ main {
 
     display: flex;
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
-
-    position: relative;
 }
 
 
-/* =========================
-   REALISTIC AI ORB
-   ========================= */
+/* =================================
+   REALISTIC NOVA AI CORE
+   ================================= */
 
 .orb {
-    width: 330px;
-    height: 330px;
-
     position: relative;
+
+    width: 340px;
+    height: 340px;
 
     display: flex;
     align-items: center;
@@ -220,40 +254,33 @@ main {
     isolation: isolate;
 }
 
-
-/* outer light */
-
 .orb-aura {
     position: absolute;
 
-    width: 280px;
-    height: 280px;
+    width: 290px;
+    height: 290px;
 
     border-radius: 50%;
 
     background:
         radial-gradient(
             circle,
-            rgba(50,130,255,.32),
-            rgba(20,70,180,.12) 40%,
+            rgba(70,150,255,.25),
+            rgba(30,90,220,.10) 40%,
             transparent 72%
         );
 
-    filter: blur(24px);
+    filter: blur(28px);
 
-    opacity: .75;
-
-    animation: aura 5s ease-in-out infinite;
+    animation:
+        auraPulse 5s ease-in-out infinite;
 }
 
-
-/* glass shell */
-
 .orb-shell {
-    width: 230px;
-    height: 230px;
-
     position: relative;
+
+    width: 235px;
+    height: 235px;
 
     overflow: hidden;
 
@@ -261,35 +288,39 @@ main {
 
     background:
         radial-gradient(
-            circle at 34% 27%,
-            rgba(255,255,255,.95) 0%,
-            rgba(180,220,255,.72) 3%,
-            rgba(75,155,255,.45) 10%,
+            circle at 31% 24%,
+            rgba(255,255,255,.98) 0%,
+            rgba(180,220,255,.7) 3%,
+            rgba(82,160,255,.38) 11%,
             transparent 25%
         ),
         radial-gradient(
-            circle at 58% 58%,
-            #0a3570 0%,
-            #071b3e 28%,
-            #030914 60%,
-            #010205 100%
+            circle at 57% 58%,
+            #103e7c 0%,
+            #071d42 28%,
+            #030b18 59%,
+            #010204 100%
         );
 
-    border: 1px solid rgba(170,215,255,.35);
+    border:
+        1px solid rgba(170,215,255,.32);
 
     box-shadow:
-        inset -25px -30px 50px rgba(0,0,0,.85),
-        inset 20px 15px 45px rgba(80,160,255,.18),
-        0 0 35px rgba(35,110,255,.3),
-        0 0 100px rgba(25,95,255,.15);
+        inset -30px -35px 55px rgba(0,0,0,.9),
+        inset 20px 15px 45px rgba(90,170,255,.18),
+        0 0 45px rgba(35,110,255,.28),
+        0 0 110px rgba(25,90,255,.14);
 
-    transform: translateZ(0);
+    animation:
+        orbFloat 6s ease-in-out infinite;
 
-    animation: orbFloat 6s ease-in-out infinite;
+    transition:
+        transform .3s,
+        box-shadow .3s;
 }
 
 
-/* subtle glass reflection */
+/* GLASS */
 
 .orb-surface {
     position: absolute;
@@ -299,14 +330,14 @@ main {
 
     background:
         radial-gradient(
-            ellipse at 30% 20%,
-            rgba(255,255,255,.38),
-            transparent 18%
+            ellipse at 27% 18%,
+            rgba(255,255,255,.32),
+            transparent 17%
         ),
         linear-gradient(
-            125deg,
+            130deg,
             rgba(255,255,255,.08),
-            transparent 30%,
+            transparent 32%,
             rgba(0,0,0,.4)
         );
 
@@ -314,15 +345,15 @@ main {
 }
 
 
-/* moving energy */
+/* ENERGY */
 
 .orb-energy {
     position: absolute;
 
-    width: 170%;
-    height: 45%;
+    width: 180%;
+    height: 42%;
 
-    left: -35%;
+    left: -40%;
     top: 30%;
 
     border-radius: 50%;
@@ -331,74 +362,66 @@ main {
         linear-gradient(
             90deg,
             transparent,
-            rgba(70,160,255,.05),
-            rgba(180,225,255,.35),
-            rgba(40,120,255,.1),
+            rgba(80,170,255,.04),
+            rgba(190,230,255,.32),
+            rgba(60,130,255,.08),
             transparent
         );
 
-    filter: blur(13px);
+    filter: blur(12px);
 
-    transform: rotate(-28deg);
+    transform: rotate(-27deg);
 
-    animation: energyMove 5s linear infinite;
+    animation:
+        energyMove 5s linear infinite;
 }
 
 .energy-two {
+    transform: rotate(31deg);
+
     animation-duration: 7s;
     animation-delay: -3s;
-    transform: rotate(30deg);
+
     opacity: .5;
 }
 
 
-/* small light reflections */
+/* HIGHLIGHT */
 
-.orb-light {
+.orb-highlight {
     position: absolute;
+
+    width: 20px;
+    height: 9px;
+
+    left: 52px;
+    top: 42px;
 
     border-radius: 50%;
 
     background: white;
 
-    filter: blur(4px);
+    filter: blur(3px);
 
-    opacity: .7;
-}
-
-.light-one {
-    width: 14px;
-    height: 8px;
-
-    left: 57px;
-    top: 48px;
+    opacity: .72;
 
     transform: rotate(-35deg);
 }
 
-.light-two {
-    width: 5px;
-    height: 5px;
 
-    left: 84px;
-    top: 37px;
-
-    opacity: .4;
-}
-
-
-/* center */
+/* CORE */
 
 .orb-center {
     position: absolute;
 
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
 
     left: 50%;
     top: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
     border-radius: 50%;
 
@@ -406,19 +429,18 @@ main {
         radial-gradient(
             circle,
             white 0%,
-            #b9ddff 12%,
-            #5ca8ff 28%,
+            #c7e6ff 12%,
+            #64adff 30%,
             rgba(50,130,255,.2) 60%,
-            transparent 72%
+            transparent 75%
         );
 
-    filter: blur(.2px);
-
     box-shadow:
-        0 0 20px #70b5ff,
-        0 0 60px rgba(50,130,255,.65);
+        0 0 22px #7abaff,
+        0 0 65px rgba(50,130,255,.7);
 
-    animation: centerPulse 2.4s ease-in-out infinite;
+    animation:
+        corePulse 2.3s ease-in-out infinite;
 }
 
 
@@ -427,38 +449,34 @@ main {
 .orb.thinking .orb-shell {
     animation:
         orbFloat 4s ease-in-out infinite,
-        thinkingSpin 2.5s linear infinite;
-}
-
-.orb.thinking .orb-center {
-    animation:
-        centerPulse .7s ease-in-out infinite;
+        thinking 2.4s linear infinite;
 }
 
 .orb.listening .orb-shell {
     box-shadow:
-        inset -25px -30px 50px rgba(0,0,0,.8),
-        inset 20px 15px 45px rgba(80,160,255,.25),
-        0 0 50px rgba(50,150,255,.65),
-        0 0 120px rgba(30,110,255,.3);
+        inset -30px -35px 55px rgba(0,0,0,.9),
+        inset 20px 15px 45px rgba(90,170,255,.25),
+        0 0 55px rgba(45,145,255,.65),
+        0 0 130px rgba(30,110,255,.28);
 }
 
 .orb.speaking .orb-shell {
     animation:
         orbFloat 5s ease-in-out infinite,
-        speakingPulse 1.1s ease-in-out infinite;
+        speaking 1s ease-in-out infinite;
 }
 
 .orb.speaking .orb-center {
     animation:
-        centerPulse .45s ease-in-out infinite;
+        corePulse .45s ease-in-out infinite;
 }
 
 
 /* STATUS */
 
 .status {
-    margin-top: 28px;
+    margin-top: 25px;
+
     text-align: center;
 }
 
@@ -474,34 +492,36 @@ main {
 
     margin-top: 7px;
 
-    color: #687080;
+    color: #6c7483;
+
     font-size: 12px;
 }
 
 
-/* MICROPHONE */
+/* MIC */
 
 .microphone {
     width: 64px;
     height: 64px;
 
-    margin-top: 28px;
+    margin-top: 27px;
 
     border-radius: 50%;
 
     background:
         linear-gradient(
             145deg,
-            rgba(255,255,255,.12),
-            rgba(255,255,255,.035)
+            rgba(255,255,255,.1),
+            rgba(255,255,255,.025)
         );
 
-    border: 1px solid rgba(255,255,255,.13);
+    border:
+        1px solid rgba(255,255,255,.12);
 
     box-shadow:
-        0 15px 35px rgba(0,0,0,.35);
+        0 15px 35px rgba(0,0,0,.4);
 
-    font-size: 23px;
+    font-size: 22px;
 
     transition: .2s;
 }
@@ -511,17 +531,18 @@ main {
 }
 
 .microphone.active {
-    background: rgba(40,130,255,.18);
+    background:
+        rgba(35,125,255,.2);
 
-    border-color: rgba(80,160,255,.6);
+    border-color:
+        rgba(80,160,255,.65);
 
     box-shadow:
-        0 0 30px rgba(40,130,255,.3);
+        0 0 35px rgba(40,130,255,.35);
 }
 
 .microphone:disabled {
     opacity: .35;
-    cursor: not-allowed;
 }
 
 
@@ -530,33 +551,38 @@ main {
 .mode-buttons {
     display: flex;
 
-    gap: 5px;
+    gap: 4px;
 
-    margin-top: 18px;
+    margin-top: 17px;
 
     padding: 4px;
 
     border-radius: 12px;
 
-    background: rgba(255,255,255,.045);
-    border: 1px solid rgba(255,255,255,.07);
+    background:
+        rgba(255,255,255,.04);
+
+    border:
+        1px solid rgba(255,255,255,.07);
 }
 
 .mode {
-    padding: 8px 17px;
+    padding: 8px 18px;
 
     border-radius: 8px;
 
     background: transparent;
 
-    color: #777f8c;
+    color: #737b89;
 
     font-size: 12px;
 }
 
 .mode.active {
-    background: rgba(255,255,255,.1);
     color: white;
+
+    background:
+        rgba(255,255,255,.1);
 }
 
 
@@ -565,45 +591,54 @@ main {
 .chat {
     margin-bottom: 25px;
 
-    border: 1px solid rgba(255,255,255,.08);
+    overflow: hidden;
 
     border-radius: 18px;
 
-    background: rgba(255,255,255,.025);
+    border:
+        1px solid rgba(255,255,255,.08);
 
-    overflow: hidden;
+    background:
+        rgba(255,255,255,.025);
 }
 
 .messages {
     max-height: 350px;
-    overflow-y: auto;
+
     padding: 20px;
+
+    overflow-y: auto;
 }
 
 .message {
-    padding: 12px 15px;
     margin-bottom: 10px;
+
+    padding: 12px 15px;
 
     border-radius: 12px;
 
-    line-height: 1.5;
     font-size: 14px;
+    line-height: 1.5;
 }
 
 .message.user {
-    background: rgba(60,130,255,.12);
+    background:
+        rgba(50,130,255,.12);
 }
 
 .message.nova {
-    background: rgba(255,255,255,.055);
+    background:
+        rgba(255,255,255,.05);
 }
 
 .input-area {
     display: flex;
     gap: 10px;
+
     padding: 14px;
 
-    border-top: 1px solid rgba(255,255,255,.06);
+    border-top:
+        1px solid rgba(255,255,255,.06);
 }
 
 .input-area input {
@@ -611,15 +646,17 @@ main {
 
     padding: 13px 15px;
 
-    border-radius: 10px;
-
-    border: 1px solid rgba(255,255,255,.09);
+    color: white;
 
     outline: none;
 
-    color: white;
+    border-radius: 10px;
 
-    background: rgba(0,0,0,.35);
+    border:
+        1px solid rgba(255,255,255,.1);
+
+    background:
+        rgba(0,0,0,.4);
 }
 
 .input-area button {
@@ -627,7 +664,8 @@ main {
 
     border-radius: 10px;
 
-    background: #246cff;
+    background:
+        #246cff;
 }
 
 
@@ -635,7 +673,6 @@ main {
 
 .actions {
     display: flex;
-
     justify-content: center;
 
     gap: 10px;
@@ -648,22 +685,24 @@ main {
 
     border-radius: 11px;
 
-    background: rgba(255,255,255,.055);
-
-    border: 1px solid rgba(255,255,255,.08);
-
     color: #b9bec8;
 
-    font-size: 12px;
+    background:
+        rgba(255,255,255,.05);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    transition: .2s;
 }
 
-.action-button:hover:not(:disabled) {
+.action-button:hover {
     color: white;
-    background: rgba(255,255,255,.09);
-}
 
-.action-button:disabled {
-    opacity: .3;
+    background:
+        rgba(255,255,255,.09);
+
+    transform: translateY(-1px);
 }
 
 
@@ -675,27 +714,28 @@ main {
 
     z-index: 9999;
 
+    display: flex;
+
     align-items: center;
     justify-content: center;
 
     padding: 20px;
 
-    background: rgba(0,0,0,.72);
+    background:
+        rgba(0,0,0,.75);
 
-    backdrop-filter: blur(20px);
+    backdrop-filter:
+        blur(20px);
 }
 
 .overlay[hidden] {
     display: none !important;
 }
 
-.overlay:not([hidden]) {
-    display: flex;
-}
-
 .settings {
     width: min(580px, 100%);
     max-height: 90vh;
+
     overflow-y: auto;
 
     padding: 25px;
@@ -705,14 +745,15 @@ main {
     background:
         linear-gradient(
             145deg,
-            rgba(20,24,32,.97),
-            rgba(7,9,13,.97)
+            rgba(20,24,32,.98),
+            rgba(6,8,12,.98)
         );
 
-    border: 1px solid rgba(255,255,255,.1);
+    border:
+        1px solid rgba(255,255,255,.1);
 
     box-shadow:
-        0 30px 100px rgba(0,0,0,.7);
+        0 30px 100px rgba(0,0,0,.75);
 }
 
 .settings-header {
@@ -725,7 +766,7 @@ main {
 }
 
 .settings p {
-    color: #737b89;
+    color: #727b89;
     font-size: 12px;
 }
 
@@ -735,7 +776,8 @@ main {
 
     border-radius: 10px;
 
-    background: rgba(255,255,255,.06);
+    background:
+        rgba(255,255,255,.06);
 
     font-size: 24px;
 }
@@ -744,13 +786,16 @@ main {
     margin-top: 22px;
 }
 
-.setting label {
+.setting label,
+.toggle-row {
     display: flex;
     justify-content: space-between;
 
-    margin-bottom: 8px;
-
     font-size: 13px;
+}
+
+.setting label {
+    margin-bottom: 8px;
 }
 
 select {
@@ -760,9 +805,10 @@ select {
 
     color: white;
 
-    background: #11151c;
+    background: #10141b;
 
-    border: 1px solid rgba(255,255,255,.1);
+    border:
+        1px solid rgba(255,255,255,.1);
 
     border-radius: 10px;
 }
@@ -772,9 +818,9 @@ input[type="range"] {
 }
 
 .toggle-row {
-    display: flex;
+    margin-top: 20px;
+
     align-items: center;
-    justify-content: space-between;
 }
 
 .primary-button,
@@ -786,40 +832,49 @@ input[type="range"] {
 
 .primary-button {
     width: 100%;
+
     margin-top: 22px;
 
-    background: #246cff;
+    background:
+        #246cff;
 }
 
 .secondary-button {
-    background: rgba(255,255,255,.08);
+    background:
+        rgba(255,255,255,.08);
 }
 
 .family-actions {
     display: flex;
     gap: 8px;
+
     flex-wrap: wrap;
 }
 
 .family-actions input {
     flex: 1;
+
     min-width: 130px;
 
     padding: 10px;
 
-    border-radius: 9px;
-
-    border: 1px solid rgba(255,255,255,.1);
+    color: white;
 
     background: #090b10;
-    color: white;
+
+    border:
+        1px solid rgba(255,255,255,.1);
+
+    border-radius: 9px;
 }
 
 hr {
     margin: 25px 0;
 
     border: 0;
-    border-top: 1px solid rgba(255,255,255,.08);
+
+    border-top:
+        1px solid rgba(255,255,255,.08);
 }
 
 
@@ -831,18 +886,24 @@ hr {
     left: 50%;
     bottom: 25px;
 
-    transform: translateX(-50%) translateY(20px);
+    z-index: 10000;
+
+    transform:
+        translate(-50%, 20px);
 
     padding: 12px 18px;
 
+    opacity: 0;
+
+    pointer-events: none;
+
     border-radius: 10px;
 
-    background: rgba(20,24,30,.95);
+    background:
+        rgba(20,24,30,.97);
 
-    border: 1px solid rgba(255,255,255,.1);
-
-    opacity: 0;
-    pointer-events: none;
+    border:
+        1px solid rgba(255,255,255,.1);
 
     transition: .25s;
 
@@ -851,57 +912,78 @@ hr {
 
 .toast.show {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+
+    transform:
+        translate(-50%, 0);
 }
 
 
 /* ANIMATIONS */
 
 @keyframes orbFloat {
-    0%,100% {
+
+    0%, 100% {
         transform: translateY(0);
     }
 
     50% {
         transform: translateY(-8px);
     }
+
 }
 
-@keyframes aura {
-    0%,100% {
+@keyframes auraPulse {
+
+    0%, 100% {
         transform: scale(.92);
-        opacity: .55;
+        opacity: .5;
     }
 
     50% {
         transform: scale(1.08);
         opacity: .9;
     }
+
 }
 
-@keyframes centerPulse {
-    0%,100% {
-        transform: translate(-50%,-50%) scale(.75);
+@keyframes corePulse {
+
+    0%, 100% {
+        transform:
+            translate(-50%, -50%)
+            scale(.75);
+
         opacity: .65;
     }
 
     50% {
-        transform: translate(-50%,-50%) scale(1.25);
+        transform:
+            translate(-50%, -50%)
+            scale(1.25);
+
         opacity: 1;
     }
+
 }
 
 @keyframes energyMove {
+
     from {
-        transform: translateX(-20%) rotate(-28deg);
+        transform:
+            translateX(-20%)
+            rotate(-27deg);
     }
 
     to {
-        transform: translateX(20%) rotate(-28deg);
+        transform:
+            translateX(20%)
+            rotate(-27deg);
     }
+
 }
 
-@keyframes thinkingSpin {
+@keyframes thinking {
+
     0% {
         filter: hue-rotate(0deg);
     }
@@ -909,18 +991,23 @@ hr {
     100% {
         filter: hue-rotate(35deg);
     }
+
 }
 
-@keyframes speakingPulse {
-    0%,100% {
+@keyframes speaking {
+
+    0%, 100% {
         transform: scale(1);
     }
 
     50% {
         transform: scale(1.035);
     }
+
 }
 
+
+/* MOBILE */
 
 @media (max-width: 650px) {
 
@@ -937,17 +1024,18 @@ hr {
     }
 
     .orb {
-        width: 280px;
-        height: 280px;
+        width: 285px;
+        height: 285px;
     }
 
     .orb-shell {
-        width: 200px;
-        height: 200px;
+        width: 205px;
+        height: 205px;
     }
 
     .actions {
         flex-wrap: wrap;
     }
+
 }
 ```
