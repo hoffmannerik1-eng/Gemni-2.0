@@ -36,12 +36,12 @@ import {
 // ============================================================
 
 const firebaseConfig = {
-    apiKey: "DEINE_API_KEY",
-    authDomain: "DEIN-PROJEKT.firebaseapp.com",
-    projectId: "DEIN-PROJEKT",
-    storageBucket: "DEIN-PROJEKT.firebasestorage.app",
-    messagingSenderId: "DEINE_SENDER_ID",
-    appId: "DEINE_APP_ID"
+    apiKey: "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIg9C9EtrE",
+    authDomain: "nova-68fc1.firebaseapp.com",
+    projectId: "nova-68fc1",
+    storageBucket: "nova-68fc1.firebasestorage.app",
+    messagingSenderId: "1020069093020",
+    appId: "1:1020069093020:web:9be72af9e60af659475759"
 };
 
 
