@@ -1,8 +1,9 @@
-import {
-    initializeApp
-}
-from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+// ============================================================
+// NOVA FAMILY AI
+// komplette app.js
+// ============================================================
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 
 import {
     getAuth,
@@ -10,9 +11,7 @@ import {
     signInWithPopup,
     signOut,
     onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 import {
     getFirestore,
@@ -25,1330 +24,1501 @@ import {
     where,
     getDocs,
     serverTimestamp
-}
-from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
-
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 import {
     getAI,
     getGenerativeModel,
     GoogleAIBackend
-}
-from "https://www.gstatic.com/firebasejs/12.3.0/firebase-ai.js";
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-ai.js";
+
+import { firebaseConfig } from "./firebase-config.js";
 
 
-import {
-    firebaseConfig
-}
-from "./firebase-config.js";
+// ============================================================
+// FIREBASE
+// ============================================================
+
+const firebaseApp = initializeApp(firebaseConfig);
+
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+
+const ai = getAI(firebaseApp, {
+    backend: new GoogleAIBackend()
+});
+
+// Falls dein Firebase-Projekt einen anderen verfügbaren Gemini-
+// Modellnamen anzeigt, diesen Modellnamen hier anpassen.
+const model = getGenerativeModel(ai, {
+    model: "gemini-3.7-flash"
+});
 
 
-/* =====================================
-   FIREBASE
-===================================== */
+// ============================================================
+// ELEMENTE
+// ============================================================
 
-const firebaseApp =
-    initializeApp(firebaseConfig);
+const loginButton =
+    document.getElementById("loginButton") ||
+    document.getElementById("googleLogin");
+
+const logoutButton =
+    document.getElementById("logoutButton") ||
+    document.getElementById("logout");
+
+const microphone =
+    document.getElementById("microphone") ||
+    document.getElementById("micButton") ||
+    document.getElementById("mic");
+
+const statusElement =
+    document.getElementById("status");
+
+const statusText =
+    document.getElementById("statusText");
+
+const userName =
+    document.getElementById("userName");
+
+const userPhoto =
+    document.getElementById("userPhoto");
+
+const familyMode =
+    document.getElementById("familyMode");
+
+const privateMode =
+    document.getElementById("privateMode");
+
+const createFamilyButton =
+    document.getElementById("createFamily");
+
+const joinFamilyButton =
+    document.getElementById("joinFamily");
+
+const familyCodeElement =
+    document.getElementById("familyCode");
+
+const memoryList =
+    document.getElementById("memoryList");
 
 
-const auth =
-    getAuth(firebaseApp);
-
-
-const database =
-    getFirestore(firebaseApp);
-
-
-/* =====================================
-   GEMINI ÜBER FIREBASE AI LOGIC
-===================================== */
-
-const ai =
-    getAI(
-        firebaseApp,
-        {
-            backend:
-                new GoogleAIBackend()
-        }
-    );
-
-
-const model =
-    getGenerativeModel(
-        ai,
-        {
-            model:
-                "gemini-3.7-flash"
-        }
-    );
-
-
-/* =====================================
-   VARIABLEN
-===================================== */
+// ============================================================
+// VARIABLEN
+// ============================================================
 
 let currentUser = null;
+let currentFamilyId = null;
 
-let familyId = null;
+let recognition = null;
+let listening = false;
 
 let currentMode = "private";
 
-let recognition = null;
-
-let busy = false;
+let voicesLoaded = false;
 
 
-/* =====================================
-   ELEMENTE
-===================================== */
+// ============================================================
+// STATUS
+// ============================================================
 
-const status =
-    document.getElementById("status");
+function setStatus(type, text) {
 
-const microphone =
-    document.getElementById("microphone");
+    if (statusElement) {
+        statusElement.className = "";
+        statusElement.classList.add(type.toLowerCase());
+    }
 
-const orb =
-    document.getElementById("orb");
+    if (statusText) {
+        statusText.textContent = text;
+    }
 
-const account =
-    document.getElementById("account");
-
-const panel =
-    document.getElementById("controlPanel");
-
-const memories =
-    document.getElementById("memoryList");
-
-const familyCode =
-    document.getElementById("familyCode");
+    console.log(`[NOVA] ${type}: ${text}`);
+}
 
 
-/* =====================================
-   GOOGLE LOGIN
-===================================== */
+// ============================================================
+// SPRACHAUSGABE
+// ============================================================
 
-document
-    .getElementById("loginButton")
-    .onclick = login;
+function loadVoices() {
 
+    if (!("speechSynthesis" in window)) {
+        console.warn("speechSynthesis wird nicht unterstützt.");
+        return;
+    }
+
+    const voices = window.speechSynthesis.getVoices();
+
+    if (voices.length > 0) {
+        voicesLoaded = true;
+        console.log("Stimmen geladen:", voices.length);
+    }
+}
+
+if ("speechSynthesis" in window) {
+    loadVoices();
+
+    window.speechSynthesis.onvoiceschanged = () => {
+        loadVoices();
+    };
+}
+
+
+// ============================================================
+// NOVA SPRICHT
+// ============================================================
+
+function speak(text) {
+
+    if (!text) return;
+
+    if (!("speechSynthesis" in window)) {
+        console.error("Dieser Browser unterstützt keine Sprachausgabe.");
+        return;
+    }
+
+    console.log("Nova spricht:", text);
+
+    // alte Ausgabe stoppen
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    utterance.lang = "de-DE";
+    utterance.rate = 0.95;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    const voices = window.speechSynthesis.getVoices();
+
+    // Deutsche Stimme bevorzugen
+    const germanVoice =
+        voices.find(v =>
+            v.lang &&
+            v.lang.toLowerCase() === "de-de"
+        ) ||
+        voices.find(v =>
+            v.lang &&
+            v.lang.toLowerCase().startsWith("de")
+        );
+
+    if (germanVoice) {
+        utterance.voice = germanVoice;
+        console.log("Deutsche Stimme:", germanVoice.name);
+    }
+
+    utterance.onstart = () => {
+        setStatus("SPEAKING", "Nova spricht...");
+    };
+
+    utterance.onend = () => {
+        setStatus("READY", "Bereit");
+    };
+
+    utterance.onerror = (event) => {
+
+        console.error(
+            "Sprachausgabe-Fehler:",
+            event.error
+        );
+
+        setStatus(
+            "ERROR",
+            "Sprachausgabe fehlgeschlagen"
+        );
+    };
+
+    // kleine Verzögerung hilft besonders bei Safari
+    setTimeout(() => {
+
+        window.speechSynthesis.speak(utterance);
+
+    }, 100);
+}
+
+
+// ============================================================
+// TESTSPRACHE
+// ============================================================
+
+window.novaTestVoice = function () {
+
+    speak(
+        "Hallo Erik. Ich bin Nova Family AI. Meine Sprachausgabe funktioniert."
+    );
+
+};
+
+
+// ============================================================
+// GOOGLE LOGIN
+// ============================================================
 
 async function login() {
 
     try {
 
-        const provider =
-            new GoogleAuthProvider();
+        const provider = new GoogleAuthProvider();
 
+        provider.setCustomParameters({
+            prompt: "select_account"
+        });
 
-        await signInWithPopup(
-            auth,
-            provider
+        const result =
+            await signInWithPopup(auth, provider);
+
+        console.log(
+            "Angemeldet:",
+            result.user.displayName
         );
 
-    }
+        speak(
+            `Hallo ${result.user.displayName || "Erik"}. Ich bin bereit.`
+        );
 
-    catch(error) {
+    } catch (error) {
+
+        console.error("Login Fehler:", error);
+
+        alert(
+            "Google Login konnte nicht durchgeführt werden."
+        );
+    }
+}
+
+
+async function logout() {
+
+    try {
+
+        await signOut(auth);
+
+        currentUser = null;
+        currentFamilyId = null;
+
+        setStatus(
+            "READY",
+            "Nicht angemeldet"
+        );
+
+    } catch (error) {
 
         console.error(error);
 
-        alert(
-            "Google-Anmeldung fehlgeschlagen."
-        );
-
     }
-
 }
 
 
-/* =====================================
-   AUTH STATUS
-===================================== */
+// ============================================================
+// AUTH STATE
+// ============================================================
 
-onAuthStateChanged(
-    auth,
-    async user => {
+onAuthStateChanged(auth, async (user) => {
+
+    if (user) {
 
         currentUser = user;
 
-
-        if(!user) {
-
-            microphone.disabled = true;
-
-            panel.classList.add(
-                "hidden"
-            );
-
-            status.textContent =
-                "ANMELDEN";
-
-            account.innerHTML = `
-                <button id="loginButton">
-                    Mit Google anmelden
-                </button>
-            `;
-
-            document
-                .getElementById(
-                    "loginButton"
-                )
-                .onclick = login;
-
-            return;
-        }
-
-
-        microphone.disabled =
-            false;
-
-
-        panel.classList.remove(
-            "hidden"
+        console.log(
+            "Benutzer:",
+            user.displayName,
+            user.uid
         );
 
-
-        account.innerHTML = `
-
-            <button id="logoutButton">
-
-                ${escapeHtml(
-                    user.displayName ||
-                    "Google Konto"
-                )}
-
-                · Abmelden
-
-            </button>
-
-        `;
-
-
-        document
-            .getElementById(
-                "logoutButton"
-            )
-            .onclick =
-                () => signOut(auth);
-
-
-        const userDoc =
-            await getDoc(
-                doc(
-                    database,
-                    "users",
-                    user.uid
-                )
-            );
-
-
-        if(userDoc.exists()) {
-
-            familyId =
-                userDoc.data().familyId ||
-                null;
-
+        if (userName) {
+            userName.textContent =
+                user.displayName || "Erik";
         }
 
+        if (userPhoto && user.photoURL) {
+            userPhoto.src = user.photoURL;
+        }
 
-        status.textContent =
-            "BEREIT";
+        await loadUserData();
 
+        setStatus(
+            "READY",
+            "Bereit"
+        );
 
-        await loadMemories();
+    } else {
 
-    }
-);
+        currentUser = null;
 
+        if (userName) {
+            userName.textContent =
+                "Nicht angemeldet";
+        }
 
-/* =====================================
-   SPRACHERKENNUNG
-===================================== */
-
-function setupSpeech() {
-
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
-
-
-    if(!SpeechRecognition) {
-
-        status.textContent =
-            "SPRACHE NICHT UNTERSTÜTZT";
-
-        return;
-
+        setStatus(
+            "READY",
+            "Bitte anmelden"
+        );
     }
 
-
-    recognition =
-        new SpeechRecognition();
+});
 
 
-    recognition.lang =
-        "de-DE";
+// ============================================================
+// BENUTZERDATEN
+// ============================================================
 
+async function loadUserData() {
 
-    recognition.continuous =
-        false;
+    if (!currentUser) return;
 
+    try {
 
-    recognition.interimResults =
-        false;
+        const userRef =
+            doc(db, "users", currentUser.uid);
 
+        const snapshot =
+            await getDoc(userRef);
 
-    recognition.onstart =
-        () => {
+        if (snapshot.exists()) {
 
-            setState(
-                "listening"
+            const data = snapshot.data();
+
+            currentFamilyId =
+                data.familyId || null;
+
+            console.log(
+                "Familie:",
+                currentFamilyId
             );
+        }
 
-            status.textContent =
-                "ICH HÖRE ZU";
+    } catch (error) {
 
-        };
+        console.error(
+            "Benutzerdaten konnten nicht geladen werden:",
+            error
+        );
+    }
 
-
-    recognition.onresult =
-        async event => {
-
-            const text =
-                event
-                    .results[0][0]
-                    .transcript;
-
-
-            await processSpeech(
-                text
-            );
-
-        };
-
-
-    recognition.onerror =
-        error => {
-
-            console.error(
-                error
-            );
-
-            setState("");
-
-            status.textContent =
-                "BEREIT";
-
-        };
-
-
-    recognition.onend =
-        () => {
-
-            if(!busy) {
-
-                setState("");
-
-                status.textContent =
-                    "BEREIT";
-
-            }
-
-        };
-
+    await loadMemories();
 }
 
 
-setupSpeech();
+// ============================================================
+// MIKROFON
+// ============================================================
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+if (SpeechRecognition) {
+
+    recognition = new SpeechRecognition();
+
+    recognition.lang = "de-DE";
+
+    recognition.continuous = false;
+
+    recognition.interimResults = false;
+
+    recognition.maxAlternatives = 1;
 
 
-microphone.onclick =
-    () => {
+    recognition.onstart = () => {
 
-        if(
-            !recognition ||
-            busy
-        )
+        listening = true;
+
+        setStatus(
+            "LISTENING",
+            "Ich höre zu..."
+        );
+
+        if (microphone) {
+            microphone.classList.add("active");
+        }
+    };
+
+
+    recognition.onresult = async (event) => {
+
+        const transcript =
+            event.results[0][0].transcript.trim();
+
+        console.log(
+            "Erkannt:",
+            transcript
+        );
+
+        listening = false;
+
+        if (microphone) {
+            microphone.classList.remove("active");
+        }
+
+        setStatus(
+            "THINKING",
+            "Nova denkt..."
+        );
+
+        await processCommand(transcript);
+    };
+
+
+    recognition.onerror = (event) => {
+
+        console.error(
+            "Mikrofonfehler:",
+            event.error
+        );
+
+        listening = false;
+
+        if (microphone) {
+            microphone.classList.remove("active");
+        }
+
+        if (event.error === "not-allowed") {
+
+            setStatus(
+                "ERROR",
+                "Mikrofonzugriff verweigert"
+            );
+
+            speak(
+                "Bitte erlaube dieser Website den Zugriff auf dein Mikrofon."
+            );
+
+        } else {
+
+            setStatus(
+                "ERROR",
+                "Mikrofonfehler"
+            );
+        }
+    };
+
+
+    recognition.onend = () => {
+
+        listening = false;
+
+        if (microphone) {
+            microphone.classList.remove("active");
+        }
+
+        console.log("Mikrofon beendet.");
+    };
+
+} else {
+
+    console.error(
+        "Speech Recognition wird nicht unterstützt."
+    );
+}
+
+
+// ============================================================
+// MIKROFON BUTTON
+// ============================================================
+
+if (microphone) {
+
+    microphone.addEventListener("click", async () => {
+
+        // Bei Safari / Browsern zunächst Audio freischalten
+        unlockAudio();
+
+        if (!currentUser) {
+
+            speak(
+                "Bitte melde dich zuerst mit Google an."
+            );
+
             return;
+        }
 
+        if (!recognition) {
+
+            speak(
+                "Dein Browser unterstützt die Spracheingabe leider nicht."
+            );
+
+            return;
+        }
+
+        if (listening) {
+
+            recognition.stop();
+
+            return;
+        }
 
         try {
 
             recognition.start();
 
-        }
+        } catch (error) {
 
-        catch(error) {
-
-            console.log(
+            console.error(
+                "Recognition Start Fehler:",
                 error
             );
-
         }
 
-    };
+    });
+}
 
 
-/* =====================================
-   SPRACHE → GEMINI
-===================================== */
+// ============================================================
+// AUDIO FREISCHALTEN
+// ============================================================
 
-async function processSpeech(
-    text
-) {
+function unlockAudio() {
 
-    busy = true;
+    if (!("speechSynthesis" in window)) {
+        return;
+    }
+
+    // Safari kann speechSynthesis manchmal erst nach
+    // einer Benutzeraktion benutzen.
+    const test =
+        new SpeechSynthesisUtterance("");
+
+    test.volume = 0;
+
+    window.speechSynthesis.speak(test);
+}
 
 
-    setState(
-        "thinking"
-    );
+// ============================================================
+// GEMINI
+// ============================================================
 
+async function processCommand(text) {
 
-    status.textContent =
-        "NOVA DENKT";
-
+    if (!currentUser) return;
 
     try {
 
-        const privateMemories =
-            await getPrivateMemories();
-
-
-        let familyMemories = [];
-
-
-        if(
-            currentMode ===
-                "family"
-            &&
-            familyId
-        ) {
-
-            familyMemories =
-                await getFamilyMemories();
-
-        }
-
+        const memories =
+            await getMemoryContext();
 
         const prompt = `
 
-Du bist Nova.
+Du bist Nova, eine freundliche persönliche KI.
 
-Du bist ein moderner deutscher
-Sprachassistent.
+Antworte auf Deutsch.
 
-Der Benutzer sieht keinen
-Textchat.
-
-Antworte kurz und natürlich.
-
-Der Benutzer sagt:
+Der Benutzer hat gesagt:
 
 "${text}"
 
+Bisher bekannte Erinnerungen:
 
-PRIVATE ERINNERUNGEN:
+${memories || "Keine gespeicherten Erinnerungen."}
 
-${privateMemories.join("\n")}
+Analysiere die Anfrage.
 
-
-FAMILIEN-ERINNERUNGEN:
-
-${familyMemories.join("\n")}
-
-
-Gib ausschließlich gültiges JSON zurück.
+Du MUSST ausschließlich gültiges JSON zurückgeben.
 
 Format:
 
 {
-    "action": "NONE",
-    "query": "",
-    "reply": "",
-    "saveMemory": false,
-    "memory": ""
+  "action": "NONE",
+  "query": "",
+  "reply": "",
+  "saveMemory": false,
+  "memory": ""
 }
 
-
-Mögliche Aktionen:
+Erlaubte actions:
 
 NONE
-
 YOUTUBE_HOME
-
 YOUTUBE_SEARCH
-
 GOOGLE_SEARCH
 
+Regeln:
 
-Wenn der Benutzer sagt:
+Wenn der Benutzer YouTube öffnen möchte:
+action = YOUTUBE_HOME
 
-"Öffne YouTube"
+Wenn der Benutzer etwas auf YouTube suchen möchte:
+action = YOUTUBE_SEARCH
+query = Suchbegriff
 
-verwende:
+Wenn der Benutzer Google öffnen oder etwas googeln möchte:
+action = GOOGLE_SEARCH
+query = Suchbegriff
 
-YOUTUBE_HOME
-
-
-Wenn der Benutzer sagt:
-
-"Suche auf YouTube nach Fußball"
-
-verwende:
-
-YOUTUBE_SEARCH
-
-
-Wenn der Benutzer etwas Wichtiges
-über sich selbst sagt, das später
+Wenn der Benutzer etwas Wichtiges über sich erzählt, das später
 nützlich sein könnte:
-
 saveMemory = true
+memory = kurze Zusammenfassung
 
+reply muss immer eine kurze natürliche deutsche Antwort sein.
 
-Beispiel:
-
-"Ich mag Roboter."
-
-Dann:
-
-{
-    "saveMemory": true,
-    "memory": "Der Nutzer interessiert sich für Roboter."
-}
-
-
-Wenn der Benutzer im Familienmodus
-eine gemeinsame Familieninformation
-speichert, darf sie als
-Familieninformation gespeichert werden.
+Keine Markdown-Ausgabe.
+Nur JSON.
 
 `;
 
 
         const result =
-            await model.generateContent(
-                prompt
-            );
+            await model.generateContent(prompt);
 
+        const response =
+            result.response.text();
 
-        const raw =
-            result.response
-                .text()
-                .replace(
-                    /```json/gi,
-                    ""
-                )
-                .replace(
-                    /```/g,
-                    ""
-                )
-                .trim();
+        console.log(
+            "Gemini:",
+            response
+        );
 
+        const data =
+            parseGeminiJSON(response);
 
-        const command =
-            JSON.parse(raw);
-
-
-        /* =========================
-           ERINNERUNG SPEICHERN
-        ========================= */
-
-        if(
-            command.saveMemory
-            &&
-            command.memory
+        // Antwort speichern
+        if (
+            data.saveMemory === true &&
+            data.memory
         ) {
 
             await saveMemory(
-                command.memory
+                data.memory
             );
-
         }
 
-
-        /* =========================
-           AKTION
-        ========================= */
-
-        await executeCommand(
-            command
+        // Aktion durchführen
+        await executeAction(
+            data.action,
+            data.query
         );
 
+        // sprechen
+        if (data.reply) {
 
-    }
+            speak(
+                data.reply
+            );
+        } else {
 
-    catch(error) {
+            setStatus(
+                "READY",
+                "Bereit"
+            );
+        }
+
+    } catch (error) {
 
         console.error(
+            "Gemini Fehler:",
             error
         );
 
-
-        const message =
-            String(
-                error.message ||
-                error
-            );
-
-
-        if(
-            /429|quota|limit|resource.?exhausted/i
-                .test(message)
-        ) {
-
-            speak(
-                "Das Gemini Limit ist momentan erreicht. Bitte versuche es später erneut."
-            );
-
-        }
-
-        else {
-
-            speak(
-                "Ich konnte die KI gerade nicht erreichen."
-            );
-
-        }
-
+        handleAIError(error);
     }
-
-
-    finally {
-
-        busy = false;
-
-    }
-
 }
 
 
-/* =====================================
-   AKTIONEN
-===================================== */
+// ============================================================
+// JSON VON GEMINI
+// ============================================================
 
-async function executeCommand(
-    command
+function parseGeminiJSON(text) {
+
+    try {
+
+        return JSON.parse(text);
+
+    } catch {
+
+        // ```json ... ``` entfernen
+        let cleaned =
+            text
+                .replace(/```json/gi, "")
+                .replace(/```/g, "")
+                .trim();
+
+        try {
+
+            return JSON.parse(cleaned);
+
+        } catch {
+
+            console.warn(
+                "Gemini hat kein gültiges JSON geliefert."
+            );
+
+            return {
+                action: "NONE",
+                query: "",
+                reply: text,
+                saveMemory: false,
+                memory: ""
+            };
+        }
+    }
+}
+
+
+// ============================================================
+// AKTIONEN
+// ============================================================
+
+async function executeAction(
+    action,
+    queryText
 ) {
 
+    if (!action) return;
 
-    if(
-        command.action ===
-        "YOUTUBE_HOME"
-    ) {
 
-        window.open(
-            "https://www.youtube.com/",
-            "_blank"
+    if (action === "YOUTUBE_HOME") {
+
+        openWebsite(
+            "https://www.youtube.com/"
         );
-
-
-        speak(
-            command.reply ||
-            "YouTube ist geöffnet."
-        );
-
 
         return;
-
     }
 
 
-    if(
-        command.action ===
-        "YOUTUBE_SEARCH"
-    ) {
+    if (action === "YOUTUBE_SEARCH") {
 
-        window.open(
+        if (!queryText) return;
 
-            "https://www.youtube.com/results?search_query="
-            +
-            encodeURIComponent(
-                command.query
-            ),
+        const url =
+            "https://www.youtube.com/results?search_query=" +
+            encodeURIComponent(queryText);
 
-            "_blank"
-
-        );
-
-
-        speak(
-            command.reply ||
-            "Ich suche auf YouTube."
-        );
-
+        openWebsite(url);
 
         return;
-
     }
 
 
-    if(
-        command.action ===
-        "GOOGLE_SEARCH"
-    ) {
+    if (action === "GOOGLE_SEARCH") {
 
-        window.open(
+        if (!queryText) return;
 
-            "https://www.google.com/search?q="
-            +
-            encodeURIComponent(
-                command.query
-            ),
+        const url =
+            "https://www.google.com/search?q=" +
+            encodeURIComponent(queryText);
 
-            "_blank"
-
-        );
-
-
-        speak(
-            command.reply ||
-            "Ich öffne die Suche."
-        );
-
+        openWebsite(url);
 
         return;
+    }
+}
 
+
+// ============================================================
+// WEBSITE ÖFFNEN
+// ============================================================
+
+function openWebsite(url) {
+
+    console.log(
+        "Öffne:",
+        url
+    );
+
+    const tab =
+        window.open(
+            url,
+            "NovaActionTab"
+        );
+
+    if (!tab) {
+
+        console.warn(
+            "Popup wurde blockiert."
+        );
+
+        speak(
+            "Der Browser hat das Öffnen der Seite blockiert."
+        );
+    }
+}
+
+
+// ============================================================
+// GEMINI FEHLER
+// ============================================================
+
+function handleAIError(error) {
+
+    const message =
+        String(
+            error?.message ||
+            error ||
+            ""
+        );
+
+    console.error(
+        "AI Error:",
+        message
+    );
+
+
+    if (
+        /429|quota|limit|resource.?exhausted/i
+            .test(message)
+    ) {
+
+        setStatus(
+            "ERROR",
+            "Gemini Limit erreicht"
+        );
+
+        speak(
+            "Das Gemini Limit ist momentan erreicht. Bitte versuche es später erneut."
+        );
+
+        return;
     }
 
+
+    if (
+        /permission|unauthorized|forbidden/i
+            .test(message)
+    ) {
+
+        setStatus(
+            "ERROR",
+            "Keine Berechtigung"
+        );
+
+        speak(
+            "Ich habe momentan keine Berechtigung für Gemini."
+        );
+
+        return;
+    }
+
+
+    setStatus(
+        "ERROR",
+        "Fehler bei Nova"
+    );
 
     speak(
-        command.reply ||
-        "Alles klar."
+        "Entschuldigung, bei meiner Verbindung mit Gemini ist ein Fehler aufgetreten."
     );
-
 }
 
 
-/* =====================================
-   SPRACH-AUSGABE
-===================================== */
+// ============================================================
+// PRIVATE MEMORY
+// ============================================================
 
-function speak(
-    text
-) {
+async function saveMemory(memory) {
 
-    setState(
-        "speaking"
-    );
+    if (!currentUser) return;
 
+    try {
 
-    status.textContent =
-        "NOVA SPRICHT";
+        if (currentMode === "family" &&
+            currentFamilyId) {
 
-
-    speechSynthesis.cancel();
-
-
-    const voice =
-        new SpeechSynthesisUtterance(
-            text
-        );
-
-
-    voice.lang =
-        "de-DE";
-
-
-    voice.rate =
-        1.03;
-
-
-    voice.pitch =
-        .96;
-
-
-    voice.onend =
-        () => {
-
-            setState("");
-
-            status.textContent =
-                "BEREIT";
-
-        };
-
-
-    speechSynthesis.speak(
-        voice
-    );
-
-}
-
-
-/* =====================================
-   ERINNERUNGEN
-===================================== */
-
-async function saveMemory(
-    text
-) {
-
-    if(
-        !currentUser
-    )
-        return;
-
-
-    if(
-        currentMode ===
-            "family"
-        &&
-        familyId
-    ) {
-
-        await addDoc(
-
-            collection(
-                database,
-                "familyMemories"
-            ),
-
-            {
-
-                familyId:
-
-                    familyId,
-
-                ownerUid:
-
-                    currentUser.uid,
-
-                text:
-
-                    text,
-
-                createdAt:
-
-                    serverTimestamp()
-
-            }
-
-        );
-
-    }
-
-    else {
-
-        await addDoc(
-
-            collection(
-                database,
-                "memories"
-            ),
-
-            {
-
-                ownerUid:
-
-                    currentUser.uid,
-
-                text:
-
-                    text,
-
-                createdAt:
-
-                    serverTimestamp()
-
-            }
-
-        );
-
-    }
-
-
-    await loadMemories();
-
-}
-
-
-async function getPrivateMemories() {
-
-    const result =
-        await getDocs(
-
-            query(
-
+            await addDoc(
                 collection(
-                    database,
-                    "memories"
-                ),
-
-                where(
-                    "ownerUid",
-                    "==",
-                    currentUser.uid
-                )
-
-            )
-
-        );
-
-
-    return result.docs
-        .map(
-            doc =>
-                doc.data().text
-        )
-        .slice(-30);
-
-}
-
-
-async function getFamilyMemories() {
-
-    if(!familyId)
-        return [];
-
-
-    const result =
-        await getDocs(
-
-            query(
-
-                collection(
-                    database,
+                    db,
                     "familyMemories"
                 ),
+                {
+                    familyId:
+                        currentFamilyId,
 
-                where(
-                    "familyId",
-                    "==",
-                    familyId
-                )
+                    ownerUid:
+                        currentUser.uid,
 
-            )
+                    memory:
+                        memory,
 
+                    createdAt:
+                        serverTimestamp()
+                }
+            );
+
+        } else {
+
+            await addDoc(
+                collection(
+                    db,
+                    "memories"
+                ),
+                {
+                    ownerUid:
+                        currentUser.uid,
+
+                    memory:
+                        memory,
+
+                    createdAt:
+                        serverTimestamp()
+                }
+            );
+        }
+
+        console.log(
+            "Memory gespeichert:",
+            memory
         );
 
+        await loadMemories();
 
-    return result.docs
-        .map(
-            doc =>
-                doc.data().text
-        )
-        .slice(-30);
+    } catch (error) {
 
+        console.error(
+            "Memory konnte nicht gespeichert werden:",
+            error
+        );
+    }
 }
 
+
+// ============================================================
+// MEMORY LADEN
+// ============================================================
+
+async function getMemoryContext() {
+
+    if (!currentUser) return "";
+
+    try {
+
+        let memories = [];
+
+
+        if (
+            currentMode === "family" &&
+            currentFamilyId
+        ) {
+
+            const q =
+                query(
+                    collection(
+                        db,
+                        "familyMemories"
+                    ),
+                    where(
+                        "familyId",
+                        "==",
+                        currentFamilyId
+                    )
+                );
+
+            const snapshot =
+                await getDocs(q);
+
+            snapshot.forEach(
+                document => {
+
+                    memories.push(
+                        document.data().memory
+                    );
+                }
+            );
+
+        } else {
+
+            const q =
+                query(
+                    collection(
+                        db,
+                        "memories"
+                    ),
+                    where(
+                        "ownerUid",
+                        "==",
+                        currentUser.uid
+                    )
+                );
+
+            const snapshot =
+                await getDocs(q);
+
+            snapshot.forEach(
+                document => {
+
+                    memories.push(
+                        document.data().memory
+                    );
+                }
+            );
+        }
+
+
+        return memories
+            .slice(-30)
+            .join("\n- ");
+
+    } catch (error) {
+
+        console.error(
+            "Memory Fehler:",
+            error
+        );
+
+        return "";
+    }
+}
+
+
+// ============================================================
+// MEMORY LISTE
+// ============================================================
 
 async function loadMemories() {
 
-    if(!currentUser)
+    if (!memoryList || !currentUser) {
         return;
-
-
-    let list = [];
-
-
-    if(
-        currentMode ===
-            "family"
-        &&
-        familyId
-    ) {
-
-        list =
-            await getFamilyMemories();
-
     }
 
-    else {
+    try {
 
-        list =
-            await getPrivateMemories();
+        memoryList.innerHTML = "";
 
-    }
-
-
-    if(!list.length) {
-
-        memories.innerHTML =
-            "Noch keine Erinnerungen.";
-
-        return;
-
-    }
+        let memories = [];
 
 
-    memories.innerHTML =
-        list
+        if (
+            currentMode === "family" &&
+            currentFamilyId
+        ) {
+
+            const q =
+                query(
+                    collection(
+                        db,
+                        "familyMemories"
+                    ),
+                    where(
+                        "familyId",
+                        "==",
+                        currentFamilyId
+                    )
+                );
+
+            const snapshot =
+                await getDocs(q);
+
+            snapshot.forEach(
+                docSnap => {
+
+                    memories.push(
+                        docSnap.data()
+                    );
+                }
+            );
+
+        } else {
+
+            const q =
+                query(
+                    collection(
+                        db,
+                        "memories"
+                    ),
+                    where(
+                        "ownerUid",
+                        "==",
+                        currentUser.uid
+                    )
+                );
+
+            const snapshot =
+                await getDocs(q);
+
+            snapshot.forEach(
+                docSnap => {
+
+                    memories.push(
+                        docSnap.data()
+                    );
+                }
+            );
+        }
+
+
+        memories
+            .slice(-20)
             .reverse()
-            .map(
-                text =>
-                    `<div class="memory">
-                        ${escapeHtml(text)}
-                    </div>`
-            )
-            .join("");
+            .forEach(data => {
 
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "memory-item";
+
+                item.textContent =
+                    data.memory || "";
+
+                memoryList.appendChild(item);
+            });
+
+    } catch (error) {
+
+        console.error(
+            "Memory Liste Fehler:",
+            error
+        );
+    }
 }
 
 
-/* =====================================
-   FAMILIE ERSTELLEN
-===================================== */
+// ============================================================
+// PRIVAT / FAMILIE
+// ============================================================
 
-document
-    .getElementById(
-        "createFamily"
-    )
-    .onclick =
-    async () => {
+if (privateMode) {
 
-        if(!currentUser)
-            return;
+    privateMode.addEventListener(
+        "click",
+        async () => {
+
+            currentMode =
+                "private";
+
+            privateMode.classList.add(
+                "active"
+            );
+
+            if (familyMode) {
+                familyMode.classList.remove(
+                    "active"
+                );
+            }
+
+            await loadMemories();
+
+            speak(
+                "Privater Modus aktiviert."
+            );
+        }
+    );
+}
 
 
-        const id =
-            crypto
-                .randomUUID()
-                .replaceAll(
-                    "-",
-                    ""
-                )
-                .slice(
-                    0,
-                    10
+if (familyMode) {
+
+    familyMode.addEventListener(
+        "click",
+        async () => {
+
+            if (!currentFamilyId) {
+
+                speak(
+                    "Du bist noch keiner Familie beigetreten."
+                );
+
+                return;
+            }
+
+            currentMode =
+                "family";
+
+            familyMode.classList.add(
+                "active"
+            );
+
+            if (privateMode) {
+                privateMode.classList.remove(
+                    "active"
+                );
+            }
+
+            await loadMemories();
+
+            speak(
+                "Familienmodus aktiviert."
+            );
+        }
+    );
+}
+
+
+// ============================================================
+// FAMILIE ERSTELLEN
+// ============================================================
+
+if (createFamilyButton) {
+
+    createFamilyButton.addEventListener(
+        "click",
+        async () => {
+
+            if (!currentUser) {
+
+                speak(
+                    "Bitte melde dich zuerst an."
+                );
+
+                return;
+            }
+
+
+            try {
+
+                const familyId =
+                    crypto.randomUUID()
+                        .replaceAll("-", "")
+                        .substring(0, 8)
+                        .toUpperCase();
+
+
+                await setDoc(
+                    doc(
+                        db,
+                        "families",
+                        familyId
+                    ),
+                    {
+                        ownerUid:
+                            currentUser.uid,
+
+                        createdAt:
+                            serverTimestamp()
+                    }
                 );
 
 
-        familyId =
-            id;
+                await setDoc(
+                    doc(
+                        db,
+                        "families",
+                        familyId,
+                        "members",
+                        currentUser.uid
+                    ),
+                    {
+                        uid:
+                            currentUser.uid,
+
+                        name:
+                            currentUser.displayName ||
+                            "Mitglied",
+
+                        joinedAt:
+                            serverTimestamp()
+                    }
+                );
 
 
-        await setDoc(
+                await setDoc(
+                    doc(
+                        db,
+                        "users",
+                        currentUser.uid
+                    ),
+                    {
+                        familyId:
+                            familyId
+                    },
+                    {
+                        merge: true
+                    }
+                );
 
-            doc(
-                database,
-                "families",
-                id
-            ),
 
-            {
+                currentFamilyId =
+                    familyId;
 
-                ownerUid:
-                    currentUser.uid,
 
-                name:
-                    "Meine Familie",
+                if (familyCodeElement) {
 
-                createdAt:
-                    serverTimestamp()
+                    familyCodeElement.textContent =
+                        familyId;
+                }
 
+
+                speak(
+                    `Die Familie wurde erstellt. Dein Familiencode ist ${familyId}.`
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Familie erstellen:",
+                    error
+                );
+
+                speak(
+                    "Die Familie konnte nicht erstellt werden."
+                );
             }
-
-        );
-
-
-        await setDoc(
-
-            doc(
-                database,
-                "families",
-                id,
-                "members",
-                currentUser.uid
-            ),
-
-            {
-
-                uid:
-                    currentUser.uid,
-
-                name:
-                    currentUser.displayName,
-
-                joinedAt:
-                    serverTimestamp()
-
-            }
-
-        );
-
-
-        await setDoc(
-
-            doc(
-                database,
-                "users",
-                currentUser.uid
-            ),
-
-            {
-
-                familyId:
-                    id
-
-            },
-
-            {
-
-                merge:
-                    true
-
-            }
-
-        );
-
-
-        familyCode.textContent =
-            "Familiencode: " +
-            id;
-
-
-        alert(
-            "Deine Familie wurde erstellt.\n\nFamiliencode:\n"
-            +
-            id
-        );
-
-    };
-
-
-/* =====================================
-   FAMILIE BEITRETEN
-===================================== */
-
-document
-    .getElementById(
-        "joinFamily"
-    )
-    .onclick =
-    async () => {
-
-        const id =
-            prompt(
-                "Familiencode eingeben:"
-            );
-
-
-        if(!id)
-            return;
-
-
-        const family =
-            await getDoc(
-
-                doc(
-                    database,
-                    "families",
-                    id.trim()
-                )
-
-            );
-
-
-        if(
-            !family.exists()
-        ) {
-
-            alert(
-                "Diese Familie gibt es nicht."
-            );
-
-            return;
-
         }
-
-
-        familyId =
-            id.trim();
-
-
-        await setDoc(
-
-            doc(
-                database,
-                "families",
-                familyId,
-                "members",
-                currentUser.uid
-            ),
-
-            {
-
-                uid:
-                    currentUser.uid,
-
-                name:
-                    currentUser.displayName,
-
-                joinedAt:
-                    serverTimestamp()
-
-            }
-
-        );
-
-
-        await setDoc(
-
-            doc(
-                database,
-                "users",
-                currentUser.uid
-            ),
-
-            {
-
-                familyId:
-                    familyId
-
-            },
-
-            {
-
-                merge:
-                    true
-
-            }
-
-        );
-
-
-        familyCode.textContent =
-            "Familie: " +
-            familyId;
-
-
-        await loadMemories();
-
-    };
-
-
-/* =====================================
-   MODUS
-===================================== */
-
-document
-    .getElementById(
-        "privateMode"
-    )
-    .onclick =
-    async () => {
-
-        currentMode =
-            "private";
-
-
-        document
-            .getElementById(
-                "privateMode"
-            )
-            .classList.add(
-                "selected"
-            );
-
-
-        document
-            .getElementById(
-                "familyMode"
-            )
-            .classList.remove(
-                "selected"
-            );
-
-
-        await loadMemories();
-
-    };
-
-
-document
-    .getElementById(
-        "familyMode"
-    )
-    .onclick =
-    async () => {
-
-        if(!familyId) {
-
-            speak(
-                "Du bist noch keiner Familie beigetreten."
-            );
-
-            return;
-
-        }
-
-
-        currentMode =
-            "family";
-
-
-        document
-            .getElementById(
-                "familyMode"
-            )
-            .classList.add(
-                "selected"
-            );
-
-
-        document
-            .getElementById(
-                "privateMode"
-            )
-            .classList.remove(
-                "selected"
-            );
-
-
-        await loadMemories();
-
-    };
-
-
-/* =====================================
-   STATUS
-===================================== */
-
-function setState(
-    state
-) {
-
-    orb.classList.remove(
-        "listening",
-        "thinking",
-        "speaking"
     );
-
-
-    if(state) {
-
-        orb.classList.add(
-            state
-        );
-
-    }
-
 }
 
 
-/* =====================================
-   HTML SICHER MACHEN
-===================================== */
+// ============================================================
+// FAMILIE BEITRETEN
+// ============================================================
 
-function escapeHtml(
-    text
-) {
+if (joinFamilyButton) {
 
-    return String(text)
-        .replace(
-            /[&<>"']/g,
-            char => ({
+    joinFamilyButton.addEventListener(
+        "click",
+        async () => {
 
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#039;"
+            if (!currentUser) {
 
-            }[char])
+                speak(
+                    "Bitte melde dich zuerst an."
+                );
 
-        );
+                return;
+            }
 
+
+            const code =
+                prompt(
+                    "Familiencode eingeben:"
+                );
+
+
+            if (!code) return;
+
+
+            const familyId =
+                code.trim().toUpperCase();
+
+
+            try {
+
+                const familyRef =
+                    doc(
+                        db,
+                        "families",
+                        familyId
+                    );
+
+
+                const family =
+                    await getDoc(
+                        familyRef
+                    );
+
+
+                if (!family.exists()) {
+
+                    speak(
+                        "Diese Familie wurde nicht gefunden."
+                    );
+
+                    return;
+                }
+
+
+                await setDoc(
+                    doc(
+                        db,
+                        "families",
+                        familyId,
+                        "members",
+                        currentUser.uid
+                    ),
+                    {
+                        uid:
+                            currentUser.uid,
+
+                        name:
+                            currentUser.displayName ||
+                            "Mitglied",
+
+                        joinedAt:
+                            serverTimestamp()
+                    }
+                );
+
+
+                await setDoc(
+                    doc(
+                        db,
+                        "users",
+                        currentUser.uid
+                    ),
+                    {
+                        familyId:
+                            familyId
+                    },
+                    {
+                        merge: true
+                    }
+                );
+
+
+                currentFamilyId =
+                    familyId;
+
+
+                if (familyCodeElement) {
+
+                    familyCodeElement.textContent =
+                        familyId;
+                }
+
+
+                speak(
+                    "Du bist der Familie beigetreten."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Familie beitreten:",
+                    error
+                );
+
+                speak(
+                    "Der Beitritt zur Familie ist fehlgeschlagen."
+                );
+            }
+        }
+    );
 }
+
+
+// ============================================================
+// LOGIN / LOGOUT BUTTONS
+// ============================================================
+
+if (loginButton) {
+
+    loginButton.addEventListener(
+        "click",
+        () => {
+
+            unlockAudio();
+
+            login();
+        }
+    );
+}
+
+
+if (logoutButton) {
+
+    logoutButton.addEventListener(
+        "click",
+        logout
+    );
+}
+
+
+// ============================================================
+// START
+// ============================================================
+
+setStatus(
+    "READY",
+    "Nova ist bereit"
+);
+
+console.log(
+    "Nova Family AI gestartet."
+);
