@@ -1,518 +1,569 @@
-````html
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Nova Family AI</title>
 
 <style>
-
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    margin: 0;
+body{
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#f4f4f4;
+    color:#111;
+    min-height:100vh;
+    overflow:hidden;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
     background:
-        radial-gradient(circle at 50% 30%, #182333 0%, #080b10 45%, #030406 100%);
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
-    overflow: hidden;
+        radial-gradient(circle at 50% 35%,#ffffff 0%,#f5f5f5 42%,#e9e9e9 100%);
 }
 
-button,
-input {
-    font: inherit;
-}
-
-#app {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* =========================================================
+/* =========================
    HEADER
-========================================================= */
+========================= */
 
-header {
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 25px;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    background: rgba(5,8,12,.75);
-    backdrop-filter: blur(15px);
+header{
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    border-bottom:1px solid #dcdcdc;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(20px);
+    z-index:5;
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: 3px;
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:-.5px;
 }
 
-.logo span {
-    color: #62b5ff;
+.logoDot{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#111;
+    position:relative;
+    box-shadow:0 0 25px rgba(0,0,0,.18);
 }
 
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.logoDot::after{
+    content:"";
+    position:absolute;
+    width:9px;
+    height:9px;
+    background:white;
+    border-radius:50%;
+    top:12px;
+    left:12px;
 }
 
-.header-btn {
-    border: 1px solid #303844;
-    background: #11161d;
-    color: white;
-    padding: 9px 15px;
-    border-radius: 10px;
-    cursor: pointer;
+.headerRight{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.header-btn:hover {
-    background: #1c2530;
+button{
+    font-family:inherit;
+    cursor:pointer;
+    border:none;
 }
 
-#logoutButton {
-    display: none;
+.headerBtn{
+    padding:10px 16px;
+    border-radius:12px;
+    background:#111;
+    color:white;
+    font-weight:600;
+    transition:.2s;
 }
 
-/* =========================================================
+.headerBtn:hover{
+    transform:translateY(-1px);
+    background:#292929;
+}
+
+.headerBtn.light{
+    background:white;
+    color:#111;
+    border:1px solid #d7d7d7;
+}
+
+/* =========================
    MAIN
-========================================================= */
+========================= */
 
-main {
-    flex: 1;
-    min-height: 0;
-    display: flex;
+main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-height:0;
 }
 
-/* =========================================================
-   LEFT
-========================================================= */
+/* =========================
+   NOVA CORE
+========================= */
 
-.left {
-    width: 290px;
-    padding: 25px;
-    border-right: 1px solid rgba(255,255,255,.07);
-    background: rgba(5,8,12,.35);
+.coreArea{
+    flex:0 0 43%;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    position:relative;
 }
 
-.panel-title {
-    font-size: 12px;
-    color: #7e8a9b;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-}
-
-.mode {
-    width: 100%;
-    margin-bottom: 9px;
-    padding: 13px;
-    border-radius: 12px;
-    border: 1px solid #29313c;
-    background: #10151c;
-    color: white;
-    cursor: pointer;
-    text-align: left;
-}
-
-.mode:hover {
-    background: #18202a;
-}
-
-.quick {
-    margin-top: 35px;
-}
-
-.quick button {
-    width: 100%;
-    margin-bottom: 9px;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #29313c;
-    background: #0d1218;
-    color: #ddd;
-    cursor: pointer;
-}
-
-.quick button:hover {
-    background: #17202a;
-}
-
-/* =========================================================
-   CENTER
-========================================================= */
-
-.center {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.ai-area {
-    height: 260px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.orb {
-    width: 125px;
-    height: 125px;
-    border-radius: 50%;
+.core{
+    width:180px;
+    height:180px;
+    border-radius:50%;
     background:
-        radial-gradient(circle at 35% 30%,
-        #d9f1ff,
-        #5aaeff 25%,
-        #185fa5 55%,
-        #07101c 75%);
+        radial-gradient(circle at 35% 30%,#ffffff 0%,#e9e9e9 35%,#9d9d9d 70%,#181818 100%);
     box-shadow:
-        0 0 30px rgba(80,170,255,.5),
-        0 0 80px rgba(40,120,255,.2),
-        inset 0 0 30px rgba(255,255,255,.25);
-    animation: orbIdle 4s ease-in-out infinite;
+        0 25px 60px rgba(0,0,0,.18),
+        inset 0 0 25px rgba(255,255,255,.9);
+    position:relative;
+    transition:.35s;
 }
 
-@keyframes orbIdle {
-    0%,100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
+.core::before{
+    content:"";
+    position:absolute;
+    inset:-18px;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,.12);
 }
 
-#state {
-    margin-top: -30px;
-    margin-bottom: 15px;
-    color: #9ca9b8;
-    font-size: 12px;
-    letter-spacing: 2px;
+.core::after{
+    content:"";
+    position:absolute;
+    inset:-35px;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,.05);
 }
 
-/* =========================================================
+.core.listening{
+    transform:scale(1.07);
+    box-shadow:
+        0 0 70px rgba(0,0,0,.18),
+        inset 0 0 30px white;
+}
+
+.core.thinking{
+    animation:pulse 1.1s infinite;
+}
+
+.core.speaking{
+    animation:speakPulse .75s infinite alternate;
+}
+
+@keyframes pulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.06)}
+}
+
+@keyframes speakPulse{
+    from{transform:scale(1)}
+    to{transform:scale(1.055)}
+}
+
+.coreCenter{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:31px;
+    font-weight:800;
+    letter-spacing:-2px;
+}
+
+.status{
+    margin-top:30px;
+    font-size:13px;
+    color:#777;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+}
+
+.title{
+    margin-top:8px;
+    font-size:30px;
+    font-weight:750;
+    letter-spacing:-1.5px;
+}
+
+/* =========================
    CHAT
-========================================================= */
+========================= */
 
-#chat {
-    width: min(850px, 90%);
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    padding: 15px 5px 20px;
+.chat{
+    width:min(900px,calc(100% - 32px));
+    flex:1;
+    min-height:150px;
+    overflow-y:auto;
+    padding:10px 0 20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
 }
 
-.message {
-    max-width: 75%;
-    margin: 10px 0;
-    padding: 13px 16px;
-    border-radius: 15px;
-    line-height: 1.45;
-    word-wrap: break-word;
+.message{
+    max-width:75%;
+    padding:13px 16px;
+    border-radius:18px;
+    line-height:1.45;
+    font-size:15px;
+    animation:appear .2s ease;
 }
 
-.user-message {
-    margin-left: auto;
-    background: #1b5f9e;
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(5px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
-.nova-message {
-    margin-right: auto;
-    background: #141a22;
-    border: 1px solid #252d38;
+.message.user{
+    align-self:flex-end;
+    background:#111;
+    color:white;
+    border-bottom-right-radius:5px;
 }
 
-/* =========================================================
-   INPUT
-========================================================= */
-
-.bottom {
-    width: min(850px, 90%);
-    padding: 15px 0 25px;
+.message.nova{
+    align-self:flex-start;
+    background:white;
+    color:#111;
+    border:1px solid #dedede;
+    border-bottom-left-radius:5px;
+    box-shadow:0 5px 20px rgba(0,0,0,.04);
 }
 
-.input-row {
-    display: flex;
-    gap: 8px;
+/* =========================
+   CONTROL PANEL
+========================= */
+
+.bottom{
+    width:min(900px,calc(100% - 32px));
+    margin:0 auto 22px;
 }
 
-#input {
-    flex: 1;
-    min-width: 0;
-    padding: 14px 16px;
-    border-radius: 13px;
-    border: 1px solid #2d3743;
-    outline: none;
-    background: #0d1218;
-    color: white;
+.inputBox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:white;
+    border:1px solid #d6d6d6;
+    border-radius:20px;
+    padding:8px;
+    box-shadow:0 10px 35px rgba(0,0,0,.07);
 }
 
-#input:focus {
-    border-color: #418bd0;
+#input{
+    flex:1;
+    border:none;
+    outline:none;
+    background:transparent;
+    padding:13px;
+    font-size:15px;
+    color:#111;
 }
 
-.action-btn {
-    border: 1px solid #33404f;
-    background: #121a23;
-    color: white;
-    border-radius: 13px;
-    padding: 0 17px;
-    cursor: pointer;
+#input::placeholder{
+    color:#999;
 }
 
-.action-btn:hover {
-    background: #1b2632;
+.iconBtn{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    background:#f0f0f0;
+    color:#111;
+    font-size:18px;
+    transition:.2s;
 }
 
-#micButton {
-    min-width: 58px;
-    font-size: 21px;
+.iconBtn:hover{
+    background:#dedede;
 }
 
-/* =========================================================
-   RIGHT
-========================================================= */
-
-.right {
-    width: 250px;
-    padding: 25px;
-    border-left: 1px solid rgba(255,255,255,.07);
-    background: rgba(5,8,12,.35);
+.iconBtn.active{
+    background:#111;
+    color:white;
 }
 
-.info {
-    color: #8e9aaa;
-    font-size: 13px;
-    line-height: 1.6;
+.sendBtn{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    background:#111;
+    color:white;
+    font-size:18px;
+    transition:.2s;
 }
 
-/* =========================================================
-   TOAST
-========================================================= */
-
-#novaToast {
-    position: fixed;
-    left: 50%;
-    bottom: 25px;
-    transform: translateX(-50%);
-    z-index: 99999;
-    padding: 13px 18px;
-    border-radius: 12px;
-    background: #10151c;
-    border: 1px solid #36414f;
-    color: white;
-    max-width: 85%;
-    display: none;
+.sendBtn:hover{
+    transform:scale(1.04);
 }
 
-/* =========================================================
+.tools{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-top:10px;
+}
+
+.toolBtn{
+    background:rgba(255,255,255,.75);
+    border:1px solid #ddd;
+    padding:8px 12px;
+    border-radius:10px;
+    color:#444;
+    font-size:12px;
+}
+
+.toolBtn:hover{
+    background:#fff;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+.loginOverlay{
+    position:fixed;
+    inset:0;
+    background:rgba(245,245,245,.96);
+    backdrop-filter:blur(20px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:50;
+}
+
+.loginCard{
+    width:min(420px,calc(100% - 40px));
+    background:white;
+    border:1px solid #ddd;
+    border-radius:25px;
+    padding:38px;
+    text-align:center;
+    box-shadow:0 30px 90px rgba(0,0,0,.12);
+}
+
+.loginCard h1{
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+.loginCard p{
+    color:#777;
+    margin-bottom:25px;
+}
+
+.googleLogin{
+    width:100%;
+    padding:14px;
+    border-radius:14px;
+    background:#111;
+    color:white;
+    font-size:15px;
+    font-weight:650;
+}
+
+.googleLogin:hover{
+    background:#292929;
+}
+
+/* =========================
    MOBILE
-========================================================= */
+========================= */
 
-@media (max-width: 900px) {
+@media(max-width:600px){
 
-    .left,
-    .right {
-        display: none;
+    header{
+        padding:0 16px;
+        height:64px;
     }
 
-    .message {
-        max-width: 90%;
+    .logo{
+        font-size:17px;
+    }
+
+    .headerBtn{
+        padding:8px 11px;
+        font-size:12px;
+    }
+
+    .core{
+        width:135px;
+        height:135px;
+    }
+
+    .coreCenter{
+        font-size:25px;
+    }
+
+    .title{
+        font-size:25px;
+    }
+
+    .message{
+        max-width:88%;
+    }
+
+    .tools{
+        overflow-x:auto;
+        justify-content:flex-start;
     }
 }
-
 </style>
 </head>
 
 <body>
 
-<div id="app">
+<div class="app">
 
 <header>
-
     <div class="logo">
-        NO<span>VA</span>
+        <div class="logoDot"></div>
+        NOVA
     </div>
 
-    <div class="header-right">
-
-        <button
-            class="header-btn"
-            id="loginButton">
-            Mit Google anmelden
+    <div class="headerRight">
+        <button class="headerBtn light" id="voiceModeButton">
+            Sprache
         </button>
 
-        <button
-            class="header-btn"
-            id="logoutButton">
+        <button class="headerBtn" id="loginButton">
+            Anmelden
+        </button>
+
+        <button class="headerBtn light" id="logoutButton" style="display:none">
             Abmelden
         </button>
-
     </div>
-
 </header>
-
 
 <main>
 
-    <!-- =====================================================
-         LEFT
-    ====================================================== -->
+    <section class="coreArea">
 
-    <aside class="left">
-
-        <div class="panel-title">
-            MODUS
+        <div class="core" id="core">
+            <div class="coreCenter">N</div>
         </div>
 
-        <button
-            class="mode"
-            id="voiceModeButton">
-            🎤 Sprachmodus
-        </button>
+        <div class="status" id="state">
+            System bereit
+        </div>
 
-        <button
-            class="mode"
-            id="textModeButton">
-            💬 Textmodus
-        </button>
+        <div class="title">
+            Nova
+        </div>
 
+    </section>
 
-        <div class="quick">
+    <section class="chat" id="chat"></section>
 
-            <div class="panel-title">
-                SCHNELLZUGRIFF
-            </div>
+    <section class="bottom">
 
-            <button id="youtubeButton">
-                YouTube öffnen
+        <div class="inputBox">
+
+            <button class="iconBtn" id="micButton">
+                🎙
             </button>
 
-            <button id="googleButton">
-                Google öffnen
-            </button>
+            <input
+                id="input"
+                type="text"
+                autocomplete="off"
+                placeholder="Sprich mit Nova..."
+            >
 
-            <button id="testVoiceButton">
-                Nova Stimme testen
+            <button class="sendBtn" id="sendButton">
+                ↑
             </button>
 
         </div>
 
-    </aside>
+        <div class="tools">
 
+            <button class="toolBtn" id="youtubeButton">
+                YouTube
+            </button>
 
-    <!-- =====================================================
-         CENTER
-    ====================================================== -->
+            <button class="toolBtn" id="googleButton">
+                Google
+            </button>
 
-    <section class="center">
-
-        <div class="ai-area">
-
-            <div
-                class="orb"
-                id="orb">
-            </div>
-
-        </div>
-
-
-        <div id="state">
-            BEREIT
-        </div>
-
-
-        <div id="chat">
-
-            <div class="message nova-message">
-                Hallo! Ich bin Nova. Klicke auf das Mikrofon und sprich mit mir.
-            </div>
-
-        </div>
-
-
-        <div class="bottom">
-
-            <div class="input-row">
-
-                <input
-                    id="input"
-                    type="text"
-                    autocomplete="off"
-                    placeholder="Nachricht an Nova...">
-
-                <button
-                    class="action-btn"
-                    id="micButton"
-                    title="Mikrofon">
-                    🎤
-                </button>
-
-                <button
-                    class="action-btn"
-                    id="sendButton">
-                    Senden
-                </button>
-
-            </div>
+            <button class="toolBtn" id="testVoiceButton">
+                Stimme testen
+            </button>
 
         </div>
 
     </section>
 
+</main>
 
-    <!-- =====================================================
-         RIGHT
-    ====================================================== -->
+</div>
 
-    <aside class="right">
+<div class="loginOverlay" id="loginOverlay">
 
-        <div class="panel-title">
+    <div class="loginCard">
+
+        <div class="logo" style="justify-content:center;margin-bottom:20px">
+            <div class="logoDot"></div>
             NOVA
         </div>
 
-        <div class="info">
+        <h1>Nova Family AI</h1>
 
-            Sprachmodus:
-            Mikrofon startet erst nach einem Klick.
+        <p>
+            Deine persönliche KI.
+        </p>
 
-            <br><br>
+        <button class="googleLogin" id="googleLogin">
+            Mit Google anmelden
+        </button>
 
-            Wenn Nova spricht,
-            wird das Mikrofon automatisch
-            ausgeschaltet.
-
-            <br><br>
-
-            Erst wenn Nova vollständig
-            fertig gesprochen hat,
-            wird wieder zugehört.
-
-        </div>
-
-    </aside>
-
-</main>
+    </div>
 
 </div>
 
 
 <script type="module">
 
-// ============================================================
-// FIREBASE
-// ============================================================
+/* =========================================================
+   FIREBASE
+========================================================= */
 
 import {
     initializeApp
@@ -534,49 +585,28 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 
-// ============================================================
-// CONFIG
-// ============================================================
-
 const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIg9C9EtrE",
-
-    authDomain:
-        "nova-68fc1.firebaseapp.com",
-
-    projectId:
-        "nova-68fc1",
-
-    storageBucket:
-        "nova-68fc1.firebasestorage.app",
-
-    messagingSenderId:
-        "1020069093020",
-
-    appId:
-        "1:1020069093020:web:9be72af9e60af659475759"
-
+    apiKey: "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIg9C9EtrE",
+    authDomain: "nova-68fc1.firebaseapp.com",
+    projectId: "nova-68fc1",
+    storageBucket: "nova-68fc1.firebasestorage.app",
+    messagingSenderId: "1020069093020",
+    appId: "1:1020069093020:web:9be72af9e60af659475759"
 };
 
 
-const app =
-    initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const auth =
-    getAuth(app);
+const auth = getAuth(app);
 
-const db =
-    getFirestore(app);
+const db = getFirestore(app);
 
-const provider =
-    new GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 
 
-// ============================================================
-// ELEMENTS
-// ============================================================
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
 const chat =
     document.getElementById("chat");
@@ -586,6 +616,9 @@ const input =
 
 const state =
     document.getElementById("state");
+
+const core =
+    document.getElementById("core");
 
 const micButton =
     document.getElementById("micButton");
@@ -599,11 +632,14 @@ const loginButton =
 const logoutButton =
     document.getElementById("logoutButton");
 
+const googleLogin =
+    document.getElementById("googleLogin");
+
+const loginOverlay =
+    document.getElementById("loginOverlay");
+
 const voiceModeButton =
     document.getElementById("voiceModeButton");
-
-const textModeButton =
-    document.getElementById("textModeButton");
 
 const youtubeButton =
     document.getElementById("youtubeButton");
@@ -615,15 +651,13 @@ const testVoiceButton =
     document.getElementById("testVoiceButton");
 
 
-// ============================================================
-// STATE
-// ============================================================
+/* =========================================================
+   STATE
+========================================================= */
 
 let model = null;
 
 let currentUser = null;
-
-let recognition = null;
 
 let isListening = false;
 
@@ -631,856 +665,511 @@ let isSpeaking = false;
 
 let isThinking = false;
 
-let mode = "voice";
+let voiceMode = true;
 
-let conversation = [];
-
-let selectedVoice = null;
+let recognition = null;
 
 
-// ============================================================
-// STATE TEXT
-// ============================================================
+/* =========================================================
+   CHAT
+========================================================= */
 
-function setState(text) {
+function addMessage(text,type){
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message " + type;
+
+    message.textContent = text;
+
+    chat.appendChild(message);
+
+    chat.scrollTop =
+        chat.scrollHeight;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setState(text){
 
     state.textContent = text;
 
 }
 
 
-// ============================================================
-// TOAST
-// ============================================================
+/* =========================================================
+   SPEECH OUTPUT
+   NOVA SPRICHT DEUTSCH
+========================================================= */
 
-function toast(text) {
+function stopListening(){
 
-    const box =
-        document.getElementById("novaToast");
+    if(!recognition)
+        return;
 
-    if (!box) return;
+    try{
+        recognition.stop();
+    }catch(e){}
 
-    box.textContent = text;
+    isListening = false;
 
-    box.style.display = "block";
-
-    clearTimeout(box.timer);
-
-    box.timer =
-        setTimeout(() => {
-
-            box.style.display = "none";
-
-        }, 4500);
-
+    micButton.classList.remove("active");
 }
 
 
-// ============================================================
-// CHAT
-// ============================================================
+/* =========================================================
+   NOVA SPRICHT
+========================================================= */
 
-function addMessage(type, text) {
+function speak(text){
 
-    const element =
-        document.createElement("div");
+    if(!("speechSynthesis" in window))
+        return;
 
-    element.className =
-        type === "user"
-            ? "message user-message"
-            : "message nova-message";
+    stopListening();
 
-    element.textContent =
-        text;
+    window.speechSynthesis.cancel();
 
-    chat.appendChild(
-        element
-    );
+    isSpeaking = true;
 
-    chat.scrollTop =
-        chat.scrollHeight;
+    core.classList.remove("listening");
+    core.classList.remove("thinking");
+    core.classList.add("speaking");
 
-}
+    setState("Nova spricht");
 
+    const utterance =
+        new SpeechSynthesisUtterance(text);
 
-// ============================================================
-// FIREBASE AI
-// ============================================================
+    utterance.lang = "de-DE";
 
-async function getNovaModel() {
+    utterance.rate = 0.95;
 
-    if (model) {
-        return model;
-    }
+    utterance.pitch = 1.0;
 
-    const aiModule =
-        await import(
-            "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
-        );
-
-    const {
-        getAI,
-        getGenerativeModel,
-        GoogleAIBackend
-    } = aiModule;
-
-    const ai =
-        getAI(
-            app,
-            {
-                backend:
-                    new GoogleAIBackend()
-            }
-        );
-
-    model =
-        getGenerativeModel(
-            ai,
-            {
-                model:
-                    "gemini-3.7-flash"
-            }
-        );
-
-    return model;
-
-}
+    utterance.volume = 1.0;
 
 
-// ============================================================
-// VOICES
-// ============================================================
-
-function loadVoices() {
+    /*
+       Deutsche Stimme suchen
+    */
 
     const voices =
-        speechSynthesis.getVoices();
+        window.speechSynthesis.getVoices();
 
-    if (!voices.length) return;
-
-    const german =
-        voices.find(
-            voice =>
-                voice.lang &&
-                voice.lang
-                    .toLowerCase()
-                    .startsWith("de")
+    const germanVoice =
+        voices.find(v =>
+            v.lang &&
+            v.lang.toLowerCase().startsWith("de")
         );
 
-    selectedVoice =
-        german || voices[0];
-
-}
-
-
-speechSynthesis.onvoiceschanged =
-    loadVoices;
-
-loadVoices();
+    if(germanVoice){
+        utterance.voice =
+            germanVoice;
+    }
 
 
-// ============================================================
-// STOP LISTENING
-// ============================================================
+    utterance.onend = () => {
 
-function stopListening() {
+        isSpeaking = false;
 
-    if (!recognition) return;
-
-    try {
-
-        recognition.stop();
-
-    } catch (_) {}
-
-    isListening =
-        false;
-
-}
-
-
-// ============================================================
-// SPEAK
-// ============================================================
-
-function speak(text) {
-
-    return new Promise(resolve => {
-
-        // GANZ WICHTIG:
-        // Mikrofon zuerst ausschalten.
-
-        stopListening();
-
-        isSpeaking =
-            true;
+        core.classList.remove("speaking");
 
         setState(
-            "NOVA SPRICHT"
+            voiceMode
+            ? "Bereit"
+            : "Textmodus"
         );
 
-        speechSynthesis.cancel();
+        /*
+           ERST NACHDEM NOVA FERTIG
+           GESPROCHEN HAT, WIRD WIEDER
+           ZUGEHÖRT.
+        */
 
-        const utterance =
-            new SpeechSynthesisUtterance(
-                text
-            );
+        if(
+            voiceMode &&
+            !isThinking
+        ){
 
-        utterance.lang =
-            "de-DE";
+            setTimeout(() => {
 
-        utterance.rate =
-            1;
+                startListening();
 
-        utterance.pitch =
-            1;
-
-        utterance.volume =
-            1;
-
-        if (selectedVoice) {
-
-            utterance.voice =
-                selectedVoice;
+            },700);
 
         }
 
-
-        utterance.onstart =
-            () => {
-
-                isSpeaking =
-                    true;
-
-                stopListening();
-
-                setState(
-                    "NOVA SPRICHT"
-                );
-
-            };
+    };
 
 
-        utterance.onend =
-            () => {
+    utterance.onerror = () => {
 
-                isSpeaking =
-                    false;
+        isSpeaking = false;
 
-                setState(
-                    "BEREIT"
-                );
+        core.classList.remove("speaking");
 
-                resolve();
+        setState("Bereit");
+
+    };
 
 
-                // Erst NACH dem Sprechen
-                // wieder zuhören.
-
-                if (
-                    mode === "voice" &&
-                    !isThinking
-                ) {
-
-                    setTimeout(
-                        startListening,
-                        500
-                    );
-
-                }
-
-            };
-
-
-        utterance.onerror =
-            () => {
-
-                isSpeaking =
-                    false;
-
-                setState(
-                    "BEREIT"
-                );
-
-                resolve();
-
-
-                if (
-                    mode === "voice" &&
-                    !isThinking
-                ) {
-
-                    setTimeout(
-                        startListening,
-                        500
-                    );
-
-                }
-
-            };
-
-
-        speechSynthesis.speak(
-            utterance
-        );
-
-    });
-
+    window.speechSynthesis.speak(
+        utterance
+    );
 }
 
 
-// ============================================================
-// SPEECH RECOGNITION
-// ============================================================
+/* =========================================================
+   SPEECH RECOGNITION
+========================================================= */
 
-function setupMicrophone() {
-
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
 
-    if (!SpeechRecognition) {
-
-        setState(
-            "SPRACHE NICHT UNTERSTÜTZT"
-        );
-
-        return;
-
-    }
-
-
-    recognitionSupported =
-        true;
-
+if(SpeechRecognition){
 
     recognition =
         new SpeechRecognition();
 
-
     recognition.lang =
         "de-DE";
 
-
     recognition.continuous =
         false;
-
 
     recognition.interimResults =
         false;
 
 
-    recognition.maxAlternatives =
-        1;
+    recognition.onstart = () => {
 
-
-    recognition.onstart =
-        () => {
-
-            if (
-                isSpeaking ||
-                isThinking
-            ) {
-
-                stopListening();
-
-                return;
-
-            }
-
-            isListening =
-                true;
-
-            setState(
-                "ICH HÖRE ZU"
-            );
-
-        };
-
-
-    recognition.onresult =
-        async event => {
-
-            if (
-                isSpeaking ||
-                isThinking
-            ) {
-
-                return;
-
-            }
-
-
-            const result =
-                event.results[
-                    event.results.length - 1
-                ];
-
-
-            const text =
-                result[0]
-                    .transcript
-                    .trim();
-
-
-            if (!text) {
-                return;
-            }
-
-
-            await sendToNova(
-                text
-            );
-
-        };
-
-
-    recognition.onerror =
-        event => {
-
-            console.log(
-                "MIC ERROR:",
-                event.error
-            );
-
-
-            isListening =
-                false;
-
-
-            if (
-                event.error ===
-                "not-allowed"
-            ) {
-
-                setState(
-                    "MIKROFON ERLAUBEN"
-                );
-
-                toast(
-                    "Erlaube Safari den Mikrofonzugriff."
-                );
-
-                return;
-
-            }
-
-
-            setState(
-                "BEREIT"
-            );
-
-        };
-
-
-    recognition.onend =
-        () => {
-
-            isListening =
-                false;
-
-
-            if (
-                isSpeaking ||
-                isThinking
-            ) {
-
-                return;
-
-            }
-
-
-            setState(
-                "BEREIT"
-            );
-
-        };
-
-}
-
-
-let recognitionSupported =
-    false;
-
-setupMicrophone();
-
-
-// ============================================================
-// START LISTENING
-// ============================================================
-
-function startListening() {
-
-    if (!recognition) {
-
-        toast(
-            "Spracherkennung ist in diesem Browser nicht verfügbar."
-        );
-
-        return;
-
-    }
-
-
-    if (isSpeaking) {
-        return;
-    }
-
-
-    if (isThinking) {
-        return;
-    }
-
-
-    if (mode !== "voice") {
-        return;
-    }
-
-
-    if (isListening) {
-        return;
-    }
-
-
-    try {
-
-        recognition.start();
-
-    } catch (error) {
-
-        console.log(
-            "START MIC:",
-            error
-        );
-
-    }
-
-}
-
-
-// ============================================================
-// MICROPHONE CLICK
-// ============================================================
-
-micButton.addEventListener(
-    "click",
-    () => {
-
-        mode =
-            "voice";
-
-        localStorage.setItem(
-            "novaMode",
-            "voice"
-        );
-
-
-        if (isSpeaking) {
-
-            toast(
-                "Nova spricht gerade."
-            );
-
-            return;
-
-        }
-
-
-        if (isThinking) {
-
-            toast(
-                "Nova denkt gerade."
-            );
-
-            return;
-
-        }
-
-
-        if (isListening) {
+        if(isSpeaking || isThinking){
 
             stopListening();
 
+            return;
+        }
+
+        isListening = true;
+
+        core.classList.add("listening");
+
+        setState("Ich höre zu");
+
+        micButton.classList.add("active");
+    };
+
+
+    recognition.onend = () => {
+
+        isListening = false;
+
+        micButton.classList.remove("active");
+
+        core.classList.remove("listening");
+
+        if(
+            !isSpeaking &&
+            !isThinking
+        ){
+
             setState(
-                "BEREIT"
+                voiceMode
+                ? "Bereit"
+                : "Textmodus"
             );
 
-        } else {
-
-            startListening();
-
         }
 
-    }
-);
+    };
 
 
-// ============================================================
-// VOICE MODE
-// ============================================================
+    recognition.onerror = event => {
 
-voiceModeButton.addEventListener(
-    "click",
-    () => {
+        isListening = false;
 
-        mode =
-            "voice";
+        micButton.classList.remove("active");
 
-        localStorage.setItem(
-            "novaMode",
-            "voice"
+        core.classList.remove("listening");
+
+        console.log(
+            "Speech error:",
+            event.error
         );
 
-        stopListening();
-
-        setState(
-            "SPRACHMODUS"
-        );
-
-        toast(
-            "Jetzt auf das Mikrofon klicken und sprechen."
-        );
-
-    }
-);
+        setState("Bereit");
+    };
 
 
-// ============================================================
-// TEXT MODE
-// ============================================================
+    recognition.onresult = event => {
 
-textModeButton.addEventListener(
-    "click",
-    () => {
+        if(
+            isSpeaking ||
+            isThinking
+        ){
 
-        mode =
-            "text";
-
-        localStorage.setItem(
-            "novaMode",
-            "text"
-        );
-
-        stopListening();
-
-        setState(
-            "TEXTMODUS"
-        );
-
-    }
-);
-
-
-// ============================================================
-// SEND TEXT
-// ============================================================
-
-sendButton.addEventListener(
-    "click",
-    () => {
+            return;
+        }
 
         const text =
-            input.value.trim();
+            event.results[0][0].transcript;
 
-        if (!text) return;
+        input.value = text;
 
-        input.value = "";
+        sendMessage();
 
-        sendToNova(
-            text
+    };
+
+}
+
+
+/* =========================================================
+   START LISTENING
+========================================================= */
+
+function startListening(){
+
+    if(!voiceMode)
+        return;
+
+    if(isSpeaking)
+        return;
+
+    if(isThinking)
+        return;
+
+    if(!recognition){
+
+        setState(
+            "Sprache nicht unterstützt"
+        );
+
+        return;
+    }
+
+    try{
+
+        recognition.start();
+
+    }catch(e){
+
+        /*
+           Browser kann "already started"
+           melden – einfach ignorieren.
+        */
+
+    }
+
+}
+
+
+/* =========================================================
+   FIREBASE AI
+========================================================= */
+
+async function setupAI(){
+
+    try{
+
+        setState(
+            "KI wird geladen"
+        );
+
+        const aiModule =
+            await import(
+                "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
+            );
+
+        const {
+            getAI,
+            getGenerativeModel,
+            GoogleAIBackend
+        } = aiModule;
+
+
+        const ai =
+            getAI(
+                app,
+                {
+                    backend:
+                        new GoogleAIBackend()
+                }
+            );
+
+
+        model =
+            getGenerativeModel(
+                ai,
+                {
+                    model:
+                        "gemini-3.7-flash"
+                }
+            );
+
+
+        setState("System bereit");
+
+    }catch(error){
+
+        console.error(error);
+
+        setState(
+            "KI konnte nicht geladen werden"
         );
 
     }
-);
+
+}
 
 
-// ============================================================
-// ENTER
-// ============================================================
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
 
-input.addEventListener(
-    "keydown",
-    event => {
+async function sendMessage(){
 
-        if (
-            event.key === "Enter"
-        ) {
+    const text =
+        input.value.trim();
 
-            event.preventDefault();
-
-            sendButton.click();
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// NOVA
-// ============================================================
-
-async function sendToNova(text) {
-
-    if (
-        isThinking ||
-        isSpeaking
-    ) {
-
+    if(!text)
         return;
 
-    }
+    if(isThinking)
+        return;
 
-
-    // Mikrofon aus.
+    input.value = "";
 
     stopListening();
 
-
-    isThinking =
-        true;
-
-
-    setState(
-        "NOVA DENKT"
-    );
-
-
     addMessage(
-        "user",
-        text
+        text,
+        "user"
     );
 
+    if(!model){
 
-    conversation.push({
-        role: "user",
-        text: text
-    });
+        addMessage(
+            "Die KI ist noch nicht bereit.",
+            "nova"
+        );
 
-
-    try {
-
-        const nova =
-            await getNovaModel();
+        return;
+    }
 
 
-        const history =
-            conversation
-                .slice(-10)
-                .map(
-                    item =>
-                        `${item.role}: ${item.text}`
-                )
-                .join("\n");
+    isThinking = true;
 
+    core.classList.add("thinking");
+
+    setState("Nova denkt");
+
+
+    try{
 
         const prompt = `
+Du bist Nova, eine moderne persönliche KI.
 
-Du bist Nova, eine persönliche deutsche KI.
+Antworte auf Deutsch.
 
-Antworte natürlich und kurz.
+Sei freundlich, intelligent und natürlich.
 
-Wenn der Benutzer YouTube öffnen möchte:
-action = youtube
+Halte Antworten normalerweise kurz und verständlich.
 
-Wenn der Benutzer Google öffnen möchte:
-action = google
+Wenn der Nutzer ausdrücklich nach einer ausführlichen Erklärung fragt,
+darfst du ausführlicher antworten.
 
-Sonst:
-action = none
+WICHTIG:
+Wenn der Nutzer möchte, dass YouTube geöffnet wird,
+beginne deine Antwort mit:
+[ACTION:YOUTUBE]
 
-Antworte ausschließlich als JSON:
+Wenn der Nutzer Google öffnen möchte,
+beginne deine Antwort mit:
+[ACTION:GOOGLE]
 
-{
-  "answer": "Antwort",
-  "action": "none"
-}
+Ansonsten beginne normal.
 
-Unterhaltung:
-
-${history}
+Nach dem Action-Tag soll eine kurze normale Antwort folgen.
 
 Benutzer:
 ${text}
-
 `;
 
 
         const result =
-            await nova.generateContent(
+            await model.generateContent(
                 prompt
             );
 
 
-        let raw =
+        let answer =
             result.response.text();
 
 
-        raw =
-            raw
-                .replace(
-                    /```json/gi,
+        let action = null;
+
+
+        if(
+            answer.includes(
+                "[ACTION:YOUTUBE]"
+            )
+        ){
+
+            action = "youtube";
+
+            answer =
+                answer.replace(
+                    "[ACTION:YOUTUBE]",
                     ""
-                )
-                .replace(
-                    /```/g,
-                    ""
-                )
-                .trim();
-
-
-        let data;
-
-
-        try {
-
-            data =
-                JSON.parse(
-                    raw
-                );
-
-        } catch (_) {
-
-            data = {
-                answer: raw,
-                action: "none"
-            };
+                ).trim();
 
         }
 
 
-        const answer =
-            data.answer ||
-            "Ich konnte gerade keine Antwort erzeugen.";
+        if(
+            answer.includes(
+                "[ACTION:GOOGLE]"
+            )
+        ){
+
+            action = "google";
+
+            answer =
+                answer.replace(
+                    "[ACTION:GOOGLE]",
+                    ""
+                ).trim();
+
+        }
 
 
-        const action =
-            data.action ||
-            "none";
+        if(!answer){
 
+            answer =
+                "Natürlich.";
 
-        conversation.push({
-            role: "nova",
-            text: answer
-        });
+        }
 
 
         addMessage(
-            "nova",
-            answer
+            answer,
+            "nova"
         );
 
 
-        isThinking =
-            false;
+        /*
+           Aktion ausführen
+        */
 
-
-        // Aktion ausführen.
-
-        if (
-            action === "youtube"
-        ) {
+        if(action === "youtube"){
 
             window.open(
                 "https://www.youtube.com/",
@@ -1490,9 +1179,7 @@ ${text}
         }
 
 
-        if (
-            action === "google"
-        ) {
+        if(action === "google"){
 
             window.open(
                 "https://www.google.com/",
@@ -1502,58 +1189,85 @@ ${text}
         }
 
 
-        // Nova spricht.
+        isThinking = false;
 
-        if (
-            mode === "voice"
-        ) {
+        core.classList.remove(
+            "thinking"
+        );
 
-            await speak(
-                answer
-            );
 
-        } else {
+        /*
+           UND JETZT SPRICHT NOVA.
+           Währenddessen wird NICHT
+           zugehört.
+        */
+
+        if(voiceMode){
+
+            speak(answer);
+
+        }else{
 
             setState(
-                "BEREIT"
+                "Textmodus"
             );
 
         }
 
 
-    } catch (error) {
+    }catch(error){
 
-        console.error(
-            "NOVA FEHLER:",
-            error
+        console.error(error);
+
+        isThinking = false;
+
+        core.classList.remove(
+            "thinking"
         );
 
-
-        isThinking =
-            false;
-
-
-        stopListening();
-
-
-        const message =
-            error?.message ||
-            String(error);
-
+        const errorText =
+            "Entschuldigung, da ist gerade ein Fehler aufgetreten.";
 
         addMessage(
-            "nova",
-            "Fehler: " + message
+            errorText,
+            "nova"
         );
-
 
         setState(
-            "FEHLER"
+            "Fehler"
         );
 
 
-        toast(
-            message
+        if(voiceMode){
+
+            speak(errorText);
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+async function login(){
+
+    try{
+
+        await signInWithPopup(
+            auth,
+            provider
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Anmeldung fehlgeschlagen."
         );
 
     }
@@ -1561,9 +1275,266 @@ ${text}
 }
 
 
-// ============================================================
-// YOUTUBE
-// ============================================================
+async function logout(){
+
+    try{
+
+        await signOut(auth);
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================================================
+   USER STATE
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        currentUser = user;
+
+        if(user){
+
+            loginOverlay.style.display =
+                "none";
+
+            loginButton.style.display =
+                "none";
+
+            logoutButton.style.display =
+                "block";
+
+
+            /*
+               Firestore Benutzerprofil
+            */
+
+            try{
+
+                const ref =
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    );
+
+                const snapshot =
+                    await getDoc(ref);
+
+                if(!snapshot.exists()){
+
+                    await setDoc(
+                        ref,
+                        {
+                            name:
+                                user.displayName || "",
+                            email:
+                                user.email || "",
+                            created:
+                                Date.now()
+                        }
+                    );
+
+                }
+
+            }catch(error){
+
+                console.log(
+                    "Firestore:",
+                    error
+                );
+
+            }
+
+
+            if(
+                chat.children.length === 0
+            ){
+
+                addMessage(
+                    "Hallo! Ich bin Nova. Wie kann ich dir helfen?",
+                    "nova"
+                );
+
+            }
+
+
+            await setupAI();
+
+
+        }else{
+
+            loginOverlay.style.display =
+                "flex";
+
+            loginButton.style.display =
+                "block";
+
+            logoutButton.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+googleLogin.addEventListener(
+    "click",
+    login
+);
+
+loginButton.addEventListener(
+    "click",
+    login
+);
+
+logoutButton.addEventListener(
+    "click",
+    logout
+);
+
+
+sendButton.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+input.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Enter"){
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MICROPHONE
+========================================================= */
+
+micButton.addEventListener(
+    "click",
+    () => {
+
+        if(!recognition){
+
+            alert(
+                "Dein Browser unterstützt keine Spracherkennung."
+            );
+
+            return;
+
+        }
+
+
+        if(isSpeaking){
+
+            /*
+               Während Nova spricht:
+               NICHT zuhören.
+            */
+
+            return;
+
+        }
+
+
+        if(isListening){
+
+            stopListening();
+
+        }else{
+
+            voiceMode = true;
+
+            voiceModeButton.textContent =
+                "Sprache";
+
+            startListening();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   VOICE MODE
+========================================================= */
+
+voiceModeButton.addEventListener(
+    "click",
+    () => {
+
+        voiceMode =
+            !voiceMode;
+
+
+        if(!voiceMode){
+
+            stopListening();
+
+            voiceModeButton.textContent =
+                "Text";
+
+            setState(
+                "Textmodus"
+            );
+
+        }else{
+
+            voiceModeButton.textContent =
+                "Sprache";
+
+            setState(
+                "Bereit"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   TEST VOICE
+========================================================= */
+
+testVoiceButton.addEventListener(
+    "click",
+    () => {
+
+        speak(
+            "Hallo. Ich bin Nova. Meine deutsche Sprachausgabe funktioniert."
+        );
+
+    }
+);
+
+
+/* =========================================================
+   YOUTUBE
+========================================================= */
 
 youtubeButton.addEventListener(
     "click",
@@ -1578,9 +1549,9 @@ youtubeButton.addEventListener(
 );
 
 
-// ============================================================
-// GOOGLE
-// ============================================================
+/* =========================================================
+   GOOGLE
+========================================================= */
 
 googleButton.addEventListener(
     "click",
@@ -1595,210 +1566,34 @@ googleButton.addEventListener(
 );
 
 
-// ============================================================
-// VOICE TEST
-// ============================================================
+/* =========================================================
+   BROWSER VOICES
+========================================================= */
 
-testVoiceButton.addEventListener(
-    "click",
-    async () => {
+if(
+    "speechSynthesis" in window
+){
 
-        if (isSpeaking) return;
+    window.speechSynthesis.onvoiceschanged =
+        () => {
 
-        stopListening();
+            window.speechSynthesis
+                .getVoices();
 
-        await speak(
-            "Hallo. Ich bin Nova. Wenn du das hörst, funktioniert meine Stimme."
-        );
-
-    }
-);
-
-
-// ============================================================
-// GOOGLE LOGIN
-// ============================================================
-
-loginButton.addEventListener(
-    "click",
-    async () => {
-
-        try {
-
-            const result =
-                await signInWithPopup(
-                    auth,
-                    provider
-                );
-
-
-            console.log(
-                "Login:",
-                result.user.email
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "LOGIN FEHLER:",
-                error
-            );
-
-
-            toast(
-                "Anmeldung fehlgeschlagen: " +
-                error.message
-            );
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// LOGOUT
-// ============================================================
-
-logoutButton.addEventListener(
-    "click",
-    async () => {
-
-        try {
-
-            await signOut(
-                auth
-            );
-
-        } catch (error) {
-
-            console.error(
-                error
-            );
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// AUTH STATE
-// ============================================================
-
-onAuthStateChanged(
-    auth,
-    async user => {
-
-        currentUser =
-            user;
-
-
-        if (user) {
-
-            loginButton.style.display =
-                "none";
-
-            logoutButton.style.display =
-                "block";
-
-
-            try {
-
-                const reference =
-                    doc(
-                        db,
-                        "users",
-                        user.uid
-                    );
-
-
-                const snapshot =
-                    await getDoc(
-                        reference
-                    );
-
-
-                if (
-                    !snapshot.exists()
-                ) {
-
-                    await setDoc(
-                        reference,
-                        {
-                            email:
-                                user.email,
-
-                            displayName:
-                                user.displayName ||
-                                "Benutzer",
-
-                            createdAt:
-                                new Date()
-                        }
-                    );
-
-                }
-
-            } catch (error) {
-
-                console.warn(
-                    "Firestore:",
-                    error
-                );
-
-            }
-
-
-        } else {
-
-            loginButton.style.display =
-                "block";
-
-            logoutButton.style.display =
-                "none";
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// START
-// ============================================================
-
-const savedMode =
-    localStorage.getItem(
-        "novaMode"
-    );
-
-
-if (
-    savedMode === "voice" ||
-    savedMode === "text"
-) {
-
-    mode =
-        savedMode;
+        };
 
 }
 
 
+/* =========================================================
+   INITIAL
+========================================================= */
+
 setState(
-    mode === "voice"
-        ? "SPRACHMODUS"
-        : "TEXTMODUS"
-);
-
-
-console.log(
-    "NOVA IST BEREIT"
+    "System wird gestartet"
 );
 
 </script>
 
 </body>
 </html>
-````
