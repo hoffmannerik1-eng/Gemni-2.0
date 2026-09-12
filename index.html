@@ -20,21 +20,13 @@ body{
     overflow:hidden;
 }
 
-/* =========================
-   APP
-========================= */
-
 .app{
     height:100vh;
     display:flex;
     flex-direction:column;
     background:
-        radial-gradient(circle at 50% 35%,#ffffff 0%,#f5f5f5 42%,#e9e9e9 100%);
+        radial-gradient(circle at 50% 35%,#fff 0%,#f5f5f5 42%,#e8e8e8 100%);
 }
-
-/* =========================
-   HEADER
-========================= */
 
 header{
     height:74px;
@@ -42,8 +34,8 @@ header{
     align-items:center;
     justify-content:space-between;
     padding:0 28px;
-    border-bottom:1px solid #dcdcdc;
-    background:rgba(255,255,255,.78);
+    border-bottom:1px solid #ddd;
+    background:rgba(255,255,255,.82);
     backdrop-filter:blur(20px);
     z-index:5;
 }
@@ -66,7 +58,7 @@ header{
     box-shadow:0 0 25px rgba(0,0,0,.18);
 }
 
-.logoDot::after{
+.logoDot:after{
     content:"";
     position:absolute;
     width:9px;
@@ -109,10 +101,6 @@ button{
     border:1px solid #d7d7d7;
 }
 
-/* =========================
-   MAIN
-========================= */
-
 main{
     flex:1;
     display:flex;
@@ -120,10 +108,6 @@ main{
     align-items:center;
     min-height:0;
 }
-
-/* =========================
-   NOVA CORE
-========================= */
 
 .coreArea{
     flex:0 0 43%;
@@ -140,7 +124,7 @@ main{
     height:180px;
     border-radius:50%;
     background:
-        radial-gradient(circle at 35% 30%,#ffffff 0%,#e9e9e9 35%,#9d9d9d 70%,#181818 100%);
+        radial-gradient(circle at 35% 30%,#fff 0%,#e9e9e9 35%,#9d9d9d 70%,#181818 100%);
     box-shadow:
         0 25px 60px rgba(0,0,0,.18),
         inset 0 0 25px rgba(255,255,255,.9);
@@ -148,7 +132,7 @@ main{
     transition:.35s;
 }
 
-.core::before{
+.core:before{
     content:"";
     position:absolute;
     inset:-18px;
@@ -156,7 +140,7 @@ main{
     border:1px solid rgba(0,0,0,.12);
 }
 
-.core::after{
+.core:after{
     content:"";
     position:absolute;
     inset:-35px;
@@ -166,9 +150,6 @@ main{
 
 .core.listening{
     transform:scale(1.07);
-    box-shadow:
-        0 0 70px rgba(0,0,0,.18),
-        inset 0 0 30px white;
 }
 
 .core.thinking{
@@ -215,10 +196,6 @@ main{
     letter-spacing:-1.5px;
 }
 
-/* =========================
-   CHAT
-========================= */
-
 .chat{
     width:min(900px,calc(100% - 32px));
     flex:1;
@@ -236,18 +213,6 @@ main{
     border-radius:18px;
     line-height:1.45;
     font-size:15px;
-    animation:appear .2s ease;
-}
-
-@keyframes appear{
-    from{
-        opacity:0;
-        transform:translateY(5px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
 }
 
 .message.user{
@@ -265,10 +230,6 @@ main{
     border-bottom-left-radius:5px;
     box-shadow:0 5px 20px rgba(0,0,0,.04);
 }
-
-/* =========================
-   CONTROL PANEL
-========================= */
 
 .bottom{
     width:min(900px,calc(100% - 32px));
@@ -307,11 +268,6 @@ main{
     background:#f0f0f0;
     color:#111;
     font-size:18px;
-    transition:.2s;
-}
-
-.iconBtn:hover{
-    background:#dedede;
 }
 
 .iconBtn.active{
@@ -326,11 +282,6 @@ main{
     background:#111;
     color:white;
     font-size:18px;
-    transition:.2s;
-}
-
-.sendBtn:hover{
-    transform:scale(1.04);
 }
 
 .tools{
@@ -348,14 +299,6 @@ main{
     color:#444;
     font-size:12px;
 }
-
-.toolBtn:hover{
-    background:#fff;
-}
-
-/* =========================
-   LOGIN
-========================= */
 
 .loginOverlay{
     position:fixed;
@@ -398,14 +341,6 @@ main{
     font-weight:650;
 }
 
-.googleLogin:hover{
-    background:#292929;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
 @media(max-width:600px){
 
     header{
@@ -438,11 +373,6 @@ main{
     .message{
         max-width:88%;
     }
-
-    .tools{
-        overflow-x:auto;
-        justify-content:flex-start;
-    }
 }
 </style>
 </head>
@@ -452,12 +382,14 @@ main{
 <div class="app">
 
 <header>
+
     <div class="logo">
         <div class="logoDot"></div>
         NOVA
     </div>
 
     <div class="headerRight">
+
         <button class="headerBtn light" id="voiceModeButton">
             Sprache
         </button>
@@ -466,82 +398,93 @@ main{
             Anmelden
         </button>
 
-        <button class="headerBtn light" id="logoutButton" style="display:none">
+        <button class="headerBtn light"
+                id="logoutButton"
+                style="display:none">
             Abmelden
         </button>
+
     </div>
+
 </header>
+
 
 <main>
 
-    <section class="coreArea">
+<section class="coreArea">
 
-        <div class="core" id="core">
-            <div class="coreCenter">N</div>
-        </div>
+    <div class="core" id="core">
+        <div class="coreCenter">N</div>
+    </div>
 
-        <div class="status" id="state">
-            System bereit
-        </div>
+    <div class="status" id="state">
+        System bereit
+    </div>
 
-        <div class="title">
-            Nova
-        </div>
+    <div class="title">
+        Nova
+    </div>
 
-    </section>
+</section>
 
-    <section class="chat" id="chat"></section>
 
-    <section class="bottom">
+<section class="chat" id="chat"></section>
 
-        <div class="inputBox">
 
-            <button class="iconBtn" id="micButton">
-                🎙
-            </button>
+<section class="bottom">
 
-            <input
-                id="input"
-                type="text"
-                autocomplete="off"
-                placeholder="Sprich mit Nova..."
-            >
+    <div class="inputBox">
 
-            <button class="sendBtn" id="sendButton">
-                ↑
-            </button>
+        <button class="iconBtn" id="micButton">
+            🎙
+        </button>
 
-        </div>
+        <input
+            id="input"
+            type="text"
+            autocomplete="off"
+            placeholder="Sprich mit Nova..."
+        >
 
-        <div class="tools">
+        <button class="sendBtn" id="sendButton">
+            ↑
+        </button>
 
-            <button class="toolBtn" id="youtubeButton">
-                YouTube
-            </button>
+    </div>
 
-            <button class="toolBtn" id="googleButton">
-                Google
-            </button>
 
-            <button class="toolBtn" id="testVoiceButton">
-                Stimme testen
-            </button>
+    <div class="tools">
 
-        </div>
+        <button class="toolBtn" id="youtubeButton">
+            YouTube
+        </button>
 
-    </section>
+        <button class="toolBtn" id="googleButton">
+            Google
+        </button>
+
+        <button class="toolBtn" id="testVoiceButton">
+            Stimme testen
+        </button>
+
+    </div>
+
+</section>
 
 </main>
-
 </div>
+
 
 <div class="loginOverlay" id="loginOverlay">
 
     <div class="loginCard">
 
-        <div class="logo" style="justify-content:center;margin-bottom:20px">
+        <div class="logo"
+             style="justify-content:center;margin-bottom:20px">
+
             <div class="logoDot"></div>
             NOVA
+
         </div>
 
         <h1>Nova Family AI</h1>
@@ -560,10 +503,6 @@ main{
 
 
 <script type="module">
-
-/* =========================================================
-   FIREBASE
-========================================================= */
 
 import {
     initializeApp
@@ -585,28 +524,48 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 
+/* =====================================================
+   FIREBASE
+===================================================== */
+
 const firebaseConfig = {
-    apiKey: "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIg9C9EtrE",
-    authDomain: "nova-68fc1.firebaseapp.com",
-    projectId: "nova-68fc1",
-    storageBucket: "nova-68fc1.firebasestorage.app",
-    messagingSenderId: "1020069093020",
-    appId: "1:1020069093020:web:9be72af9e60af659475759"
+
+    apiKey:
+        "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIg9C9EtrE",
+
+    authDomain:
+        "nova-68fc1.firebaseapp.com",
+
+    projectId:
+        "nova-68fc1",
+
+    storageBucket:
+        "nova-68fc1.firebasestorage.app",
+
+    messagingSenderId:
+        "1020069093020",
+
+    appId:
+        "1:1020069093020:web:9be72af9e60af659475759"
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app =
+    initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth =
+    getAuth(app);
 
-const db = getFirestore(app);
+const db =
+    getFirestore(app);
 
-const provider = new GoogleAuthProvider();
+const provider =
+    new GoogleAuthProvider();
 
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+/* =====================================================
+   ELEMENTE
+===================================================== */
 
 const chat =
     document.getElementById("chat");
@@ -651,9 +610,9 @@ const testVoiceButton =
     document.getElementById("testVoiceButton");
 
 
-/* =========================================================
-   STATE
-========================================================= */
+/* =====================================================
+   VARIABLEN
+===================================================== */
 
 let model = null;
 
@@ -669,10 +628,12 @@ let voiceMode = true;
 
 let recognition = null;
 
+let retryTimer = null;
 
-/* =========================================================
+
+/* =====================================================
    CHAT
-========================================================= */
+===================================================== */
 
 function addMessage(text,type){
 
@@ -682,7 +643,8 @@ function addMessage(text,type){
     message.className =
         "message " + type;
 
-    message.textContent = text;
+    message.textContent =
+        text;
 
     chat.appendChild(message);
 
@@ -691,21 +653,20 @@ function addMessage(text,type){
 }
 
 
-/* =========================================================
+/* =====================================================
    STATUS
-========================================================= */
+===================================================== */
 
 function setState(text){
 
-    state.textContent = text;
-
+    state.textContent =
+        text;
 }
 
 
-/* =========================================================
-   SPEECH OUTPUT
-   NOVA SPRICHT DEUTSCH
-========================================================= */
+/* =====================================================
+   MIKROFON STOPPEN
+===================================================== */
 
 function stopListening(){
 
@@ -718,13 +679,19 @@ function stopListening(){
 
     isListening = false;
 
-    micButton.classList.remove("active");
+    micButton.classList.remove(
+        "active"
+    );
+
+    core.classList.remove(
+        "listening"
+    );
 }
 
 
-/* =========================================================
+/* =====================================================
    NOVA SPRICHT
-========================================================= */
+===================================================== */
 
 function speak(text){
 
@@ -733,44 +700,63 @@ function speak(text){
 
     stopListening();
 
-    window.speechSynthesis.cancel();
+    speechSynthesis.cancel();
 
     isSpeaking = true;
 
-    core.classList.remove("listening");
-    core.classList.remove("thinking");
-    core.classList.add("speaking");
+    core.classList.remove(
+        "listening"
+    );
 
-    setState("Nova spricht");
+    core.classList.remove(
+        "thinking"
+    );
+
+    core.classList.add(
+        "speaking"
+    );
+
+    setState(
+        "Nova spricht"
+    );
+
 
     const utterance =
-        new SpeechSynthesisUtterance(text);
-
-    utterance.lang = "de-DE";
-
-    utterance.rate = 0.95;
-
-    utterance.pitch = 1.0;
-
-    utterance.volume = 1.0;
-
-
-    /*
-       Deutsche Stimme suchen
-    */
-
-    const voices =
-        window.speechSynthesis.getVoices();
-
-    const germanVoice =
-        voices.find(v =>
-            v.lang &&
-            v.lang.toLowerCase().startsWith("de")
+        new SpeechSynthesisUtterance(
+            text
         );
 
+    utterance.lang =
+        "de-DE";
+
+    utterance.rate =
+        0.95;
+
+    utterance.pitch =
+        1;
+
+    utterance.volume =
+        1;
+
+
+    const voices =
+        speechSynthesis.getVoices();
+
+    const germanVoice =
+        voices.find(
+            voice =>
+                voice.lang &&
+                voice.lang
+                    .toLowerCase()
+                    .startsWith("de")
+        );
+
+
     if(germanVoice){
+
         utterance.voice =
             germanVoice;
+
     }
 
 
@@ -778,18 +764,19 @@ function speak(text){
 
         isSpeaking = false;
 
-        core.classList.remove("speaking");
+        core.classList.remove(
+            "speaking"
+        );
 
         setState(
             voiceMode
-            ? "Bereit"
-            : "Textmodus"
+                ? "Bereit"
+                : "Textmodus"
         );
 
+
         /*
-           ERST NACHDEM NOVA FERTIG
-           GESPROCHEN HAT, WIRD WIEDER
-           ZUGEHÖRT.
+           Erst jetzt darf Nova wieder zuhören.
         */
 
         if(
@@ -797,11 +784,10 @@ function speak(text){
             !isThinking
         ){
 
-            setTimeout(() => {
-
-                startListening();
-
-            },700);
+            setTimeout(
+                startListening,
+                700
+            );
 
         }
 
@@ -812,22 +798,26 @@ function speak(text){
 
         isSpeaking = false;
 
-        core.classList.remove("speaking");
+        core.classList.remove(
+            "speaking"
+        );
 
-        setState("Bereit");
+        setState(
+            "Bereit"
+        );
 
     };
 
 
-    window.speechSynthesis.speak(
+    speechSynthesis.speak(
         utterance
     );
 }
 
 
-/* =========================================================
-   SPEECH RECOGNITION
-========================================================= */
+/* =====================================================
+   SPRACHERKENNUNG
+===================================================== */
 
 const SpeechRecognition =
     window.SpeechRecognition ||
@@ -851,20 +841,32 @@ if(SpeechRecognition){
 
     recognition.onstart = () => {
 
-        if(isSpeaking || isThinking){
+        if(
+            isSpeaking ||
+            isThinking
+        ){
 
             stopListening();
 
             return;
+
         }
+
 
         isListening = true;
 
-        core.classList.add("listening");
+        core.classList.add(
+            "listening"
+        );
 
-        setState("Ich höre zu");
+        micButton.classList.add(
+            "active"
+        );
 
-        micButton.classList.add("active");
+        setState(
+            "Ich höre zu"
+        );
+
     };
 
 
@@ -872,9 +874,14 @@ if(SpeechRecognition){
 
         isListening = false;
 
-        micButton.classList.remove("active");
+        micButton.classList.remove(
+            "active"
+        );
 
-        core.classList.remove("listening");
+        core.classList.remove(
+            "listening"
+        );
+
 
         if(
             !isSpeaking &&
@@ -883,8 +890,8 @@ if(SpeechRecognition){
 
             setState(
                 voiceMode
-                ? "Bereit"
-                : "Textmodus"
+                    ? "Bereit"
+                    : "Textmodus"
             );
 
         }
@@ -892,48 +899,58 @@ if(SpeechRecognition){
     };
 
 
-    recognition.onerror = event => {
+    recognition.onerror =
+        event => {
 
-        isListening = false;
+            console.log(
+                "Speech:",
+                event.error
+            );
 
-        micButton.classList.remove("active");
+            isListening =
+                false;
 
-        core.classList.remove("listening");
+            micButton.classList.remove(
+                "active"
+            );
 
-        console.log(
-            "Speech error:",
-            event.error
-        );
+            core.classList.remove(
+                "listening"
+            );
 
-        setState("Bereit");
-    };
+        };
 
 
-    recognition.onresult = event => {
+    recognition.onresult =
+        event => {
 
-        if(
-            isSpeaking ||
-            isThinking
-        ){
+            if(
+                isSpeaking ||
+                isThinking
+            )
+                return;
 
-            return;
-        }
 
-        const text =
-            event.results[0][0].transcript;
+            const text =
+                event
+                    .results[0][0]
+                    .transcript;
 
-        input.value = text;
 
-        sendMessage();
+            input.value =
+                text;
 
-    };
+
+            sendMessage();
+
+        };
 
 }
 
 
-/* =========================================================
-   START LISTENING
-========================================================= */
+/* =====================================================
+   ZUHÖREN STARTEN
+===================================================== */
 
 function startListening(){
 
@@ -955,25 +972,19 @@ function startListening(){
         return;
     }
 
+
     try{
 
         recognition.start();
 
-    }catch(e){
-
-        /*
-           Browser kann "already started"
-           melden – einfach ignorieren.
-        */
-
-    }
+    }catch(e){}
 
 }
 
 
-/* =========================================================
+/* =====================================================
    FIREBASE AI
-========================================================= */
+===================================================== */
 
 async function setupAI(){
 
@@ -983,10 +994,12 @@ async function setupAI(){
             "KI wird geladen"
         );
 
+
         const aiModule =
             await import(
                 "https://www.gstatic.com/firebasejs/12.13.0/firebase-ai.js"
             );
+
 
         const {
             getAI,
@@ -1015,11 +1028,17 @@ async function setupAI(){
             );
 
 
-        setState("System bereit");
+        setState(
+            "System bereit"
+        );
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "AI Setup:",
+            error
+        );
 
         setState(
             "KI konnte nicht geladen werden"
@@ -1030,79 +1049,243 @@ async function setupAI(){
 }
 
 
-/* =========================================================
-   SEND MESSAGE
-========================================================= */
+/* =====================================================
+   429 AUTOMATISCH BEHANDELN
+===================================================== */
+
+function handleQuotaError(){
+
+    isThinking =
+        false;
+
+    core.classList.remove(
+        "thinking"
+    );
+
+
+    const message =
+        "Mein aktuelles KI-Kontingent ist gerade aufgebraucht. Ich versuche es später automatisch erneut.";
+
+
+    addMessage(
+        message,
+        "nova"
+    );
+
+
+    setState(
+        "Kontingent erreicht"
+    );
+
+
+    if(voiceMode){
+
+        speak(
+            message
+        );
+
+    }
+
+
+    /*
+       Nach 60 Sekunden wird die KI
+       wieder getestet.
+    */
+
+    clearTimeout(
+        retryTimer
+    );
+
+
+    retryTimer =
+        setTimeout(
+            async () => {
+
+                if(!model)
+                    return;
+
+                setState(
+                    "KI wird erneut getestet"
+                );
+
+
+                try{
+
+                    await model.generateContent(
+                        "Antworte nur mit OK."
+                    );
+
+
+                    setState(
+                        "KI wieder verfügbar"
+                    );
+
+
+                }catch(error){
+
+                    console.log(
+                        "Noch nicht verfügbar:",
+                        error
+                    );
+
+
+                    if(
+                        String(error)
+                            .includes("429")
+                    ){
+
+                        handleQuotaRetryOnly();
+
+                    }
+
+                }
+
+            },
+            60000
+        );
+
+}
+
+
+/* =====================================================
+   NUR RETRY, OHNE NACHRICHTEN-SPAM
+===================================================== */
+
+function handleQuotaRetryOnly(){
+
+    clearTimeout(
+        retryTimer
+    );
+
+
+    retryTimer =
+        setTimeout(
+            async () => {
+
+                if(!model)
+                    return;
+
+
+                try{
+
+                    await model.generateContent(
+                        "Antworte nur mit OK."
+                    );
+
+
+                    setState(
+                        "KI wieder verfügbar"
+                    );
+
+
+                }catch(error){
+
+                    if(
+                        String(error)
+                            .includes("429")
+                    ){
+
+                        handleQuotaRetryOnly();
+
+                    }
+
+                }
+
+            },
+            60000
+        );
+
+}
+
+
+/* =====================================================
+   NACHRICHT SENDEN
+===================================================== */
 
 async function sendMessage(){
 
     const text =
         input.value.trim();
 
+
     if(!text)
         return;
+
 
     if(isThinking)
         return;
 
-    input.value = "";
+
+    input.value =
+        "";
+
 
     stopListening();
+
 
     addMessage(
         text,
         "user"
     );
 
+
     if(!model){
 
+        const message =
+            "Die KI ist noch nicht bereit.";
+
         addMessage(
-            "Die KI ist noch nicht bereit.",
+            message,
             "nova"
         );
+
+        if(voiceMode)
+            speak(message);
 
         return;
     }
 
 
-    isThinking = true;
-
-    core.classList.add("thinking");
-
-    setState("Nova denkt");
+    isThinking =
+        true;
 
 
-    try{
+    core.classList.add(
+        "thinking"
+    );
 
-        const prompt = `
+
+    setState(
+        "Nova denkt"
+    );
+
+
+    const prompt = `
+
 Du bist Nova, eine moderne persönliche KI.
 
-Antworte auf Deutsch.
+Antworte immer auf Deutsch.
 
-Sei freundlich, intelligent und natürlich.
+Sei freundlich, natürlich und intelligent.
 
-Halte Antworten normalerweise kurz und verständlich.
+Normalerweise kurz antworten.
 
-Wenn der Nutzer ausdrücklich nach einer ausführlichen Erklärung fragt,
+Wenn der Benutzer ausdrücklich mehr Details möchte,
 darfst du ausführlicher antworten.
 
-WICHTIG:
-Wenn der Nutzer möchte, dass YouTube geöffnet wird,
-beginne deine Antwort mit:
+Wenn YouTube geöffnet werden soll:
 [ACTION:YOUTUBE]
 
-Wenn der Nutzer Google öffnen möchte,
-beginne deine Antwort mit:
+Wenn Google geöffnet werden soll:
 [ACTION:GOOGLE]
-
-Ansonsten beginne normal.
-
-Nach dem Action-Tag soll eine kurze normale Antwort folgen.
 
 Benutzer:
 ${text}
+
 `;
 
+
+    try{
 
         const result =
             await model.generateContent(
@@ -1114,7 +1297,8 @@ ${text}
             result.response.text();
 
 
-        let action = null;
+        let action =
+            null;
 
 
         if(
@@ -1123,7 +1307,8 @@ ${text}
             )
         ){
 
-            action = "youtube";
+            action =
+                "youtube";
 
             answer =
                 answer.replace(
@@ -1140,7 +1325,8 @@ ${text}
             )
         ){
 
-            action = "google";
+            action =
+                "google";
 
             answer =
                 answer.replace(
@@ -1166,10 +1352,12 @@ ${text}
 
 
         /*
-           Aktion ausführen
+           Aktionen
         */
 
-        if(action === "youtube"){
+        if(
+            action === "youtube"
+        ){
 
             window.open(
                 "https://www.youtube.com/",
@@ -1179,7 +1367,9 @@ ${text}
         }
 
 
-        if(action === "google"){
+        if(
+            action === "google"
+        ){
 
             window.open(
                 "https://www.google.com/",
@@ -1189,7 +1379,9 @@ ${text}
         }
 
 
-        isThinking = false;
+        isThinking =
+            false;
+
 
         core.classList.remove(
             "thinking"
@@ -1197,14 +1389,15 @@ ${text}
 
 
         /*
-           UND JETZT SPRICHT NOVA.
-           Währenddessen wird NICHT
-           zugehört.
+           Nova spricht.
+           Mikrofon bleibt aus.
         */
 
         if(voiceMode){
 
-            speak(answer);
+            speak(
+                answer
+            );
 
         }else{
 
@@ -1217,30 +1410,66 @@ ${text}
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "AI:",
+            error
+        );
 
-        isThinking = false;
+
+        const errorString =
+            String(error);
+
+
+        /*
+           429 / QUOTA
+        */
+
+        if(
+            errorString.includes("429") ||
+            errorString.includes("quota") ||
+            errorString.includes("Quota")
+        ){
+
+            handleQuotaError();
+
+            return;
+
+        }
+
+
+        /*
+           Andere Fehler
+        */
+
+        isThinking =
+            false;
+
 
         core.classList.remove(
             "thinking"
         );
 
-        const errorText =
-            "Entschuldigung, da ist gerade ein Fehler aufgetreten.";
+
+        const message =
+            "Ich konnte die KI gerade nicht erreichen.";
+
 
         addMessage(
-            errorText,
+            message,
             "nova"
         );
 
+
         setState(
-            "Fehler"
+            "Verbindungsfehler"
         );
 
 
         if(voiceMode){
 
-            speak(errorText);
+            speak(
+                message
+            );
 
         }
 
@@ -1249,9 +1478,9 @@ ${text}
 }
 
 
-/* =========================================================
+/* =====================================================
    LOGIN
-========================================================= */
+===================================================== */
 
 async function login(){
 
@@ -1264,7 +1493,10 @@ async function login(){
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Login:",
+            error
+        );
 
         alert(
             "Anmeldung fehlgeschlagen."
@@ -1279,64 +1511,76 @@ async function logout(){
 
     try{
 
-        await signOut(auth);
+        await signOut(
+            auth
+        );
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
     }
 
 }
 
 
-/* =========================================================
-   USER STATE
-========================================================= */
+/* =====================================================
+   AUTH
+===================================================== */
 
 onAuthStateChanged(
     auth,
     async user => {
 
-        currentUser = user;
+        currentUser =
+            user;
+
 
         if(user){
 
             loginOverlay.style.display =
                 "none";
 
+
             loginButton.style.display =
                 "none";
+
 
             logoutButton.style.display =
                 "block";
 
 
-            /*
-               Firestore Benutzerprofil
-            */
-
             try{
 
-                const ref =
+                const reference =
                     doc(
                         db,
                         "users",
                         user.uid
                     );
 
-                const snapshot =
-                    await getDoc(ref);
 
-                if(!snapshot.exists()){
+                const snapshot =
+                    await getDoc(
+                        reference
+                    );
+
+
+                if(
+                    !snapshot.exists()
+                ){
 
                     await setDoc(
-                        ref,
+                        reference,
                         {
                             name:
                                 user.displayName || "",
+
                             email:
                                 user.email || "",
+
                             created:
                                 Date.now()
                         }
@@ -1374,8 +1618,10 @@ onAuthStateChanged(
             loginOverlay.style.display =
                 "flex";
 
+
             loginButton.style.display =
                 "block";
+
 
             logoutButton.style.display =
                 "none";
@@ -1386,37 +1632,31 @@ onAuthStateChanged(
 );
 
 
-/* =========================================================
+/* =====================================================
    BUTTONS
-========================================================= */
+===================================================== */
 
-googleLogin.addEventListener(
-    "click",
-    login
-);
+googleLogin.onclick =
+    login;
 
-loginButton.addEventListener(
-    "click",
-    login
-);
+loginButton.onclick =
+    login;
 
-logoutButton.addEventListener(
-    "click",
-    logout
-);
+logoutButton.onclick =
+    logout;
 
 
-sendButton.addEventListener(
-    "click",
-    sendMessage
-);
+sendButton.onclick =
+    sendMessage;
 
 
 input.addEventListener(
     "keydown",
     event => {
 
-        if(event.key === "Enter"){
+        if(
+            event.key === "Enter"
+        ){
 
             event.preventDefault();
 
@@ -1428,12 +1668,11 @@ input.addEventListener(
 );
 
 
-/* =========================================================
-   MICROPHONE
-========================================================= */
+/* =====================================================
+   MIKROFON BUTTON
+===================================================== */
 
-micButton.addEventListener(
-    "click",
+micButton.onclick =
     () => {
 
         if(!recognition){
@@ -1447,16 +1686,8 @@ micButton.addEventListener(
         }
 
 
-        if(isSpeaking){
-
-            /*
-               Während Nova spricht:
-               NICHT zuhören.
-            */
-
+        if(isSpeaking)
             return;
-
-        }
 
 
         if(isListening){
@@ -1465,7 +1696,8 @@ micButton.addEventListener(
 
         }else{
 
-            voiceMode = true;
+            voiceMode =
+                true;
 
             voiceModeButton.textContent =
                 "Sprache";
@@ -1474,16 +1706,14 @@ micButton.addEventListener(
 
         }
 
-    }
-);
+    };
 
 
-/* =========================================================
-   VOICE MODE
-========================================================= */
+/* =====================================================
+   SPRACHMODUS
+===================================================== */
 
-voiceModeButton.addEventListener(
-    "click",
+voiceModeButton.onclick =
     () => {
 
         voiceMode =
@@ -1512,32 +1742,28 @@ voiceModeButton.addEventListener(
 
         }
 
-    }
-);
+    };
 
 
-/* =========================================================
-   TEST VOICE
-========================================================= */
+/* =====================================================
+   STIMME TESTEN
+===================================================== */
 
-testVoiceButton.addEventListener(
-    "click",
+testVoiceButton.onclick =
     () => {
 
         speak(
-            "Hallo. Ich bin Nova. Meine deutsche Sprachausgabe funktioniert."
+            "Hallo. Ich bin Nova. Meine deutsche Stimme funktioniert."
         );
 
-    }
-);
+    };
 
 
-/* =========================================================
+/* =====================================================
    YOUTUBE
-========================================================= */
+===================================================== */
 
-youtubeButton.addEventListener(
-    "click",
+youtubeButton.onclick =
     () => {
 
         window.open(
@@ -1545,16 +1771,14 @@ youtubeButton.addEventListener(
             "_blank"
         );
 
-    }
-);
+    };
 
 
-/* =========================================================
+/* =====================================================
    GOOGLE
-========================================================= */
+===================================================== */
 
-googleButton.addEventListener(
-    "click",
+googleButton.onclick =
     () => {
 
         window.open(
@@ -1562,32 +1786,26 @@ googleButton.addEventListener(
             "_blank"
         );
 
-    }
-);
+    };
 
 
-/* =========================================================
-   BROWSER VOICES
-========================================================= */
+/* =====================================================
+   VOICES
+===================================================== */
 
 if(
     "speechSynthesis" in window
 ){
 
-    window.speechSynthesis.onvoiceschanged =
+    speechSynthesis.onvoiceschanged =
         () => {
 
-            window.speechSynthesis
-                .getVoices();
+            speechSynthesis.getVoices();
 
         };
 
 }
 
-
-/* =========================================================
-   INITIAL
-========================================================= */
 
 setState(
     "System wird gestartet"
