@@ -4,52 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#020306">
+
+    <meta name="theme-color" content="#020305">
 
     <title>Nova Family AI</title>
 
-    <link rel="stylesheet" href="./style.css?v=5">
+    <link rel="stylesheet" href="./style.css?v=10">
 </head>
 
 <body>
 
 <div class="background"></div>
 
+
 <header class="topbar">
 
     <div class="logo">
+
         <div class="logo-orb"></div>
 
         <div>
             <strong>NOVA</strong>
-            <span>Family AI</span>
+            <span>FAMILY AI</span>
         </div>
+
     </div>
+
 
     <div class="account">
 
-        <img id="userPhoto"
-             class="user-photo"
-             alt="Profilbild"
-             hidden>
+        <img
+            id="userPhoto"
+            class="user-photo"
+            hidden
+            alt="Profilbild"
+        >
 
-        <div id="userInfo"
-             class="user-info"
-             hidden>
-
+        <div
+            id="userInfo"
+            class="user-info"
+            hidden
+        >
             <strong id="userName"></strong>
             <span id="userEmail"></span>
-
         </div>
 
-        <button id="loginButton"
-                class="login-button">
+        <button
+            id="loginButton"
+            class="login-button"
+            type="button"
+        >
             Mit Google anmelden
         </button>
 
-        <button id="logoutButton"
-                class="small-button"
-                hidden>
+        <button
+            id="logoutButton"
+            class="small-button"
+            hidden
+            type="button"
+        >
             Abmelden
         </button>
 
@@ -62,11 +75,11 @@
 
     <section class="assistant">
 
-        <!-- REALISTISCHE KI-KUGEL -->
-
-        <div id="orb"
-             class="orb"
-             aria-label="Nova KI">
+        <div
+            id="orb"
+            class="orb"
+            aria-label="Nova"
+        >
 
             <div class="orb-aura"></div>
 
@@ -74,11 +87,10 @@
 
                 <div class="orb-surface"></div>
 
-                <div class="orb-light light-one"></div>
-                <div class="orb-light light-two"></div>
-
                 <div class="orb-energy energy-one"></div>
                 <div class="orb-energy energy-two"></div>
+
+                <div class="orb-highlight"></div>
 
                 <div class="orb-center"></div>
 
@@ -90,35 +102,41 @@
         <div class="status">
 
             <strong id="statusText">
-                Nova startet...
+                Nova wird geladen...
             </strong>
 
             <span id="statusSub">
-                Initialisiere System
+                System wird gestartet
             </span>
 
         </div>
 
 
-        <button id="microphone"
-                class="microphone"
-                disabled
-                aria-label="Mikrofon">
-
-            <span>🎙</span>
-
+        <button
+            id="microphone"
+            class="microphone"
+            type="button"
+            disabled
+        >
+            🎙
         </button>
 
 
         <div class="mode-buttons">
 
-            <button id="voiceMode"
-                    class="mode active">
+            <button
+                id="voiceMode"
+                class="mode active"
+                type="button"
+            >
                 Sprache
             </button>
 
-            <button id="textMode"
-                    class="mode">
+            <button
+                id="textMode"
+                class="mode"
+                type="button"
+            >
                 Text
             </button>
 
@@ -127,25 +145,32 @@
     </section>
 
 
-    <section id="textChat"
-             class="chat"
-             hidden>
+    <section
+        id="textChat"
+        class="chat"
+        hidden
+    >
 
-        <div id="messages"
-             class="messages">
-        </div>
-
+        <div
+            id="messages"
+            class="messages"
+        ></div>
 
         <div class="input-area">
 
-            <input id="textInput"
-                   type="text"
-                   autocomplete="off"
-                   placeholder="Schreibe Nova etwas..."
-                   disabled>
+            <input
+                id="textInput"
+                type="text"
+                placeholder="Schreibe Nova etwas..."
+                autocomplete="off"
+                disabled
+            >
 
-            <button id="sendText"
-                    disabled>
+            <button
+                id="sendText"
+                type="button"
+                disabled
+            >
                 Senden
             </button>
 
@@ -156,20 +181,27 @@
 
     <section class="actions">
 
-        <button id="youtubeButton"
-                class="action-button"
-                disabled>
+        <button
+            id="youtubeButton"
+            class="action-button"
+            type="button"
+        >
             YouTube
         </button>
 
-        <button id="googleButton"
-                class="action-button"
-                disabled>
+        <button
+            id="googleButton"
+            class="action-button"
+            type="button"
+        >
             Google
         </button>
 
-        <button id="settingsButton"
-                class="action-button">
+        <button
+            id="settingsButton"
+            class="action-button"
+            type="button"
+        >
             Einstellungen
         </button>
 
@@ -178,31 +210,28 @@
 </main>
 
 
-<!-- EINSTELLUNGEN -->
+<!-- SETTINGS -->
 
-<div id="settingsOverlay"
-     class="overlay"
-     hidden
-     aria-hidden="true">
+<div
+    id="settingsOverlay"
+    class="overlay"
+    hidden
+>
 
-    <div class="settings"
-         role="dialog"
-         aria-modal="true">
+    <div class="settings">
 
         <div class="settings-header">
 
             <div>
-
                 <h2>Nova Einstellungen</h2>
-
-                <p>
-                    Stimme, Geschwindigkeit und Familie
-                </p>
-
+                <p>Nova konfigurieren</p>
             </div>
 
-            <button id="closeSettings"
-                    class="close-button">
+            <button
+                id="closeSettings"
+                class="close-button"
+                type="button"
+            >
                 ×
             </button>
 
@@ -224,9 +253,7 @@
 
             <label for="rateSlider">
 
-                <span>
-                    Sprechgeschwindigkeit
-                </span>
+                <span>Sprechgeschwindigkeit</span>
 
                 <span id="rateValue">
                     1.0
@@ -234,12 +261,14 @@
 
             </label>
 
-            <input id="rateSlider"
-                   type="range"
-                   min="0.6"
-                   max="1.5"
-                   step="0.1"
-                   value="1">
+            <input
+                id="rateSlider"
+                type="range"
+                min="0.6"
+                max="1.5"
+                step="0.1"
+                value="1"
+            >
 
         </div>
 
@@ -248,9 +277,7 @@
 
             <label for="volumeSlider">
 
-                <span>
-                    Lautstärke
-                </span>
+                <span>Lautstärke</span>
 
                 <span id="volumeValue">
                     100%
@@ -258,47 +285,54 @@
 
             </label>
 
-            <input id="volumeSlider"
-                   type="range"
-                   min="0"
-                   max="1"
-                   step="0.05"
-                   value="1">
+            <input
+                id="volumeSlider"
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value="1"
+            >
 
         </div>
 
 
-        <div class="setting toggle-row">
+        <div class="toggle-row">
 
             <label for="memoryToggle">
                 Erinnerungen
             </label>
 
-            <input id="memoryToggle"
-                   type="checkbox"
-                   checked>
+            <input
+                id="memoryToggle"
+                type="checkbox"
+                checked
+            >
 
         </div>
 
 
-        <div class="setting toggle-row">
+        <div class="toggle-row">
 
             <label for="animationToggle">
                 Animationen
             </label>
 
-            <input id="animationToggle"
-                   type="checkbox"
-                   checked>
+            <input
+                id="animationToggle"
+                type="checkbox"
+                checked
+            >
 
         </div>
 
 
-        <button id="testVoice"
-                class="primary-button">
-
+        <button
+            id="testVoice"
+            class="primary-button"
+            type="button"
+        >
             Stimme testen
-
         </button>
 
 
@@ -315,17 +349,25 @@
 
             <div class="family-actions">
 
-                <button id="createFamily"
-                        class="secondary-button">
+                <button
+                    id="createFamily"
+                    class="secondary-button"
+                    type="button"
+                >
                     Familie erstellen
                 </button>
 
-                <input id="familyCode"
-                       type="text"
-                       placeholder="Familiencode">
+                <input
+                    id="familyCode"
+                    type="text"
+                    placeholder="Familiencode"
+                >
 
-                <button id="joinFamily"
-                        class="secondary-button">
+                <button
+                    id="joinFamily"
+                    class="secondary-button"
+                    type="button"
+                >
                     Beitreten
                 </button>
 
@@ -333,24 +375,21 @@
 
         </div>
 
-
-        <div id="memoryStatus"
-             class="memory-status">
-        </div>
-
     </div>
 
 </div>
 
 
-<div id="toast"
-     class="toast">
-</div>
+<div
+    id="toast"
+    class="toast"
+></div>
 
 
-<script type="module"
-        src="./app.js?v=5">
-</script>
+<script
+    type="module"
+    src="./app.js?v=10"
+></script>
 
 </body>
 </html>
