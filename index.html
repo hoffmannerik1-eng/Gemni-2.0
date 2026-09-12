@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Nova Family AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="stars"></div>
+
+    <header>
+
+        <div class="logo">
+            NOVA
+            <span>FAMILY AI</span>
+        </div>
+
+        <div id="account">
+            <button id="loginButton">
+                Mit Google anmelden
+            </button>
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <div id="aiContainer">
+
+            <div id="orb">
+
+                <div class="ring ring1"></div>
+                <div class="ring ring2"></div>
+                <div class="ring ring3"></div>
+
+                <div class="core"></div>
+
+            </div>
+
+            <div id="status">
+                ANMELDEN
+            </div>
+
+            <button id="microphone" disabled>
+                🎙
+            </button>
+
+            <div id="modeText">
+                Sprachassistent
+            </div>
+
+        </div>
+
+
+        <div id="controlPanel" class="hidden">
+
+            <div class="modeButtons">
+
+                <button id="privateMode" class="selected">
+                    🔒 Privat
+                </button>
+
+                <button id="familyMode">
+                    👨‍👩‍👧‍👦 Familie
+                </button>
+
+            </div>
+
+
+            <div id="familyControls">
+
+                <button id="createFamily">
+                    Familie erstellen
+                </button>
+
+                <button id="joinFamily">
+                    Familie beitreten
+                </button>
+
+            </div>
+
+
+            <div id="familyCode"></div>
+
+
+            <div class="memoryHeader">
+                Meine Erinnerungen
+            </div>
+
+            <div id="memoryList">
+                Noch keine Erinnerungen.
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script type="module" src="app.js"></script>
+
+</body>
+</html>
