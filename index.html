@@ -1,12 +1,4017 @@
-\`\`\`html <!DOCTYPE html> <html lang="de"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="theme-color" content="#050505"> <title>Nova Family AI · Complete</title>  <style> :root{     --bg:#050505;     --panel:#0d0d0d;     --panel2:#121212;     --line:#252525;     --white:#fff;     --gray:#aaa;     --green:#45ff9a;     --red:#ff5555; } *{box-sizing:border-box;margin:0;padding:0;} body{background:radial-gradient(circle at 50% -10%,#252525 0%,#0a0a0a 35%,#050505 70%);color:white;font-family:Arial,Helvetica,sans-serif;min-height:100vh;} button,input{font:inherit;} button{cursor:pointer;} .hidden{display:none!important;}  /* LOGIN */ #loginScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:#050505;} .loginBox{width:min(440px,92vw);padding:42px;border:1px solid #292929;border-radius:28px;background:#0d0d0d;box-shadow:0 20px 80px rgba(0,0,0,.6);text-align:center;} .loginLogo{width:100px;height:100px;margin:0 auto 25px;border-radius:50%;background:radial-gradient(circle,#fff 0%,#aaa 18%,#333 45%,#090909 70%);box-shadow:0 0 30px rgba(255,255,255,.3),inset 0 0 35px rgba(255,255,255,.25);} .loginBox h1{font-size:34px;letter-spacing:4px;margin-bottom:10px;} .loginBox p{color:#999;line-height:1.5;margin-bottom:28px;} .googleBtn{width:100%;padding:15px;border:1px solid #333;border-radius:14px;background:#fff;color:#000;font-weight:bold;} .googleBtn:hover{background:#ddd;}  /* TOPBAR */ .topbar{height:72px;position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(5,5,5,.86);backdrop-filter:blur(18px);} .brand{display:flex;align-items:center;gap:12px;} .brandOrb{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle,#fff,#888 30%,#111 70%);box-shadow:0 0 20px rgba(255,255,255,.2);} .brandText{font-weight:bold;letter-spacing:2px;} .topActions{display:flex;align-items:center;gap:8px;} .smallBtn{border:1px solid #2b2b2b;background:#111;color:white;border-radius:10px;padding:8px 12px;} .userAvatar{width:36px;height:36px;border-radius:50%;border:1px solid #333;object-fit:cover;}  /* MAIN */ .main{width:min(1100px,94vw);margin:auto;padding-top:105px;padding-bottom:150px;} .hero{text-align:center;margin-bottom:25px;} .heroOrb{width:170px;height:170px;margin:10px auto 22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0%,#ddd 8%,#777 27%,#292929 53%,#090909 74%);box-shadow:0 0 30px rgba(255,255,255,.22),0 0 100px rgba(255,255,255,.08),inset -20px -20px 40px rgba(0,0,0,.8);animation:orbFloat 4s ease-in-out infinite;} @keyframes orbFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}  /* STATUS & SETTINGS */ .statusRow{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:20px 0;} .status{border:1px solid #272727;background:#0c0c0c;padding:7px 12px;border-radius:999px;color:#aaa;font-size:13px;} .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:#555;} .dot.green{background:var(--green);box-shadow:0 0 10px var(--green);} .dot.red{background:var(--red);box-shadow:0 0 10px var(--red);} .settings{border:1px solid #252525;background:rgba(12,12,12,.8);border-radius:20px;padding:18px;margin-bottom:20px;} .settingsHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px;} .modelTag{color:var(--green);font-size:12px;border:1px solid #245c43;padding:5px 8px;border-radius:7px;} .keyGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;} .keyBox{border:1px solid #252525;border-radius:14px;padding:12px;background:#090909;} .keyBox.active{border-color:#777;} .keyTop{display:flex;justify-content:space-between;margin-bottom:8px;} .keyState{color:#777;font-size:11px;} .keyInput{width:100%;padding:10px;background:#111;border:1px solid #252525;color:#fff;border-radius:99px;outline:none;} .keyButtons{display:flex;gap:8px;margin-top:9px;} .keyBtn{flex:1;padding:9px;border:1px solid #292929;background:#151515;color:#fff;border-radius:9px;} .keyBtn.active{background:#fff;color:#000;} .keyHelp{margin-top:12px;color:#777;font-size:12px;line-height:1.5;} .quota{margin-top:14px;} .quotaTop{display:flex;justify-content:space-between;color:#888;font-size:12px;margin-bottom:7px;} .quotaBar{width:100%;height:5px;background:#1d1d1d;border-radius:99px;overflow:hidden;} .quotaFill{height:100%;width:0%;background:#fff;transition:.3s;}  /* CHAT & INPUT */ .chat{display:flex;flex-direction:column;gap:12px;} .message{display:flex;gap:10px;max-width:88%;} .message.user{align-self:flex-end;flex-direction:row-reverse;} .message.ai{align-self:flex-start;} .messageAvatar{width:34px;height:34px;min-width:34px;border-radius:50%;background:radial-gradient(circle,#fff,#777 30%,#111 68%);border:1px solid #333;} .user .messageAvatar{background:#fff;} .messageContent{padding:13px 15px;border-radius:16px;border:1px solid #242424;background:#0e0e0e;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;} .user .messageContent{background:#fff;color:#000;border-color:#fff;} .typing{display:flex;gap:5px;} .typing span{width:6px;height:6px;background:#aaa;border-radius:50%;animation:typing 1s infinite;} .typing span:nth-child(2){animation-delay:.15s;} .typing span:nth-child(3){animation-delay:.3s;} @keyframes typing{0%,80%,100%{opacity:.2;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}} .inputArea{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:14px;background:linear-gradient(transparent,rgba(5,5,5,.96) 25%);} .inputBox{width:min(900px,94vw);margin:auto;display:flex;gap:8px;padding:8px;border:1px solid #292929;border-radius:18px;background:#0d0d0d;box-shadow:0 15px 50px rgba(0,0,0,.6);} #messageInput{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#fff;padding:10px;} #messageInput::placeholder{color:#666;} .actionBtn{width:44px;height:44px;border-radius:12px;border:1px solid #292929;background:#151515;color:#fff;} .actionBtn:hover{background:#222;} #micBtn.active{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 20px rgba(255,255,255,.2);} .sendBtn{background:#fff;color:#000;border-color:#fff;} @media(max-width:700px){.topbar{padding:0 12px;}.brandText{font-size:13px;}.heroOrb{width:130px;height:130px;}.keyGrid{grid-template-columns:1fr;}.message{max-width:94%;}.actionBtn{width:40px;height:40px;}} </style> </head>  <body> <div id="loginScreen">     <div class="loginBox">         <div class="loginLogo"></div>         <h1>NOVA</h1>         <p>Nova Family AI<br>Dein persönlicher KI-Assistent</p>         <button class="googleBtn" id="googleLoginBtn">Mit Google anmelden</button>         <p id="loginError" style="margin-top:15px;color:#ff5555;font-size:13px"></p>     </div> </div>  <div id="app" class="hidden"> <header class="topbar">     <div class="brand">         <div class="brandOrb"></div>         <div class="brandText">NOVA FAMILY AI</div>     </div>     <div class="topActions">         <button class="smallBtn" id="clearChatBtn">Chat löschen</button>         <button class="smallBtn" id="logoutBtn">Abmelden</button>         <img id="userAvatar" class="userAvatar" alt="User">     </div> </header>  <main class="main"> <section class="hero">     <div class="heroOrb"></div>     <h1>NOVA</h1>     <p>Dein persönlicher KI-Assistent</p> </section>  <div class="statusRow">     <div class="status"><span id="connectionDot" class="dot"></span><span id="connectionStatus">Bereit</span></div>     <div class="status">Modell: <strong>gemini-3.6-flash</strong></div>     <div class="status">Sprache: <strong>Deutsch</strong></div> </div>  <section class="settings">     <div class="settingsHeader">         <h2>GEMINI ZUGÄNGE</h2>         <div class="modelTag">gemini-3.6-flash</div>     </div>     <div class="keyGrid">         <div class="keyBox active" id="keyBox1">             <div class="keyTop"><strong>F1 · Key 1</strong><span class="keyState" id="keyState1">Nicht gesetzt</span></div>             <input id="keyInput1" class="keyInput" type="password" placeholder="Gemini API Key 1">             <div class="keyButtons">                 <button class="keyBtn" id="saveKey1">Speichern</button>                 <button class="keyBtn active" id="activateKey1">F1 aktiv</button>             </div>         </div>         <div class="keyBox" id="keyBox2">             <div class="keyTop"><strong>F2 · Key 2</strong><span class="keyState" id="keyState2">Nicht gesetzt</span></div>             <input id="keyInput2" class="keyInput" type="password" placeholder="Gemini API Key 2">             <div class="keyButtons">                 <button class="keyBtn" id="saveKey2">Speichern</button>                 <button class="keyBtn" id="activateKey2">F2 verwenden</button>             </div>         </div>     </div>     <div class="keyHelp">F1 und F2 wechseln die Gemini-Zugänge <strong>manuell</strong>. Bei 429 wird nicht automatisch gewechselt.</div>     <div class="quota">         <div class="quotaTop"><span>Lokaler Fragenzähler</span><span id="quotaText">0 / 20</span></div>         <div class="quotaBar"><div id="quotaFill" class="quotaFill"></div></div>     </div> </section>  <section id="chat" class="chat"></section> </main>  <div class="inputArea">     <div class="inputBox">         <button id="micBtn" class="actionBtn" title="Spracheingabe">🎙</button>         <input id="messageInput" autocomplete="off" placeholder="Schreib Nova etwas...">         <button id="sendBtn" class="actionBtn sendBtn" title="Senden">➤</button>     </div> </div> </div>  <script type="module"> import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js"; import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js"; import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";  const firebaseConfig = {     apiKey: "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIg9C9EtrE",     authDomain: "nova-68fc1.firebaseapp.com",     projectId: "nova-68fc1",     storageBucket: "nova-68fc1.firebasestorage.app",     messagingSenderId: "1020069093020",     appId: "1:1020069093020:web:9be72af9e60af659475759" };  const firebaseApp = initializeApp(firebaseConfig); const auth = getAuth(firebaseApp); const db = getFirestore(firebaseApp); const googleProvider = new GoogleAuthProvider();  const GEMINI_MODEL = "gemini-3.6-flash"; const MAX_QUESTIONS = 20; const KEY_STORAGE = "nova_private_gemini_keys_v5"; const ACTIVE_KEY_STORAGE = "nova_active_gemini_key_v5"; const LOCAL_CHAT_STORAGE = "nova_shared_chat_v5"; const QUESTION_STORAGE = "nova_questions_v5";  let currentUser = null; let activeKeyNumber = 1; let geminiKeys = { 1:"", 2:"" }; let conversation = []; let questionsUsed = 0; let recognition = null; let isListening = false; let listenTimer = null; let isSpeaking = false; let isThinking = false; let voiceMode = false;  const loginScreen = document.getElementById("loginScreen"); const app = document.getElementById("app"); const googleLoginBtn = document.getElementById("googleLoginBtn"); const loginError = document.getElementById("loginError"); const logoutBtn = document.getElementById("logoutBtn"); const clearChatBtn = document.getElementById("clearChatBtn"); const userAvatar = document.getElementById("userAvatar"); const chat = document.getElementById("chat"); const messageInput = document.getElementById("messageInput"); const sendBtn = document.getElementById("sendBtn"); const micBtn = document.getElementById("micBtn"); const connectionDot = document.getElementById("connectionDot"); const connectionStatus = document.getElementById("connectionStatus"); const keyInput1 = document.getElementById("keyInput1"); const keyInput2 = document.getElementById("keyInput2"); const saveKey1 = document.getElementById("saveKey1"); const saveKey2 = document.getElementById("saveKey2"); const activateKey1 = document.getElementById("activateKey1"); const activateKey2 = document.getElementById("activateKey2"); const keyBox1 = document.getElementById("keyBox1"); const keyBox2 = document.getElementById("keyBox2"); const keyState1 = document.getElementById("keyState1"); const keyState2 = document.getElementById("keyState2"); const quotaText = document.getElementById("quotaText"); const quotaFill = document.getElementById("quotaFill");  function loadLocalData(){     try{         const keys = localStorage.getItem(KEY_STORAGE);         if(keys){ geminiKeys = JSON.parse(keys); }     }catch(e){}     try{         const active = localStorage.getItem(ACTIVE_KEY_STORAGE);         if(active){ activeKeyNumber = Number(active) === 2 ? 2 : 1; }     }catch(e){ activeKeyNumber = 1; }     try{         const savedChat = localStorage.getItem(LOCAL_CHAT_STORAGE);         if(savedChat){ conversation = JSON.parse(savedChat); }     }catch(e){ conversation = []; }     try{         const questions = localStorage.getItem(QUESTION_STORAGE);         if(questions){ questionsUsed = Number(questions) || 0; }     }catch(e){ questionsUsed = 0; }      keyInput1.value = geminiKeys[1] || "";     keyInput2.value = geminiKeys[2] || "";     updateKeyUI();     updateQuotaUI();     renderConversation(); }  function saveLocalData(){     localStorage.setItem(KEY_STORAGE, JSON.stringify(geminiKeys));     localStorage.setItem(ACTIVE_KEY_STORAGE, String(activeKeyNumber));     localStorage.setItem(LOCAL_CHAT_STORAGE, JSON.stringify(conversation));     localStorage.setItem(QUESTION_STORAGE, String(questionsUsed)); }  async function loadUserData(){     if(!currentUser) return;     try{         const ref = doc(db, "users", currentUser.uid);         const snap = await getDoc(ref);         if(!snap.exists()) return;         const data = snap.data();         if(Array.isArray(data.conversation) && conversation.length === 0){             conversation = data.conversation;             saveLocalData();             renderConversation();         }     }catch(e){} }  async function saveUserData(){     if(!currentUser) return;     try{         const ref = doc(db, "users", currentUser.uid);         await setDoc(ref, { conversation: conversation.slice(-100), updatedAt: Date.now() }, { merge:true });     }catch(e){} }  googleLoginBtn.addEventListener("click", async () => {     loginError.textContent = "";     try{ await signInWithPopup(auth, googleProvider); }     catch(e){ loginError.textContent = e.message || "Fehler beim Anmelden"; } });  logoutBtn.addEventListener("click", async () => { try{ await signOut(auth); }catch(e){} });  onAuthStateChanged(auth, async user => {     currentUser = user;     if(user){         loginScreen.classList.add("hidden");         app.classList.remove("hidden");         userAvatar.src = user.photoURL || "";         loadLocalData();         await loadUserData();         setConnection(\`F${activeKeyNumber} · ${GEMINI_MODEL} bereit\`, true);     }else{         loginScreen.classList.remove("hidden");         app.classList.add("hidden");     } });  function saveGeminiKey(num){     const input = num === 1 ? keyInput1 : keyInput2;     geminiKeys[num] = input.value.trim();     saveLocalData();     updateKeyUI();     setConnection(\`Key ${num} gespeichert\`, true); }  function activateGeminiKey(num){     if(!geminiKeys[num]){         setConnection(\`F${num}: Kein API-Key gespeichert\`, false);         return;     }     activeKeyNumber = num;     saveLocalData();     updateKeyUI();     setConnection(\`F${num} · ${GEMINI_MODEL} aktiv\`, true); }  function updateKeyUI(){     keyState1.textContent = geminiKeys[1] ? "Gespeichert" : "Nicht gesetzt";     keyState2.textContent = geminiKeys[2] ? "Gespeichert" : "Nicht gesetzt";     keyBox1.classList.toggle("active", activeKeyNumber === 1);     keyBox2.classList.toggle("active", activeKeyNumber === 2);     activateKey1.classList.toggle("active", activeKeyNumber === 1);     activateKey2.classList.toggle("active", activeKeyNumber === 2);     activateKey1.textContent = activeKeyNumber === 1 ? "F1 aktiv" : "F1 verwenden";     activateKey2.textContent = activeKeyNumber === 2 ? "F2 aktiv" : "F2 verwenden"; }  saveKey1.addEventListener("click", () => saveGeminiKey(1)); saveKey2.addEventListener("click", () => saveGeminiKey(2)); activateKey1.addEventListener("click", () => activateGeminiKey(1)); activateKey2.addEventListener("click", () => activateGeminiKey(2));  document.addEventListener("keydown", event => {     if(event.key === "F1"){ event.preventDefault(); activateGeminiKey(1); }     if(event.key === "F2"){ event.preventDefault(); activateGeminiKey(2); } });  function updateQuotaUI(){     quotaText.textContent = \`${questionsUsed} / ${MAX_QUESTIONS}\`;     quotaFill.style.width = Math.min(100, (questionsUsed / MAX_QUESTIONS) * 100) + "%"; }  function setConnection(text, good = true){     connectionStatus.textContent = text;     connectionDot.className = good ? "dot green" : "dot red"; }  function renderConversation(){     chat.innerHTML = "";     conversation.forEach(msg => addMessageToUI(msg.role, msg.text)); }  function addMessageToUI(role, text){     const wrapper = document.createElement("div");     wrapper.className = "message " + (role === "user" ? "user" : "ai");     const avatar = document.createElement("div"); avatar.className = "messageAvatar";     const content = document.createElement("div"); content.className = "messageContent";     content.textContent = text;     wrapper.appendChild(avatar); wrapper.appendChild(content);     chat.appendChild(wrapper);     window.scrollTo(0, document.body.scrollHeight); }  function showTyping(){     hideTyping();     const wrapper = document.createElement("div");     wrapper.id = "typingMessage"; wrapper.className = "message ai";     wrapper.innerHTML = \`<div class="messageAvatar"></div><div class="messageContent"><div class="typing"><span></span><span></span><span></span></div></div>\`;     chat.appendChild(wrapper); }  function hideTyping(){     const t = document.getElementById("typingMessage");     if(t) t.remove(); }  const NOVA_SYSTEM_PROMPT = \`Du bist Nova, ein moderner persönlicher KI-Assistent. Antworte auf Deutsch. Sei direkt, hilfreich und natürlich. Modell: gemini-3.6-flash\`;  async function callGeminiApi(key, userText){     const url = "https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(GEMINI_MODEL) + ":generateContent?key=" + encodeURIComponent(key);     const contents = conversation.slice(-30).map(m => ({         role: m.role === "user" ? "user" : "model",         parts: [{ text: m.text }]     }));     contents.push({ role:"user", parts:[{ text: userText }] });      const body = {         systemInstruction: { parts: [{ text: NOVA_SYSTEM_PROMPT }] },         contents,         generationConfig: { temperature: 0.7, topP: 0.95, maxOutputTokens: 8192 }     };      const response = await fetch(url, {         method: "POST",         headers: { "Content-Type": "application/json" },         body: JSON.stringify(body)     });      const data = await response.json();     if(!response.ok){         const err = new Error(data?.error?.message || "API Fehler");         err.status = response.status;         throw err;     }     return data?.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("").trim(); }  async function askGemini(userText){     let currentKey = geminiKeys[activeKeyNumber];          if(!currentKey){         const altKeyNumber = activeKeyNumber === 1 ? 2 : 1;         if(geminiKeys[altKeyNumber]){             activeKeyNumber = altKeyNumber;             saveLocalData();             updateKeyUI();             currentKey = geminiKeys[activeKeyNumber];         } else {             throw new Error("Bitte trage mindestens einen Gemini API Key ein.");         }     }      try {         return await callGeminiApi(currentKey, userText);     } catch(err) {         const altKeyNumber = activeKeyNumber === 1 ? 2 : 1;         if(geminiKeys[altKeyNumber]){             console.warn(\`Key F${activeKeyNumber} fehlgeschlagen. Auto-Wechsel auf F${altKeyNumber}...\`);             activeKeyNumber = altKeyNumber;             saveLocalData();             updateKeyUI();             setConnection(\`Auto-Wechsel auf F${activeKeyNumber}...\`, true);             return await callGeminiApi(geminiKeys[activeKeyNumber], userText);         } else {             throw err;         }     } }  function detectWebAction(text){     const lower = text.trim().toLowerCase();     if(/\b(öffne|oeffne)\b/.test(lower) && /\byoutube\b/.test(lower)){         let q = text.replace(/.*?\b(youtube)\b/i, "").replace(/^(mit|auf|in|und)\s+/i, "").trim();         return { type: "youtube", query: q || "YouTube" };     }     if(/\b(öffne|oeffne)\b/.test(lower) && /\bgoogle\b/.test(lower)){         let q = text.replace(/.*?\bgoogle\b/i, "").replace(/^(mit|auf|in|und)\s+/i, "").trim();         return { type: "google", query: q || "Google" };     }     if(/\b(öffne|oeffne)\b/.test(lower) && /\bwikipedia\b/.test(lower)){         let q = text.replace(/.*?\bwikipedia\b/i, "").replace(/^(über|mit|auf)\s+/i, "").trim();         return { type: "wikipedia", query: q || "Wikipedia" };     }     if(/\b(öffne|oeffne)\b/.test(lower) && /\b(google maps|maps)\b/.test(lower)){         let q = text.replace(/.*?\b(google maps|maps)\b/i, "").trim();         return { type: "maps", query: q || "Google Maps" };     }     return null; }  function openWebAction(action){     if(!action) return;     let url = "";     const q = encodeURIComponent(action.query || "");     if(action.type === "google") url = "https://www.google.com/search?q=" + q;     else if(action.type === "youtube") url = action.query === "YouTube" ? "https://www.youtube.com/" : "https://www.youtube.com/results?search_query=" + q;     else if(action.type === "maps") url = "https://www.google.com/maps/search/?api=1&query=" + q;     else if(action.type === "wikipedia") url = "https://de.wikipedia.org/w/index.php?search=" + q;      if(url){         window.location.href = url;     } }  async function sendMessage(){     const text = messageInput.value.trim();     if(!text || isThinking) return;     if(questionsUsed >= MAX_QUESTIONS){         addMessageToUI("ai", "Der lokale Fragenzähler ist bei 20/20.");         return;     }      stopListening();     const webAction = detectWebAction(text);      if(webAction){         conversation.push({ role:"user", text });         addMessageToUI("user", text);         messageInput.value = "";         saveLocalData();         await saveUserData();                  openWebAction(webAction);                  const resp = "Ich öffne die gewünschte Webseite jetzt.";         conversation.push({ role:"model", text: resp });         addMessageToUI("ai", resp);         saveLocalData();         await saveUserData();         return;     }      questionsUsed++;     saveLocalData();     updateQuotaUI();      conversation.push({ role:"user", text });     addMessageToUI("user", text);     messageInput.value = "";     isThinking = true;     setConnection(\`Gemini denkt...\`, true);     showTyping();      try{         const answer = await askGemini(text);         hideTyping();         conversation.push({ role:"model", text: answer });         addMessageToUI("ai", answer);         saveLocalData();         await saveUserData();         if(voiceMode) speak(answer);         setConnection(\`F${activeKeyNumber} · ${GEMINI_MODEL} bereit\`, true);     }catch(err){         hideTyping();         const errTxt = err?.message || "Unbekannter Fehler.";         conversation.push({ role:"model", text: "Fehler: " + errTxt });         addMessageToUI("ai", "Fehler: " + errTxt);         saveLocalData();         setConnection("Gemini-Fehler", false);     }finally{         isThinking = false;     } }  sendBtn.addEventListener("click", sendMessage); messageInput.addEventListener("keydown", e => { if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendMessage(); } }); clearChatBtn.addEventListener("click", async () => {     if(!confirm("Chat löschen?")) return;     conversation = [];     saveLocalData();     renderConversation();     await saveUserData();     setConnection("Chat gelöscht", true); });  function setupSpeechRecognition(){     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;     if(!SR){ micBtn.disabled = true; return; }     recognition = new SR();     recognition.lang = "de-DE";     recognition.onstart = () => {
-        isListening = true;
-        micBtn.classList.add("active");
-        setConnection("Nova hört zu... (max. 8 Sekunden)", true);
-        clearTimeout(listenTimer);
-        listenTimer = setTimeout(() => stopListening(), 8000);
-    };     recognition.onresult = e => {         isListening = false; micBtn.classList.remove("active");         const transcript = e?.results?.[0]?.[0]?.transcript?.trim();         if(transcript){ messageInput.value = transcript; setTimeout(sendMessage, 100); }     };     recognition.onerror = () => { isListening = false; micBtn.classList.remove("active"); };     recognition.onend = () => { isListening = false; micBtn.classList.remove("active"); }; }  function startListening(){     if(isSpeaking || isThinking || isListening || !recognition) return;     try{ voiceMode = true; recognition.start(); }catch(e){} } function stopListening(){
-    clearTimeout(listenTimer);
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+<title>Nova Family AI</title>
+
+<style>
+:root{
+    --bg:#050505;
+    --panel:#0d0d0d;
+    --panel2:#121212;
+    --line:#252525;
+    --white:#fff;
+    --gray:#aaa;
+    --green:#45ff9a;
+    --red:#ff5555;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:
+        radial-gradient(circle at 50% -10%,#292929 0%,#0b0b0b 35%,#050505 72%);
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+#loginScreen{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#050505;
+}
+
+.loginBox{
+    width:min(440px,92vw);
+    padding:42px;
+    border:1px solid #292929;
+    border-radius:28px;
+    background:#0d0d0d;
+    box-shadow:0 20px 80px rgba(0,0,0,.6);
+    text-align:center;
+}
+
+.loginLogo{
+    width:100px;
+    height:100px;
+    margin:0 auto 25px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle,#fff 0%,#aaa 18%,#333 45%,#090909 70%);
+    box-shadow:
+        0 0 30px rgba(255,255,255,.3),
+        inset 0 0 35px rgba(255,255,255,.25);
+}
+
+.loginBox h1{
+    font-size:34px;
+    letter-spacing:4px;
+    margin-bottom:10px;
+}
+
+.loginBox p{
+    color:#999;
+    line-height:1.5;
+    margin-bottom:28px;
+}
+
+.googleBtn{
+    width:100%;
+    padding:15px;
+    border:1px solid #333;
+    border-radius:14px;
+    background:#fff;
+    color:#000;
+    font-weight:bold;
+}
+
+.googleBtn:hover{
+    background:#ddd;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar{
+    height:72px;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 24px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    background:rgba(5,5,5,.86);
+    backdrop-filter:blur(18px);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.brandOrb{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle,#fff,#888 30%,#111 70%);
+    box-shadow:0 0 20px rgba(255,255,255,.2);
+}
+
+.brandText{
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+.topActions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.smallBtn{
+    border:1px solid #2b2b2b;
+    background:#111;
+    color:white;
+    border-radius:10px;
+    padding:8px 12px;
+}
+
+.smallBtn:hover{
+    background:#1b1b1b;
+}
+
+.userAvatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    border:1px solid #333;
+    object-fit:cover;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    width:min(1100px,94vw);
+    margin:auto;
+    padding-top:105px;
+    padding-bottom:180px;
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.heroOrb{
+    width:170px;
+    height:170px;
+    margin:10px auto 22px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff 0%,
+            #ddd 8%,
+            #777 27%,
+            #292929 53%,
+            #090909 74%
+        );
+    box-shadow:
+        0 0 30px rgba(255,255,255,.22),
+        0 0 100px rgba(255,255,255,.08),
+        inset -20px -20px 40px rgba(0,0,0,.8);
+    animation:orbFloat 4s ease-in-out infinite;
+}
+
+@keyframes orbFloat{
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.statusRow{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:20px 0;
+}
+
+.status{
+    border:1px solid #272727;
+    background:#0c0c0c;
+    padding:7px 12px;
+    border-radius:999px;
+    color:#aaa;
+    font-size:13px;
+}
+
+.dot{
+    display:inline-block;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    margin-right:6px;
+    background:#555;
+}
+
+.dot.green{
+    background:var(--green);
+    box-shadow:0 0 10px var(--green);
+}
+
+.dot.red{
+    background:var(--red);
+    box-shadow:0 0 10px var(--red);
+}
+
+/* =========================
+   SETTINGS
+========================= */
+
+.settings{
+    border:1px solid #252525;
+    background:rgba(12,12,12,.8);
+    border-radius:20px;
+    padding:18px;
+    margin-bottom:20px;
+}
+
+.settingsHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.modelTag{
+    color:var(--green);
+    font-size:12px;
+    border:1px solid #245c43;
+    padding:5px 8px;
+    border-radius:7px;
+}
+
+.keyGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.keyBox{
+    border:1px solid #252525;
+    border-radius:14px;
+    padding:12px;
+    background:#090909;
+}
+
+.keyBox.active{
+    border-color:#777;
+    box-shadow:0 0 20px rgba(255,255,255,.04);
+}
+
+.keyTop{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
+
+.keyState{
+    color:#777;
+    font-size:11px;
+}
+
+.keyInput{
+    width:100%;
+    padding:10px;
+    background:#111;
+    border:1px solid #252525;
+    color:#fff;
+    border-radius:99px;
+    outline:none;
+}
+
+.keyInput:focus{
+    border-color:#777;
+}
+
+.keyButtons{
+    display:flex;
+    gap:8px;
+    margin-top:9px;
+}
+
+.keyBtn{
+    flex:1;
+    padding:9px;
+    border:1px solid #292929;
+    background:#151515;
+    color:#fff;
+    border-radius:9px;
+}
+
+.keyBtn:hover{
+    background:#222;
+}
+
+.keyBtn.active{
+    background:#fff;
+    color:#000;
+}
+
+.keyHelp{
+    margin-top:12px;
+    color:#777;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.quota{
+    margin-top:14px;
+}
+
+.quotaTop{
+    display:flex;
+    justify-content:space-between;
+    color:#888;
+    font-size:12px;
+    margin-bottom:7px;
+}
+
+.quotaBar{
+    width:100%;
+    height:5px;
+    background:#1d1d1d;
+    border-radius:99px;
+    overflow:hidden;
+}
+
+.quotaFill{
+    height:100%;
+    width:0%;
+    background:#fff;
+    transition:.3s;
+}
+
+/* =========================
+   CHAT
+========================= */
+
+.chat{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.message{
+    display:flex;
+    gap:10px;
+    max-width:92%;
+}
+
+.message.user{
+    align-self:flex-end;
+    flex-direction:row-reverse;
+}
+
+.message.ai{
+    align-self:flex-start;
+}
+
+.messageAvatar{
+    width:34px;
+    height:34px;
+    min-width:34px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle,#fff,#777 30%,#111 68%);
+    border:1px solid #333;
+}
+
+.user .messageAvatar{
+    background:#fff;
+}
+
+.messageColumn{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.messageContent{
+    padding:13px 15px;
+    border-radius:16px;
+    border:1px solid #242424;
+    background:#0e0e0e;
+    line-height:1.5;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+}
+
+.user .messageContent{
+    background:#fff;
+    color:#000;
+    border-color:#fff;
+}
+
+/* =========================
+   CODE
+========================= */
+
+.codeBlock{
+    margin:10px 0;
+    padding:14px;
+    border-radius:12px;
+    background:#050505;
+    border:1px solid #292929;
+    overflow:auto;
+    white-space:pre;
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+    font-size:13px;
+    line-height:1.55;
+}
+
+/* =========================
+   MESSAGE ACTIONS
+========================= */
+
+.messageActions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:7px;
+}
+
+.messageAction{
+    border:1px solid #292929;
+    background:#101010;
+    color:#aaa;
+    border-radius:8px;
+    padding:6px 9px;
+    font-size:11px;
+}
+
+.messageAction:hover{
+    color:#fff;
+    background:#1b1b1b;
+}
+
+.user .messageActions{
+    justify-content:flex-end;
+}
+
+/* =========================
+   TYPING
+========================= */
+
+.typing{
+    display:flex;
+    gap:5px;
+}
+
+.typing span{
+    width:6px;
+    height:6px;
+    background:#aaa;
+    border-radius:50%;
+    animation:typing 1s infinite;
+}
+
+.typing span:nth-child(2){
+    animation-delay:.15s;
+}
+
+.typing span:nth-child(3){
+    animation-delay:.3s;
+}
+
+@keyframes typing{
+    0%,80%,100%{
+        opacity:.2;
+        transform:translateY(0);
+    }
+
+    40%{
+        opacity:1;
+        transform:translateY(-3px);
+    }
+}
+
+/* =========================
+   INPUT
+========================= */
+
+.inputArea{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:40;
+    padding:14px;
+    background:
+        linear-gradient(
+            transparent,
+            rgba(5,5,5,.96) 25%
+        );
+}
+
+.inputBox{
+    width:min(900px,94vw);
+    margin:auto;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px;
+    border:1px solid #292929;
+    border-radius:18px;
+    background:#0d0d0d;
+    box-shadow:0 15px 50px rgba(0,0,0,.6);
+}
+
+#messageInput{
+    flex:1;
+    min-width:0;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#fff;
+    padding:10px;
+}
+
+#messageInput::placeholder{
+    color:#666;
+}
+
+.actionBtn{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    border:1px solid #292929;
+    background:#151515;
+    color:#fff;
+    flex-shrink:0;
+}
+
+.actionBtn:hover{
+    background:#222;
+}
+
+#micBtn.active{
+    background:#fff;
+    color:#000;
+    border-color:#fff;
+    box-shadow:0 0 20px rgba(255,255,255,.2);
+}
+
+.sendBtn{
+    background:#fff;
+    color:#000;
+    border-color:#fff;
+}
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
+
+.imagePreview{
+    width:min(900px,94vw);
+    margin:0 auto 8px;
+    padding:10px;
+    border:1px solid #292929;
+    border-radius:16px;
+    background:#0d0d0d;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.imagePreview img{
+    width:70px;
+    height:70px;
+    border-radius:10px;
+    object-fit:cover;
+    border:1px solid #333;
+}
+
+.imagePreviewInfo{
+    flex:1;
+    min-width:0;
+}
+
+.imagePreviewName{
+    color:#fff;
+    font-size:13px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.imagePreviewHint{
+    color:#777;
+    font-size:11px;
+    margin-top:4px;
+}
+
+.previewActions{
+    display:flex;
+    gap:6px;
+}
+
+.previewBtn{
+    border:1px solid #292929;
+    background:#151515;
+    color:#fff;
+    border-radius:9px;
+    padding:8px 10px;
+    font-size:12px;
+}
+
+.previewBtn:hover{
+    background:#222;
+}
+
+.removeImageBtn{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    border:1px solid #333;
+    background:#151515;
+    color:#fff;
+    font-size:20px;
+}
+
+.removeImageBtn:hover{
+    background:#2a2a2a;
+}
+
+/* =========================
+   IMAGE IN CHAT
+========================= */
+
+.chatImage{
+    max-width:min(500px,100%);
+    max-height:400px;
+    border-radius:12px;
+    display:block;
+    margin-bottom:8px;
+    border:1px solid #333;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+    .topbar{
+        padding:0 12px;
+    }
+
+    .brandText{
+        font-size:13px;
+    }
+
+    .topActions .smallBtn{
+        padding:7px 8px;
+        font-size:11px;
+    }
+
+    .heroOrb{
+        width:130px;
+        height:130px;
+    }
+
+    .keyGrid{
+        grid-template-columns:1fr;
+    }
+
+    .message{
+        max-width:96%;
+    }
+
+    .actionBtn{
+        width:40px;
+        height:40px;
+    }
+
+    .inputBox{
+        padding:6px;
+    }
+
+    .imagePreview{
+        width:94vw;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     LOGIN
+========================= -->
+
+<div id="loginScreen">
+
+    <div class="loginBox">
+
+        <div class="loginLogo"></div>
+
+        <h1>NOVA</h1>
+
+        <p>
+            Nova Family AI<br>
+            Dein persönlicher KI-Assistent
+        </p>
+
+        <button class="googleBtn" id="googleLoginBtn">
+            Mit Google anmelden
+        </button>
+
+        <p
+            id="loginError"
+            style="margin-top:15px;color:#ff5555;font-size:13px"
+        ></p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     APP
+========================= -->
+
+<div id="app" class="hidden">
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brandOrb"></div>
+
+        <div class="brandText">
+            NOVA FAMILY AI
+        </div>
+
+    </div>
+
+
+    <div class="topActions">
+
+        <button
+            class="smallBtn"
+            id="clearChatBtn"
+        >
+            Chat löschen
+        </button>
+
+        <button
+            class="smallBtn"
+            id="logoutBtn"
+        >
+            Abmelden
+        </button>
+
+        <img
+            id="userAvatar"
+            class="userAvatar"
+            alt="User"
+        >
+
+    </div>
+
+</header>
+
+
+<main class="main">
+
+<section class="hero">
+
+    <div class="heroOrb"></div>
+
+    <h1>NOVA</h1>
+
+    <p>
+        Dein persönlicher KI-Assistent
+    </p>
+
+</section>
+
+
+<!-- STATUS -->
+
+<div class="statusRow">
+
+    <div class="status">
+        <span
+            id="connectionDot"
+            class="dot"
+        ></span>
+
+        <span id="connectionStatus">
+            Bereit
+        </span>
+    </div>
+
+
+    <div class="status">
+        Modell:
+        <strong>
+            gemini-3.6-flash
+        </strong>
+    </div>
+
+
+    <div class="status">
+        Sprache:
+        <strong>
+            Deutsch
+        </strong>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     GEMINI SETTINGS
+========================= -->
+
+<section class="settings">
+
+    <div class="settingsHeader">
+
+        <h2>
+            GEMINI ZUGÄNGE
+        </h2>
+
+        <div class="modelTag">
+            gemini-3.6-flash
+        </div>
+
+    </div>
+
+
+    <div class="keyGrid">
+
+
+        <!-- KEY 1 -->
+
+        <div
+            class="keyBox active"
+            id="keyBox1"
+        >
+
+            <div class="keyTop">
+
+                <strong>
+                    F1 · Key 1
+                </strong>
+
+                <span
+                    class="keyState"
+                    id="keyState1"
+                >
+                    Nicht gesetzt
+                </span>
+
+            </div>
+
+
+            <input
+                id="keyInput1"
+                class="keyInput"
+                type="password"
+                placeholder="Gemini API Key 1"
+            >
+
+
+            <div class="keyButtons">
+
+                <button
+                    class="keyBtn"
+                    id="saveKey1"
+                >
+                    Speichern
+                </button>
+
+                <button
+                    class="keyBtn active"
+                    id="activateKey1"
+                >
+                    F1 aktiv
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- KEY 2 -->
+
+        <div
+            class="keyBox"
+            id="keyBox2"
+        >
+
+            <div class="keyTop">
+
+                <strong>
+                    F2 · Key 2
+                </strong>
+
+                <span
+                    class="keyState"
+                    id="keyState2"
+                >
+                    Nicht gesetzt
+                </span>
+
+            </div>
+
+
+            <input
+                id="keyInput2"
+                class="keyInput"
+                type="password"
+                placeholder="Gemini API Key 2"
+            >
+
+
+            <div class="keyButtons">
+
+                <button
+                    class="keyBtn"
+                    id="saveKey2"
+                >
+                    Speichern
+                </button>
+
+                <button
+                    class="keyBtn"
+                    id="activateKey2"
+                >
+                    F2 verwenden
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="keyHelp">
+
+        <strong>F1/F2</strong>
+        wechseln den Gemini-Key
+        <strong>manuell</strong>.
+
+        Bei einem API-Fehler wird
+        <strong>nicht automatisch</strong>
+        auf den anderen Key gewechselt.
+
+        Die Keys werden nur lokal im Browser gespeichert.
+
+    </div>
+
+
+    <div class="quota">
+
+        <div class="quotaTop">
+
+            <span>
+                Lokaler Fragenzähler
+            </span>
+
+            <span id="quotaText">
+                0 / 20
+            </span>
+
+        </div>
+
+        <div class="quotaBar">
+
+            <div
+                id="quotaFill"
+                class="quotaFill"
+            ></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CHAT -->
+
+<section
+    id="chat"
+    class="chat"
+></section>
+
+
+</main>
+
+
+<!-- =========================
+     INPUT AREA
+========================= -->
+
+<div class="inputArea">
+
+
+    <!-- IMAGE PREVIEW -->
+
+    <div
+        id="imagePreview"
+        class="imagePreview hidden"
+    >
+
+        <img
+            id="previewImage"
+            alt="Ausgewähltes Bild"
+        >
+
+
+        <div class="imagePreviewInfo">
+
+            <div
+                id="imagePreviewName"
+                class="imagePreviewName"
+            >
+                Bild
+            </div>
+
+            <div class="imagePreviewHint">
+                Nova kann dieses Bild analysieren.
+            </div>
+
+        </div>
+
+
+        <div class="previewActions">
+
+            <button
+                id="googleImageBtn"
+                class="previewBtn"
+                title="Google Bilder"
+            >
+                🔎 Google
+            </button>
+
+            <button
+                id="removeImageBtn"
+                class="removeImageBtn"
+                title="Bild entfernen"
+            >
+                ×
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="inputBox">
+
+
+        <!-- MICROPHONE -->
+
+        <button
+            id="micBtn"
+            class="actionBtn"
+            title="Spracheingabe"
+        >
+            🎙
+        </button>
+
+
+        <!-- IMAGE -->
+
+        <button
+            id="imageBtn"
+            class="actionBtn"
+            title="Bild hinzufügen"
+        >
+            🖼
+        </button>
+
+
+        <input
+            id="imageInput"
+            type="file"
+            accept="image/*"
+            hidden
+        >
+
+
+        <!-- TEXT -->
+
+        <input
+            id="messageInput"
+            autocomplete="off"
+            placeholder="Schreib Nova etwas..."
+        >
+
+
+        <!-- SEND -->
+
+        <button
+            id="sendBtn"
+            class="actionBtn sendBtn"
+            title="Senden"
+        >
+            ➤
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script type="module">
+
+/* =========================
+   FIREBASE
+========================= */
+
+import {
+    initializeApp
+} from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged,
+    signOut
+} from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+} from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAKmdUuFEfqmvs5gbjcdFhB1RIg9C9EtrE",
+
+    authDomain:
+        "nova-68fc1.firebaseapp.com",
+
+    projectId:
+        "nova-68fc1",
+
+    storageBucket:
+        "nova-68fc1.firebasestorage.app",
+
+    messagingSenderId:
+        "1020069093020",
+
+    appId:
+        "1:1020069093020:web:9be72af9e60af659475759"
+};
+
+
+const firebaseApp =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(firebaseApp);
+
+
+const db =
+    getFirestore(firebaseApp);
+
+
+const googleProvider =
+    new GoogleAuthProvider();
+
+
+/* =========================
+   GEMINI
+========================= */
+
+const GEMINI_MODEL =
+    "gemini-3.6-flash";
+
+
+const MAX_QUESTIONS =
+    20;
+
+
+const KEY_STORAGE =
+    "nova_private_gemini_keys_v6";
+
+
+const ACTIVE_KEY_STORAGE =
+    "nova_active_gemini_key_v6";
+
+
+const LOCAL_CHAT_STORAGE =
+    "nova_shared_chat_v6";
+
+
+const QUESTION_STORAGE =
+    "nova_questions_v6";
+
+
+/* =========================
+   STATE
+========================= */
+
+let currentUser = null;
+
+let activeKeyNumber = 1;
+
+let geminiKeys = {
+    1:"",
+    2:""
+};
+
+let conversation = [];
+
+let questionsUsed = 0;
+
+let recognition = null;
+
+let isListening = false;
+
+let isSpeaking = false;
+
+let isThinking = false;
+
+let voiceMode = false;
+
+
+/* =========================
+   IMAGE STATE
+========================= */
+
+let selectedImage = null;
+
+
+/* =========================
+   DOM
+========================= */
+
+const loginScreen =
+    document.getElementById("loginScreen");
+
+const app =
+    document.getElementById("app");
+
+const googleLoginBtn =
+    document.getElementById("googleLoginBtn");
+
+const loginError =
+    document.getElementById("loginError");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+const clearChatBtn =
+    document.getElementById("clearChatBtn");
+
+const userAvatar =
+    document.getElementById("userAvatar");
+
+const chat =
+    document.getElementById("chat");
+
+const messageInput =
+    document.getElementById("messageInput");
+
+const sendBtn =
+    document.getElementById("sendBtn");
+
+const micBtn =
+    document.getElementById("micBtn");
+
+const imageBtn =
+    document.getElementById("imageBtn");
+
+const imageInput =
+    document.getElementById("imageInput");
+
+const imagePreview =
+    document.getElementById("imagePreview");
+
+const previewImage =
+    document.getElementById("previewImage");
+
+const imagePreviewName =
+    document.getElementById("imagePreviewName");
+
+const removeImageBtn =
+    document.getElementById("removeImageBtn");
+
+const googleImageBtn =
+    document.getElementById("googleImageBtn");
+
+const connectionDot =
+    document.getElementById("connectionDot");
+
+const connectionStatus =
+    document.getElementById("connectionStatus");
+
+const keyInput1 =
+    document.getElementById("keyInput1");
+
+const keyInput2 =
+    document.getElementById("keyInput2");
+
+const saveKey1 =
+    document.getElementById("saveKey1");
+
+const saveKey2 =
+    document.getElementById("saveKey2");
+
+const activateKey1 =
+    document.getElementById("activateKey1");
+
+const activateKey2 =
+    document.getElementById("activateKey2");
+
+const keyBox1 =
+    document.getElementById("keyBox1");
+
+const keyBox2 =
+    document.getElementById("keyBox2");
+
+const keyState1 =
+    document.getElementById("keyState1");
+
+const keyState2 =
+    document.getElementById("keyState2");
+
+const quotaText =
+    document.getElementById("quotaText");
+
+const quotaFill =
+    document.getElementById("quotaFill");
+
+
+/* =========================
+   LOCAL DATA
+========================= */
+
+function loadLocalData(){
+
+    try{
+
+        const keys =
+            localStorage.getItem(KEY_STORAGE);
+
+        if(keys){
+
+            geminiKeys =
+                JSON.parse(keys);
+
+        }
+
+    }catch(e){}
+
+
+    try{
+
+        const active =
+            localStorage.getItem(
+                ACTIVE_KEY_STORAGE
+            );
+
+        if(active){
+
+            activeKeyNumber =
+                Number(active) === 2
+                    ? 2
+                    : 1;
+
+        }
+
+    }catch(e){
+
+        activeKeyNumber = 1;
+
+    }
+
+
+    try{
+
+        const savedChat =
+            localStorage.getItem(
+                LOCAL_CHAT_STORAGE
+            );
+
+        if(savedChat){
+
+            conversation =
+                JSON.parse(savedChat);
+
+        }
+
+    }catch(e){
+
+        conversation = [];
+
+    }
+
+
+    try{
+
+        const questions =
+            localStorage.getItem(
+                QUESTION_STORAGE
+            );
+
+        if(questions){
+
+            questionsUsed =
+                Number(questions) || 0;
+
+        }
+
+    }catch(e){
+
+        questionsUsed = 0;
+
+    }
+
+
+    keyInput1.value =
+        geminiKeys[1] || "";
+
+    keyInput2.value =
+        geminiKeys[2] || "";
+
+
+    updateKeyUI();
+
+    updateQuotaUI();
+
+    renderConversation();
+}
+
+
+function saveLocalData(){
+
+    localStorage.setItem(
+        KEY_STORAGE,
+        JSON.stringify(geminiKeys)
+    );
+
+    localStorage.setItem(
+        ACTIVE_KEY_STORAGE,
+        String(activeKeyNumber)
+    );
+
+    localStorage.setItem(
+        LOCAL_CHAT_STORAGE,
+        JSON.stringify(conversation)
+    );
+
+    localStorage.setItem(
+        QUESTION_STORAGE,
+        String(questionsUsed)
+    );
+}
+
+
+/* =========================
+   FIRESTORE
+========================= */
+
+async function loadUserData(){
+
+    if(!currentUser)
+        return;
+
+
+    try{
+
+        const ref =
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            );
+
+
+        const snap =
+            await getDoc(ref);
+
+
+        if(!snap.exists())
+            return;
+
+
+        const data =
+            snap.data();
+
+
+        if(
+            Array.isArray(data.conversation) &&
+            conversation.length === 0
+        ){
+
+            conversation =
+                data.conversation;
+
+            saveLocalData();
+
+            renderConversation();
+
+        }
+
+    }catch(e){
+
+        console.warn(
+            "Firestore Laden:",
+            e
+        );
+
+    }
+}
+
+
+async function saveUserData(){
+
+    if(!currentUser)
+        return;
+
+
+    try{
+
+        const ref =
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            );
+
+
+        await setDoc(
+            ref,
+            {
+                conversation:
+                    conversation.slice(-100),
+
+                updatedAt:
+                    Date.now()
+            },
+            {
+                merge:true
+            }
+        );
+
+    }catch(e){
+
+        console.warn(
+            "Firestore Speichern:",
+            e
+        );
+
+    }
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+googleLoginBtn.addEventListener(
+    "click",
+    async () => {
+
+        loginError.textContent = "";
+
+        try{
+
+            await signInWithPopup(
+                auth,
+                googleProvider
+            );
+
+        }catch(e){
+
+            loginError.textContent =
+                e.message ||
+                "Fehler beim Anmelden";
+
+        }
+
+    }
+);
+
+
+logoutBtn.addEventListener(
+    "click",
+    async () => {
+
+        try{
+
+            stopListening();
+
+            speechSynthesis.cancel();
+
+            await signOut(auth);
+
+        }catch(e){}
+
+    }
+);
+
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        currentUser = user;
+
+
+        if(user){
+
+            loginScreen
+                .classList
+                .add("hidden");
+
+            app
+                .classList
+                .remove("hidden");
+
+
+            userAvatar.src =
+                user.photoURL || "";
+
+
+            loadLocalData();
+
+            await loadUserData();
+
+
+            setConnection(
+                `F${activeKeyNumber} · ${GEMINI_MODEL} bereit`,
+                true
+            );
+
+        }else{
+
+            loginScreen
+                .classList
+                .remove("hidden");
+
+            app
+                .classList
+                .add("hidden");
+
+        }
+
+    }
+);
+
+
+/* =========================
+   GEMINI KEYS
+========================= */
+
+function saveGeminiKey(num){
+
+    const input =
+        num === 1
+            ? keyInput1
+            : keyInput2;
+
+
+    geminiKeys[num] =
+        input.value.trim();
+
+
+    saveLocalData();
+
+    updateKeyUI();
+
+
+    setConnection(
+        `Key ${num} gespeichert`,
+        true
+    );
+}
+
+
+function activateGeminiKey(num){
+
+    if(!geminiKeys[num]){
+
+        setConnection(
+            `F${num}: Kein API-Key gespeichert`,
+            false
+        );
+
+        return;
+    }
+
+
+    activeKeyNumber = num;
+
+
+    saveLocalData();
+
+    updateKeyUI();
+
+
+    setConnection(
+        `F${num} · ${GEMINI_MODEL} aktiv`,
+        true
+    );
+}
+
+
+function updateKeyUI(){
+
+    keyState1.textContent =
+        geminiKeys[1]
+            ? "Gespeichert"
+            : "Nicht gesetzt";
+
+
+    keyState2.textContent =
+        geminiKeys[2]
+            ? "Gespeichert"
+            : "Nicht gesetzt";
+
+
+    keyBox1.classList.toggle(
+        "active",
+        activeKeyNumber === 1
+    );
+
+
+    keyBox2.classList.toggle(
+        "active",
+        activeKeyNumber === 2
+    );
+
+
+    activateKey1.classList.toggle(
+        "active",
+        activeKeyNumber === 1
+    );
+
+
+    activateKey2.classList.toggle(
+        "active",
+        activeKeyNumber === 2
+    );
+
+
+    activateKey1.textContent =
+        activeKeyNumber === 1
+            ? "F1 aktiv"
+            : "F1 verwenden";
+
+
+    activateKey2.textContent =
+        activeKeyNumber === 2
+            ? "F2 aktiv"
+            : "F2 verwenden";
+}
+
+
+saveKey1.addEventListener(
+    "click",
+    () => saveGeminiKey(1)
+);
+
+
+saveKey2.addEventListener(
+    "click",
+    () => saveGeminiKey(2)
+);
+
+
+activateKey1.addEventListener(
+    "click",
+    () => activateGeminiKey(1)
+);
+
+
+activateKey2.addEventListener(
+    "click",
+    () => activateGeminiKey(2)
+);
+
+
+/* =========================
+   F1 / F2
+========================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "F1"){
+
+            event.preventDefault();
+
+            activateGeminiKey(1);
+
+        }
+
+
+        if(event.key === "F2"){
+
+            event.preventDefault();
+
+            activateGeminiKey(2);
+
+        }
+
+    }
+);
+
+
+/* =========================
+   STATUS
+========================= */
+
+function updateQuotaUI(){
+
+    quotaText.textContent =
+        `${questionsUsed} / ${MAX_QUESTIONS}`;
+
+
+    quotaFill.style.width =
+        Math.min(
+            100,
+            (questionsUsed /
+                MAX_QUESTIONS) *
+                100
+        ) + "%";
+}
+
+
+function setConnection(
+    text,
+    good = true
+){
+
+    connectionStatus.textContent =
+        text;
+
+
+    connectionDot.className =
+        good
+            ? "dot green"
+            : "dot red";
+}
+
+
+/* =========================
+   CHAT RENDER
+========================= */
+
+function renderConversation(){
+
+    chat.innerHTML = "";
+
+
+    conversation.forEach(
+        msg => {
+
+            addMessageToUI(
+                msg.role,
+                msg.text,
+                msg.imageData || null
+            );
+
+        }
+    );
+}
+
+
+/* =========================
+   COPY
+========================= */
+
+async function copyText(text, button){
+
+    try{
+
+        if(
+            navigator.clipboard &&
+            navigator.clipboard.writeText
+        ){
+
+            await navigator.clipboard.writeText(
+                text
+            );
+
+        }else{
+
+            const area =
+                document.createElement(
+                    "textarea"
+                );
+
+            area.value = text;
+
+            document.body.appendChild(
+                area
+            );
+
+            area.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+            area.remove();
+
+        }
+
+
+        const oldText =
+            button.textContent;
+
+
+        button.textContent =
+            "✓ Kopiert";
+
+
+        setTimeout(
+            () => {
+
+                button.textContent =
+                    oldText;
+
+            },
+            1400
+        );
+
+    }catch(e){
+
+        button.textContent =
+            "Kopieren fehlgeschlagen";
+
+    }
+}
+
+
+/* =========================
+   GOOGLE ANSWER
+========================= */
+
+function googleAnswer(text){
+
+    let query =
+        text
+            .replace(/```[\s\S]*?```/g, "")
+            .replace(/\s+/g, " ")
+            .trim();
+
+
+    if(query.length > 350){
+
+        query =
+            query.substring(
+                0,
+                350
+            );
+
+    }
+
+
+    if(!query)
+        query = "Nova AI";
+
+
+    const url =
+        "https://www.google.com/search?q=" +
+        encodeURIComponent(query);
+
+
+    window.location.href =
+        url;
+}
+
+
+/* =========================
+   FORMAT ANSWER
+========================= */
+
+function renderAnswerContent(
+    content,
+    text
+){
+
+    content.innerHTML = "";
+
+
+    /*
+       Markdown-Codeblöcke
+       werden einfach als
+       Code dargestellt.
+    */
+
+    const regex =
+        /```(?:[a-zA-Z0-9_-]+)?\n?([\s\S]*?)```/g;
+
+
+    let lastIndex = 0;
+
+    let match;
+
+
+    while(
+        (match = regex.exec(text))
+        !== null
+    ){
+
+        const before =
+            text.substring(
+                lastIndex,
+                match.index
+            );
+
+
+        if(before){
+
+            const p =
+                document.createElement(
+                    "div"
+                );
+
+            p.textContent =
+                before;
+
+            content.appendChild(p);
+
+        }
+
+
+        const code =
+            document.createElement(
+                "pre"
+            );
+
+        code.className =
+            "codeBlock";
+
+        code.textContent =
+            match[1].trim();
+
+
+        content.appendChild(
+            code
+        );
+
+
+        lastIndex =
+            regex.lastIndex;
+
+    }
+
+
+    const rest =
+        text.substring(lastIndex);
+
+
+    if(rest){
+
+        const p =
+            document.createElement(
+                "div"
+            );
+
+        p.textContent =
+            rest;
+
+        content.appendChild(p);
+
+    }
+
+
+    if(!text){
+
+        content.textContent =
+            "Keine Antwort erhalten.";
+
+    }
+}
+
+
+/* =========================
+   ADD MESSAGE
+========================= */
+
+function addMessageToUI(
+    role,
+    text,
+    imageData = null
+){
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+
+    wrapper.className =
+        "message " +
+        (
+            role === "user"
+                ? "user"
+                : "ai"
+        );
+
+
+    const avatar =
+        document.createElement(
+            "div"
+        );
+
+    avatar.className =
+        "messageAvatar";
+
+
+    const column =
+        document.createElement(
+            "div"
+        );
+
+    column.className =
+        "messageColumn";
+
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.className =
+        "messageContent";
+
+
+    if(imageData){
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+        image.className =
+            "chatImage";
+
+        image.src =
+            imageData;
+
+        image.alt =
+            "Gesendetes Bild";
+
+        content.appendChild(
+            image
+        );
+
+    }
+
+
+    if(role === "model"){
+
+        renderAnswerContent(
+            content,
+            text
+        );
+
+    }else{
+
+        const textDiv =
+            document.createElement(
+                "div"
+            );
+
+        textDiv.textContent =
+            text;
+
+        content.appendChild(
+            textDiv
+        );
+
+    }
+
+
+    column.appendChild(
+        content
+    );
+
+
+    /*
+       Aktionen bei Nova
+    */
+
+    if(role === "model"){
+
+        const actions =
+            document.createElement(
+                "div"
+            );
+
+        actions.className =
+            "messageActions";
+
+
+        const copyBtn =
+            document.createElement(
+                "button"
+            );
+
+        copyBtn.className =
+            "messageAction";
+
+
+        copyBtn.textContent =
+            text.includes("```")
+                ? "📋 Code / Antwort kopieren"
+                : "📋 Antwort kopieren";
+
+
+        copyBtn.addEventListener(
+            "click",
+            () => copyText(
+                text,
+                copyBtn
+            )
+        );
+
+
+        const googleBtn =
+            document.createElement(
+                "button"
+            );
+
+        googleBtn.className =
+            "messageAction";
+
+        googleBtn.textContent =
+            "🔎 Dazu googeln";
+
+
+        googleBtn.addEventListener(
+            "click",
+            () => googleAnswer(text)
+        );
+
+
+        actions.appendChild(
+            copyBtn
+        );
+
+        actions.appendChild(
+            googleBtn
+        );
+
+
+        column.appendChild(
+            actions
+        );
+
+    }
+
+
+    wrapper.appendChild(
+        avatar
+    );
+
+    wrapper.appendChild(
+        column
+    );
+
+
+    chat.appendChild(
+        wrapper
+    );
+
+
+    requestAnimationFrame(
+        () => {
+
+            window.scrollTo(
+                0,
+                document.body.scrollHeight
+            );
+
+        }
+    );
+}
+
+
+/* =========================
+   TYPING
+========================= */
+
+function showTyping(){
+
+    hideTyping();
+
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+
+    wrapper.id =
+        "typingMessage";
+
+
+    wrapper.className =
+        "message ai";
+
+
+    wrapper.innerHTML = `
+        <div class="messageAvatar"></div>
+
+        <div class="messageColumn">
+
+            <div class="messageContent">
+
+                <div class="typing">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+
+    chat.appendChild(
+        wrapper
+    );
+}
+
+
+function hideTyping(){
+
+    const typing =
+        document.getElementById(
+            "typingMessage"
+        );
+
+
+    if(typing)
+        typing.remove();
+}
+
+
+/* =========================
+   NOVA SYSTEM
+========================= */
+
+const NOVA_SYSTEM_PROMPT = `
+
+Du bist Nova, ein moderner persönlicher KI-Assistent.
+
+Antworte grundsätzlich auf Deutsch.
+
+Sei direkt, hilfreich, natürlich und verständlich.
+
+Du bist freundlich, aber nicht unnötig lang.
+
+Wenn der Benutzer Bilder hochlädt,
+analysiere sie sorgfältig.
+
+Beschreibe nur Dinge, die auf dem Bild
+tatsächlich erkennbar sind.
+
+Wenn der Benutzer anschließend eine
+Frage über dasselbe Bild stellt,
+beziehe dich auf das Bild und den bisherigen
+Gesprächsverlauf.
+
+Wenn du etwas auf einem Bild nicht sicher
+erkennen kannst, sage das ehrlich.
+
+Du darfst bei technischen Fragen Code liefern.
+
+Wenn Code verlangt wird, gib vollständigen,
+kopierbaren Code aus.
+
+Modell:
+gemini-3.6-flash
+
+`;
+
+
+/* =========================
+   GEMINI API
+========================= */
+
+async function callGeminiApi(
+    key,
+    userText,
+    image = null
+){
+
+    const url =
+        "https://generativelanguage.googleapis.com/v1beta/models/" +
+        encodeURIComponent(
+            GEMINI_MODEL
+        ) +
+        ":generateContent?key=" +
+        encodeURIComponent(key);
+
+
+    /*
+       Alte Unterhaltung wird text-only
+       an Gemini geschickt.
+
+       Das aktuelle Bild wird separat
+       mit der neuen Nachricht übertragen.
+    */
+
+    const contents =
+        conversation
+            .slice(-30)
+            .map(
+                m => ({
+
+                    role:
+                        m.role === "user"
+                            ? "user"
+                            : "model",
+
+                    parts:[
+                        {
+                            text:
+                                m.text
+                        }
+                    ]
+
+                })
+            );
+
+
+    const currentParts = [];
+
+
+    if(userText){
+
+        currentParts.push({
+            text:userText
+        });
+
+    }
+
+
+    /*
+       Bild an Gemini senden
+    */
+
+    if(image){
+
+        currentParts.push({
+
+            inlineData:{
+
+                mimeType:
+                    image.mimeType,
+
+                data:
+                    image.data
+
+            }
+
+        });
+
+    }
+
+
+    contents.push({
+
+        role:"user",
+
+        parts:
+            currentParts
+
+    });
+
+
+    const body = {
+
+        systemInstruction:{
+
+            parts:[
+
+                {
+                    text:
+                        NOVA_SYSTEM_PROMPT
+                }
+
+            ]
+
+        },
+
+
+        contents,
+
+
+        generationConfig:{
+
+            temperature:0.7,
+
+            topP:0.95,
+
+            maxOutputTokens:8192
+
+        }
+
+    };
+
+
+    const response =
+        await fetch(
+            url,
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify(body)
+
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if(!response.ok){
+
+        const err =
+            new Error(
+                data?.error?.message ||
+                "API Fehler"
+            );
+
+
+        err.status =
+            response.status;
+
+
+        throw err;
+
+    }
+
+
+    const answer =
+        data
+            ?.candidates?.[0]
+            ?.content
+            ?.parts
+            ?.map(
+                p => p.text || ""
+            )
+            .join("")
+            .trim();
+
+
+    if(!answer){
+
+        throw new Error(
+            "Gemini hat keine Antwort geliefert."
+        );
+
+    }
+
+
+    return answer;
+}
+
+
+/* =========================
+   ASK GEMINI
+========================= */
+
+async function askGemini(
+    userText,
+    image = null
+){
+
+    /*
+       WICHTIG:
+       Kein automatischer Wechsel.
+
+       F1 bleibt F1.
+       F2 bleibt F2.
+    */
+
+    const currentKey =
+        geminiKeys[
+            activeKeyNumber
+        ];
+
+
+    if(!currentKey){
+
+        throw new Error(
+            `Bitte trage den aktuell ausgewählten Gemini API Key ein. F${activeKeyNumber} ist aktiv.`
+        );
+
+    }
+
+
+    return await callGeminiApi(
+        currentKey,
+        userText,
+        image
+    );
+}
+
+
+/* =========================
+   WEB ACTION DETECTION
+========================= */
+
+function detectWebAction(text){
+
+    const lower =
+        text
+            .trim()
+            .toLowerCase();
+
+
+    /*
+       GOOGLE BILDER
+    */
+
+    if(
+        /\b(öffne|oeffne|such|suche|google)\b/
+            .test(lower)
+        &&
+        /\b(bilder|images)\b/
+            .test(lower)
+    ){
+
+        let q =
+            text
+                .replace(
+                    /.*?\b(bilder|images)\b/i,
+                    ""
+                )
+                .replace(
+                    /^(von|über|ueber|zu|nach|für|fuer)\s+/i,
+                    ""
+                )
+                .trim();
+
+
+        return {
+            type:"googleImages",
+            query:
+                q || "Google Bilder"
+        };
+
+    }
+
+
+    /*
+       YOUTUBE
+    */
+
+    if(
+        /\b(öffne|oeffne)\b/
+            .test(lower)
+        &&
+        /\byoutube\b/
+            .test(lower)
+    ){
+
+        let q =
+            text
+                .replace(
+                    /.*?\byoutube\b/i,
+                    ""
+                )
+                .replace(
+                    /^(mit|auf|in|und)\s+/i,
+                    ""
+                )
+                .trim();
+
+
+        return {
+            type:"youtube",
+            query:
+                q || "YouTube"
+        };
+
+    }
+
+
+    /*
+       GOOGLE MAPS
+    */
+
+    if(
+        /\b(öffne|oeffne)\b/
+            .test(lower)
+        &&
+        /\b(google maps|maps)\b/
+            .test(lower)
+    ){
+
+        let q =
+            text
+                .replace(
+                    /.*?\b(google maps|maps)\b/i,
+                    ""
+                )
+                .replace(
+                    /^(mit|auf|in|und|zu|nach)\s+/i,
+                    ""
+                )
+                .trim();
+
+
+        return {
+            type:"maps",
+            query:
+                q || "Google Maps"
+        };
+
+    }
+
+
+    /*
+       WIKIPEDIA
+    */
+
+    if(
+        /\b(öffne|oeffne)\b/
+            .test(lower)
+        &&
+        /\bwikipedia\b/
+            .test(lower)
+    ){
+
+        let q =
+            text
+                .replace(
+                    /.*?\bwikipedia\b/i,
+                    ""
+                )
+                .replace(
+                    /^(über|ueber|mit|auf)\s+/i,
+                    ""
+                )
+                .trim();
+
+
+        return {
+            type:"wikipedia",
+            query:
+                q || "Wikipedia"
+        };
+
+    }
+
+
+    /*
+       GOOGLE
+    */
+
+    if(
+        /\b(öffne|oeffne)\b/
+            .test(lower)
+        &&
+        /\bgoogle\b/
+            .test(lower)
+    ){
+
+        let q =
+            text
+                .replace(
+                    /.*?\bgoogle\b/i,
+                    ""
+                )
+                .replace(
+                    /^(mit|auf|in|und|nach|zu)\s+/i,
+                    ""
+                )
+                .trim();
+
+
+        return {
+            type:"google",
+            query:
+                q || "Google"
+        };
+
+    }
+
+
+    /*
+       NATÜRLICHE SUCHE AUF GOOGLE
+    */
+
+    if(
+        /\b(suche|such|google)\b/
+            .test(lower)
+        &&
+        !/\b(youtube|maps|wikipedia)\b/
+            .test(lower)
+    ){
+
+        let q =
+            text
+                .replace(
+                    /\b(suche|such|google)\b/gi,
+                    ""
+                )
+                .replace(
+                    /^(auf|nach|bei|in)\s+/i,
+                    ""
+                )
+                .trim();
+
+
+        if(q){
+
+            return {
+                type:"google",
+                query:q
+            };
+
+        }
+
+    }
+
+
+    return null;
+}
+
+
+/* =========================
+   OPEN WEB
+========================= */
+
+function openWebAction(action){
+
+    if(!action)
+        return;
+
+
+    let url = "";
+
+
+    const q =
+        encodeURIComponent(
+            action.query || ""
+        );
+
+
+    if(
+        action.type === "google"
+    ){
+
+        url =
+            "https://www.google.com/search?q=" +
+            q;
+
+    }
+
+
+    else if(
+        action.type === "googleImages"
+    ){
+
+        url =
+            "https://www.google.com/search?tbm=isch&q=" +
+            q;
+
+    }
+
+
+    else if(
+        action.type === "youtube"
+    ){
+
+        if(
+            action.query === "YouTube"
+        ){
+
+            url =
+                "https://www.youtube.com/";
+
+        }else{
+
+            url =
+                "https://www.youtube.com/results?search_query=" +
+                q;
+
+        }
+
+    }
+
+
+    else if(
+        action.type === "maps"
+    ){
+
+        url =
+            "https://www.google.com/maps/search/?api=1&query=" +
+            q;
+
+    }
+
+
+    else if(
+        action.type === "wikipedia"
+    ){
+
+        url =
+            "https://de.wikipedia.org/w/index.php?search=" +
+            q;
+
+    }
+
+
+    /*
+       Same Tab.
+       Kein Popup.
+    */
+
+    if(url){
+
+        window.location.href =
+            url;
+
+    }
+
+}
+
+
+/* =========================
+   IMAGE UPLOAD
+========================= */
+
+imageBtn.addEventListener(
+    "click",
+    () => {
+
+        if(isThinking)
+            return;
+
+        imageInput.click();
+
+    }
+);
+
+
+imageInput.addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files?.[0];
+
+
+        if(!file)
+            return;
+
+
+        setSelectedImage(file);
+
+    }
+);
+
+
+function setSelectedImage(file){
+
+    if(
+        !file.type.startsWith(
+            "image/"
+        )
+    ){
+
+        setConnection(
+            "Bitte ein Bild auswählen.",
+            false
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Maximal 10 MB
+    */
+
+    if(
+        file.size >
+        10 * 1024 * 1024
+    ){
+
+        setConnection(
+            "Das Bild ist größer als 10 MB.",
+            false
+        );
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = () => {
+
+        const result =
+            reader.result;
+
+
+        const base64 =
+            String(result)
+                .split(",")[1];
+
+
+        selectedImage = {
+
+            mimeType:
+                file.type,
+
+            data:
+                base64,
+
+            name:
+                file.name,
+
+            preview:
+                result
+
+        };
+
+
+        previewImage.src =
+            result;
+
+
+        imagePreviewName.textContent =
+            file.name;
+
+
+        imagePreview
+            .classList
+            .remove("hidden");
+
+
+        setConnection(
+            "Bild bereit · Nova kann es analysieren",
+            true
+        );
+
+    };
+
+
+    reader.onerror = () => {
+
+        setConnection(
+            "Bild konnte nicht gelesen werden.",
+            false
+        );
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+/* =========================
+   REMOVE IMAGE
+========================= */
+
+function removeSelectedImage(){
+
+    selectedImage = null;
+
+    imageInput.value = "";
+
+    previewImage.src = "";
+
+    imagePreview
+        .classList
+        .add("hidden");
+
+}
+
+
+removeImageBtn.addEventListener(
+    "click",
+    removeSelectedImage
+);
+
+
+/* =========================
+   GOOGLE IMAGE SEARCH
+========================= */
+
+googleImageBtn.addEventListener(
+    "click",
+    () => {
+
+        if(!selectedImage)
+            return;
+
+
+        let query =
+            messageInput.value.trim();
+
+
+        if(!query){
+
+            query =
+                selectedImage.name ||
+                "Bild";
+
+        }
+
+
+        const url =
+            "https://www.google.com/search?tbm=isch&q=" +
+            encodeURIComponent(query);
+
+
+        window.location.href =
+            url;
+
+    }
+);
+
+
+/* =========================
+   SEND MESSAGE
+========================= */
+
+async function sendMessage(){
+
+    const text =
+        messageInput.value.trim();
+
+
+    const imageForRequest =
+        selectedImage
+            ? {
+                mimeType:
+                    selectedImage.mimeType,
+
+                data:
+                    selectedImage.data,
+
+                preview:
+                    selectedImage.preview,
+
+                name:
+                    selectedImage.name
+            }
+            : null;
+
+
+    /*
+       Text ODER Bild muss vorhanden sein.
+    */
+
+    if(
+        !text &&
+        !imageForRequest
+    ){
+
+        return;
+
+    }
+
+
+    if(isThinking)
+        return;
+
+
+    if(
+        questionsUsed >=
+        MAX_QUESTIONS
+    ){
+
+        addMessageToUI(
+            "model",
+            "Der lokale Fragenzähler ist bei 20/20."
+        );
+
+        return;
+
+    }
+
+
+    stopListening();
+
+
+    /*
+       Web-Befehle nur ohne Bild.
+    */
+
+    const webAction =
+        !imageForRequest
+            ? detectWebAction(text)
+            : null;
+
+
+    if(webAction){
+
+        conversation.push({
+
+            role:"user",
+
+            text:text
+
+        });
+
+
+        addMessageToUI(
+            "user",
+            text
+        );
+
+
+        messageInput.value = "";
+
+
+        saveLocalData();
+
+        await saveUserData();
+
+
+        openWebAction(
+            webAction
+        );
+
+
+        const resp =
+            "Ich habe die gewünschte Webseite geöffnet.";
+
+
+        conversation.push({
+
+            role:"model",
+
+            text:resp
+
+        });
+
+
+        addMessageToUI(
+            "model",
+            resp
+        );
+
+
+        saveLocalData();
+
+        await saveUserData();
+
+
+        return;
+
+    }
+
+
+    /*
+       Frage zählen
+    */
+
+    questionsUsed++;
+
+    saveLocalData();
+
+    updateQuotaUI();
+
+
+    /*
+       User message
+    */
+
+    const visibleUserText =
+        text ||
+        "Bitte analysiere dieses Bild.";
+
+
+    conversation.push({
+
+        role:"user",
+
+        text:visibleUserText,
+
+        /*
+           Preview nur lokal für den Chat.
+           Das echte Base64-Bild wird nicht
+           dauerhaft in Firestore gespeichert.
+        */
+
+        imageData:
+            imageForRequest
+                ? imageForRequest.preview
+                : null
+
+    });
+
+
+    addMessageToUI(
+        "user",
+        visibleUserText,
+        imageForRequest
+            ? imageForRequest.preview
+            : null
+    );
+
+
+    messageInput.value = "";
+
+
+    /*
+       Bild nach dem Senden aus
+       der Eingabe entfernen,
+       aber für die API behalten.
+    */
+
+    removeSelectedImage();
+
+
+    isThinking = true;
+
+
+    setConnection(
+        `F${activeKeyNumber} · Gemini denkt...`,
+        true
+    );
+
+
+    showTyping();
+
+
+    try{
+
+        const answer =
+            await askGemini(
+                visibleUserText,
+                imageForRequest
+            );
+
+
+        hideTyping();
+
+
+        conversation.push({
+
+            role:"model",
+
+            text:answer
+
+        });
+
+
+        addMessageToUI(
+            "model",
+            answer
+        );
+
+
+        saveLocalData();
+
+        await saveUserData();
+
+
+        /*
+           Nur sprechen,
+           wenn der Benutzer vorher
+           per Mikrofon gesprochen hat.
+        */
+
+        if(voiceMode){
+
+            speak(answer);
+
+        }
+
+
+        setConnection(
+            `F${activeKeyNumber} · ${GEMINI_MODEL} bereit`,
+            true
+        );
+
+
+    }catch(err){
+
+        hideTyping();
+
+
+        const errTxt =
+            err?.message ||
+            "Unbekannter Fehler.";
+
+
+        const errorMessage =
+            "Fehler: " +
+            errTxt;
+
+
+        conversation.push({
+
+            role:"model",
+
+            text:errorMessage
+
+        });
+
+
+        addMessageToUI(
+            "model",
+            errorMessage
+        );
+
+
+        saveLocalData();
+
+
+        setConnection(
+            "Gemini-Fehler",
+            false
+        );
+
+
+    }finally{
+
+        isThinking = false;
+
+    }
+
+}
+
+
+/* =========================
+   SEND EVENTS
+========================= */
+
+sendBtn.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+messageInput.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   CLEAR CHAT
+========================= */
+
+clearChatBtn.addEventListener(
+    "click",
+    async () => {
+
+        if(
+            !confirm(
+                "Chat löschen?"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        conversation = [];
+
+
+        saveLocalData();
+
+
+        renderConversation();
+
+
+        await saveUserData();
+
+
+        setConnection(
+            "Chat gelöscht",
+            true
+        );
+
+    }
+);
+
+
+/* =========================
+   SPEECH RECOGNITION
+========================= */
+
+function setupSpeechRecognition(){
+
+    const SR =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if(!SR){
+
+        micBtn.disabled = true;
+
+        micBtn.title =
+            "Spracheingabe wird von diesem Browser nicht unterstützt.";
+
+        return;
+
+    }
+
+
+    recognition =
+        new SR();
+
+
+    recognition.lang =
+        "de-DE";
+
+
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.maxAlternatives =
+        1;
+
+
+    recognition.onstart =
+        () => {
+
+            isListening = true;
+
+            micBtn.classList.add(
+                "active"
+            );
+
+
+            setConnection(
+                "Nova hört zu...",
+                true
+            );
+
+
+            /*
+               AUTOMATISCH NACH 8 SEKUNDEN
+               STOPPEN
+            */
+
+            clearTimeout(
+                window.novaListenTimer
+            );
+
+
+            window.novaListenTimer =
+                setTimeout(
+                    () => {
+
+                        stopListening();
+
+                    },
+                    8000
+                );
+
+        };
+
+
+    recognition.onresult =
+        event => {
+
+            clearTimeout(
+                window.novaListenTimer
+            );
+
+
+            isListening = false;
+
+
+            micBtn.classList.remove(
+                "active"
+            );
+
+
+            const transcript =
+                event
+                    ?.results?.[0]?.[0]
+                    ?.transcript
+                    ?.trim();
+
+
+            if(transcript){
+
+                messageInput.value =
+                    transcript;
+
+
+                /*
+                   Voice request wird
+                   direkt gesendet.
+                */
+
+                setTimeout(
+                    () => {
+
+                        sendMessage();
+
+                    },
+                    100
+                );
+
+            }
+
+        };
+
+
+    recognition.onerror =
+        event => {
+
+            clearTimeout(
+                window.novaListenTimer
+            );
+
+
+            isListening = false;
+
+
+            micBtn.classList.remove(
+                "active"
+            );
+
+
+            if(
+                event.error !==
+                "aborted"
+            ){
+
+                setConnection(
+                    "Spracheingabe beendet",
+                    false
+                );
+
+            }
+
+        };
+
+
+    recognition.onend =
+        () => {
+
+            clearTimeout(
+                window.novaListenTimer
+            );
+
+
+            isListening = false;
+
+
+            micBtn.classList.remove(
+                "active"
+            );
+
+        };
+
+}
+
+
+/* =========================
+   START LISTENING
+========================= */
+
+function startListening(){
+
+    /*
+       Nova darf NICHT zuhören,
+       während sie spricht.
+    */
+
+    if(isSpeaking)
+        return;
+
+
+    if(isThinking)
+        return;
+
+
+    if(isListening)
+        return;
+
+
+    if(!recognition)
+        return;
+
+
+    try{
+
+        /*
+           Nur diese Anfrage wird
+           als Sprachmodus markiert.
+        */
+
+        voiceMode = true;
+
+
+        recognition.start();
+
+    }catch(e){
+
+        console.warn(
+            "Speech start:",
+            e
+        );
+
+    }
+
+}
+
+
+/* =========================
+   STOP LISTENING
+========================= */
+
+function stopListening(){
+
+    clearTimeout(
+        window.novaListenTimer
+    );
+
+
     isListening = false;
-    micBtn.classList.remove("active");
-    try{ recognition.stop(); }catch(e){}
-}  micBtn.addEventListener("click", () => { if(isSpeaking) return; isListening ? stopListening() : startListening(); });  function speak(text){     if(!("speechSynthesis" in window)) return;     stopListening();     isSpeaking = true;     window.speechSynthesis.cancel();     const utt = new SpeechSynthesisUtterance(text);     utt.lang = "de-DE";     utt.onend = () => { isSpeaking = false; setConnection(\`F${activeKeyNumber} · Bereit\`, true); };     utt.onerror = () => { isSpeaking = false; };     window.speechSynthesis.speak(utt); }  setupSpeechRecognition(); loadLocalData(); if(conversation.length === 0){ addMessageToUI("ai", "Hallo. Ich bin Nova. Wie kann ic
+
+
+    micBtn.classList.remove(
+        "active"
+    );
+
+
+    if(recognition){
+
+        try{
+
+            recognition.stop();
+
+        }catch(e){}
+
+    }
+
+}
+
+
+/* =========================
+   MIC BUTTON
+========================= */
+
+micBtn.addEventListener(
+    "click",
+    () => {
+
+        /*
+           Während Nova spricht:
+           KEIN Zuhören.
+        */
+
+        if(isSpeaking)
+            return;
+
+
+        if(isListening){
+
+            stopListening();
+
+        }else{
+
+            startListening();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   NOVA SPEECH
+========================= */
+
+function speak(text){
+
+    if(
+        !("speechSynthesis" in window)
+    ){
+
+        return;
+
+    }
+
+
+    /*
+       Während Nova spricht:
+       Mikrofon garantiert aus.
+    */
+
+    stopListening();
+
+
+    isSpeaking = true;
+
+
+    speechSynthesis.cancel();
+
+
+    const utterance =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+
+    utterance.lang =
+        "de-DE";
+
+
+    utterance.rate =
+        1;
+
+
+    utterance.pitch =
+        1;
+
+
+    utterance.onstart =
+        () => {
+
+            isSpeaking = true;
+
+            setConnection(
+                "Nova spricht...",
+                true
+            );
+
+        };
+
+
+    utterance.onend =
+        () => {
+
+            isSpeaking = false;
+
+
+            setConnection(
+                `F${activeKeyNumber} · Bereit`,
+                true
+            );
+
+        };
+
+
+    utterance.onerror =
+        () => {
+
+            isSpeaking = false;
+
+
+            setConnection(
+                `F${activeKeyNumber} · Bereit`,
+                true
+            );
+
+        };
+
+
+    speechSynthesis.speak(
+        utterance
+    );
+
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+setupSpeechRecognition();
+
+
+loadLocalData();
+
+
+if(
+    conversation.length === 0
+){
+
+    addMessageToUI(
+        "model",
+        "Hallo. Ich bin Nova. Wie kann ich dir helfen?"
+    );
+
+}
+
+</script>
+
+</body>
+</html>
