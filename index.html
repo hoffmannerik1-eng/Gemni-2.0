@@ -2,41 +2,59 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#050505">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
+
 <title>Nova Family AI</title>
 
 <style>
-:root{
-    --bg:#050505;
-    --panel:#0d0d0d;
-    --panel2:#121212;
-    --line:#292929;
-    --white:#fff;
-    --gray:#999;
-    --green:#45ff9a;
-    --red:#ff5555;
-}
-
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
 }
 
-html{
-    scroll-behavior:smooth;
+:root{
+    --bg:#050505;
+    --bg2:#0a0a0a;
+    --panel:#101010;
+    --panel2:#151515;
+    --panel3:#1b1b1b;
+    --border:#2a2a2a;
+    --border2:#383838;
+    --text:#f5f5f5;
+    --muted:#929292;
+    --white:#ffffff;
+    --danger:#ff4d4d;
+    --success:#55e878;
+    --blue:#5b9cff;
+    --shadow:0 20px 70px rgba(0,0,0,.45);
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 }
 
 body{
-    background:
-        radial-gradient(circle at 50% -10%,#292929 0%,#0b0b0b 35%,#050505 75%);
-    color:white;
-    font-family:Arial,Helvetica,sans-serif;
-    min-height:100vh;
+    overflow:hidden;
 }
 
-button,input{
+button,
+input,
+textarea{
     font:inherit;
 }
 
@@ -53,262 +71,425 @@ button{
 #loginScreen{
     position:fixed;
     inset:0;
-    z-index:1000;
+    z-index:9999;
+    background:
+        radial-gradient(circle at 50% 20%, #202020 0%, transparent 35%),
+        #050505;
     display:flex;
-    align-items:center;
     justify-content:center;
-    background:#050505;
+    align-items:center;
 }
 
-.loginBox{
-    width:min(450px,92vw);
+.loginCard{
+    width:min(460px,92vw);
     padding:42px;
-    border:1px solid #292929;
+    border:1px solid var(--border2);
     border-radius:28px;
-    background:#0d0d0d;
-    box-shadow:0 20px 80px rgba(0,0,0,.65);
+    background:rgba(15,15,15,.92);
+    box-shadow:var(--shadow);
     text-align:center;
 }
 
 .loginLogo{
-    width:105px;
-    height:105px;
+    width:82px;
+    height:82px;
+    border-radius:24px;
     margin:0 auto 25px;
-    border-radius:50%;
-    background:radial-gradient(circle,#fff 0%,#aaa 17%,#333 45%,#090909 72%);
-    box-shadow:0 0 35px rgba(255,255,255,.3),inset 0 0 35px rgba(255,255,255,.25);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fff;
+    color:#000;
+    font-size:34px;
+    font-weight:900;
 }
 
-.loginBox h1{
+.loginCard h1{
     font-size:36px;
-    letter-spacing:6px;
+    letter-spacing:-1px;
     margin-bottom:10px;
 }
 
-.loginBox p{
-    color:#999;
-    line-height:1.5;
+.loginCard p{
+    color:var(--muted);
+    line-height:1.6;
     margin-bottom:28px;
 }
 
-.googleBtn{
+.googleLogin{
     width:100%;
-    padding:15px;
-    border:1px solid #333;
+    height:54px;
+    border:0;
     border-radius:14px;
     background:#fff;
     color:#000;
-    font-weight:bold;
+    font-weight:800;
+    transition:.2s;
 }
 
-.googleBtn:hover{
-    background:#ddd;
+.googleLogin:hover{
+    transform:translateY(-2px);
 }
 
-/* TOPBAR */
+/* APP */
 
-.topbar{
-    height:72px;
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    z-index:50;
+#app{
+    width:100%;
+    height:100%;
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 24px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    background:rgba(5,5,5,.88);
-    backdrop-filter:blur(18px);
+    overflow:hidden;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:290px;
+    min-width:290px;
+    height:100%;
+    background:#090909;
+    border-right:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    z-index:50;
+}
+
+.sidebarTop{
+    padding:18px;
+    border-bottom:1px solid var(--border);
 }
 
 .brand{
     display:flex;
     align-items:center;
     gap:12px;
+    margin-bottom:18px;
 }
 
-.brandOrb{
-    width:38px;
-    height:38px;
-    border-radius:50%;
-    background:radial-gradient(circle,#fff,#888 30%,#111 70%);
-    box-shadow:0 0 20px rgba(255,255,255,.2);
+.brandLogo{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    background:#fff;
+    color:#000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:900;
 }
 
-.brandText{
-    font-weight:bold;
-    letter-spacing:2px;
+.brandText strong{
+    display:block;
+    font-size:16px;
 }
 
-.topActions{
+.brandText span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.newChatBtn{
+    width:100%;
+    height:46px;
+    border:1px solid var(--border2);
+    border-radius:13px;
+    background:#151515;
+    color:#fff;
+    font-weight:700;
+}
+
+.newChatBtn:hover{
+    background:#202020;
+}
+
+.chatSearch{
+    margin-top:12px;
+    width:100%;
+    height:40px;
+    padding:0 12px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:#101010;
+    color:#fff;
+    outline:none;
+}
+
+.chatList{
+    flex:1;
+    overflow-y:auto;
+    padding:10px;
+}
+
+.chatItem{
+    position:relative;
     display:flex;
     align-items:center;
-    gap:8px;
+    gap:10px;
+    width:100%;
+    min-height:52px;
+    padding:9px 10px;
+    margin-bottom:4px;
+    border-radius:12px;
+    color:#ddd;
+    transition:.15s;
 }
 
-.smallBtn{
-    border:1px solid #2b2b2b;
-    background:#111;
+.chatItem:hover{
+    background:#151515;
+}
+
+.chatItem.active{
+    background:#1d1d1d;
+}
+
+.chatItemMain{
+    min-width:0;
+    flex:1;
+    cursor:pointer;
+}
+
+.chatTitle{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:14px;
+    font-weight:600;
+}
+
+.chatDate{
+    color:#777;
+    font-size:10px;
+    margin-top:3px;
+}
+
+.chatMenuBtn{
+    width:28px;
+    height:28px;
+    border:0;
+    border-radius:8px;
+    background:transparent;
+    color:#888;
+}
+
+.chatMenuBtn:hover{
+    background:#292929;
     color:#fff;
-    border-radius:10px;
-    padding:8px 12px;
 }
 
-.smallBtn:hover{
-    background:#222;
+.sidebarBottom{
+    border-top:1px solid var(--border);
+    padding:12px;
 }
 
-.smallBtn.danger{
-    border-color:#552222;
-    color:#ff7777;
+.userBox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px;
+    border-radius:12px;
 }
 
-.smallBtn.danger:hover{
-    background:#301515;
-}
-
-.userAvatar{
+.avatar{
     width:36px;
     height:36px;
     border-radius:50%;
-    border:1px solid #333;
     object-fit:cover;
+    background:#222;
+}
+
+.userInfo{
+    min-width:0;
+    flex:1;
+}
+
+.userInfo strong{
+    display:block;
+    font-size:13px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.userInfo span{
+    display:block;
+    color:#777;
+    font-size:10px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.logoutBtn{
+    width:34px;
+    height:34px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    background:#111;
+    color:#aaa;
 }
 
 /* MAIN */
 
 .main{
-    width:min(1100px,94vw);
-    margin:auto;
-    padding-top:105px;
-    padding-bottom:180px;
+    flex:1;
+    min-width:0;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    background:
+        radial-gradient(circle at 50% 0%, #111 0%, transparent 45%),
+        #050505;
+}
+
+/* HEADER */
+
+.topbar{
+    height:66px;
+    min-height:66px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 22px;
+    background:rgba(5,5,5,.82);
+    backdrop-filter:blur(20px);
+    z-index:20;
+}
+
+.topbarTitle{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+}
+
+.mobileMenu{
+    display:none;
+    width:40px;
+    height:40px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#111;
+    color:#fff;
+}
+
+.currentChatName{
+    font-size:15px;
+    font-weight:800;
+    max-width:400px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.topActions{
+    display:flex;
+    gap:7px;
+}
+
+.smallBtn{
+    min-height:36px;
+    padding:0 12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#101010;
+    color:#ddd;
+    font-size:12px;
+    font-weight:700;
+}
+
+.smallBtn:hover{
+    background:#1a1a1a;
+}
+
+.dangerBtn{
+    color:#ff7474;
+}
+
+/* CONTENT */
+
+.content{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    padding:25px;
 }
 
 .hero{
-    text-align:center;
-    margin-bottom:28px;
-}
-
-.heroOrb{
-    width:170px;
-    height:170px;
-    margin:10px auto 22px;
-    border-radius:50%;
-    background:radial-gradient(circle at 35% 30%,#fff 0%,#ddd 8%,#777 27%,#292929 53%,#090909 74%);
-    box-shadow:0 0 35px rgba(255,255,255,.23),0 0 110px rgba(255,255,255,.08),inset -20px -20px 40px rgba(0,0,0,.8);
-    animation:orbFloat 4s ease-in-out infinite;
-}
-
-@keyframes orbFloat{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-8px)}
+    width:min(1000px,100%);
+    margin:0 auto 24px;
+    padding:32px;
+    border:1px solid var(--border);
+    border-radius:25px;
+    background:
+        linear-gradient(145deg,#111,#090909);
+    box-shadow:0 15px 50px rgba(0,0,0,.25);
 }
 
 .hero h1{
-    font-size:42px;
-    letter-spacing:7px;
+    font-size:clamp(38px,6vw,76px);
+    letter-spacing:-5px;
+    font-weight:900;
+    line-height:.9;
 }
 
 .hero p{
+    margin-top:14px;
     color:#888;
-    margin-top:7px;
+    max-width:650px;
+    line-height:1.6;
 }
-
-/* STATUS */
 
 .statusRow{
     display:flex;
-    justify-content:center;
     flex-wrap:wrap;
     gap:8px;
-    margin:20px 0;
+    margin-top:20px;
 }
 
 .status{
-    border:1px solid #272727;
-    background:#0c0c0c;
-    padding:7px 12px;
+    border:1px solid var(--border);
     border-radius:999px;
+    padding:7px 11px;
     color:#aaa;
-    font-size:13px;
+    font-size:11px;
 }
 
-.dot{
-    display:inline-block;
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    margin-right:6px;
-    background:#555;
+.status.good{
+    color:#7dff9c;
 }
 
-.dot.green{
-    background:var(--green);
-    box-shadow:0 0 10px var(--green);
-}
-
-.dot.red{
-    background:var(--red);
-    box-shadow:0 0 10px var(--red);
+.status.bad{
+    color:#ff7777;
 }
 
 /* SETTINGS */
 
 .settings{
-    border:1px solid #252525;
-    background:rgba(12,12,12,.85);
+    width:min(1000px,100%);
+    margin:0 auto 22px;
+    border:1px solid var(--border);
     border-radius:20px;
-    padding:18px;
-    margin-bottom:22px;
+    background:#0b0b0b;
+    overflow:hidden;
 }
 
 .settingsHeader{
+    min-height:60px;
+    padding:12px 16px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    margin-bottom:15px;
-}
-
-.settingsHeader h2{
-    font-size:17px;
-    letter-spacing:1px;
-}
-
-.modelTag{
-    color:var(--green);
-    font-size:12px;
-    border:1px solid #245c43;
-    padding:5px 8px;
-    border-radius:7px;
-}
-
-/* KEY HIDDEN HEADER */
-
-.keySecurityHeader{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
     gap:10px;
-    margin-bottom:12px;
+    border-bottom:1px solid var(--border);
 }
 
-.keySecurityText{
-    color:#777;
-    font-size:12px;
+.settingsHeader strong{
+    font-size:13px;
+    letter-spacing:.7px;
 }
 
-.keyVisibilityBtn{
-    border:1px solid #333;
-    background:#151515;
-    color:#fff;
-    border-radius:10px;
-    padding:9px 13px;
-}
-
-.keyVisibilityBtn:hover{
-    background:#242424;
+.keyPanel{
+    padding:16px;
 }
 
 .keyGrid{
@@ -317,449 +498,523 @@ button{
     gap:12px;
 }
 
-.keyBox{
-    border:1px solid #252525;
-    border-radius:14px;
-    padding:12px;
-    background:#090909;
+.keyCard{
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:14px;
+    background:#111;
 }
 
-.keyBox.active{
-    border-color:#777;
-    box-shadow:0 0 20px rgba(255,255,255,.04);
-}
-
-.keyTop{
+.keyHeader{
     display:flex;
     justify-content:space-between;
-    margin-bottom:8px;
+    margin-bottom:9px;
+}
+
+.keyHeader strong{
+    font-size:12px;
 }
 
 .keyState{
+    font-size:10px;
     color:#777;
-    font-size:11px;
-}
-
-.keyState.saved{
-    color:var(--green);
 }
 
 .keyInput{
     width:100%;
-    padding:11px 13px;
-    background:#111;
-    border:1px solid #252525;
+    height:40px;
+    padding:0 10px;
+    border:1px solid #292929;
+    border-radius:9px;
+    background:#070707;
     color:#fff;
-    border-radius:99px;
     outline:none;
 }
 
 .keyInput:focus{
-    border-color:#777;
+    border-color:#555;
 }
 
 .keyButtons{
     display:flex;
-    gap:8px;
-    margin-top:9px;
+    gap:6px;
+    margin-top:8px;
 }
 
-.keyBtn{
+.keyButtons button{
     flex:1;
-    padding:9px;
-    border:1px solid #292929;
-    background:#151515;
-    color:#fff;
-    border-radius:9px;
-}
-
-.keyBtn:hover{
-    background:#222;
-}
-
-.keyBtn.active{
-    background:#fff;
-    color:#000;
+    height:34px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#171717;
+    color:#ddd;
+    font-size:11px;
 }
 
 .keyHelp{
-    margin-top:12px;
+    margin-top:13px;
     color:#777;
-    font-size:12px;
+    font-size:11px;
     line-height:1.5;
 }
 
 .persistence{
-    margin-top:10px;
-    padding:9px 11px;
+    margin-top:12px;
+    padding:10px;
     border-radius:10px;
-    border:1px solid #222;
-    background:#090909;
-    color:#888;
-    font-size:12px;
+    background:#0f0f0f;
+    color:#777;
+    font-size:10px;
 }
 
-.persistence span{
-    color:var(--green);
-}
+/* MEMORY */
 
 .memoryBox{
-    margin-top:14px;
-    padding:14px;
-    border:1px solid #252525;
-    border-radius:14px;
-    background:#090909;
+    width:min(1000px,100%);
+    margin:0 auto 22px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:#0b0b0b;
+    padding:15px;
 }
 
 .memoryTop{
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    gap:10px;
-    margin-bottom:8px;
-}
-
-.memoryTitle{
-    font-weight:bold;
-}
-
-.memoryCount{
-    color:#777;
-    font-size:11px;
-}
-
-.memoryInfo{
-    color:#777;
-    font-size:12px;
-    line-height:1.5;
+    justify-content:space-between;
     margin-bottom:10px;
+}
+
+.memoryTop strong{
+    font-size:12px;
 }
 
 .memoryList{
     display:flex;
-    flex-direction:column;
-    gap:6px;
-    max-height:180px;
-    overflow:auto;
+    flex-wrap:wrap;
+    gap:7px;
 }
 
-.memoryItem{
-    border:1px solid #202020;
-    border-radius:9px;
-    padding:8px 10px;
-    color:#bbb;
-    font-size:12px;
-    background:#0d0d0d;
-}
-
-.memoryEmpty{
-    color:#555;
-    font-size:12px;
-    padding:5px;
-}
-
-.quota{
-    margin-top:14px;
-}
-
-.quotaTop{
-    display:flex;
-    justify-content:space-between;
-    color:#888;
-    font-size:12px;
-    margin-bottom:7px;
-}
-
-.quotaBar{
-    width:100%;
-    height:5px;
-    background:#1d1d1d;
-    border-radius:99px;
-    overflow:hidden;
-}
-
-.quotaFill{
-    height:100%;
-    width:0%;
-    background:#fff;
-    transition:.3s;
+.memoryTag{
+    max-width:100%;
+    border:1px solid var(--border);
+    background:#121212;
+    border-radius:10px;
+    padding:7px 9px;
+    color:#999;
+    font-size:10px;
 }
 
 /* CHAT */
 
 .chat{
-    display:flex;
-    flex-direction:column;
-    gap:13px;
+    width:min(1000px,100%);
+    margin:0 auto;
+    padding-bottom:30px;
+}
+
+.emptyChat{
+    text-align:center;
+    padding:70px 20px;
+    color:#666;
+}
+
+.emptyChat h2{
+    color:#aaa;
+    margin-bottom:8px;
 }
 
 .message{
     display:flex;
-    gap:10px;
-    max-width:90%;
+    margin:16px 0;
+    gap:11px;
 }
 
 .message.user{
-    align-self:flex-end;
-    flex-direction:row-reverse;
+    justify-content:flex-end;
 }
 
-.message.ai{
-    align-self:flex-start;
+.message.model{
+    justify-content:flex-start;
 }
 
-.messageAvatar{
-    width:34px;
-    height:34px;
-    min-width:34px;
-    border-radius:50%;
-    background:radial-gradient(circle,#fff,#777 30%,#111 68%);
-    border:1px solid #333;
-}
-
-.user .messageAvatar{
-    background:#fff;
-}
-
-.messageColumn{
-    max-width:100%;
-}
-
-.messageContent{
-    padding:13px 15px;
-    border-radius:16px;
-    border:1px solid #242424;
-    background:#0e0e0e;
-    line-height:1.55;
+.messageBubble{
+    max-width:min(760px,88%);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:14px 16px;
+    line-height:1.6;
+    font-size:14px;
+    background:#0f0f0f;
     white-space:pre-wrap;
     overflow-wrap:anywhere;
 }
 
-.user .messageContent{
+.message.user .messageBubble{
     background:#fff;
     color:#000;
     border-color:#fff;
+}
+
+.messageImage{
+    max-width:100%;
+    max-height:500px;
+    display:block;
+    margin-top:10px;
+    border-radius:13px;
+    border:1px solid var(--border);
 }
 
 .messageActions{
     display:flex;
-    gap:7px;
-    flex-wrap:wrap;
-    margin-top:7px;
+    gap:5px;
+    margin-top:8px;
 }
 
-.messageAction{
-    border:1px solid #292929;
-    background:#101010;
-    color:#aaa;
+.messageActions button{
+    height:28px;
+    padding:0 9px;
+    border:1px solid var(--border);
     border-radius:8px;
-    padding:6px 9px;
-    font-size:11px;
+    background:#111;
+    color:#999;
+    font-size:10px;
 }
 
-.messageAction:hover{
-    background:#222;
+.messageActions button:hover{
     color:#fff;
 }
 
-.user .messageActions{
-    justify-content:flex-end;
-}
+/* THINKING */
 
-.typing{
+.thinking{
     display:flex;
+    align-items:center;
     gap:5px;
+    padding:13px 16px;
+    border:1px solid var(--border);
+    border-radius:17px;
+    width:max-content;
+    background:#101010;
 }
 
-.typing span{
+.dot{
     width:6px;
     height:6px;
     background:#aaa;
     border-radius:50%;
-    animation:typing 1s infinite;
+    animation:dot 1.1s infinite;
 }
 
-.typing span:nth-child(2){animation-delay:.15s}
-.typing span:nth-child(3){animation-delay:.3s}
-
-@keyframes typing{
-    0%,80%,100%{opacity:.2;transform:translateY(0)}
-    40%{opacity:1;transform:translateY(-3px)}
+.dot:nth-child(2){
+    animation-delay:.15s;
 }
 
-/* IMAGE */
-
-.imagePreview{
-    width:min(900px,94vw);
-    margin:0 auto 8px;
-    border:1px solid #292929;
-    background:#0d0d0d;
-    border-radius:15px;
-    padding:8px;
-    display:flex;
-    align-items:center;
-    gap:10px;
+.dot:nth-child(3){
+    animation-delay:.3s;
 }
 
-.imagePreview img{
-    width:70px;
-    height:70px;
-    object-fit:cover;
-    border-radius:10px;
-    border:1px solid #333;
-}
-
-.imagePreviewInfo{
-    flex:1;
-    min-width:0;
-}
-
-.imagePreviewName{
-    font-size:13px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.imagePreviewText{
-    color:#777;
-    font-size:11px;
-    margin-top:4px;
-}
-
-.removeImageBtn,
-.imageGoogleBtn{
-    width:36px;
-    height:36px;
-    border:1px solid #333;
-    background:#171717;
-    color:#fff;
-    border-radius:9px;
-}
-
-.removeImageBtn:hover,
-.imageGoogleBtn:hover{
-    background:#333;
+@keyframes dot{
+    0%,70%,100%{
+        transform:translateY(0);
+        opacity:.35;
+    }
+    35%{
+        transform:translateY(-5px);
+        opacity:1;
+    }
 }
 
 /* INPUT */
 
-.inputArea{
-    position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
-    z-index:40;
-    padding:14px;
-    background:linear-gradient(transparent,rgba(5,5,5,.96) 25%);
+.composerWrap{
+    border-top:1px solid var(--border);
+    background:rgba(5,5,5,.92);
+    backdrop-filter:blur(20px);
+    padding:12px 20px 18px;
 }
 
-.inputBox{
-    width:min(900px,94vw);
+.composer{
+    width:min(1000px,100%);
     margin:auto;
-    display:flex;
-    gap:8px;
-    padding:8px;
-    border:1px solid #292929;
+    border:1px solid var(--border2);
     border-radius:18px;
-    background:#0d0d0d;
-    box-shadow:0 15px 50px rgba(0,0,0,.6);
+    background:#0e0e0e;
+    padding:9px;
+}
+
+.imagePreview{
+    position:relative;
+    margin:2px 2px 8px;
+    width:130px;
+}
+
+.imagePreview img{
+    width:130px;
+    height:90px;
+    object-fit:cover;
+    border-radius:11px;
+    border:1px solid var(--border);
+}
+
+.removeImage{
+    position:absolute;
+    top:5px;
+    right:5px;
+    width:25px;
+    height:25px;
+    border:0;
+    border-radius:50%;
+    background:#000;
+    color:#fff;
+}
+
+.composerRow{
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
 }
 
 #messageInput{
     flex:1;
-    min-width:0;
+    min-height:44px;
+    max-height:170px;
+    resize:none;
     border:0;
-    outline:0;
+    outline:none;
     background:transparent;
     color:#fff;
-    padding:10px;
+    padding:11px;
+    line-height:1.4;
 }
 
-#messageInput::placeholder{
-    color:#666;
-}
-
-.actionBtn{
-    width:44px;
-    height:44px;
+.composerButton{
+    width:43px;
+    height:43px;
+    border:1px solid var(--border);
     border-radius:12px;
-    border:1px solid #292929;
     background:#151515;
-    color:#fff;
-    flex-shrink:0;
+    color:#bbb;
 }
 
-.actionBtn:hover{
+.composerButton:hover{
     background:#222;
+    color:#fff;
 }
 
-#micBtn.active{
+.sendButton{
     background:#fff;
     color:#000;
     border-color:#fff;
-    box-shadow:0 0 20px rgba(255,255,255,.2);
+    font-weight:900;
 }
 
-.sendBtn{
+.composerInfo{
+    color:#555;
+    font-size:9px;
+    padding:5px 10px 0;
+}
+
+/* MODALS */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:9000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(10px);
+}
+
+.modalCard{
+    width:min(600px,92vw);
+    max-height:88vh;
+    overflow:auto;
+    border:1px solid var(--border2);
+    border-radius:22px;
+    background:#0c0c0c;
+    box-shadow:var(--shadow);
+    padding:22px;
+}
+
+.modalHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+}
+
+.modalHeader h2{
+    font-size:18px;
+}
+
+.closeModal{
+    width:34px;
+    height:34px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    background:#111;
+    color:#aaa;
+}
+
+.generateForm{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.generateInput{
+    width:100%;
+    min-height:110px;
+    resize:vertical;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:#080808;
+    color:#fff;
+    outline:none;
+}
+
+.generateOptions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.generateOptions select,
+.generateOptions input{
+    width:100%;
+    height:42px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#111;
+    color:#fff;
+    padding:0 10px;
+}
+
+.generateButton{
+    width:100%;
+    height:45px;
+    border:0;
+    border-radius:11px;
     background:#fff;
     color:#000;
-    border-color:#fff;
+    font-weight:900;
 }
 
-.sendBtn:hover{
-    background:#ddd;
+.generatedResult{
+    margin-top:15px;
+}
+
+.generatedResult img{
+    width:100%;
+    border-radius:15px;
+    border:1px solid var(--border);
+}
+
+/* CONTEXT MENU */
+
+.contextMenu{
+    position:fixed;
+    z-index:10000;
+    width:190px;
+    border:1px solid var(--border2);
+    border-radius:12px;
+    padding:5px;
+    background:#111;
+    box-shadow:var(--shadow);
+}
+
+.contextMenu button{
+    width:100%;
+    height:36px;
+    border:0;
+    border-radius:8px;
+    background:transparent;
+    color:#ddd;
+    text-align:left;
+    padding:0 10px;
+    font-size:12px;
+}
+
+.contextMenu button:hover{
+    background:#222;
 }
 
 /* MOBILE */
 
-@media(max-width:700px){
+@media(max-width:850px){
+
+    .sidebar{
+        position:fixed;
+        left:-310px;
+        top:0;
+        bottom:0;
+        transition:.25s;
+        box-shadow:var(--shadow);
+    }
+
+    .sidebar.open{
+        left:0;
+    }
+
+    .mobileMenu{
+        display:block;
+    }
 
     .topbar{
         padding:0 10px;
     }
 
-    .brandText{
-        font-size:12px;
-    }
-
-    .topActions .smallBtn{
+    .topActions .hideMobile{
         display:none;
     }
 
-    .heroOrb{
-        width:130px;
-        height:130px;
+    .content{
+        padding:12px;
+    }
+
+    .hero{
+        padding:24px;
     }
 
     .hero h1{
-        font-size:32px;
+        letter-spacing:-3px;
+        font-size:50px;
     }
 
     .keyGrid{
         grid-template-columns:1fr;
     }
 
-    .message{
-        max-width:95%;
+    .composerWrap{
+        padding:8px 8px 12px;
     }
 
-    .actionBtn{
-        width:40px;
-        height:40px;
+    .messageBubble{
+        max-width:92%;
+    }
+}
+
+@media(max-width:500px){
+
+    .currentChatName{
+        max-width:130px;
     }
 
-    .inputBox{
-        padding:6px;
+    .topActions{
+        gap:3px;
     }
 
-    #messageInput{
-        padding:8px 5px;
+    .smallBtn{
+        padding:0 8px;
+        font-size:10px;
     }
 
-    .keySecurityHeader{
-        align-items:flex-start;
-        flex-direction:column;
+    .generateOptions{
+        grid-template-columns:1fr;
     }
 }
 </style>
@@ -770,29 +1025,22 @@ button{
 <!-- LOGIN -->
 
 <div id="loginScreen">
-
-    <div class="loginBox">
-
-        <div class="loginLogo"></div>
-
+    <div class="loginCard">
+        <div class="loginLogo">N</div>
         <h1>NOVA</h1>
-
         <p>
-            Nova Family AI<br>
-            Dein persönlicher KI-Assistent
+            Deine persönliche KI mit mehreren Chats,
+            Erinnerungen, Bildern, Sprache und Web-Funktionen.
         </p>
 
-        <button class="googleBtn"
-                id="googleLoginBtn">
+        <button id="googleLoginBtn" class="googleLogin">
             Mit Google anmelden
         </button>
 
-        <p id="loginError"
-           style="margin-top:15px;color:#ff5555;font-size:13px;">
-        </p>
-
+        <div id="loginError"
+             style="margin-top:15px;color:#ff7070;font-size:12px;">
+        </div>
     </div>
-
 </div>
 
 
@@ -800,397 +1048,483 @@ button{
 
 <div id="app" class="hidden">
 
-<header class="topbar">
+    <!-- SIDEBAR -->
 
-    <div class="brand">
+    <aside id="sidebar" class="sidebar">
 
-        <div class="brandOrb"></div>
+        <div class="sidebarTop">
 
-        <div class="brandText">
-            NOVA FAMILY AI
+            <div class="brand">
+                <div class="brandLogo">N</div>
+
+                <div class="brandText">
+                    <strong>Nova Family AI</strong>
+                    <span>PERSONAL AI SYSTEM</span>
+                </div>
+            </div>
+
+            <button id="newChatBtn" class="newChatBtn">
+                + Neuer Chat
+            </button>
+
+            <input
+                id="chatSearch"
+                class="chatSearch"
+                placeholder="Chats durchsuchen..."
+                autocomplete="off"
+            >
         </div>
 
-    </div>
+        <div id="chatList" class="chatList"></div>
+
+        <div class="sidebarBottom">
+
+            <div class="userBox">
+
+                <img
+                    id="userAvatar"
+                    class="avatar"
+                    src=""
+                    alt=""
+                >
+
+                <div class="userInfo">
+                    <strong id="userName">Benutzer</strong>
+                    <span id="userEmail">...</span>
+                </div>
+
+                <button
+                    id="logoutBtn"
+                    class="logoutBtn"
+                    title="Abmelden">
+                    ↪
+                </button>
+
+            </div>
+
+        </div>
+
+    </aside>
 
 
-    <div class="topActions">
+    <!-- MAIN -->
 
-        <button class="smallBtn"
-                id="clearChatBtn">
-            Chat löschen
-        </button>
+    <main class="main">
 
-        <button class="smallBtn danger"
-                id="clearMemoryBtn">
-            Gedanken löschen
-        </button>
+        <header class="topbar">
 
-        <button class="smallBtn"
-                id="logoutBtn">
-            Abmelden
-        </button>
+            <div class="topbarTitle">
 
-        <img id="userAvatar"
-             class="userAvatar"
-             alt="User">
+                <button
+                    id="mobileMenuBtn"
+                    class="mobileMenu">
+                    ☰
+                </button>
 
-    </div>
+                <div>
+                    <div
+                        id="currentChatName"
+                        class="currentChatName">
+                        Neuer Chat
+                    </div>
 
-</header>
+                    <div
+                        style="
+                        color:#666;
+                        font-size:9px;
+                        margin-top:2px;">
+                        NOVA AI
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="topActions">
+
+                <button
+                    id="renameChatBtn"
+                    class="smallBtn hideMobile">
+                    Umbenennen
+                </button>
+
+                <button
+                    id="deleteChatBtn"
+                    class="smallBtn dangerBtn">
+                    Chat löschen
+                </button>
+
+                <button
+                    id="clearMemoryBtn"
+                    class="smallBtn hideMobile">
+                    Gedanken löschen
+                </button>
+
+            </div>
+
+        </header>
 
 
-<main class="main">
+        <section class="content">
 
-<section class="hero">
+            <div class="hero">
 
-    <div class="heroOrb"></div>
+                <h1>NOVA</h1>
 
-    <h1>NOVA</h1>
+                <p>
+                    Deine persönliche KI.
+                    Mehrere unabhängige Chats,
+                    dauerhafte Gedanken,
+                    Bildanalyse, Bildgenerierung,
+                    Sprache und Web-Aktionen.
+                </p>
 
-    <p>
-        Dein persönlicher KI-Assistent
-    </p>
+                <div class="statusRow">
 
-</section>
+                    <div
+                        id="connectionStatus"
+                        class="status">
+                        Nicht verbunden
+                    </div>
+
+                    <div class="status">
+                        F1/F2 AUTO
+                    </div>
+
+                    <div class="status">
+                        MULTI CHAT
+                    </div>
+
+                    <div class="status">
+                        MEMORY
+                    </div>
+
+                </div>
+
+            </div>
 
 
-<div class="statusRow">
+            <!-- API SETTINGS -->
 
-    <div class="status">
+            <section class="settings">
 
-        <span id="connectionDot"
-              class="dot"></span>
+                <div class="settingsHeader">
 
-        <span id="connectionStatus">
-            Bereit
-        </span>
+                    <strong>
+                        GEMINI ZUGÄNGE
+                    </strong>
 
-    </div>
+                    <button
+                        id="toggleKeysBtn"
+                        class="smallBtn">
+                        🔐 API-Keys anzeigen
+                    </button>
 
-    <div class="status">
-        Modell:
-        <strong>
-            gemini-3.6-flash
-        </strong>
-    </div>
+                </div>
 
-    <div class="status">
-        Sprache:
-        <strong>
-            Deutsch
-        </strong>
+                <div
+                    id="apiKeyPanel"
+                    class="keyPanel hidden">
+
+                    <div class="keyGrid">
+
+                        <div class="keyCard">
+
+                            <div class="keyHeader">
+                                <strong>F1 – Hauptzugang</strong>
+                                <span
+                                    id="key1State"
+                                    class="keyState">
+                                    nicht gesetzt
+                                </span>
+                            </div>
+
+                            <input
+                                id="key1Input"
+                                class="keyInput"
+                                type="password"
+                                placeholder="Gemini API Key F1"
+                                autocomplete="off"
+                            >
+
+                            <div class="keyButtons">
+
+                                <button
+                                    id="saveKey1Btn">
+                                    Speichern
+                                </button>
+
+                                <button
+                                    id="activateKey1Btn">
+                                    Aktivieren
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="keyCard">
+
+                            <div class="keyHeader">
+                                <strong>F2 – Backup</strong>
+                                <span
+                                    id="key2State"
+                                    class="keyState">
+                                    nicht gesetzt
+                                </span>
+                            </div>
+
+                            <input
+                                id="key2Input"
+                                class="keyInput"
+                                type="password"
+                                placeholder="Gemini API Key F2"
+                                autocomplete="off"
+                            >
+
+                            <div class="keyButtons">
+
+                                <button
+                                    id="saveKey2Btn">
+                                    Speichern
+                                </button>
+
+                                <button
+                                    id="activateKey2Btn">
+                                    Aktivieren
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="keyButtons"
+                         style="margin-top:12px;">
+
+                        <button id="toggleKeyVisibilityBtn">
+                            👁 Schlüssel anzeigen
+                        </button>
+
+                    </div>
+
+
+                    <div class="keyHelp">
+                        F1 wird zuerst verwendet. Wenn F1 einen Fehler
+                        liefert, versucht Nova automatisch F2.
+                    </div>
+
+                    <div class="persistence">
+                        Schlüssel und Einstellungen werden lokal und,
+                        wenn angemeldet, in Firebase gespeichert.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MEMORY -->
+
+            <section class="memoryBox">
+
+                <div class="memoryTop">
+
+                    <strong>
+                        🧠 GEDANKEN / ERINNERUNGEN
+                    </strong>
+
+                    <span
+                        id="memoryCount"
+                        style="color:#666;font-size:10px;">
+                        0
+                    </span>
+
+                </div>
+
+                <div
+                    id="memoryList"
+                    class="memoryList">
+                </div>
+
+            </section>
+
+
+            <!-- CHAT -->
+
+            <section
+                id="chat"
+                class="chat">
+            </section>
+
+        </section>
+
+
+        <!-- COMPOSER -->
+
+        <div class="composerWrap">
+
+            <div class="composer">
+
+                <div
+                    id="imagePreview"
+                    class="imagePreview hidden">
+
+                    <img id="previewImg" src="" alt="">
+
+                    <button
+                        id="removeImageBtn"
+                        class="removeImage">
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="composerRow">
+
+                    <button
+                        id="microphoneBtn"
+                        class="composerButton"
+                        title="Sprache">
+                        🎙
+                    </button>
+
+                    <button
+                        id="uploadImageBtn"
+                        class="composerButton"
+                        title="Bild hochladen">
+                        🖼
+                    </button>
+
+                    <button
+                        id="generateImageBtn"
+                        class="composerButton"
+                        title="Bild generieren">
+                        ✨
+                    </button>
+
+                    <textarea
+                        id="messageInput"
+                        placeholder="Nachricht an Nova..."
+                        rows="1"
+                    ></textarea>
+
+                    <button
+                        id="sendBtn"
+                        class="composerButton sendButton"
+                        title="Senden">
+                        ➤
+                    </button>
+
+                </div>
+
+                <div class="composerInfo">
+                    Enter = senden · Shift+Enter = neue Zeile
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- HIDDEN FILE INPUT -->
+
+<input
+    id="imageFileInput"
+    type="file"
+    accept="image/*"
+    class="hidden"
+>
+
+
+<!-- IMAGE GENERATION MODAL -->
+
+<div
+    id="imageModal"
+    class="modal hidden">
+
+    <div class="modalCard">
+
+        <div class="modalHeader">
+
+            <h2>Bild generieren</h2>
+
+            <button
+                id="closeImageModalBtn"
+                class="closeModal">
+                ×
+            </button>
+
+        </div>
+
+        <div class="generateForm">
+
+            <textarea
+                id="imagePrompt"
+                class="generateInput"
+                placeholder="Beschreibe dein Bild..."></textarea>
+
+            <div class="generateOptions">
+
+                <select id="imageSize">
+                    <option value="1:1">1:1 Quadrat</option>
+                    <option value="16:9">16:9 Querformat</option>
+                    <option value="9:16">9:16 Hochformat</option>
+                </select>
+
+                <select id="imageQuality">
+                    <option value="standard">Standard</option>
+                    <option value="high">Hoch</option>
+                </select>
+
+            </div>
+
+            <button
+                id="startImageGenerationBtn"
+                class="generateButton">
+                Bild generieren
+            </button>
+
+            <div
+                id="imageGenerationStatus"
+                style="
+                color:#777;
+                font-size:11px;
+                text-align:center;">
+            </div>
+
+            <div
+                id="generatedResult"
+                class="generatedResult">
+            </div>
+
+        </div>
+
     </div>
 
 </div>
 
 
-<!-- SETTINGS -->
-
-<section class="settings">
-
-    <div class="settingsHeader">
-
-        <h2>
-            GEMINI ZUGÄNGE
-        </h2>
-
-        <div class="modelTag">
-            gemini-3.6-flash
-        </div>
-
-    </div>
-
-
-    <!-- API KEY SECURITY -->
-
-    <div class="keySecurityHeader">
-
-        <div class="keySecurityText">
-            🔐 Die API-Keys sind standardmäßig verborgen.
-        </div>
-
-        <button class="keyVisibilityBtn"
-                id="toggleKeysBtn">
-            🔒 API-Keys anzeigen
-        </button>
-
-    </div>
-
-
-    <!-- KEY BEREICH -->
-
-    <div id="keyArea"
-         class="hidden">
-
-        <div class="keyGrid">
-
-            <!-- F1 -->
-
-            <div class="keyBox active"
-                 id="keyBox1">
-
-                <div class="keyTop">
-
-                    <strong>
-                        F1 · Key 1
-                    </strong>
-
-                    <span class="keyState"
-                          id="keyState1">
-                        Nicht gesetzt
-                    </span>
-
-                </div>
-
-                <input id="keyInput1"
-                       class="keyInput"
-                       type="password"
-                       autocomplete="off"
-                       placeholder="Gemini API Key 1">
-
-                <div class="keyButtons">
-
-                    <button class="keyBtn"
-                            id="saveKey1">
-                        Speichern
-                    </button>
-
-                    <button class="keyBtn active"
-                            id="activateKey1">
-                        F1 aktiv
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- F2 -->
-
-            <div class="keyBox"
-                 id="keyBox2">
-
-                <div class="keyTop">
-
-                    <strong>
-                        F2 · Key 2
-                    </strong>
-
-                    <span class="keyState"
-                          id="keyState2">
-                        Nicht gesetzt
-                    </span>
-
-                </div>
-
-                <input id="keyInput2"
-                       class="keyInput"
-                       type="password"
-                       autocomplete="off"
-                       placeholder="Gemini API Key 2">
-
-                <div class="keyButtons">
-
-                    <button class="keyBtn"
-                            id="saveKey2">
-                        Speichern
-                    </button>
-
-                    <button class="keyBtn"
-                            id="activateKey2">
-                        F2 verwenden
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="keyHelp">
-
-            <strong>F1 / F2</strong>
-            wechseln den aktiven Key.
-
-            Wenn der aktive Key einen Fehler oder ein Limit
-            zurückgibt, versucht Nova automatisch den
-            anderen gespeicherten Key.
-
-        </div>
-
-
-        <div class="persistence">
-
-            🔐 Speicherung:
-            <span>
-                dauerhaft mit deinem Google-Konto
-            </span>
-
-            · zusätzlich lokaler Cache
-
-        </div>
-
-    </div>
-
-
-    <!-- GEDANKEN -->
-
-    <div class="memoryBox">
-
-        <div class="memoryTop">
-
-            <div class="memoryTitle">
-                🧠 Novas Gedanken & Erinnerungen
-            </div>
-
-            <div class="memoryCount"
-                 id="memoryCount">
-                0 gespeichert
-            </div>
-
-        </div>
-
-
-        <div class="memoryInfo">
-
-            Diese Erinnerungen sind unabhängig vom Chat.
-            Wenn du den Chat löschst, bleiben sie erhalten.
-
-            Du kannst Nova zum Beispiel schreiben:
-
-            <strong>
-                „Merke dir, dass ich gerne Unity programmiere.“
-            </strong>
-
-        </div>
-
-
-        <div class="memoryList"
-             id="memoryList">
-
-            <div class="memoryEmpty">
-                Noch keine Gedanken gespeichert.
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- QUOTA -->
-
-    <div class="quota">
-
-        <div class="quotaTop">
-
-            <span>
-                Lokaler Fragenzähler
-            </span>
-
-            <span id="quotaText">
-                0 / 20
-            </span>
-
-        </div>
-
-        <div class="quotaBar">
-
-            <div id="quotaFill"
-                 class="quotaFill">
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- CHAT -->
-
-<section id="chat"
-         class="chat">
-</section>
-
-</main>
-
-
-<!-- INPUT -->
-
-<div class="inputArea">
-
-    <div id="imagePreview"
-         class="imagePreview hidden">
-
-        <img id="previewImage"
-             alt="Ausgewähltes Bild">
-
-        <div class="imagePreviewInfo">
-
-            <div id="imagePreviewName"
-                 class="imagePreviewName">
-            </div>
-
-            <div class="imagePreviewText">
-                Bild bereit für Nova
-            </div>
-
-        </div>
-
-
-        <button id="googleImageBtn"
-                class="imageGoogleBtn"
-                title="Dazu Google Bilder öffnen">
-            🔎
-        </button>
-
-
-        <button id="removeImageBtn"
-                class="removeImageBtn"
-                type="button">
-            ×
-        </button>
-
-    </div>
-
-
-    <div class="inputBox">
-
-        <button id="micBtn"
-                class="actionBtn"
-                title="Spracheingabe">
-            🎙
-        </button>
-
-
-        <button id="imageBtn"
-                class="actionBtn"
-                title="Bild hinzufügen">
-            🖼
-        </button>
-
-
-        <input id="imageInput"
-               type="file"
-               accept="image/*"
-               hidden>
-
-
-        <input id="messageInput"
-               autocomplete="off"
-               placeholder="Schreib Nova etwas...">
-
-
-        <button id="sendBtn"
-                class="actionBtn sendBtn"
-                title="Senden">
-            ➤
-        </button>
-
-    </div>
-
-</div>
+<!-- CONTEXT MENU -->
+
+<div
+    id="contextMenu"
+    class="contextMenu hidden">
+
+    <button id="contextRename">
+        Umbenennen
+    </button>
+
+    <button id="contextDelete">
+        Chat löschen
+    </button>
 
 </div>
 
@@ -1203,7 +1537,8 @@ button{
 
 import {
     initializeApp
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+} from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 
 import {
     getAuth,
@@ -1211,14 +1546,16 @@ import {
     signInWithPopup,
     onAuthStateChanged,
     signOut
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+} from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
     getFirestore,
     doc,
     getDoc,
     setDoc
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 
 const firebaseConfig = {
@@ -1240,6 +1577,7 @@ const firebaseConfig = {
 
     appId:
         "1:1020069093020:web:9be72af9e60af659475759"
+
 };
 
 
@@ -1257,37 +1595,50 @@ const googleProvider =
 
 
 /* =========================================================
-   SETTINGS
+   CONFIG
 ========================================================= */
 
 const GEMINI_MODEL =
     "gemini-3.6-flash";
 
-const MAX_QUESTIONS =
-    20;
+/*
+   Falls dein Google-Konto ein anderes
+   Bildmodell freigeschaltet hat, kannst
+   du es hier ändern.
+*/
+const IMAGE_MODEL =
+    "gemini-2.0-flash-preview-image-generation";
 
 const MAX_IMAGE_SIZE =
     10 * 1024 * 1024;
+
+const MAX_MEMORIES = 100;
+
+const MAX_MESSAGES_PER_CHAT = 500;
 
 
 /* =========================================================
    STORAGE
 ========================================================= */
 
-const KEY_STORAGE =
-    "nova_private_gemini_keys_v8";
+const STORAGE_KEYS = {
 
-const ACTIVE_KEY_STORAGE =
-    "nova_active_gemini_key_v8";
+    keys:
+        "nova_keys_v10",
 
-const LOCAL_CHAT_STORAGE =
-    "nova_shared_chat_v8";
+    active:
+        "nova_active_key_v10",
 
-const QUESTION_STORAGE =
-    "nova_questions_v8";
+    chats:
+        "nova_chats_v10",
 
-const MEMORY_STORAGE =
-    "nova_thoughts_v1";
+    currentChat:
+        "nova_current_chat_v10",
+
+    memories:
+        "nova_memories_v10"
+
+};
 
 
 /* =========================================================
@@ -1296,373 +1647,299 @@ const MEMORY_STORAGE =
 
 let currentUser = null;
 
-let activeKeyNumber = 1;
-
 let geminiKeys = {
     1:"",
     2:""
 };
 
-let conversation = [];
+let activeKeyNumber = 1;
 
-let questionsUsed = 0;
+let chats = [];
+
+let currentChatId = null;
 
 let memories = [];
+
+let selectedImage = null;
 
 let recognition = null;
 
 let isListening = false;
 
-let isSpeaking = false;
+let thinking = false;
 
-let isThinking = false;
+let speaking = false;
 
-let voiceMode = false;
-
-let listenTimer = null;
-
-let selectedImage = null;
+let contextChatId = null;
 
 
 /* =========================================================
-   ELEMENTS
+   DOM
 ========================================================= */
+
+const $ = id =>
+    document.getElementById(id);
 
 const loginScreen =
-    document.getElementById("loginScreen");
+    $("loginScreen");
 
 const app =
-    document.getElementById("app");
+    $("app");
 
-const googleLoginBtn =
-    document.getElementById("googleLoginBtn");
-
-const loginError =
-    document.getElementById("loginError");
-
-const logoutBtn =
-    document.getElementById("logoutBtn");
-
-const clearChatBtn =
-    document.getElementById("clearChatBtn");
-
-const clearMemoryBtn =
-    document.getElementById("clearMemoryBtn");
-
-const userAvatar =
-    document.getElementById("userAvatar");
+const chatList =
+    $("chatList");
 
 const chat =
-    document.getElementById("chat");
+    $("chat");
 
 const messageInput =
-    document.getElementById("messageInput");
+    $("messageInput");
 
 const sendBtn =
-    document.getElementById("sendBtn");
-
-const micBtn =
-    document.getElementById("micBtn");
-
-const imageBtn =
-    document.getElementById("imageBtn");
-
-const imageInput =
-    document.getElementById("imageInput");
-
-const imagePreview =
-    document.getElementById("imagePreview");
-
-const previewImage =
-    document.getElementById("previewImage");
-
-const imagePreviewName =
-    document.getElementById("imagePreviewName");
-
-const removeImageBtn =
-    document.getElementById("removeImageBtn");
-
-const googleImageBtn =
-    document.getElementById("googleImageBtn");
-
-const connectionDot =
-    document.getElementById("connectionDot");
+    $("sendBtn");
 
 const connectionStatus =
-    document.getElementById("connectionStatus");
+    $("connectionStatus");
 
-const keyArea =
-    document.getElementById("keyArea");
+const imageFileInput =
+    $("imageFileInput");
 
-const toggleKeysBtn =
-    document.getElementById("toggleKeysBtn");
+const imagePreview =
+    $("imagePreview");
 
-const keyInput1 =
-    document.getElementById("keyInput1");
+const previewImg =
+    $("previewImg");
 
-const keyInput2 =
-    document.getElementById("keyInput2");
+const imageModal =
+    $("imageModal");
 
-const saveKey1 =
-    document.getElementById("saveKey1");
-
-const saveKey2 =
-    document.getElementById("saveKey2");
-
-const activateKey1 =
-    document.getElementById("activateKey1");
-
-const activateKey2 =
-    document.getElementById("activateKey2");
-
-const keyBox1 =
-    document.getElementById("keyBox1");
-
-const keyBox2 =
-    document.getElementById("keyBox2");
-
-const keyState1 =
-    document.getElementById("keyState1");
-
-const keyState2 =
-    document.getElementById("keyState2");
-
-const quotaText =
-    document.getElementById("quotaText");
-
-const quotaFill =
-    document.getElementById("quotaFill");
-
-const memoryList =
-    document.getElementById("memoryList");
-
-const memoryCount =
-    document.getElementById("memoryCount");
+const contextMenu =
+    $("contextMenu");
 
 
 /* =========================================================
-   API KEYS VERSTECKEN / ANZEIGEN
+   UTILITY
 ========================================================= */
 
-let keysVisible = false;
+function escapeHtml(text){
+
+    return String(text ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
 
 
-toggleKeysBtn.addEventListener(
-    "click",
-    () => {
+function now(){
 
-        keysVisible =
-            !keysVisible;
+    return Date.now();
+
+}
 
 
-        if(keysVisible){
+function makeId(prefix="id"){
 
-            keyArea.classList.remove(
-                "hidden"
-            );
+    return (
+        prefix +
+        "_" +
+        Date.now() +
+        "_" +
+        Math.random()
+            .toString(36)
+            .slice(2,9)
+    );
 
-            toggleKeysBtn.textContent =
-                "👁 API-Keys ausblenden";
+}
 
-        }else{
 
-            keyArea.classList.add(
-                "hidden"
-            );
+function formatDate(timestamp){
 
-            toggleKeysBtn.textContent =
-                "🔒 API-Keys anzeigen";
-        }
+    if(!timestamp)
+        return "";
+
+    return new Date(timestamp)
+        .toLocaleDateString(
+            "de-DE",
+            {
+                day:"2-digit",
+                month:"2-digit",
+                year:"2-digit"
+            }
+        );
+
+}
+
+
+function formatTime(timestamp){
+
+    return new Date(timestamp)
+        .toLocaleTimeString(
+            "de-DE",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+}
+
+
+function openNewTab(url){
+
+    const w =
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    if(!w){
+
+        setConnection(
+            "Neuer Tab wurde blockiert",
+            false
+        );
+
     }
-);
+
+}
 
 
 /* =========================================================
-   LOCAL DATA
+   CONNECTION STATUS
 ========================================================= */
 
-function loadLocalData(){
+function setConnection(text, good=true){
+
+    connectionStatus.textContent =
+        text;
+
+    connectionStatus.className =
+        "status " +
+        (good ? "good" : "bad");
+
+}
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function saveLocal(){
+
+    localStorage.setItem(
+        STORAGE_KEYS.keys,
+        JSON.stringify(geminiKeys)
+    );
+
+    localStorage.setItem(
+        STORAGE_KEYS.active,
+        String(activeKeyNumber)
+    );
+
+    localStorage.setItem(
+        STORAGE_KEYS.chats,
+        JSON.stringify(chats)
+    );
+
+    localStorage.setItem(
+        STORAGE_KEYS.currentChat,
+        currentChatId || ""
+    );
+
+    localStorage.setItem(
+        STORAGE_KEYS.memories,
+        JSON.stringify(memories)
+    );
+
+}
+
+
+function loadLocal(){
 
     try{
 
         const keys =
-            localStorage.getItem(
-                KEY_STORAGE
+            JSON.parse(
+                localStorage.getItem(
+                    STORAGE_KEYS.keys
+                ) || "{}"
             );
 
-        if(keys){
+        geminiKeys = {
+            1:keys[1] || "",
+            2:keys[2] || ""
+        };
 
-            const parsed =
-                JSON.parse(keys);
+    }catch{
 
-            geminiKeys = {
+        geminiKeys = {
+            1:"",
+            2:""
+        };
 
-                1:
-                    parsed?.[1] || "",
+    }
 
-                2:
-                    parsed?.[2] || ""
-            };
-        }
 
-    }catch(error){}
+    activeKeyNumber =
+        Number(
+            localStorage.getItem(
+                STORAGE_KEYS.active
+            ) || "1"
+        );
 
 
     try{
 
-        const active =
-            localStorage.getItem(
-                ACTIVE_KEY_STORAGE
+        chats =
+            JSON.parse(
+                localStorage.getItem(
+                    STORAGE_KEYS.chats
+                ) || "[]"
             );
 
-        if(active){
+    }catch{
 
-            activeKeyNumber =
-                Number(active) === 2
-                    ? 2
-                    : 1;
-        }
+        chats = [];
 
-    }catch(error){
-
-        activeKeyNumber = 1;
     }
 
 
     try{
 
-        const savedChat =
-            localStorage.getItem(
-                LOCAL_CHAT_STORAGE
+        memories =
+            JSON.parse(
+                localStorage.getItem(
+                    STORAGE_KEYS.memories
+                ) || "[]"
             );
 
-        if(savedChat){
-
-            const parsed =
-                JSON.parse(savedChat);
-
-            if(Array.isArray(parsed)){
-
-                conversation =
-                    parsed;
-            }
-        }
-
-    }catch(error){
-
-        conversation = [];
-    }
-
-
-    try{
-
-        const q =
-            localStorage.getItem(
-                QUESTION_STORAGE
-            );
-
-        if(q){
-
-            questionsUsed =
-                Number(q) || 0;
-        }
-
-    }catch(error){
-
-        questionsUsed = 0;
-    }
-
-
-    try{
-
-        const savedMemories =
-            localStorage.getItem(
-                MEMORY_STORAGE
-            );
-
-        if(savedMemories){
-
-            const parsed =
-                JSON.parse(savedMemories);
-
-            if(Array.isArray(parsed)){
-
-                memories =
-                    parsed;
-            }
-        }
-
-    }catch(error){
+    }catch{
 
         memories = [];
+
     }
 
 
-    keyInput1.value =
-        geminiKeys[1] || "";
+    currentChatId =
+        localStorage.getItem(
+            STORAGE_KEYS.currentChat
+        ) || null;
 
-    keyInput2.value =
-        geminiKeys[2] || "";
-
-
-    updateKeyUI();
-    updateQuotaUI();
-    renderConversation();
-    renderMemories();
-}
-
-
-function saveLocalData(){
-
-    try{
-
-        localStorage.setItem(
-            KEY_STORAGE,
-            JSON.stringify(geminiKeys)
-        );
-
-        localStorage.setItem(
-            ACTIVE_KEY_STORAGE,
-            String(activeKeyNumber)
-        );
-
-        localStorage.setItem(
-            LOCAL_CHAT_STORAGE,
-            JSON.stringify(
-                conversation
-            )
-        );
-
-        localStorage.setItem(
-            QUESTION_STORAGE,
-            String(questionsUsed)
-        );
-
-        localStorage.setItem(
-            MEMORY_STORAGE,
-            JSON.stringify(
-                memories
-            )
-        );
-
-    }catch(error){
-
-        console.warn(
-            "Lokale Speicherung fehlgeschlagen.",
-            error
-        );
-    }
 }
 
 
 /* =========================================================
-   FIRESTORE SETTINGS
+   FIREBASE USER DATA
 ========================================================= */
 
-async function loadUserSettings(){
+async function loadUserData(){
 
-    if(!currentUser) return;
-
+    if(!currentUser)
+        return;
 
     try{
 
@@ -1673,201 +1950,117 @@ async function loadUserSettings(){
                 currentUser.uid
             );
 
-
         const snap =
             await getDoc(ref);
 
-
-        if(!snap.exists()) return;
-
+        if(!snap.exists())
+            return;
 
         const data =
             snap.data();
 
-
         if(data.geminiKeys){
 
-            geminiKeys[1] =
-                data.geminiKeys.key1 || "";
+            geminiKeys = {
+                1:data.geminiKeys.key1 || "",
+                2:data.geminiKeys.key2 || ""
+            };
 
-            geminiKeys[2] =
-                data.geminiKeys.key2 || "";
         }
 
-
-        if(
-            data.activeKeyNumber === 1 ||
-            data.activeKeyNumber === 2
-        ){
+        if(data.activeKeyNumber){
 
             activeKeyNumber =
-                data.activeKeyNumber;
+                Number(
+                    data.activeKeyNumber
+                );
+
         }
-
-
-        /*
-         * Gedanken separat laden.
-         * Sie hängen NICHT am Chat.
-         */
 
         if(Array.isArray(data.memories)){
 
             memories =
                 data.memories;
+
         }
 
+        if(Array.isArray(data.chats)){
 
-        keyInput1.value =
-            geminiKeys[1];
+            chats =
+                data.chats;
 
-        keyInput2.value =
-            geminiKeys[2];
+        }
 
+        if(data.currentChatId){
 
-        updateKeyUI();
-        renderMemories();
-        saveLocalData();
+            currentChatId =
+                data.currentChatId;
 
+        }
+
+        saveLocal();
 
     }catch(error){
 
         console.error(
-            "Einstellungen konnten nicht geladen werden:",
+            "Firebase load error:",
             error
         );
+
     }
+
 }
 
 
-async function saveUserSettings(){
-
-    if(!currentUser){
-
-        throw new Error(
-            "Nicht eingeloggt."
-        );
-    }
+let firebaseSaveTimer = null;
 
 
-    await setDoc(
+function scheduleFirebaseSave(){
 
-        doc(
-            db,
-            "users",
-            currentUser.uid
-        ),
-
-        {
-
-            geminiKeys:{
-
-                key1:
-                    geminiKeys[1] || "",
-
-                key2:
-                    geminiKeys[2] || ""
-            },
-
-            activeKeyNumber:
-                activeKeyNumber,
-
-            /*
-             * Separater Speicher für Gedanken.
-             */
-
-            memories:
-                memories.slice(0,100),
-
-            updatedAt:
-                Date.now()
-
-        },
-
-        {
-            merge:true
-        }
+    clearTimeout(
+        firebaseSaveTimer
     );
-}
 
-
-/* =========================================================
-   FIRESTORE CHAT
-========================================================= */
-
-async function loadUserChat(){
-
-    if(!currentUser) return;
-
-
-    try{
-
-        const snap =
-            await getDoc(
-                doc(
-                    db,
-                    "users",
-                    currentUser.uid
-                )
-            );
-
-
-        if(!snap.exists()) return;
-
-
-        const data =
-            snap.data();
-
-
-        if(
-            Array.isArray(
-                data.conversation
-            ) &&
-            conversation.length === 0
-        ){
-
-            conversation =
-                data.conversation;
-
-            saveLocalData();
-
-            renderConversation();
-        }
-
-    }catch(error){
-
-        console.error(
-            "Chat konnte nicht geladen werden:",
-            error
+    firebaseSaveTimer =
+        setTimeout(
+            saveUserData,
+            600
         );
-    }
+
 }
 
 
-async function saveUserChat(){
+async function saveUserData(){
 
-    if(!currentUser) return;
-
+    if(!currentUser)
+        return;
 
     try{
 
         await setDoc(
-
             doc(
                 db,
                 "users",
                 currentUser.uid
             ),
-
             {
 
-                conversation:
-                    conversation.slice(-100),
+                geminiKeys:{
+                    key1:geminiKeys[1] || "",
+                    key2:geminiKeys[2] || ""
+                },
 
-                updatedAt:
-                    Date.now()
+                activeKeyNumber,
+
+                memories,
+
+                chats,
+
+                currentChatId,
+
+                updatedAt:now()
 
             },
-
             {
                 merge:true
             }
@@ -1876,680 +2069,361 @@ async function saveUserChat(){
     }catch(error){
 
         console.error(
-            "Chat konnte nicht gespeichert werden:",
+            "Firebase save error:",
             error
         );
+
     }
+
 }
 
 
 /* =========================================================
-   GEDANKEN
+   CHAT CREATION
 ========================================================= */
 
-function renderMemories(){
+function createChat(title="Neuer Chat"){
 
-    memoryList.innerHTML = "";
+    const newChat = {
+
+        id:
+            makeId("chat"),
+
+        title,
+
+        createdAt:
+            now(),
+
+        updatedAt:
+            now(),
+
+        messages:[]
+
+    };
+
+    chats.unshift(
+        newChat
+    );
+
+    currentChatId =
+        newChat.id;
+
+    saveEverything();
+
+    renderChatList();
+
+    renderCurrentChat();
+
+    return newChat;
+
+}
 
 
-    memoryCount.textContent =
-        `${memories.length} gespeichert`;
+function getCurrentChat(){
+
+    return chats.find(
+        c => c.id === currentChatId
+    );
+
+}
 
 
-    if(memories.length === 0){
+function ensureChat(){
+
+    if(!chats.length){
+
+        createChat();
+
+        return;
+
+    }
+
+    if(!getCurrentChat()){
+
+        currentChatId =
+            chats[0].id;
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE EVERYTHING
+========================================================= */
+
+function saveEverything(){
+
+    saveLocal();
+
+    scheduleFirebaseSave();
+
+}
+
+
+/* =========================================================
+   CHAT LIST
+========================================================= */
+
+function renderChatList(){
+
+    const search =
+        $("chatSearch")
+            .value
+            .trim()
+            .toLowerCase();
+
+    chatList.innerHTML = "";
+
+    const visible =
+        chats.filter(c =>
+            !search ||
+            c.title
+                .toLowerCase()
+                .includes(search)
+        );
+
+
+    if(!visible.length){
 
         const empty =
             document.createElement("div");
 
-        empty.className =
-            "memoryEmpty";
+        empty.style.cssText =
+            "padding:20px;color:#666;font-size:11px;text-align:center;";
 
         empty.textContent =
-            "Noch keine Gedanken gespeichert.";
+            "Keine Chats gefunden.";
 
-        memoryList.appendChild(
-            empty
-        );
+        chatList.appendChild(empty);
 
         return;
+
     }
 
 
-    memories.forEach(
-        memory => {
+    visible.forEach(c => {
 
-            const item =
-                document.createElement("div");
+        const item =
+            document.createElement("div");
 
-            item.className =
-                "memoryItem";
-
-            item.textContent =
-                memory.text ||
-                String(memory);
-
-            memoryList.appendChild(
-                item
+        item.className =
+            "chatItem " +
+            (
+                c.id === currentChatId
+                    ? "active"
+                    : ""
             );
-        }
-    );
-}
 
 
-function detectMemoryRequest(text){
+        const main =
+            document.createElement("div");
 
-    const patterns = [
-
-        /^(?:merke dir|merk dir|merk dir bitte|speichere|speicher|erinnere dich daran)\s+(?:bitte\s+)?(?:dass|das)\s+(.+)/i,
-
-        /^(?:merke dir|merk dir|speichere|speicher)\s*:\s*(.+)/i
-
-    ];
+        main.className =
+            "chatItemMain";
 
 
-    for(
-        const pattern
-        of patterns
-    ){
+        main.innerHTML = `
 
-        const match =
-            text.match(pattern);
+            <div class="chatTitle">
+                ${escapeHtml(c.title || "Neuer Chat")}
+            </div>
 
+            <div class="chatDate">
+                ${formatDate(c.updatedAt)}
+            </div>
 
-        if(match){
-
-            return match[1].trim();
-        }
-    }
+        `;
 
 
-    return null;
-}
+        main.addEventListener(
+            "click",
+            () => {
 
+                currentChatId =
+                    c.id;
 
-async function saveMemory(text){
+                saveEverything();
 
-    const clean =
-        text.trim();
+                renderChatList();
 
+                renderCurrentChat();
 
-    if(!clean) return;
+                closeMobileSidebar();
 
-
-    const exists =
-        memories.some(
-            memory =>
-                String(
-                    memory.text
-                ).toLowerCase() ===
-                clean.toLowerCase()
+            }
         );
 
 
-    if(exists) return;
+        const menu =
+            document.createElement("button");
+
+        menu.className =
+            "chatMenuBtn";
+
+        menu.textContent =
+            "⋯";
+
+        menu.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                showContextMenu(
+                    event.clientX,
+                    event.clientY,
+                    c.id
+                );
+
+            }
+        );
 
 
-    memories.unshift({
+        item.appendChild(main);
 
-        text:clean,
+        item.appendChild(menu);
 
-        createdAt:
-            Date.now()
+        chatList.appendChild(item);
 
     });
 
-
-    memories =
-        memories.slice(0,100);
-
-
-    saveLocalData();
-
-    renderMemories();
-
-
-    try{
-
-        await saveUserSettings();
-
-    }catch(error){
-
-        console.warn(
-            "Gedanke konnte nicht gespeichert werden:",
-            error
-        );
-    }
 }
 
 
 /* =========================================================
-   GEDANKEN LÖSCHEN
+   CURRENT CHAT
 ========================================================= */
 
-clearMemoryBtn.addEventListener(
-    "click",
-    async () => {
+function renderCurrentChat(){
 
-        if(!memories.length){
+    ensureChat();
 
-            setConnection(
-                "Keine Gedanken gespeichert",
-                true
-            );
+    const c =
+        getCurrentChat();
 
-            return;
-        }
-
-
-        const confirmed =
-            confirm(
-                "Wirklich ALLE gespeicherten Gedanken löschen?"
-            );
-
-
-        if(!confirmed) return;
-
-
-        memories = [];
-
-
-        localStorage.removeItem(
-            MEMORY_STORAGE
-        );
-
-
-        renderMemories();
-
-
-        try{
-
-            await saveUserSettings();
-
-        }catch(error){
-
-            console.error(error);
-        }
-
-
-        setConnection(
-            "Alle Gedanken gelöscht",
-            true
-        );
-    }
-);
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-googleLoginBtn.addEventListener(
-    "click",
-    async () => {
-
-        loginError.textContent = "";
-
-
-        try{
-
-            await signInWithPopup(
-                auth,
-                googleProvider
-            );
-
-        }catch(error){
-
-            console.error(error);
-
-            loginError.textContent =
-                error.message ||
-                "Fehler beim Anmelden.";
-        }
-    }
-);
-
-
-logoutBtn.addEventListener(
-    "click",
-    async () => {
-
-        try{
-
-            await signOut(auth);
-
-        }catch(error){
-
-            console.error(error);
-        }
-    }
-);
-
-
-/* =========================================================
-   AUTH
-========================================================= */
-
-onAuthStateChanged(
-    auth,
-    async user => {
-
-        currentUser =
-            user;
-
-
-        if(user){
-
-            loginScreen.classList.add(
-                "hidden"
-            );
-
-            app.classList.remove(
-                "hidden"
-            );
-
-
-            userAvatar.src =
-                user.photoURL || "";
-
-
-            loadLocalData();
-
-
-            await loadUserSettings();
-
-            await loadUserChat();
-
-
-            setConnection(
-                `F${activeKeyNumber} · ${GEMINI_MODEL} bereit`,
-                true
-            );
-
-        }else{
-
-            loginScreen.classList.remove(
-                "hidden"
-            );
-
-            app.classList.add(
-                "hidden"
-            );
-        }
-
-    }
-);
-
-
-/* =========================================================
-   KEYS SPEICHERN
-========================================================= */
-
-async function saveGeminiKey(num){
-
-    const input =
-        num === 1
-            ? keyInput1
-            : keyInput2;
-
-
-    const value =
-        input.value.trim();
-
-
-    if(!value){
-
-        setConnection(
-            `F${num}: Kein API-Key eingegeben`,
-            false
-        );
-
+    if(!c)
         return;
-    }
 
 
-    geminiKeys[num] =
-        value;
+    $("currentChatName")
+        .textContent =
+        c.title;
 
-
-    saveLocalData();
-
-    updateKeyUI();
-
-
-    try{
-
-        await saveUserSettings();
-
-
-        setConnection(
-            `F${num} dauerhaft gespeichert`,
-            true
-        );
-
-    }catch(error){
-
-        console.error(error);
-
-        setConnection(
-            "Cloud-Speicherung fehlgeschlagen",
-            false
-        );
-    }
-}
-
-
-saveKey1.addEventListener(
-    "click",
-    () => saveGeminiKey(1)
-);
-
-
-saveKey2.addEventListener(
-    "click",
-    () => saveGeminiKey(2)
-);
-
-
-/* =========================================================
-   KEY AKTIVIEREN
-========================================================= */
-
-async function activateGeminiKey(num){
-
-    if(!geminiKeys[num]){
-
-        setConnection(
-            `F${num}: Kein API-Key gespeichert`,
-            false
-        );
-
-        return;
-    }
-
-
-    activeKeyNumber =
-        num;
-
-
-    saveLocalData();
-
-    updateKeyUI();
-
-
-    try{
-
-        await saveUserSettings();
-
-        setConnection(
-            `F${num} · ${GEMINI_MODEL} aktiv`,
-            true
-        );
-
-    }catch(error){
-
-        console.error(error);
-
-        setConnection(
-            `F${num} aktiv`,
-            true
-        );
-    }
-}
-
-
-activateKey1.addEventListener(
-    "click",
-    () => activateGeminiKey(1)
-);
-
-
-activateKey2.addEventListener(
-    "click",
-    () => activateGeminiKey(2)
-);
-
-
-/* =========================================================
-   KEY UI
-========================================================= */
-
-function updateKeyUI(){
-
-    keyState1.textContent =
-        geminiKeys[1]
-            ? "Gespeichert"
-            : "Nicht gesetzt";
-
-
-    keyState2.textContent =
-        geminiKeys[2]
-            ? "Gespeichert"
-            : "Nicht gesetzt";
-
-
-    keyState1.classList.toggle(
-        "saved",
-        !!geminiKeys[1]
-    );
-
-
-    keyState2.classList.toggle(
-        "saved",
-        !!geminiKeys[2]
-    );
-
-
-    keyBox1.classList.toggle(
-        "active",
-        activeKeyNumber === 1
-    );
-
-
-    keyBox2.classList.toggle(
-        "active",
-        activeKeyNumber === 2
-    );
-
-
-    activateKey1.classList.toggle(
-        "active",
-        activeKeyNumber === 1
-    );
-
-
-    activateKey2.classList.toggle(
-        "active",
-        activeKeyNumber === 2
-    );
-
-
-    activateKey1.textContent =
-        activeKeyNumber === 1
-            ? "F1 aktiv"
-            : "F1 verwenden";
-
-
-    activateKey2.textContent =
-        activeKeyNumber === 2
-            ? "F2 aktiv"
-            : "F2 verwenden";
-}
-
-
-/* =========================================================
-   F1 / F2 TASTEN
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if(event.key === "F1"){
-
-            event.preventDefault();
-
-            activateGeminiKey(1);
-        }
-
-
-        if(event.key === "F2"){
-
-            event.preventDefault();
-
-            activateGeminiKey(2);
-        }
-
-    }
-);
-
-
-/* =========================================================
-   QUOTA
-========================================================= */
-
-function updateQuotaUI(){
-
-    quotaText.textContent =
-        `${questionsUsed} / ${MAX_QUESTIONS}`;
-
-
-    quotaFill.style.width =
-        Math.min(
-            100,
-            (questionsUsed / MAX_QUESTIONS) * 100
-        ) + "%";
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-function setConnection(
-    text,
-    good=true
-){
-
-    connectionStatus.textContent =
-        text;
-
-
-    connectionDot.className =
-        good
-            ? "dot green"
-            : "dot red";
-}
-
-
-/* =========================================================
-   CHAT
-========================================================= */
-
-function renderConversation(){
 
     chat.innerHTML = "";
 
 
-    conversation.forEach(
-        msg => {
+    if(!c.messages.length){
 
-            addMessageToUI(
-                msg.role,
-                msg.text
+        chat.innerHTML = `
+
+            <div class="emptyChat">
+
+                <h2>Wie kann ich helfen?</h2>
+
+                <p>
+                    Schreibe etwas, lade ein Bild hoch
+                    oder öffne die Bildgenerierung.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    c.messages.forEach(
+        message => {
+
+            renderMessage(
+                message,
+                false
             );
 
         }
     );
+
+
+    scrollChatBottom();
+
 }
 
 
-function copyText(
-    text,
-    button
-){
+/* =========================================================
+   MESSAGE RENDER
+========================================================= */
 
-    navigator.clipboard
-        ?.writeText(text)
-        .then(
-            () => {
-
-                const old =
-                    button.textContent;
-
-                button.textContent =
-                    "✓ Kopiert";
-
-
-                setTimeout(
-                    () => {
-
-                        button.textContent =
-                            old;
-
-                    },
-                    1500
-                );
-            }
-        )
-        .catch(
-            () => {
-
-                button.textContent =
-                    "Kopieren fehlgeschlagen";
-            }
-        );
-}
-
-
-function addMessageToUI(
-    role,
-    text
+function renderMessage(
+    message,
+    scroll=true
 ){
 
     const wrapper =
         document.createElement("div");
 
-
     wrapper.className =
         "message " +
         (
-            role === "user"
+            message.role === "user"
                 ? "user"
-                : "ai"
+                : "model"
         );
 
 
-    const avatar =
+    const bubble =
         document.createElement("div");
 
-    avatar.className =
-        "messageAvatar";
+    bubble.className =
+        "messageBubble";
 
 
-    const column =
-        document.createElement("div");
+    if(message.text){
 
-    column.className =
-        "messageColumn";
+        const text =
+            escapeHtml(
+                message.text
+            );
 
+        bubble.innerHTML =
+            text.replaceAll(
+                "\n",
+                "<br>"
+            );
 
-    const content =
-        document.createElement("div");
-
-    content.className =
-        "messageContent";
-
-
-    content.textContent =
-        text;
+    }
 
 
-    column.appendChild(
-        content
+    if(message.image){
+
+        const img =
+            document.createElement("img");
+
+        img.className =
+            "messageImage";
+
+        img.src =
+            message.image;
+
+        img.alt =
+            "Bild";
+
+        bubble.appendChild(img);
+
+    }
+
+
+    wrapper.appendChild(
+        bubble
     );
 
 
-    if(role !== "user"){
+    if(
+        message.role === "model"
+    ){
 
         const actions =
             document.createElement(
@@ -2560,295 +2434,818 @@ function addMessageToUI(
             "messageActions";
 
 
-        const copyBtn =
-            document.createElement(
-                "button"
+        const copy =
+            document.createElement("button");
+
+        copy.textContent =
+            "Kopieren";
+
+        copy.onclick = () => {
+
+            navigator.clipboard
+                .writeText(
+                    message.text || ""
+                );
+
+        };
+
+
+        const google =
+            document.createElement("button");
+
+        google.textContent =
+            "Google";
+
+        google.onclick = () => {
+
+            const q =
+                encodeURIComponent(
+                    message.text || ""
+                );
+
+            openNewTab(
+                "https://www.google.com/search?q=" +
+                q
             );
 
-        copyBtn.className =
-            "messageAction";
-
-        copyBtn.textContent =
-            "📋 Antwort kopieren";
+        };
 
 
-        copyBtn.addEventListener(
-            "click",
-            () =>
-                copyText(
-                    text,
-                    copyBtn
-                )
+        actions.appendChild(copy);
+
+        actions.appendChild(google);
+
+        bubble.appendChild(actions);
+
+    }
+
+
+    chat.appendChild(
+        wrapper
+    );
+
+
+    if(scroll)
+        scrollChatBottom();
+
+}
+
+
+function scrollChatBottom(){
+
+    requestAnimationFrame(
+        () => {
+
+            const content =
+                document.querySelector(
+                    ".content"
+                );
+
+            content.scrollTop =
+                content.scrollHeight;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ADD MESSAGE
+========================================================= */
+
+function addMessage(
+    role,
+    text,
+    image=null
+){
+
+    const c =
+        getCurrentChat();
+
+    if(!c)
+        return;
+
+
+    const message = {
+
+        id:
+            makeId("msg"),
+
+        role,
+
+        text:
+            text || "",
+
+        image,
+
+        createdAt:
+            now()
+
+    };
+
+
+    c.messages.push(
+        message
+    );
+
+
+    if(
+        c.messages.length >
+        MAX_MESSAGES_PER_CHAT
+    ){
+
+        c.messages =
+            c.messages.slice(
+                -MAX_MESSAGES_PER_CHAT
+            );
+
+    }
+
+
+    c.updatedAt =
+        now();
+
+
+    if(
+        c.title === "Neuer Chat" &&
+        role === "user" &&
+        text
+    ){
+
+        c.title =
+            createChatTitle(
+                text
+            );
+
+    }
+
+
+    renderChatList();
+
+    renderCurrentChat();
+
+    saveEverything();
+
+    return message;
+
+}
+
+
+/* =========================================================
+   CHAT TITLE
+========================================================= */
+
+function createChatTitle(text){
+
+    let title =
+        text
+            .replace(/\s+/g," ")
+            .trim();
+
+
+    if(!title)
+        return "Neuer Chat";
+
+
+    if(title.length > 35){
+
+        title =
+            title.slice(
+                0,
+                35
+            ) +
+            "…";
+
+    }
+
+    return title;
+
+}
+
+
+function renameChat(id=null){
+
+    const target =
+        chats.find(
+            c =>
+                c.id ===
+                (id || currentChatId)
+        );
+
+    if(!target)
+        return;
+
+
+    const name =
+        prompt(
+            "Neuer Name für den Chat:",
+            target.title
         );
 
 
-        const googleBtn =
-            document.createElement(
-                "button"
+    if(
+        name === null
+    )
+        return;
+
+
+    const clean =
+        name.trim();
+
+
+    if(!clean)
+        return;
+
+
+    target.title =
+        clean.slice(0,80);
+
+    target.updatedAt =
+        now();
+
+    saveEverything();
+
+    renderChatList();
+
+    renderCurrentChat();
+
+}
+
+
+/* =========================================================
+   DELETE CHAT
+========================================================= */
+
+function deleteChat(id=null){
+
+    const targetId =
+        id || currentChatId;
+
+    const target =
+        chats.find(
+            c => c.id === targetId
+        );
+
+    if(!target)
+        return;
+
+
+    const ok =
+        confirm(
+            `Chat "${target.title}" wirklich löschen?\n\nNur dieser Chat wird gelöscht. Deine Gedanken/Erinnerungen bleiben erhalten.`
+        );
+
+
+    if(!ok)
+        return;
+
+
+    chats =
+        chats.filter(
+            c => c.id !== targetId
+        );
+
+
+    if(
+        currentChatId === targetId
+    ){
+
+        currentChatId =
+            chats.length
+                ? chats[0].id
+                : null;
+
+    }
+
+
+    if(!chats.length){
+
+        createChat();
+
+        return;
+
+    }
+
+
+    saveEverything();
+
+    renderChatList();
+
+    renderCurrentChat();
+
+}
+
+
+/* =========================================================
+   CONTEXT MENU
+========================================================= */
+
+function showContextMenu(
+    x,
+    y,
+    id
+){
+
+    contextChatId =
+        id;
+
+    contextMenu.style.left =
+        Math.min(
+            x,
+            window.innerWidth - 200
+        ) + "px";
+
+    contextMenu.style.top =
+        Math.min(
+            y,
+            window.innerHeight - 100
+        ) + "px";
+
+    contextMenu.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+function hideContextMenu(){
+
+    contextMenu.classList.add(
+        "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   MEMORY SYSTEM
+========================================================= */
+
+function saveMemory(text){
+
+    const clean =
+        text.trim();
+
+    if(!clean)
+        return;
+
+
+    const exists =
+        memories.some(
+            m =>
+                m.text
+                    .toLowerCase() ===
+                clean.toLowerCase()
+        );
+
+
+    if(exists)
+        return;
+
+
+    memories.unshift({
+
+        id:
+            makeId("memory"),
+
+        text:
+            clean,
+
+        createdAt:
+            now()
+
+    });
+
+
+    if(
+        memories.length >
+        MAX_MEMORIES
+    ){
+
+        memories =
+            memories.slice(
+                0,
+                MAX_MEMORIES
             );
 
-        googleBtn.className =
-            "messageAction";
-
-        googleBtn.textContent =
-            "🔎 Dazu googeln";
+    }
 
 
-        googleBtn.addEventListener(
-            "click",
-            () => {
+    renderMemories();
 
-                openNewTab(
-                    "https://www.google.com/search?q=" +
-                    encodeURIComponent(
-                        text.substring(
-                            0,
-                            300
-                        )
-                    )
-                );
+    saveEverything();
+
+}
+
+
+function detectMemoryCommand(text){
+
+    const patterns = [
+
+        /^merke dir[,:\s]+(.+)$/i,
+
+        /^merk dir[,:\s]+(.+)$/i,
+
+        /^speichere[,:\s]+(.+)$/i,
+
+        /^erinnere dich daran[,:\s]+(.+)$/i,
+
+        /^behalte im kopf[,:\s]+(.+)$/i
+
+    ];
+
+
+    for(
+        const pattern of patterns
+    ){
+
+        const match =
+            text.match(pattern);
+
+        if(match){
+
+            return match[1]
+                .trim();
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+function renderMemories(){
+
+    $("memoryCount")
+        .textContent =
+        String(
+            memories.length
+        );
+
+
+    const list =
+        $("memoryList");
+
+    list.innerHTML = "";
+
+
+    if(!memories.length){
+
+        const empty =
+            document.createElement("span");
+
+        empty.className =
+            "memoryTag";
+
+        empty.textContent =
+            "Noch keine Erinnerungen";
+
+        list.appendChild(empty);
+
+        return;
+
+    }
+
+
+    memories
+        .slice(0,30)
+        .forEach(
+            memory => {
+
+                const tag =
+                    document.createElement(
+                        "div"
+                    );
+
+                tag.className =
+                    "memoryTag";
+
+                tag.textContent =
+                    memory.text;
+
+                list.appendChild(tag);
+
             }
         );
 
+}
 
-        actions.appendChild(
-            copyBtn
+
+async function clearMemories(){
+
+    const ok =
+        confirm(
+            "Alle Gedanken/Erinnerungen löschen?\n\nDie Chats bleiben erhalten."
         );
 
-        actions.appendChild(
-            googleBtn
-        );
-
-        column.appendChild(
-            actions
-        );
-    }
+    if(!ok)
+        return;
 
 
-    wrapper.appendChild(
-        avatar
-    );
+    memories = [];
 
-    wrapper.appendChild(
-        column
-    );
+    saveEverything();
 
-    chat.appendChild(
-        wrapper
-    );
+    renderMemories();
 
-
-    window.scrollTo(
-        0,
-        document.body.scrollHeight
-    );
 }
 
 
 /* =========================================================
-   TYPING
+   API KEY UI
 ========================================================= */
 
-function showTyping(){
+function renderKeyState(){
 
-    hideTyping();
-
-
-    const wrapper =
-        document.createElement("div");
-
-
-    wrapper.id =
-        "typingMessage";
+    $("key1State")
+        .textContent =
+        geminiKeys[1]
+            ? "gespeichert"
+            : "nicht gesetzt";
 
 
-    wrapper.className =
-        "message ai";
+    $("key2State")
+        .textContent =
+        geminiKeys[2]
+            ? "gespeichert"
+            : "nicht gesetzt";
 
 
-    wrapper.innerHTML = `
+    $("key1Input").value =
+        geminiKeys[1] || "";
 
-        <div class="messageAvatar"></div>
+    $("key2Input").value =
+        geminiKeys[2] || "";
 
-        <div class="messageColumn">
-
-            <div class="messageContent">
-
-                <div class="typing">
-
-                    <span></span>
-                    <span></span>
-                    <span></span>
-
-                </div>
-
-            </div>
-
-        </div>
-    `;
-
-
-    chat.appendChild(
-        wrapper
-    );
-
-
-    window.scrollTo(
-        0,
-        document.body.scrollHeight
-    );
 }
 
 
-function hideTyping(){
+function saveKey(number){
 
-    const typing =
-        document.getElementById(
-            "typingMessage"
+    const input =
+        number === 1
+            ? $("key1Input")
+            : $("key2Input");
+
+
+    const value =
+        input.value.trim();
+
+
+    geminiKeys[number] =
+        value;
+
+
+    saveEverything();
+
+    renderKeyState();
+
+    setConnection(
+        `F${number} gespeichert`,
+        true
+    );
+
+}
+
+
+function activateKey(number){
+
+    if(!geminiKeys[number]){
+
+        alert(
+            `F${number} ist noch nicht gespeichert.`
         );
 
+        return;
 
-    if(typing){
-
-        typing.remove();
     }
+
+
+    activeKeyNumber =
+        number;
+
+    saveEverything();
+
+    setConnection(
+        `F${number} aktiv`,
+        true
+    );
+
+}
+
+
+function toggleKeyVisibility(){
+
+    const a =
+        $("key1Input");
+
+    const b =
+        $("key2Input");
+
+
+    const show =
+        a.type === "password";
+
+
+    a.type =
+        show
+            ? "text"
+            : "password";
+
+    b.type =
+        show
+            ? "text"
+            : "password";
+
+
+    $("toggleKeyVisibilityBtn")
+        .textContent =
+        show
+            ? "🔒 Schlüssel verstecken"
+            : "👁 Schlüssel anzeigen";
+
 }
 
 
 /* =========================================================
-   NOVA SYSTEM PROMPT
+   GEMINI SYSTEM PROMPT
 ========================================================= */
 
 const NOVA_SYSTEM_PROMPT = `
 
-Du bist Nova, ein moderner persönlicher KI-Assistent.
+Du bist Nova, eine persönliche KI.
 
-Antworte auf Deutsch.
+Antworte auf Deutsch, außer der Benutzer
+verlangt ausdrücklich eine andere Sprache.
 
-Sei direkt, hilfreich, natürlich und verständlich.
+Du bist hilfreich, ruhig und direkt.
 
-Gespeicherte Gedanken und Erinnerungen sind
-dauerhafter persönlicher Kontext.
+Beziehe gespeicherte Erinnerungen nur dann
+ein, wenn sie für die aktuelle Frage relevant sind.
 
-Chatverlauf und Erinnerungen sind zwei
-verschiedene Dinge.
+Erfinde keine Fakten.
 
-Wenn der Chat gelöscht wird, bleiben die
-gespeicherten Erinnerungen erhalten.
+Wenn du etwas nicht weißt, sage das ehrlich.
 
-Nutze Erinnerungen nur, wenn sie für die
-aktuelle Frage relevant sind.
+Wenn der Benutzer eine Webseite öffnen möchte,
+kann die Anwendung einen neuen Browser-Tab öffnen.
 
-Gespeicherte Erinnerungen sind normale Notizen.
-Sie sind keine versteckten internen Denkprozesse.
+Wenn der Benutzer nach Bildern fragt,
+kann die Anwendung die Bildgenerierungsfunktion
+verwenden.
 
-Gib niemals geheime interne Chain-of-Thought
-oder interne Denkprozesse aus.
-
-Wenn der Benutzer sagt:
-"Merke dir ..."
-soll diese Information als Erinnerung behandelt
-werden.
-
-Modell:
-gemini-3.6-flash
+Keine unnötig langen Antworten.
 
 `;
 
 
 /* =========================================================
-   GEMINI API
+   MEMORY CONTEXT
+========================================================= */
+
+function getMemoryContext(){
+
+    if(!memories.length)
+        return "Keine gespeicherten Erinnerungen.";
+
+
+    return memories
+        .slice(0,50)
+        .map(
+            m => "- " + m.text
+        )
+        .join("\n");
+
+}
+
+
+/* =========================================================
+   GEMINI REQUEST
 ========================================================= */
 
 async function callGeminiApi(
-    key,
-    userText,
-    image=null
+    apiKey,
+    currentText,
+    imageData=null
 ){
 
-    const url =
-        "https://generativelanguage.googleapis.com/v1beta/models/" +
-        encodeURIComponent(
-            GEMINI_MODEL
-        ) +
-        ":generateContent?key=" +
-        encodeURIComponent(key);
+    const c =
+        getCurrentChat();
 
 
-    const contents =
-        conversation
+    if(!c)
+        throw new Error(
+            "Kein Chat ausgewählt."
+        );
+
+
+    const history =
+        c.messages
             .slice(-30)
             .map(
-                msg => ({
+                message => {
 
-                    role:
-                        msg.role === "user"
-                            ? "user"
-                            : "model",
+                    const parts = [];
 
-                    parts:[
-                        {
+                    if(message.text){
+
+                        parts.push({
                             text:
-                                msg.text
-                        }
-                    ]
+                                message.text
+                        });
 
-                })
+                    }
+
+                    if(
+                        message.image &&
+                        message.image.startsWith(
+                            "data:image/"
+                        )
+                    ){
+
+                        const match =
+                            message.image.match(
+                                /^data:(image\/[^;]+);base64,(.+)$/
+                            );
+
+                        if(match){
+
+                            parts.push({
+
+                                inlineData:{
+                                    mimeType:
+                                        match[1],
+
+                                    data:
+                                        match[2]
+                                }
+
+                            });
+
+                        }
+
+                    }
+
+                    return {
+
+                        role:
+                            message.role ===
+                            "model"
+                                ? "model"
+                                : "user",
+
+                        parts
+
+                    };
+
+                }
             );
 
 
-    const currentParts = [];
+    const requestParts = [];
 
+    if(currentText){
 
-    if(userText){
-
-        currentParts.push({
-
+        requestParts.push({
             text:
-                userText
+                currentText
         });
+
     }
 
 
-    if(image){
+    if(
+        imageData &&
+        imageData.startsWith(
+            "data:image/"
+        )
+    ){
 
-        currentParts.push({
-
-            inlineData:{
-
-                mimeType:
-                    image.mimeType,
-
-                data:
-                    image.data
-            }
-
-        });
-    }
+        const match =
+            imageData.match(
+                /^data:(image\/[^;]+);base64,(.+)$/
+            );
 
 
-    contents.push({
+        if(match){
 
-        role:"user",
+            requestParts.push({
 
-        parts:
-            currentParts
-    });
+                inlineData:{
+                    mimeType:
+                        match[1],
 
+                    data:
+                        match[2]
+                }
 
-    let memoryText =
-        "Keine gespeicherten Gedanken.";
+            });
 
+        }
 
-    if(memories.length){
-
-        memoryText =
-            memories
-                .map(
-                    (memory,index) =>
-                        `${index+1}. ${memory.text}`
-                )
-                .join("\n");
     }
 
 
@@ -2856,50 +3253,56 @@ async function callGeminiApi(
 
         systemInstruction:{
 
-            parts:[
+            parts:[{
 
-                {
+                text:
+                    NOVA_SYSTEM_PROMPT +
+                    "\n\nGespeicherte Gedanken:\n" +
+                    getMemoryContext()
 
-                    text:
-                        NOVA_SYSTEM_PROMPT +
-                        "\n\nGESPEICHERTE GEDANKEN:\n" +
-                        memoryText
-
-                }
-
-            ]
+            }]
 
         },
 
-        contents,
+        contents:[
+            ...history,
+            {
+                role:"user",
+                parts:requestParts
+            }
+        ],
 
         generationConfig:{
 
-            temperature:
-                0.7,
+            temperature:.7,
 
-            topP:
-                0.95,
+            maxOutputTokens:2048
 
-            maxOutputTokens:
-                8192
         }
 
     };
+
+
+    const url =
+        "https://generativelanguage.googleapis.com/v1beta/models/" +
+        encodeURIComponent(
+            GEMINI_MODEL
+        ) +
+        ":generateContent?key=" +
+        encodeURIComponent(
+            apiKey
+        );
 
 
     const response =
         await fetch(
             url,
             {
-
                 method:"POST",
 
                 headers:{
-
                     "Content-Type":
                         "application/json"
-
                 },
 
                 body:
@@ -2914,471 +3317,472 @@ async function callGeminiApi(
 
     if(!response.ok){
 
-        const error =
-            new Error(
-                data?.error?.message ||
-                "Gemini API Fehler"
-            );
-
-
-        error.status =
-            response.status;
-
-
-        throw error;
-    }
-
-
-    const answer =
-        data
-            ?.candidates?.[0]
-            ?.content
-            ?.parts
-            ?.map(
-                part =>
-                    part.text || ""
-            )
-            .join("")
-            .trim();
-
-
-    if(!answer){
+        const message =
+            data?.error?.message ||
+            `HTTP ${response.status}`;
 
         throw new Error(
-            "Gemini hat keine Antwort zurückgegeben."
+            message
         );
+
     }
 
 
-    return answer;
+    const text =
+        data?.candidates?.[0]
+            ?.content
+            ?.parts
+            ?.filter(
+                part =>
+                    typeof part.text ===
+                    "string"
+            )
+            ?.map(
+                part => part.text
+            )
+            ?.join("\n")
+            ?.trim();
+
+
+    if(!text){
+
+        throw new Error(
+            "Gemini hat keine Textantwort zurückgegeben."
+        );
+
+    }
+
+
+    return text;
+
 }
 
 
 /* =========================================================
-   GEMINI MIT AUTO-WECHSEL F1 / F2
+   GEMINI WITH AUTO FAILOVER
 ========================================================= */
 
 async function askGemini(
-    userText,
-    image=null
+    text,
+    imageData=null
 ){
 
-    let currentKey =
-        geminiKeys[
+    const keysToTry = [];
+
+    if(
+        geminiKeys[activeKeyNumber]
+    ){
+
+        keysToTry.push(
             activeKeyNumber
-        ];
+        );
 
-
-    if(!currentKey){
-
-        const altNum =
-            activeKeyNumber === 1
-                ? 2
-                : 1;
-
-
-        if(geminiKeys[altNum]){
-
-            activeKeyNumber =
-                altNum;
-
-
-            currentKey =
-                geminiKeys[
-                    activeKeyNumber
-                ];
-
-
-            saveLocalData();
-
-            updateKeyUI();
-
-        }else{
-
-            throw new Error(
-                "Bitte trage mindestens einen API-Key bei F1 oder F2 ein."
-            );
-        }
     }
 
 
-    try{
+    const backup =
+        activeKeyNumber === 1
+            ? 2
+            : 1;
 
-        return await callGeminiApi(
-            currentKey,
-            userText,
-            image
+
+    if(
+        geminiKeys[backup]
+    ){
+
+        keysToTry.push(
+            backup
         );
 
+    }
 
-    }catch(error){
 
-        console.warn(
-            `Fehler bei F${activeKeyNumber}.`,
-            error
+    if(!keysToTry.length){
+
+        throw new Error(
+            "Kein Gemini API-Key gespeichert."
         );
 
-
-        const backupKeyNumber =
-            activeKeyNumber === 1
-                ? 2
-                : 1;
+    }
 
 
-        const backupKey =
-            geminiKeys[
-                backupKeyNumber
-            ];
+    let lastError =
+        null;
 
 
-        if(!backupKey){
+    for(
+        const keyNumber of keysToTry
+    ){
 
-            throw error;
-        }
+        try{
 
-
-        setConnection(
-            `F${activeKeyNumber} Fehler/Limit → F${backupKeyNumber}`,
-            false
-        );
-
-
-        activeKeyNumber =
-            backupKeyNumber;
+            const result =
+                await callGeminiApi(
+                    geminiKeys[keyNumber],
+                    text,
+                    imageData
+                );
 
 
-        saveLocalData();
+            if(
+                keyNumber !==
+                activeKeyNumber
+            ){
 
-        updateKeyUI();
+                activeKeyNumber =
+                    keyNumber;
+
+                saveEverything();
+
+            }
 
 
-        saveUserSettings()
-            .catch(
-                () => {}
+            return result;
+
+        }catch(error){
+
+            console.error(
+                `F${keyNumber} Fehler:`,
+                error
             );
 
+            lastError =
+                error;
 
-        return await callGeminiApi(
-            backupKey,
-            userText,
-            image
-        );
+        }
+
     }
+
+
+    throw lastError ||
+        new Error(
+            "Gemini Anfrage fehlgeschlagen."
+        );
+
 }
 
 
 /* =========================================================
-   NEUER TAB
+   THINKING UI
 ========================================================= */
 
-function openNewTab(url){
+function showThinking(){
 
-    /*
-     * Öffnet wirklich einen neuen Tab.
-     */
+    removeThinking();
 
-    const tab =
-        window.open(
-            url,
-            "_blank"
-        );
+    const wrapper =
+        document.createElement("div");
 
+    wrapper.id =
+        "thinkingMessage";
 
-    if(!tab){
-
-        setConnection(
-            "Neuer Tab wurde vom Browser blockiert",
-            false
-        );
-
-        return false;
-    }
+    wrapper.className =
+        "message model";
 
 
-    try{
+    wrapper.innerHTML = `
 
-        tab.opener =
-            null;
+        <div class="thinking">
 
-    }catch(error){}
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+
+        </div>
+
+    `;
 
 
-    return true;
+    chat.appendChild(
+        wrapper
+    );
+
+    scrollChatBottom();
+
+}
+
+
+function removeThinking(){
+
+    const el =
+        $("thinkingMessage");
+
+    if(el)
+        el.remove();
+
 }
 
 
 /* =========================================================
-   WEB-AKTIONEN
+   WEB ACTIONS
 ========================================================= */
 
 function detectWebAction(text){
 
     const lower =
-        text
-            .trim()
-            .toLowerCase();
+        text.toLowerCase();
 
-
-    /* GOOGLE BILDER */
 
     if(
-        /\b(öffne|oeffne|such|suche|google)\b/
-            .test(lower) &&
-        /\b(bilder|images)\b/
-            .test(lower)
+        lower.includes("google bilder") ||
+        lower.includes("google bilder öffnen")
     ){
 
-        let q =
-            text
-                .replace(
-                    /.*?\b(bilder|images)\b/i,
-                    ""
-                )
-                .replace(
-                    /^(von|über|ueber|zu|nach|auf|in)\s+/i,
-                    ""
-                )
-                .trim();
-
-
         return {
+            name:"Google Bilder",
 
-            type:
-                "googleImages",
+            url:
+                "https://www.google.com/imghp"
 
-            query:
-                q ||
-                "Google Bilder"
         };
+
     }
 
 
-    /* YOUTUBE */
-
     if(
-        /\b(öffne|oeffne|such|suche)\b/
-            .test(lower) &&
-        /\byoutube\b/
-            .test(lower)
+        lower.includes("youtube")
     ){
-
-        let q =
-            text
-                .replace(
-                    /.*?\byoutube\b/i,
-                    ""
-                )
-                .replace(
-                    /^(mit|auf|in|und|nach)\s+/i,
-                    ""
-                )
-                .trim();
-
 
         return {
 
-            type:
-                "youtube",
+            name:"YouTube",
 
-            query:
-                q ||
-                "YouTube"
+            url:
+                "https://www.youtube.com"
+
         };
+
     }
 
 
-    /* GOOGLE */
-
     if(
-        /\b(öffne|oeffne|suche|such)\b/
-            .test(lower) &&
-        /\bgoogle\b/
-            .test(lower)
+        lower.includes("wikipedia")
     ){
-
-        let q =
-            text
-                .replace(
-                    /.*?\bgoogle\b/i,
-                    ""
-                )
-                .trim();
-
 
         return {
 
-            type:
-                "google",
+            name:"Wikipedia",
 
-            query:
-                q ||
-                "Google"
+            url:
+                "https://de.wikipedia.org"
+
         };
+
     }
 
 
-    /* WIKIPEDIA */
-
     if(
-        /\b(öffne|oeffne)\b/
-            .test(lower) &&
-        /\bwikipedia\b/
-            .test(lower)
+        lower.includes("google maps") ||
+        lower.includes("maps öffnen")
     ){
-
-        let q =
-            text
-                .replace(
-                    /.*?\bwikipedia\b/i,
-                    ""
-                )
-                .replace(
-                    /^(über|ueber|mit|auf)\s+/i,
-                    ""
-                )
-                .trim();
-
 
         return {
 
-            type:
-                "wikipedia",
+            name:"Google Maps",
 
-            query:
-                q ||
-                "Wikipedia"
+            url:
+                "https://www.google.com/maps"
+
         };
-    }
 
-
-    /* GOOGLE MAPS */
-
-    if(
-        /\b(öffne|oeffne)\b/
-            .test(lower) &&
-        /\b(google maps|maps)\b/
-            .test(lower)
-    ){
-
-        let q =
-            text
-                .replace(
-                    /.*?\b(google maps|maps)\b/i,
-                    ""
-                )
-                .trim();
-
-
-        return {
-
-            type:
-                "maps",
-
-            query:
-                q ||
-                "Google Maps"
-        };
     }
 
 
     return null;
+
+}
+
+
+function executeWebAction(
+    action
+){
+
+    if(!action)
+        return;
+
+
+    openNewTab(
+        action.url
+    );
+
 }
 
 
 /* =========================================================
-   WEB ÖFFNEN
+   SEND MESSAGE
 ========================================================= */
 
-function openWebAction(action){
+async function sendMessage(){
 
-    if(!action) return;
+    const text =
+        messageInput
+            .value
+            .trim();
 
 
-    const query =
-        encodeURIComponent(
-            action.query || ""
+    if(
+        !text &&
+        !selectedImage
+    )
+        return;
+
+
+    ensureChat();
+
+
+    const image =
+        selectedImage;
+
+
+    messageInput.value = "";
+
+    autoResizeTextarea();
+
+
+    const memory =
+        detectMemoryCommand(
+            text
         );
 
 
-    let url = "";
+    if(memory){
 
+        saveMemory(memory);
 
-    if(
-        action.type ===
-        "google"
-    ){
-
-        url =
-            "https://www.google.com/search?q=" +
-            query;
     }
 
 
-    if(
-        action.type ===
-        "googleImages"
-    ){
-
-        url =
-            "https://www.google.com/search?tbm=isch&q=" +
-            query;
-    }
+    addMessage(
+        "user",
+        text,
+        image
+    );
 
 
-    if(
-        action.type ===
-        "youtube"
-    ){
-
-        url =
-            action.query ===
-            "YouTube"
-
-                ? "https://www.youtube.com/"
-
-                : "https://www.youtube.com/results?search_query=" +
-                  query;
-    }
-
-
-    if(
-        action.type ===
-        "wikipedia"
-    ){
-
-        url =
-            "https://de.wikipedia.org/w/index.php?search=" +
-            query;
-    }
-
-
-    if(
-        action.type ===
-        "maps"
-    ){
-
-        url =
-            "https://www.google.com/maps/search/?api=1&query=" +
-            query;
-    }
-
-
-    if(url){
-
-        openNewTab(
-            url
+    const webAction =
+        detectWebAction(
+            text
         );
+
+
+    if(webAction){
+
+        executeWebAction(
+            webAction
+        );
+
     }
+
+
+    clearSelectedImage();
+
+
+    if(!text){
+
+        return;
+
+    }
+
+
+    thinking = true;
+
+    showThinking();
+
+    setConnection(
+        `Nova denkt mit F${activeKeyNumber}...`,
+        true
+    );
+
+
+    try{
+
+        const answer =
+            await askGemini(
+                text,
+                image
+            );
+
+
+        removeThinking();
+
+
+        addMessage(
+            "model",
+            answer
+        );
+
+
+        setConnection(
+            `Verbunden · F${activeKeyNumber}`,
+            true
+        );
+
+
+        if(
+            voiceMode &&
+            "speechSynthesis" in window
+        ){
+
+            speak(
+                answer
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+        removeThinking();
+
+
+        addMessage(
+            "model",
+            "Fehler: " +
+            (
+                error?.message ||
+                "Unbekannter Fehler."
+            )
+        );
+
+
+        setConnection(
+            "Gemini Fehler",
+            false
+        );
+
+    }
+
+
+    thinking = false;
+
 }
 
 
 /* =========================================================
-   BILD
+   IMAGE UPLOAD
 ========================================================= */
 
-function setSelectedImage(file){
+function handleImageFile(file){
 
-    if(!file) return;
+    if(!file)
+        return;
+
+
+    if(
+        file.size >
+        MAX_IMAGE_SIZE
+    ){
+
+        alert(
+            "Das Bild darf maximal 10 MB groß sein."
+        );
+
+        return;
+
+    }
 
 
     if(
@@ -3387,26 +3791,12 @@ function setSelectedImage(file){
         )
     ){
 
-        setConnection(
-            "Bitte ein Bild auswählen.",
-            false
+        alert(
+            "Bitte ein Bild auswählen."
         );
 
         return;
-    }
 
-
-    if(
-        file.size >
-        MAX_IMAGE_SIZE
-    ){
-
-        setConnection(
-            "Das Bild ist größer als 10 MB.",
-            false
-        );
-
-        return;
     }
 
 
@@ -3415,615 +3805,432 @@ function setSelectedImage(file){
 
 
     reader.onload =
-        () => {
+        event => {
 
-            const result =
-                reader.result;
+            selectedImage =
+                event.target.result;
 
+            previewImg.src =
+                selectedImage;
 
-            const comma =
-                result.indexOf(",");
+            imagePreview
+                .classList
+                .remove(
+                    "hidden"
+                );
 
-
-            selectedImage = {
-
-                mimeType:
-                    file.type,
-
-                data:
-                    result.substring(
-                        comma + 1
-                    ),
-
-                name:
-                    file.name
-            };
-
-
-            previewImage.src =
-                result;
-
-
-            imagePreviewName.textContent =
-                file.name;
-
-
-            imagePreview.classList.remove(
-                "hidden"
-            );
-
-
-            setConnection(
-                "Bild bereit",
-                true
-            );
-        };
-
-
-    reader.onerror =
-        () => {
-
-            setConnection(
-                "Bild konnte nicht geladen werden.",
-                false
-            );
         };
 
 
     reader.readAsDataURL(
         file
     );
+
 }
 
 
-imageBtn.addEventListener(
-    "click",
-    () => {
+function clearSelectedImage(){
 
-        imageInput.click();
-    }
-);
+    selectedImage = null;
 
+    previewImg.src = "";
 
-imageInput.addEventListener(
-    "change",
-    () => {
-
-        const file =
-            imageInput.files?.[0];
-
-
-        if(file){
-
-            setSelectedImage(
-                file
-            );
-        }
-    }
-);
-
-
-removeImageBtn.addEventListener(
-    "click",
-    () => {
-
-        selectedImage = null;
-
-        previewImage.src = "";
-
-        imagePreviewName.textContent = "";
-
-        imagePreview.classList.add(
+    imagePreview
+        .classList
+        .add(
             "hidden"
         );
 
-        imageInput.value = "";
-    }
-);
+    imageFileInput.value = "";
 
-
-googleImageBtn.addEventListener(
-    "click",
-    () => {
-
-        let query =
-            messageInput.value.trim();
-
-
-        if(!query){
-
-            query =
-                selectedImage?.name ||
-                "Bild";
-        }
-
-
-        openNewTab(
-            "https://www.google.com/search?tbm=isch&q=" +
-            encodeURIComponent(
-                query
-            )
-        );
-    }
-);
-
-
-/* =========================================================
-   CHAT SENDEN
-========================================================= */
-
-async function sendMessage(){
-
-    const text =
-        messageInput.value.trim();
-
-
-    const hasImage =
-        !!selectedImage;
-
-
-    if(
-        !text &&
-        !hasImage
-    ){
-
-        return;
-    }
-
-
-    if(isThinking){
-
-        return;
-    }
-
-
-    if(
-        questionsUsed >=
-        MAX_QUESTIONS
-    ){
-
-        addMessageToUI(
-            "model",
-            "Der lokale Fragenzähler ist bei 20/20."
-        );
-
-        return;
-    }
-
-
-    stopListening();
-
-
-    const imageForRequest =
-        selectedImage
-            ? {
-
-                mimeType:
-                    selectedImage.mimeType,
-
-                data:
-                    selectedImage.data,
-
-                name:
-                    selectedImage.name
-
-            }
-            : null;
-
-
-    /* MERKE-DIR-BEFEHL */
-
-    const memoryRequest =
-        !hasImage
-            ? detectMemoryRequest(text)
-            : null;
-
-
-    if(memoryRequest){
-
-        await saveMemory(
-            memoryRequest
-        );
-
-
-        conversation.push({
-
-            role:
-                "user",
-
-            text:
-                text
-        });
-
-
-        addMessageToUI(
-            "user",
-            text
-        );
-
-
-        const answer =
-            "Verstanden. Ich habe mir das dauerhaft als Erinnerung gespeichert.";
-
-
-        conversation.push({
-
-            role:
-                "model",
-
-            text:
-                answer
-        });
-
-
-        addMessageToUI(
-            "model",
-            answer
-        );
-
-
-        messageInput.value =
-            "";
-
-
-        saveLocalData();
-
-        await saveUserChat();
-
-
-        setConnection(
-            "Gedanke dauerhaft gespeichert",
-            true
-        );
-
-
-        return;
-    }
-
-
-    /* WEB-AKTION */
-
-    const webAction =
-        !hasImage
-            ? detectWebAction(text)
-            : null;
-
-
-    if(webAction){
-
-        conversation.push({
-
-            role:
-                "user",
-
-            text:
-                text
-        });
-
-
-        addMessageToUI(
-            "user",
-            text
-        );
-
-
-        messageInput.value =
-            "";
-
-
-        saveLocalData();
-
-        await saveUserChat();
-
-
-        openWebAction(
-            webAction
-        );
-
-
-        return;
-    }
-
-
-    /* NORMALE GEMINI FRAGE */
-
-    questionsUsed++;
-
-
-    saveLocalData();
-
-    updateQuotaUI();
-
-
-    let visibleUserText =
-        text;
-
-
-    if(!visibleUserText){
-
-        visibleUserText =
-            "Analysiere bitte dieses Bild.";
-    }
-
-
-    if(hasImage){
-
-        visibleUserText +=
-            "\n\n[🖼 Bild angehängt: " +
-            imageForRequest.name +
-            "]";
-    }
-
-
-    conversation.push({
-
-        role:
-            "user",
-
-        text:
-            visibleUserText
-    });
-
-
-    addMessageToUI(
-        "user",
-        visibleUserText
-    );
-
-
-    messageInput.value =
-        "";
-
-
-    selectedImage =
-        imageForRequest;
-
-
-    /*
-     * Bild erst nach dem Request entfernen.
-     */
-
-    isThinking =
-        true;
-
-
-    setConnection(
-        "Gemini denkt...",
-        true
-    );
-
-
-    showTyping();
-
-
-    try{
-
-        const answer =
-            await askGemini(
-                text ||
-                "Analysiere bitte dieses Bild.",
-                imageForRequest
-            );
-
-
-        hideTyping();
-
-
-        conversation.push({
-
-            role:
-                "model",
-
-            text:
-                answer
-        });
-
-
-        addMessageToUI(
-            "model",
-            answer
-        );
-
-
-        saveLocalData();
-
-        await saveUserChat();
-
-
-        if(voiceMode){
-
-            speak(
-                answer
-            );
-
-            voiceMode =
-                false;
-        }
-
-
-        setConnection(
-            `F${activeKeyNumber} · ${GEMINI_MODEL} bereit`,
-            true
-        );
-
-
-    }catch(error){
-
-        hideTyping();
-
-
-        const display =
-            "Fehler: " +
-            (
-                error?.message ||
-                "Unbekannter Fehler."
-            );
-
-
-        conversation.push({
-
-            role:
-                "model",
-
-            text:
-                display
-        });
-
-
-        addMessageToUI(
-            "model",
-            display
-        );
-
-
-        saveLocalData();
-
-
-        setConnection(
-            "Gemini-Fehler",
-            false
-        );
-
-
-    }finally{
-
-        isThinking =
-            false;
-
-
-        removeSelectedImage();
-    }
 }
 
 
-sendBtn.addEventListener(
-    "click",
-    sendMessage
-);
-
-
-messageInput.addEventListener(
-    "keydown",
-    event => {
-
-        if(
-            event.key === "Enter" &&
-            !event.shiftKey
-        ){
-
-            event.preventDefault();
-
-            sendMessage();
-        }
-    }
-);
-
-
 /* =========================================================
-   CHAT LÖSCHEN
+   IMAGE GENERATION
 ========================================================= */
 
-clearChatBtn.addEventListener(
-    "click",
-    async () => {
+function openImageModal(){
 
-        const confirmed =
-            confirm(
-                "Nur den Chat löschen?\n\nGespeicherte Gedanken bleiben erhalten."
-            );
-
-
-        if(!confirmed) return;
-
-
-        /*
-         * NUR conversation wird gelöscht.
-         *
-         * memories werden NICHT verändert.
-         */
-
-        conversation = [];
-
-
-        localStorage.setItem(
-            LOCAL_CHAT_STORAGE,
-            JSON.stringify([])
+    imageModal
+        .classList
+        .remove(
+            "hidden"
         );
 
+    $("imagePrompt")
+        .focus();
 
-        renderConversation();
+}
 
 
-        if(currentUser){
+function closeImageModal(){
 
-            try{
+    imageModal
+        .classList
+        .add(
+            "hidden"
+        );
 
-                await setDoc(
+}
 
-                    doc(
-                        db,
-                        "users",
-                        currentUser.uid
-                    ),
 
+async function generateImage(){
+
+    const prompt =
+        $("imagePrompt")
+            .value
+            .trim();
+
+
+    if(!prompt){
+
+        alert(
+            "Bitte beschreibe zuerst das Bild."
+        );
+
+        return;
+
+    }
+
+
+    const keys = [];
+
+    if(
+        geminiKeys[activeKeyNumber]
+    ){
+
+        keys.push(
+            activeKeyNumber
+        );
+
+    }
+
+
+    const backup =
+        activeKeyNumber === 1
+            ? 2
+            : 1;
+
+
+    if(
+        geminiKeys[backup]
+    ){
+
+        keys.push(
+            backup
+        );
+
+    }
+
+
+    if(!keys.length){
+
+        alert(
+            "Bitte zuerst einen Gemini API-Key speichern."
+        );
+
+        return;
+
+    }
+
+
+    const status =
+        $("imageGenerationStatus");
+
+    const result =
+        $("generatedResult");
+
+
+    status.textContent =
+        "Bild wird generiert...";
+
+
+    result.innerHTML = "";
+
+
+    const button =
+        $("startImageGenerationBtn");
+
+    button.disabled =
+        true;
+
+
+    let success =
+        false;
+
+    let lastError =
+        null;
+
+
+    for(
+        const keyNumber of keys
+    ){
+
+        try{
+
+            const url =
+                "https://generativelanguage.googleapis.com/v1beta/models/" +
+                encodeURIComponent(
+                    IMAGE_MODEL
+                ) +
+                ":generateContent?key=" +
+                encodeURIComponent(
+                    geminiKeys[keyNumber]
+                );
+
+
+            const body = {
+
+                contents:[{
+
+                    parts:[{
+
+                        text:
+                            prompt
+
+                    }]
+
+                }],
+
+                generationConfig:{
+
+                    responseModalities:[
+                        "TEXT",
+                        "IMAGE"
+                    ]
+
+                }
+
+            };
+
+
+            const response =
+                await fetch(
+                    url,
                     {
+                        method:"POST",
 
-                        conversation:[],
+                        headers:{
+                            "Content-Type":
+                                "application/json"
+                        },
 
-                        updatedAt:
-                            Date.now()
-
-                    },
-
-                    {
-                        merge:true
+                        body:
+                            JSON.stringify(body)
                     }
                 );
 
-            }catch(error){
 
-                console.error(
-                    "Chat konnte nicht gelöscht werden:",
-                    error
+            const data =
+                await response.json();
+
+
+            if(!response.ok){
+
+                throw new Error(
+                    data?.error?.message ||
+                    `HTTP ${response.status}`
                 );
+
             }
+
+
+            const parts =
+                data?.candidates?.[0]
+                    ?.content
+                    ?.parts || [];
+
+
+            let imageData = null;
+
+            let textAnswer = "";
+
+
+            for(
+                const part of parts
+            ){
+
+                if(
+                    part.inlineData &&
+                    part.inlineData.data
+                ){
+
+                    imageData =
+                        "data:" +
+                        part.inlineData.mimeType +
+                        ";base64," +
+                        part.inlineData.data;
+
+                }
+
+
+                if(part.text){
+
+                    textAnswer +=
+                        part.text;
+
+                }
+
+            }
+
+
+            if(!imageData){
+
+                throw new Error(
+                    "Das Modell hat kein Bild zurückgegeben. Prüfe das eingestellte Bildmodell."
+                );
+
+            }
+
+
+            activeKeyNumber =
+                keyNumber;
+
+
+            saveEverything();
+
+
+            result.innerHTML = `
+
+                <img
+                    src="${imageData}"
+                    alt="Generiertes Bild"
+                >
+
+                <div
+                    style="
+                    margin-top:10px;
+                    display:flex;
+                    gap:7px;">
+
+                    <button
+                        id="useGeneratedImageBtn"
+                        class="smallBtn"
+                        style="flex:1;">
+                        In Chat übernehmen
+                    </button>
+
+                    <button
+                        id="openGeneratedImageBtn"
+                        class="smallBtn"
+                        style="flex:1;">
+                        In neuem Tab öffnen
+                    </button>
+
+                </div>
+
+            `;
+
+
+            $("useGeneratedImageBtn")
+                .onclick =
+                () => {
+
+                    addMessage(
+                        "model",
+                        textAnswer ||
+                        "Generiertes Bild:",
+                        imageData
+                    );
+
+                    closeImageModal();
+
+                };
+
+
+            $("openGeneratedImageBtn")
+                .onclick =
+                () => {
+
+                    openNewTab(
+                        imageData
+                    );
+
+                };
+
+
+            status.textContent =
+                "Bild erfolgreich generiert.";
+
+            success = true;
+
+            break;
+
+        }catch(error){
+
+            lastError =
+                error;
+
+            console.error(
+                "Bildgenerierung:",
+                error
+            );
+
         }
 
-
-        setConnection(
-            "Chat gelöscht · Gedanken bleiben erhalten",
-            true
-        );
     }
-);
+
+
+    if(!success){
+
+        status.textContent =
+            "Bildgenerierung fehlgeschlagen.";
+
+        result.innerHTML = `
+
+            <div
+                style="
+                padding:12px;
+                border:1px solid #292929;
+                border-radius:12px;
+                color:#ff7777;
+                font-size:11px;">
+
+                ${
+                    escapeHtml(
+                        lastError?.message ||
+                        "Unbekannter Fehler."
+                    )
+                }
+
+            </div>
+
+        `;
+
+    }
+
+
+    button.disabled =
+        false;
+
+}
 
 
 /* =========================================================
    SPEECH RECOGNITION
 ========================================================= */
 
-function setupSpeechRecognition(){
+function setupSpeech(){
 
-    const SR =
+    const SpeechRecognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
 
-    if(!SR){
+    if(!SpeechRecognition){
 
-        micBtn.disabled =
-            true;
-
-        micBtn.title =
-            "Spracheingabe wird nicht unterstützt";
+        $("microphoneBtn")
+            .title =
+            "Sprache wird von diesem Browser nicht unterstützt";
 
         return;
+
     }
 
 
     recognition =
-        new SR();
-
+        new SpeechRecognition();
 
     recognition.lang =
         "de-DE";
@@ -4032,10 +4239,7 @@ function setupSpeechRecognition(){
         false;
 
     recognition.interimResults =
-        false;
-
-    recognition.maxAlternatives =
-        1;
+        true;
 
 
     recognition.onstart =
@@ -4044,214 +4248,109 @@ function setupSpeechRecognition(){
             isListening =
                 true;
 
-            micBtn.classList.add(
-                "active"
-            );
+            $("microphoneBtn")
+                .textContent =
+                "⏹";
 
-
-            setConnection(
-                "Nova hört zu...",
-                true
-            );
-
-
-            clearTimeout(
-                listenTimer
-            );
-
-
-            listenTimer =
-                setTimeout(
-                    () => stopListening(),
-                    8000
-                );
         };
 
 
     recognition.onresult =
         event => {
 
-            clearTimeout(
-                listenTimer
-            );
+            let finalText = "";
 
+            for(
+                let i =
+                    event.resultIndex;
+                i <
+                    event.results.length;
+                i++
+            ){
 
-            isListening =
-                false;
+                finalText +=
+                    event.results[i][0].transcript;
 
-
-            micBtn.classList.remove(
-                "active"
-            );
-
-
-            const transcript =
-                event
-                    ?.results?.[0]?.[0]
-                    ?.transcript
-                    ?.trim();
-
-
-            if(transcript){
-
-                messageInput.value =
-                    transcript;
-
-
-                setTimeout(
-                    () =>
-                        sendMessage(),
-                    100
-                );
             }
+
+
+            messageInput.value =
+                finalText;
+
+            autoResizeTextarea();
+
         };
 
 
     recognition.onerror =
-        () => {
+        error => {
 
-            clearTimeout(
-                listenTimer
+            console.error(
+                "Speech:",
+                error
             );
 
-
-            isListening =
-                false;
-
-
-            micBtn.classList.remove(
-                "active"
-            );
-
-
-            setConnection(
-                "Spracheingabe beendet",
-                false
-            );
         };
 
 
     recognition.onend =
         () => {
 
-            clearTimeout(
-                listenTimer
-            );
-
-
             isListening =
                 false;
 
+            $("microphoneBtn")
+                .textContent =
+                "🎙";
 
-            micBtn.classList.remove(
-                "active"
-            );
         };
+
 }
 
 
-function startListening(){
+function toggleListening(){
 
-    if(
-        isSpeaking ||
-        isThinking ||
-        isListening ||
-        !recognition
-    ){
+    if(!recognition){
+
+        alert(
+            "Dein Browser unterstützt keine Spracheingabe."
+        );
 
         return;
+
     }
 
 
-    try{
+    if(isListening){
 
-        voiceMode =
-            true;
+        recognition.stop();
 
-        recognition.start();
+        return;
 
-    }catch(error){
-
-        console.warn(error);
     }
+
+
+    recognition.start();
+
 }
 
 
-function stopListening(){
-
-    clearTimeout(
-        listenTimer
-    );
-
-
-    listenTimer =
-        null;
-
-
-    isListening =
-        false;
-
-
-    micBtn.classList.remove(
-        "active"
-    );
-
-
-    if(recognition){
-
-        try{
-
-            recognition.stop();
-
-        }catch(error){}
-    }
-}
-
-
-micBtn.addEventListener(
-    "click",
-    () => {
-
-        if(isSpeaking){
-
-            return;
-        }
-
-
-        if(isListening){
-
-            stopListening();
-
-        }else{
-
-            startListening();
-        }
-    }
-);
+let voiceMode = false;
 
 
 /* =========================================================
-   SPEECH SYNTHESIS
+   TEXT TO SPEECH
 ========================================================= */
 
 function speak(text){
 
     if(
         !("speechSynthesis" in window)
-    ){
-
+    )
         return;
-    }
 
 
-    stopListening();
-
-
-    isSpeaking =
-        true;
-
-
-    speechSynthesis.cancel();
+    window.speechSynthesis.cancel();
 
 
     const utterance =
@@ -4264,78 +4363,682 @@ function speak(text){
         "de-DE";
 
     utterance.rate =
-        1;
-
-    utterance.pitch =
-        1;
+        .95;
 
 
     utterance.onstart =
         () => {
 
-            isSpeaking =
-                true;
+            speaking = true;
 
-
-            setConnection(
-                "Nova spricht...",
-                true
-            );
         };
 
 
     utterance.onend =
         () => {
 
-            isSpeaking =
-                false;
+            speaking = false;
 
-
-            setConnection(
-                `F${activeKeyNumber} · Bereit`,
-                true
-            );
         };
 
 
-    utterance.onerror =
-        () => {
+    window.speechSynthesis
+        .speak(
+            utterance
+        );
 
-            isSpeaking =
-                false;
-
-
-            setConnection(
-                `F${activeKeyNumber} · Bereit`,
-                true
-            );
-        };
-
-
-    speechSynthesis.speak(
-        utterance
-    );
 }
 
 
 /* =========================================================
-   START
+   TEXTAREA
 ========================================================= */
 
-setupSpeechRecognition();
+function autoResizeTextarea(){
 
-loadLocalData();
+    messageInput.style.height =
+        "auto";
 
+    messageInput.style.height =
+        Math.min(
+            messageInput.scrollHeight,
+            170
+        ) + "px";
 
-if(
-    conversation.length === 0
-){
-
-    addMessageToUI(
-        "model",
-        "Hallo. Ich bin Nova. Wie kann ich dir helfen?"
-    );
 }
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+function closeMobileSidebar(){
+
+    $("sidebar")
+        .classList
+        .remove(
+            "open"
+        );
+
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+async function login(){
+
+    try{
+
+        $("loginError")
+            .textContent = "";
+
+        await signInWithPopup(
+            auth,
+            googleProvider
+        );
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+        $("loginError")
+            .textContent =
+            error?.message ||
+            "Anmeldung fehlgeschlagen.";
+
+    }
+
+}
+
+
+async function logout(){
+
+    try{
+
+        await signOut(
+            auth
+        );
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        currentUser =
+            user || null;
+
+
+        if(!user){
+
+            app.classList.add(
+                "hidden"
+            );
+
+            loginScreen.classList.remove(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        loginScreen.classList.add(
+            "hidden"
+        );
+
+        app.classList.remove(
+            "hidden"
+        );
+
+
+        $("userName")
+            .textContent =
+            user.displayName ||
+            "Benutzer";
+
+
+        $("userEmail")
+            .textContent =
+            user.email ||
+            "";
+
+
+        $("userAvatar").src =
+            user.photoURL ||
+            "";
+
+
+        loadLocal();
+
+        await loadUserData();
+
+        ensureChat();
+
+        renderKeyState();
+
+        renderMemories();
+
+        renderChatList();
+
+        renderCurrentChat();
+
+
+        if(
+            geminiKeys[1] ||
+            geminiKeys[2]
+        ){
+
+            setConnection(
+                `Bereit · F${activeKeyNumber}`,
+                true
+            );
+
+        }else{
+
+            setConnection(
+                "API-Key benötigt",
+                false
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   EVENT LISTENERS
+========================================================= */
+
+$("googleLoginBtn")
+    .addEventListener(
+        "click",
+        login
+    );
+
+
+$("logoutBtn")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+$("newChatBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            createChat();
+
+            closeMobileSidebar();
+
+        }
+    );
+
+
+$("renameChatBtn")
+    .addEventListener(
+        "click",
+        () => renameChat()
+    );
+
+
+$("deleteChatBtn")
+    .addEventListener(
+        "click",
+        () => deleteChat()
+    );
+
+
+$("clearMemoryBtn")
+    .addEventListener(
+        "click",
+        clearMemories
+    );
+
+
+$("chatSearch")
+    .addEventListener(
+        "input",
+        renderChatList
+    );
+
+
+$("toggleKeysBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            const panel =
+                $("apiKeyPanel");
+
+
+            const hidden =
+                panel.classList.contains(
+                    "hidden"
+                );
+
+
+            if(hidden){
+
+                panel.classList.remove(
+                    "hidden"
+                );
+
+                $("toggleKeysBtn")
+                    .textContent =
+                    "🔒 API-Keys ausblenden";
+
+            }else{
+
+                panel.classList.add(
+                    "hidden"
+                );
+
+                $("toggleKeysBtn")
+                    .textContent =
+                    "🔐 API-Keys anzeigen";
+
+            }
+
+        }
+    );
+
+
+$("toggleKeyVisibilityBtn")
+    .addEventListener(
+        "click",
+        toggleKeyVisibility
+    );
+
+
+$("saveKey1Btn")
+    .addEventListener(
+        "click",
+        () => saveKey(1)
+    );
+
+
+$("saveKey2Btn")
+    .addEventListener(
+        "click",
+        () => saveKey(2)
+    );
+
+
+$("activateKey1Btn")
+    .addEventListener(
+        "click",
+        () => activateKey(1)
+    );
+
+
+$("activateKey2Btn")
+    .addEventListener(
+        "click",
+        () => activateKey(2)
+    );
+
+
+$("microphoneBtn")
+    .addEventListener(
+        "click",
+        toggleListening
+    );
+
+
+$("uploadImageBtn")
+    .addEventListener(
+        "click",
+        () => imageFileInput.click()
+    );
+
+
+imageFileInput
+    .addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files?.[0];
+
+            handleImageFile(
+                file
+            );
+
+        }
+    );
+
+
+$("removeImageBtn")
+    .addEventListener(
+        "click",
+        clearSelectedImage
+    );
+
+
+$("generateImageBtn")
+    .addEventListener(
+        "click",
+        openImageModal
+    );
+
+
+$("closeImageModalBtn")
+    .addEventListener(
+        "click",
+        closeImageModal
+    );
+
+
+$("startImageGenerationBtn")
+    .addEventListener(
+        "click",
+        generateImage
+    );
+
+
+sendBtn
+    .addEventListener(
+        "click",
+        sendMessage
+    );
+
+
+messageInput
+    .addEventListener(
+        "input",
+        autoResizeTextarea
+    );
+
+
+messageInput
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                event.key === "Enter" &&
+                !event.shiftKey
+            ){
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+
+        }
+    );
+
+
+$("mobileMenuBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            $("sidebar")
+                .classList
+                .toggle(
+                    "open"
+                );
+
+        }
+    );
+
+
+$("contextRename")
+    .addEventListener(
+        "click",
+        () => {
+
+            renameChat(
+                contextChatId
+            );
+
+            hideContextMenu();
+
+        }
+    );
+
+
+$("contextDelete")
+    .addEventListener(
+        "click",
+        () => {
+
+            deleteChat(
+                contextChatId
+            );
+
+            hideContextMenu();
+
+        }
+    );
+
+
+document.addEventListener(
+    "click",
+    event => {
+
+        if(
+            !contextMenu.contains(
+                event.target
+            )
+        ){
+
+            hideContextMenu();
+
+        }
+
+    }
+);
+
+
+imageModal
+    .addEventListener(
+        "click",
+        event => {
+
+            if(
+                event.target ===
+                imageModal
+            ){
+
+                closeImageModal();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.ctrlKey &&
+            event.key.toLowerCase() === "k"
+        ){
+
+            event.preventDefault();
+
+            messageInput.focus();
+
+        }
+
+
+        if(
+            event.ctrlKey &&
+            event.shiftKey &&
+            event.key.toLowerCase() === "n"
+        ){
+
+            event.preventDefault();
+
+            createChat();
+
+        }
+
+
+        if(
+            event.key === "Escape"
+        ){
+
+            hideContextMenu();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+loadLocal();
+
+setupSpeech();
+
+renderMemories();
+
+renderKeyState();
+
+
+if(chats.length){
+
+    if(
+        !currentChatId ||
+        !getCurrentChat()
+    ){
+
+        currentChatId =
+            chats[0].id;
+
+    }
+
+}else{
+
+    createChat();
+
+}
+
+
+renderChatList();
+
+renderCurrentChat();
+
+
+/* =========================================================
+   AUTO SAVE
+========================================================= */
+
+setInterval(
+    () => {
+
+        saveLocal();
+
+        if(currentUser){
+
+            scheduleFirebaseSave();
+
+        }
+
+    },
+    30000
+);
+
+
+/* =========================================================
+   CLEANUP
+========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        saveLocal();
+
+    }
+);
+
+
+/* =========================================================
+   EXTRA WEB COMMANDS
+========================================================= */
+
+window.Nova = {
+
+    newChat(){
+
+        createChat();
+
+    },
+
+    openGoogle(){
+
+        openNewTab(
+            "https://www.google.com"
+        );
+
+    },
+
+    openYouTube(){
+
+        openNewTab(
+            "https://www.youtube.com"
+        );
+
+    },
+
+    openWikipedia(){
+
+        openNewTab(
+            "https://de.wikipedia.org"
+        );
+
+    },
+
+    getChats(){
+
+        return chats;
+
+    },
+
+    getMemories(){
+
+        return memories;
+
+    }
+
+};
+
 
 </script>
 
