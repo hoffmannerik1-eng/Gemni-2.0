@@ -2752,53 +2752,44 @@ async function callGeminiApi(
 }
 
 
-```javascript
-/* ========================= ASK GEMINI (MIT AUTO-WECHSEL) ========================= */
-async function askGemini(userText, image = null) {
-    let currentKey = geminiKeys[activeKeyNumber];
+/* =========================
+   ASK GEMINI
+========================= */
 
-    // Falls der aktuelle Key leer ist, prüfen ob der andere Key da ist
-    if (!currentKey) {
-        const altNum = activeKeyNumber === 1 ? 2 : 1;
-        if (geminiKeys[altNum]) {
-            activeKeyNumber = altNum;
-            currentKey = geminiKeys[activeKeyNumber];
-            saveLocalData();
-            updateKeyUI();
-        } else {
-            throw new Error("Bitte trage mindestens einen API-Key bei F1 oder F2 ein.");
-        }
+async function askGemini(
+    userText,
+    image = null
+){
+
+    /*
+     * NUR der manuell ausgewählte Key.
+     */
+
+    const currentKey =
+        geminiKeys[
+            activeKeyNumber
+        ];
+
+
+    if(!currentKey){
+
+        throw new Error(
+            `Bitte trage den API-Key für F${activeKeyNumber} ein oder wechsle manuell mit F1/F2.`
+        );
     }
 
-    try {
-        // 1. Versuch mit dem aktiven Key
-        return await callGeminiApi(currentKey, userText, image);
-    } catch (error) {
-        console.warn(`Fehler bei Key F${activeKeyNumber}. Versuche automatischen Wechsel...`, error);
 
-        // Bestimme den anderen Key (wenn 1 aktiv ist -> 2, sonst -> 1)
-        const backupKeyNumber = activeKeyNumber === 1 ? 2 : 1;
-        const backupKey = geminiKeys[backupKeyNumber];
+    /*
+     * Kein automatischer Key-Wechsel.
+     */
 
-        // Wenn ein 2. Key gespeichert ist, automatisch wechseln!
-        if (backupKey) {
-            setConnection(`Limit erreicht! Wechsele automatisch zu F${backupKeyNumber}...`, false);
-
-            // Wechseln & Speichern
-            activeKeyNumber = backupKeyNumber;
-            saveLocalData();
-            updateKeyUI();
-            saveUserSettings().catch(() => {});
-
-            // 2. Versuch mit dem Ausweich-Key
-            return await callGeminiApi(backupKey, userText, image);
-        } else {
-            // Kein zweiter Key vorhanden
-            throw new Error(`Key F${activeKeyNumber} hat das Limit erreicht/Fehler. Bitte trage bei F${backupKeyNumber} einen zweiten Key ein!`);
-        }
-    }
+    return await callGeminiApi(
+        currentKey,
+        userText,
+        image
+    );
 }
-```
+
 
 /* =========================
    WEB ACTION DETECTION
