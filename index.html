@@ -70,7 +70,7 @@ button{
 }
 
 /* =========================================================
-   LOGIN
+LOGIN
 ========================================================= */
 
 #loginScreen{
@@ -164,7 +164,7 @@ button{
 }
 
 /* =========================================================
-   APP
+APP
 ========================================================= */
 
 #app{
@@ -177,7 +177,7 @@ button{
 }
 
 /* =========================================================
-   SIDEBAR
+SIDEBAR
 ========================================================= */
 
 .sidebar{
@@ -423,7 +423,7 @@ button{
 }
 
 /* =========================================================
-   MAIN
+MAIN
 ========================================================= */
 
 .main{
@@ -444,7 +444,7 @@ button{
 }
 
 /* =========================================================
-   TOPBAR
+TOPBAR
 ========================================================= */
 
 .topbar{
@@ -529,7 +529,7 @@ button{
 }
 
 /* =========================================================
-   CONTENT
+CONTENT
 ========================================================= */
 
 .content{
@@ -609,7 +609,7 @@ button{
 }
 
 /* =========================================================
-   SETTINGS
+SETTINGS
 ========================================================= */
 
 .settings{
@@ -748,10 +748,12 @@ button{
     color:#666;
 
     font-size:9px;
+
+    line-height:1.5;
 }
 
 /* =========================================================
-   MEMORY
+MEMORY
 ========================================================= */
 
 .memoryBox{
@@ -800,7 +802,7 @@ button{
 }
 
 /* =========================================================
-   CHAT
+CHAT
 ========================================================= */
 
 .chat{
@@ -911,7 +913,7 @@ button{
 }
 
 /* =========================================================
-   THINKING
+THINKING
 ========================================================= */
 
 .thinking{
@@ -966,7 +968,7 @@ button{
 }
 
 /* =========================================================
-   COMPOSER
+COMPOSER
 ========================================================= */
 
 .composerWrap{
@@ -1087,7 +1089,7 @@ button{
 }
 
 /* =========================================================
-   IMAGE MODAL
+IMAGE MODAL
 ========================================================= */
 
 .modal{
@@ -1222,7 +1224,7 @@ button{
 }
 
 /* =========================================================
-   CONTEXT MENU
+CONTEXT MENU
 ========================================================= */
 
 .contextMenu{
@@ -1264,7 +1266,7 @@ button{
 }
 
 /* =========================================================
-   MOBILE
+MOBILE
 ========================================================= */
 
 @media(max-width:850px){
@@ -1346,10 +1348,6 @@ button{
 
 <body>
 
-<!-- =====================================================
-     LOGIN
-====================================================== -->
-
 <div id="loginScreen">
 
     <div class="loginCard">
@@ -1386,20 +1384,9 @@ button{
 
 </div>
 
+<div id="app" class="hidden">
 
-<!-- =====================================================
-     APP
-====================================================== -->
-
-<div
-    id="app"
-    class="hidden">
-
-    <!-- SIDEBAR -->
-
-    <aside
-        id="sidebar"
-        class="sidebar">
+    <aside id="sidebar" class="sidebar">
 
         <div class="sidebarTop">
 
@@ -1458,13 +1445,11 @@ button{
 
                 <div class="userInfo">
 
-                    <strong
-                        id="userName">
+                    <strong id="userName">
                         Benutzer
                     </strong>
 
-                    <span
-                        id="userEmail">
+                    <span id="userEmail">
                         ...
                     </span>
 
@@ -1483,9 +1468,6 @@ button{
         </div>
 
     </aside>
-
-
-    <!-- MAIN -->
 
     <main class="main">
 
@@ -1555,14 +1537,11 @@ button{
 
         </header>
 
-
         <section class="content">
 
             <div class="hero">
 
-                <h1>
-                    NOVA
-                </h1>
+                <h1>NOVA</h1>
 
                 <p>
                     Deine persönliche KI.
@@ -1602,11 +1581,6 @@ button{
 
             </div>
 
-
-            <!-- =================================================
-                 API KEYS
-            ================================================== -->
-
             <section class="settings">
 
                 <div class="settingsHeader">
@@ -1625,14 +1599,11 @@ button{
 
                 </div>
 
-
                 <div
                     id="apiKeyPanel"
                     class="keyPanel hidden">
 
                     <div class="keyGrid">
-
-                        <!-- F1 -->
 
                         <div class="keyCard">
 
@@ -1662,26 +1633,17 @@ button{
 
                             <div class="keyButtons">
 
-                                <button
-                                    id="saveKey1Btn">
-
+                                <button id="saveKey1Btn">
                                     Speichern
-
                                 </button>
 
-                                <button
-                                    id="activateKey1Btn">
-
+                                <button id="activateKey1Btn">
                                     Aktivieren
-
                                 </button>
 
                             </div>
 
                         </div>
-
-
-                        <!-- F2 -->
 
                         <div class="keyCard">
 
@@ -1711,18 +1673,12 @@ button{
 
                             <div class="keyButtons">
 
-                                <button
-                                    id="saveKey2Btn">
-
+                                <button id="saveKey2Btn">
                                     Speichern
-
                                 </button>
 
-                                <button
-                                    id="activateKey2Btn">
-
+                                <button id="activateKey2Btn">
                                     Aktivieren
-
                                 </button>
 
                             </div>
@@ -1731,20 +1687,15 @@ button{
 
                     </div>
 
-
                     <div
                         class="keyButtons"
                         style="margin-top:12px;">
 
-                        <button
-                            id="toggleKeyVisibilityBtn">
-
+                        <button id="toggleKeyVisibilityBtn">
                             👁 Schlüssel anzeigen
-
                         </button>
 
                     </div>
-
 
                     <div class="keyHelp">
 
@@ -1755,22 +1706,17 @@ button{
 
                     </div>
 
-
                     <div class="persistence">
 
-                        Schlüssel und Einstellungen werden lokal
-                        und bei angemeldetem Benutzer in Firebase gespeichert.
+                        Die Schlüssel werden lokal gespeichert und –
+                        wenn du angemeldet bist – zusätzlich in deinem
+                        Firebase-Benutzerdatensatz.
 
                     </div>
 
                 </div>
 
             </section>
-
-
-            <!-- =================================================
-                 MEMORY
-            ================================================== -->
 
             <section class="memoryBox">
 
@@ -1797,22 +1743,12 @@ button{
 
             </section>
 
-
-            <!-- =================================================
-                 CHAT
-            ================================================== -->
-
             <section
                 id="chat"
                 class="chat">
             </section>
 
         </section>
-
-
-        <!-- =================================================
-             COMPOSER
-        ================================================== -->
 
         <div class="composerWrap">
 
@@ -1837,7 +1773,6 @@ button{
                     </button>
 
                 </div>
-
 
                 <div class="composerRow">
 
@@ -1884,11 +1819,8 @@ button{
 
                 </div>
 
-
                 <div class="composerInfo">
-
                     Enter = senden · Shift+Enter = neue Zeile
-
                 </div>
 
             </div>
@@ -1899,20 +1831,12 @@ button{
 
 </div>
 
-
-<!-- FILE INPUT -->
-
 <input
     id="imageFileInput"
     type="file"
     accept="image/*"
     class="hidden"
 >
-
-
-<!-- =====================================================
-     IMAGE GENERATION MODAL
-====================================================== -->
 
 <div
     id="imageModal"
@@ -1936,7 +1860,6 @@ button{
 
         </div>
 
-
         <div class="generateForm">
 
             <textarea
@@ -1945,11 +1868,9 @@ button{
                 placeholder="Beschreibe genau, welches Bild Nova generieren soll...">
             </textarea>
 
-
             <div class="generateOptions">
 
-                <select
-                    id="imageSize">
+                <select id="imageSize">
 
                     <option value="1:1">
                         1:1 Quadrat
@@ -1973,9 +1894,7 @@ button{
 
                 </select>
 
-
-                <select
-                    id="imageQuality">
+                <select id="imageQuality">
 
                     <option value="1K">
                         1K
@@ -1993,7 +1912,6 @@ button{
 
             </div>
 
-
             <button
                 id="startImageGenerationBtn"
                 class="generateButton">
@@ -2002,7 +1920,6 @@ button{
 
             </button>
 
-
             <div
                 id="imageGenerationStatus"
                 style="
@@ -2010,7 +1927,6 @@ button{
                 font-size:10px;
                 text-align:center;">
             </div>
-
 
             <div
                 id="generatedResult"
@@ -2023,27 +1939,16 @@ button{
 
 </div>
 
-
-<!-- =====================================================
-     CONTEXT MENU
-====================================================== -->
-
 <div
     id="contextMenu"
     class="contextMenu hidden">
 
-    <button
-        id="contextRename">
-
+    <button id="contextRename">
         Umbenennen
-
     </button>
 
-    <button
-        id="contextDelete">
-
+    <button id="contextDelete">
         Chat löschen
-
     </button>
 
 </div>
@@ -2052,7 +1957,7 @@ button{
 <script type="module">
 
 /* =========================================================
-   FIREBASE IMPORTS
+FIREBASE
 ========================================================= */
 
 import {
@@ -2060,7 +1965,6 @@ import {
 }
 from
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-
 
 import {
     getAuth,
@@ -2072,7 +1976,6 @@ import {
 from
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
-
 import {
     getFirestore,
     doc,
@@ -2082,10 +1985,6 @@ import {
 from
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-
-/* =========================================================
-   FIREBASE CONFIG
-========================================================= */
 
 const firebaseConfig = {
 
@@ -2115,229 +2014,191 @@ const firebaseApp =
         firebaseConfig
     );
 
-
 const auth =
     getAuth(
         firebaseApp
     );
-
 
 const db =
     getFirestore(
         firebaseApp
     );
 
-
 const googleProvider =
     new GoogleAuthProvider();
 
 
 /* =========================================================
-   GEMINI MODELS
+MODELS
 ========================================================= */
-
-/*
-    TEXT / CHAT
-*/
 
 const GEMINI_MODEL =
     "gemini-3.6-flash";
-
-
-/*
-    IMAGE GENERATION
-
-    NEU:
-    gemini-3.1-flash-image
-
-    Nicht mehr:
-    gemini-2.0-flash-preview-image-generation
-*/
 
 const IMAGE_MODEL =
     "gemini-3.1-flash-image";
 
 
 /*
-    Für REST-Bildgenerierung
-    benutzen wir den aktuellen v1 Endpoint.
+    Die Bildgenerierung benutzt bewusst NICHT
+    generateContent.
+
+    Aktuelle REST-API:
+
+    POST /v1beta/interactions
+
+    mit:
+
+    response_format:{
+        type:"image",
+        aspect_ratio:"1:1",
+        image_size:"1K"
+    }
 */
 
-const GEMINI_API_VERSION =
-    "v1";
+const IMAGE_API_URL =
+    "https://generativelanguage.googleapis.com/v1beta/interactions";
 
 
 /* =========================================================
-   LIMITS
+LIMITS
 ========================================================= */
 
 const MAX_IMAGE_SIZE =
     10 * 1024 * 1024;
 
-
 const MAX_MEMORIES =
     100;
-
 
 const MAX_MESSAGES_PER_CHAT =
     500;
 
 
 /* =========================================================
-   STORAGE KEYS
+STORAGE
 ========================================================= */
 
 const STORAGE_KEYS = {
 
     keys:
-        "nova_keys_v11",
+        "nova_keys_v12",
 
     active:
-        "nova_active_key_v11",
+        "nova_active_key_v12",
 
     chats:
-        "nova_chats_v11",
+        "nova_chats_v12",
 
     currentChat:
-        "nova_current_chat_v11",
+        "nova_current_chat_v12",
 
     memories:
-        "nova_memories_v11"
+        "nova_memories_v12"
 
 };
 
 
 /* =========================================================
-   GLOBAL STATE
+STATE
 ========================================================= */
 
 let currentUser =
     null;
 
-
 let geminiKeys = {
-
     1:"",
     2:""
-
 };
-
 
 let activeKeyNumber =
     1;
 
-
 let chats =
     [];
-
 
 let currentChatId =
     null;
 
-
 let memories =
     [];
-
 
 let selectedImage =
     null;
 
-
 let recognition =
     null;
-
 
 let isListening =
     false;
 
-
 let thinking =
     false;
-
 
 let speaking =
     false;
 
-
 let voiceMode =
     false;
-
 
 let contextChatId =
     null;
 
 
 /* =========================================================
-   DOM
+DOM
 ========================================================= */
 
 const $ =
     id =>
         document.getElementById(id);
 
-
 const loginScreen =
     $("loginScreen");
-
 
 const app =
     $("app");
 
-
 const chatList =
     $("chatList");
-
 
 const chat =
     $("chat");
 
-
 const messageInput =
     $("messageInput");
-
 
 const sendBtn =
     $("sendBtn");
 
-
 const connectionStatus =
     $("connectionStatus");
-
 
 const imageFileInput =
     $("imageFileInput");
 
-
 const imagePreview =
     $("imagePreview");
-
 
 const previewImg =
     $("previewImg");
 
-
 const imageModal =
     $("imageModal");
-
 
 const contextMenu =
     $("contextMenu");
 
 
 /* =========================================================
-   BASIC HELPERS
+HELPERS
 ========================================================= */
 
 function now(){
-
     return Date.now();
-
 }
 
 
-function makeId(
-    prefix="id"
-){
+function makeId(prefix="id"){
 
     return (
         prefix +
@@ -2352,40 +2213,21 @@ function makeId(
 }
 
 
-function escapeHtml(
-    text
-){
+function escapeHtml(text){
 
     return String(
         text ?? ""
     )
-    .replaceAll(
-        "&",
-        "&amp;"
-    )
-    .replaceAll(
-        "<",
-        "&lt;"
-    )
-    .replaceAll(
-        ">",
-        "&gt;"
-    )
-    .replaceAll(
-        '"',
-        "&quot;"
-    )
-    .replaceAll(
-        "'",
-        "&#039;"
-    );
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
 
-function formatDate(
-    timestamp
-){
+function formatDate(timestamp){
 
     if(!timestamp)
         return "";
@@ -2404,13 +2246,7 @@ function formatDate(
 }
 
 
-/* =========================================================
-   NEW TAB
-========================================================= */
-
-function openNewTab(
-    url
-){
+function openNewTab(url){
 
     const newWindow =
         window.open(
@@ -2418,7 +2254,6 @@ function openNewTab(
             "_blank",
             "noopener,noreferrer"
         );
-
 
     if(!newWindow){
 
@@ -2432,22 +2267,15 @@ function openNewTab(
 }
 
 
-/* =========================================================
-   CONNECTION STATUS
-========================================================= */
-
 function setConnection(
     text,
     good=true
 ){
 
-    connectionStatus
-        .textContent =
+    connectionStatus.textContent =
         text;
 
-
-    connectionStatus
-        .className =
+    connectionStatus.className =
         "status " +
         (
             good
@@ -2459,47 +2287,54 @@ function setConnection(
 
 
 /* =========================================================
-   LOCAL STORAGE
+LOCAL STORAGE
 ========================================================= */
 
 function saveLocal(){
 
-    localStorage.setItem(
-        STORAGE_KEYS.keys,
-        JSON.stringify(
-            geminiKeys
-        )
-    );
+    try{
 
+        localStorage.setItem(
+            STORAGE_KEYS.keys,
+            JSON.stringify(
+                geminiKeys
+            )
+        );
 
-    localStorage.setItem(
-        STORAGE_KEYS.active,
-        String(
-            activeKeyNumber
-        )
-    );
+        localStorage.setItem(
+            STORAGE_KEYS.active,
+            String(
+                activeKeyNumber
+            )
+        );
 
+        localStorage.setItem(
+            STORAGE_KEYS.chats,
+            JSON.stringify(
+                chats
+            )
+        );
 
-    localStorage.setItem(
-        STORAGE_KEYS.chats,
-        JSON.stringify(
-            chats
-        )
-    );
+        localStorage.setItem(
+            STORAGE_KEYS.currentChat,
+            currentChatId || ""
+        );
 
+        localStorage.setItem(
+            STORAGE_KEYS.memories,
+            JSON.stringify(
+                memories
+            )
+        );
 
-    localStorage.setItem(
-        STORAGE_KEYS.currentChat,
-        currentChatId || ""
-    );
+    }catch(error){
 
+        console.error(
+            "LocalStorage:",
+            error
+        );
 
-    localStorage.setItem(
-        STORAGE_KEYS.memories,
-        JSON.stringify(
-            memories
-        )
-    );
+    }
 
 }
 
@@ -2514,7 +2349,6 @@ function loadLocal(){
                     STORAGE_KEYS.keys
                 ) || "{}"
             );
-
 
         geminiKeys = {
 
@@ -2544,6 +2378,16 @@ function loadLocal(){
         );
 
 
+    if(
+        activeKeyNumber !== 1 &&
+        activeKeyNumber !== 2
+    ){
+
+        activeKeyNumber = 1;
+
+    }
+
+
     try{
 
         chats =
@@ -2552,6 +2396,9 @@ function loadLocal(){
                     STORAGE_KEYS.chats
                 ) || "[]"
             );
+
+        if(!Array.isArray(chats))
+            chats = [];
 
     }catch{
 
@@ -2569,6 +2416,9 @@ function loadLocal(){
                 ) || "[]"
             );
 
+        if(!Array.isArray(memories))
+            memories = [];
+
     }catch{
 
         memories = [];
@@ -2585,7 +2435,7 @@ function loadLocal(){
 
 
 /* =========================================================
-   FIREBASE DATA
+FIREBASE DATA
 ========================================================= */
 
 async function loadUserData(){
@@ -2602,7 +2452,6 @@ async function loadUserData(){
                 "users",
                 currentUser.uid
             );
-
 
         const snap =
             await getDoc(
@@ -2635,12 +2484,13 @@ async function loadUserData(){
         }
 
 
-        if(data.activeKeyNumber){
+        if(
+            data.activeKeyNumber === 1 ||
+            data.activeKeyNumber === 2
+        ){
 
             activeKeyNumber =
-                Number(
-                    data.activeKeyNumber
-                );
+                data.activeKeyNumber;
 
         }
 
@@ -2700,7 +2550,6 @@ function scheduleFirebaseSave(){
     clearTimeout(
         firebaseSaveTimer
     );
-
 
     firebaseSaveTimer =
         setTimeout(
@@ -2772,10 +2621,6 @@ async function saveUserData(){
 }
 
 
-/* =========================================================
-   SAVE ALL
-========================================================= */
-
 function saveEverything(){
 
     saveLocal();
@@ -2786,7 +2631,7 @@ function saveEverything(){
 
 
 /* =========================================================
-   CHAT CREATION
+CHAT
 ========================================================= */
 
 function createChat(
@@ -2816,7 +2661,6 @@ function createChat(
     chats.unshift(
         newChat
     );
-
 
     currentChatId =
         newChat.id;
@@ -2867,7 +2711,7 @@ function ensureChat(){
 
 
 /* =========================================================
-   CHAT LIST
+CHAT LIST
 ========================================================= */
 
 function renderChatList(){
@@ -2904,19 +2748,15 @@ function renderChatList(){
                 "div"
             );
 
-
         empty.style.cssText =
             "padding:20px;color:#666;font-size:10px;text-align:center;";
-
 
         empty.textContent =
             "Keine Chats gefunden.";
 
-
         chatList.appendChild(
             empty
         );
-
 
         return;
 
@@ -2930,7 +2770,6 @@ function renderChatList(){
                 document.createElement(
                     "div"
                 );
-
 
             item.className =
                 "chatItem " +
@@ -2946,7 +2785,6 @@ function renderChatList(){
                 document.createElement(
                     "div"
                 );
-
 
             main.className =
                 "chatItemMain";
@@ -2977,7 +2815,6 @@ function renderChatList(){
                     currentChatId =
                         current.id;
 
-
                     saveEverything();
 
                     renderChatList();
@@ -2995,10 +2832,8 @@ function renderChatList(){
                     "button"
                 );
 
-
             menu.className =
                 "chatMenuBtn";
-
 
             menu.textContent =
                 "⋯";
@@ -3009,7 +2844,6 @@ function renderChatList(){
                 event => {
 
                     event.stopPropagation();
-
 
                     showContextMenu(
                         event.clientX,
@@ -3025,11 +2859,9 @@ function renderChatList(){
                 main
             );
 
-
             item.appendChild(
                 menu
             );
-
 
             chatList.appendChild(
                 item
@@ -3042,7 +2874,7 @@ function renderChatList(){
 
 
 /* =========================================================
-   CURRENT CHAT
+CURRENT CHAT
 ========================================================= */
 
 function renderCurrentChat(){
@@ -3089,7 +2921,6 @@ function renderCurrentChat(){
 
         `;
 
-
         return;
 
     }
@@ -3113,7 +2944,7 @@ function renderCurrentChat(){
 
 
 /* =========================================================
-   RENDER MESSAGE
+MESSAGE
 ========================================================= */
 
 function renderMessage(
@@ -3154,7 +2985,6 @@ function renderMessage(
                 message.text
             );
 
-
         bubble.innerHTML =
             text.replaceAll(
                 "\n",
@@ -3171,18 +3001,14 @@ function renderMessage(
                 "img"
             );
 
-
         img.className =
             "messageImage";
-
 
         img.src =
             message.image;
 
-
         img.alt =
             "Bild";
-
 
         bubble.appendChild(
             img
@@ -3201,7 +3027,6 @@ function renderMessage(
                 "div"
             );
 
-
         actions.className =
             "messageActions";
 
@@ -3211,20 +3036,29 @@ function renderMessage(
                 "button"
             );
 
-
         copy.textContent =
             "Kopieren";
 
 
         copy.onclick =
-            () => {
+            async () => {
 
-                navigator
-                    .clipboard
-                    .writeText(
-                        message.text ||
-                        ""
+                try{
+
+                    await navigator
+                        .clipboard
+                        .writeText(
+                            message.text ||
+                            ""
+                        );
+
+                }catch{
+
+                    alert(
+                        "Kopieren nicht möglich."
                     );
+
+                }
 
             };
 
@@ -3233,7 +3067,6 @@ function renderMessage(
             document.createElement(
                 "button"
             );
-
 
         google.textContent =
             "Google";
@@ -3248,7 +3081,6 @@ function renderMessage(
                         ""
                     );
 
-
                 openNewTab(
                     "https://www.google.com/search?q=" +
                     query
@@ -3261,11 +3093,9 @@ function renderMessage(
             copy
         );
 
-
         actions.appendChild(
             google
         );
-
 
         bubble.appendChild(
             actions
@@ -3277,7 +3107,6 @@ function renderMessage(
     wrapper.appendChild(
         bubble
     );
-
 
     chat.appendChild(
         wrapper
@@ -3294,7 +3123,7 @@ function renderMessage(
 
 
 /* =========================================================
-   SCROLL
+SCROLL
 ========================================================= */
 
 function scrollChatBottom(){
@@ -3307,7 +3136,6 @@ function scrollChatBottom(){
                     ".content"
                 );
 
-
             content.scrollTop =
                 content.scrollHeight;
 
@@ -3318,7 +3146,7 @@ function scrollChatBottom(){
 
 
 /* =========================================================
-   ADD MESSAGE
+ADD MESSAGE
 ========================================================= */
 
 function addMessage(
@@ -3405,10 +3233,6 @@ function addMessage(
 }
 
 
-/* =========================================================
-   CHAT TITLE
-========================================================= */
-
 function createChatTitle(
     text
 ){
@@ -3447,7 +3271,7 @@ function createChatTitle(
 
 
 /* =========================================================
-   RENAME CHAT
+RENAME
 ========================================================= */
 
 function renameChat(
@@ -3476,10 +3300,7 @@ function renameChat(
         );
 
 
-    if(
-        name ===
-        null
-    )
+    if(name === null)
         return;
 
 
@@ -3512,7 +3333,7 @@ function renameChat(
 
 
 /* =========================================================
-   DELETE CHAT
+DELETE
 ========================================================= */
 
 function deleteChat(
@@ -3586,7 +3407,7 @@ function deleteChat(
 
 
 /* =========================================================
-   MEMORY
+MEMORY
 ========================================================= */
 
 function saveMemory(
@@ -3719,19 +3540,15 @@ function renderMemories(){
                 "span"
             );
 
-
         empty.className =
             "memoryTag";
-
 
         empty.textContent =
             "Noch keine Erinnerungen";
 
-
         list.appendChild(
             empty
         );
-
 
         return;
 
@@ -3751,14 +3568,11 @@ function renderMemories(){
                         "div"
                     );
 
-
                 tag.className =
                     "memoryTag";
 
-
                 tag.textContent =
                     memory.text;
-
 
                 list.appendChild(
                     tag
@@ -3785,7 +3599,6 @@ function clearMemories(){
     memories =
         [];
 
-
     saveEverything();
 
     renderMemories();
@@ -3794,7 +3607,7 @@ function clearMemories(){
 
 
 /* =========================================================
-   API KEY UI
+API KEYS
 ========================================================= */
 
 function renderKeyState(){
@@ -3860,9 +3673,7 @@ function activateKey(
     number
 ){
 
-    if(
-        !geminiKeys[number]
-    ){
+    if(!geminiKeys[number]){
 
         alert(
             `F${number} wurde noch nicht gespeichert.`
@@ -3888,11 +3699,14 @@ function activateKey(
 }
 
 
+/* =========================================================
+KEY VISIBILITY
+========================================================= */
+
 function toggleKeyVisibility(){
 
     const key1 =
         $("key1Input");
-
 
     const key2 =
         $("key2Input");
@@ -3925,7 +3739,7 @@ function toggleKeyVisibility(){
 
 
 /* =========================================================
-   NOVA SYSTEM PROMPT
+SYSTEM PROMPT
 ========================================================= */
 
 const NOVA_SYSTEM_PROMPT = `
@@ -3962,7 +3776,7 @@ Bildgenerierung verwenden.
 
 
 /* =========================================================
-   MEMORY CONTEXT
+MEMORY CONTEXT
 ========================================================= */
 
 function getMemoryContext(){
@@ -3992,7 +3806,7 @@ function getMemoryContext(){
 
 
 /* =========================================================
-   GEMINI TEXT API
+GEMINI TEXT API
 ========================================================= */
 
 async function callGeminiApi(
@@ -4014,11 +3828,32 @@ async function callGeminiApi(
     }
 
 
-    const history =
+    /*
+        WICHTIG:
+
+        Die letzte Nachricht ist bereits
+        die gerade gesendete User-Nachricht.
+
+        Deshalb nehmen wir für history
+        nur die Nachrichten davor.
+
+        Dadurch wird die aktuelle Nachricht
+        nicht doppelt an Gemini gesendet.
+    */
+
+    const previousMessages =
         current.messages
             .slice(
-                -30
+                0,
+                -1
             )
+            .slice(
+                -30
+            );
+
+
+    const history =
+        previousMessages
             .map(
                 message => {
 
@@ -4026,9 +3861,7 @@ async function callGeminiApi(
                         [];
 
 
-                    if(
-                        message.text
-                    ){
+                    if(message.text){
 
                         parts.push({
 
@@ -4220,8 +4053,20 @@ async function callGeminiApi(
         );
 
 
-    const data =
-        await response.json();
+    let data;
+
+    try{
+
+        data =
+            await response.json();
+
+    }catch{
+
+        throw new Error(
+            `Ungültige Antwort · HTTP ${response.status}`
+        );
+
+    }
 
 
     if(!response.ok){
@@ -4268,7 +4113,7 @@ async function callGeminiApi(
 
 
 /* =========================================================
-   GEMINI AUTO FAILOVER
+GEMINI FAILOVER
 ========================================================= */
 
 async function askGemini(
@@ -4379,7 +4224,7 @@ async function askGemini(
 
 
 /* =========================================================
-   THINKING
+THINKING
 ========================================================= */
 
 function showThinking(){
@@ -4406,9 +4251,7 @@ function showThinking(){
         <div class="thinking">
 
             <div class="dot"></div>
-
             <div class="dot"></div>
-
             <div class="dot"></div>
 
         </div>
@@ -4442,7 +4285,7 @@ function removeThinking(){
 
 
 /* =========================================================
-   WEB ACTIONS
+WEB ACTIONS
 ========================================================= */
 
 function detectWebAction(
@@ -4571,7 +4414,7 @@ function executeWebAction(
 
 
 /* =========================================================
-   SEND
+SEND
 ========================================================= */
 
 async function sendMessage(){
@@ -4620,6 +4463,17 @@ async function sendMessage(){
 
     }
 
+
+    /*
+        Wichtig:
+
+        addMessage() wird VOR askGemini()
+        ausgeführt.
+
+        callGeminiApi() ignoriert deshalb
+        die letzte Nachricht in history
+        und fügt sie selbst korrekt hinzu.
+    */
 
     addMessage(
         "user",
@@ -4737,7 +4591,7 @@ async function sendMessage(){
 
 
 /* =========================================================
-   IMAGE UPLOAD
+IMAGE UPLOAD
 ========================================================= */
 
 function handleImageFile(
@@ -4832,7 +4686,7 @@ function clearSelectedImage(){
 
 
 /* =========================================================
-   IMAGE GENERATION
+IMAGE MODAL
 ========================================================= */
 
 function openImageModal(){
@@ -4862,7 +4716,196 @@ function closeImageModal(){
 
 
 /* =========================================================
-   IMAGE GENERATION REQUEST
+IMAGE RESPONSE PARSER
+========================================================= */
+
+function extractImageFromInteraction(
+    data
+){
+
+    /*
+        Standard:
+        data.output_image.data
+    */
+
+    if(
+        data?.output_image?.data
+    ){
+
+        return {
+
+            data:
+                data.output_image.data,
+
+            mimeType:
+                data.output_image.mime_type ||
+                "image/png"
+
+        };
+
+    }
+
+
+    /*
+        Manche Antworten können das Bild
+        innerhalb von steps/content zurückgeben.
+    */
+
+    const steps =
+        Array.isArray(
+            data?.steps
+        )
+            ? data.steps
+            : [];
+
+
+    for(
+        const step of steps
+    ){
+
+        const content =
+            Array.isArray(
+                step?.content
+            )
+                ? step.content
+                : [];
+
+
+        for(
+            const block of content
+        ){
+
+            if(
+                block?.type === "image" &&
+                block?.data
+            ){
+
+                return {
+
+                    data:
+                        block.data,
+
+                    mimeType:
+                        block.mime_type ||
+                        block.mimeType ||
+                        "image/png"
+
+                };
+
+            }
+
+        }
+
+    }
+
+
+    /*
+        Fallback für mögliche output/content-Strukturen.
+    */
+
+    const output =
+        Array.isArray(
+            data?.output
+        )
+            ? data.output
+            : [];
+
+
+    for(
+        const item of output
+    ){
+
+        if(
+            item?.type === "image" &&
+            item?.data
+        ){
+
+            return {
+
+                data:
+                    item.data,
+
+                mimeType:
+                    item.mime_type ||
+                    item.mimeType ||
+                    "image/png"
+
+            };
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+function extractImageText(
+    data
+){
+
+    if(
+        typeof data?.output_text ===
+        "string"
+    ){
+
+        return data.output_text.trim();
+
+    }
+
+
+    let result =
+        "";
+
+
+    const steps =
+        Array.isArray(
+            data?.steps
+        )
+            ? data.steps
+            : [];
+
+
+    for(
+        const step of steps
+    ){
+
+        const content =
+            Array.isArray(
+                step?.content
+            )
+                ? step.content
+                : [];
+
+
+        for(
+            const block of content
+        ){
+
+            if(
+                block?.type === "text" &&
+                typeof block?.text === "string"
+            ){
+
+                result +=
+                    block.text + "\n";
+
+            }
+
+        }
+
+    }
+
+
+    return result.trim();
+
+}
+
+
+/* =========================================================
+IMAGE GENERATION
 ========================================================= */
 
 async function generateImage(){
@@ -4978,71 +5021,40 @@ async function generateImage(){
         try{
 
             /*
-                WICHTIGER FIX:
+                AKTUELLER IMAGE ENDPOINT
 
-                v1 statt v1beta
+                Google dokumentiert aktuell:
 
-                und
+                POST
+                /v1beta/interactions
 
-                gemini-3.1-flash-image
+                Header:
+                x-goog-api-key
 
-                statt des alten
-                gemini-2.0-flash-preview-image-generation
+                Body:
+                model
+                input
+                response_format
             */
-
-            const url =
-                "https://generativelanguage.googleapis.com/" +
-                GEMINI_API_VERSION +
-                "/models/" +
-                encodeURIComponent(
-                    IMAGE_MODEL
-                ) +
-                ":generateContent?key=" +
-                encodeURIComponent(
-                    geminiKeys[keyNumber]
-                );
-
 
             const body = {
 
-                contents:[
+                model:
+                    IMAGE_MODEL,
 
-                    {
+                input:
+                    prompt,
 
-                        parts:[
+                response_format:{
 
-                            {
+                    type:
+                        "image",
 
-                                text:
-                                    prompt
+                    aspect_ratio:
+                        aspectRatio,
 
-                            }
-
-                        ]
-
-                    }
-
-                ],
-
-                generationConfig:{
-
-                    responseModalities:[
-                        "IMAGE"
-                    ],
-
-                    responseFormat:{
-
-                        image:{
-
-                            aspectRatio:
-                                aspectRatio,
-
-                            imageSize:
-                                imageSize
-
-                        }
-
-                    }
+                    image_size:
+                        imageSize
 
                 }
 
@@ -5051,7 +5063,7 @@ async function generateImage(){
 
             const response =
                 await fetch(
-                    url,
+                    IMAGE_API_URL,
                     {
 
                         method:
@@ -5060,7 +5072,10 @@ async function generateImage(){
                         headers:{
 
                             "Content-Type":
-                                "application/json"
+                                "application/json",
+
+                            "x-goog-api-key":
+                                geminiKeys[keyNumber]
 
                         },
 
@@ -5073,70 +5088,59 @@ async function generateImage(){
                 );
 
 
-            const data =
-                await response.json();
+            let data;
+
+            try{
+
+                data =
+                    await response.json();
+
+            }catch{
+
+                throw new Error(
+                    `Ungültige Bild-API-Antwort · HTTP ${response.status}`
+                );
+
+            }
 
 
             if(!response.ok){
 
                 throw new Error(
                     data?.error?.message ||
+                    data?.message ||
                     `HTTP ${response.status}`
                 );
 
             }
 
 
-            const parts =
-                data
-                    ?.candidates?.[0]
-                    ?.content?.parts ||
-                [];
+            const image =
+                extractImageFromInteraction(
+                    data
+                );
 
 
-            let imageData =
-                null;
-
-
-            let description =
-                "";
-
-
-            for(
-                const part of parts
-            ){
-
-                if(
-                    part.inlineData &&
-                    part.inlineData.data
-                ){
-
-                    imageData =
-                        "data:" +
-                        part.inlineData.mimeType +
-                        ";base64," +
-                        part.inlineData.data;
-
-                }
-
-
-                if(part.text){
-
-                    description +=
-                        part.text;
-
-                }
-
-            }
-
-
-            if(!imageData){
+            if(!image){
 
                 throw new Error(
                     "Das Bildmodell hat kein Bild zurückgegeben."
                 );
 
             }
+
+
+            const imageData =
+                "data:" +
+                image.mimeType +
+                ";base64," +
+                image.data;
+
+
+            const description =
+                extractImageText(
+                    data
+                );
 
 
             activeKeyNumber =
@@ -5212,7 +5216,7 @@ async function generateImage(){
 
 
             status.textContent =
-                `Bild erfolgreich generiert · F${keyNumber}`;
+                `Bild erfolgreich generiert · F${keyNumber} · ${imageSize}`;
 
 
             success =
@@ -5279,7 +5283,7 @@ async function generateImage(){
 
 
 /* =========================================================
-   SPEECH RECOGNITION
+SPEECH RECOGNITION
 ========================================================= */
 
 function setupSpeech(){
@@ -5419,7 +5423,7 @@ function toggleListening(){
 
 
 /* =========================================================
-   TEXT TO SPEECH
+TEXT TO SPEECH
 ========================================================= */
 
 function speak(
@@ -5477,7 +5481,7 @@ function speak(
 
 
 /* =========================================================
-   TEXTAREA
+TEXTAREA
 ========================================================= */
 
 function autoResizeTextarea(){
@@ -5497,7 +5501,7 @@ function autoResizeTextarea(){
 
 
 /* =========================================================
-   MOBILE
+MOBILE
 ========================================================= */
 
 function closeMobileSidebar(){
@@ -5512,7 +5516,7 @@ function closeMobileSidebar(){
 
 
 /* =========================================================
-   LOGIN
+LOGIN
 ========================================================= */
 
 async function login(){
@@ -5566,7 +5570,7 @@ async function logout(){
 
 
 /* =========================================================
-   AUTH STATE
+AUTH STATE
 ========================================================= */
 
 onAuthStateChanged(
@@ -5584,11 +5588,9 @@ onAuthStateChanged(
                 "hidden"
             );
 
-
             loginScreen.classList.remove(
                 "hidden"
             );
-
 
             return;
 
@@ -5598,7 +5600,6 @@ onAuthStateChanged(
         loginScreen.classList.add(
             "hidden"
         );
-
 
         app.classList.remove(
             "hidden"
@@ -5622,8 +5623,12 @@ onAuthStateChanged(
             "";
 
 
-        loadLocal();
+        /*
+            Erst lokale Daten laden,
+            dann Firebase-Daten darüberlegen.
+        */
 
+        loadLocal();
 
         await loadUserData();
 
@@ -5664,7 +5669,7 @@ onAuthStateChanged(
 
 
 /* =========================================================
-   EVENT LISTENERS
+EVENTS
 ========================================================= */
 
 $("googleLoginBtn")
@@ -5984,7 +5989,7 @@ imageModal
 
 
 /* =========================================================
-   CONTEXT MENU
+CONTEXT MENU
 ========================================================= */
 
 function showContextMenu(
@@ -6034,7 +6039,7 @@ function hideContextMenu(){
 
 
 /* =========================================================
-   KEYBOARD SHORTCUTS
+KEYBOARD SHORTCUTS
 ========================================================= */
 
 document.addEventListener(
@@ -6082,7 +6087,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   INITIALIZATION
+INITIALIZATION
 ========================================================= */
 
 loadLocal();
@@ -6121,7 +6126,7 @@ renderCurrentChat();
 
 
 /* =========================================================
-   AUTO SAVE
+AUTO SAVE
 ========================================================= */
 
 setInterval(
@@ -6142,7 +6147,7 @@ setInterval(
 
 
 /* =========================================================
-   BEFORE UNLOAD
+BEFORE UNLOAD
 ========================================================= */
 
 window.addEventListener(
@@ -6156,7 +6161,7 @@ window.addEventListener(
 
 
 /* =========================================================
-   PUBLIC NOVA API
+PUBLIC NOVA API
 ========================================================= */
 
 window.Nova = {
@@ -6205,6 +6210,29 @@ window.Nova = {
     getMemories(){
 
         return memories;
+
+    },
+
+
+    generateImage(){
+
+        openImageModal();
+
+    },
+
+
+    send(){
+
+        sendMessage();
+
+    },
+
+
+    speak(text){
+
+        speak(
+            text
+        );
 
     }
 
